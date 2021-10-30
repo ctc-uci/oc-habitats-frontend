@@ -1,6 +1,4 @@
-# npo-frontend-template
-
-This template will be used to create all NPO frontend repos
+# OC Habitats Frontend
 
 ## Available Scripts
 
