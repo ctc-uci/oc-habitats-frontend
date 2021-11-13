@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, ChakraProvider, FormControl, FormLabel, Switch} from '@chakra-ui/react';
+import { Box, ChakraProvider, FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import logo from './logo.svg';
 import './App.css';
 
