@@ -15,6 +15,7 @@ function App() {
           <Route exact path="/sections" />
           {/* Admin only routes (TO DO, make admin only) */}
           <Route exact path="/people" />
+          <Route exact path="/logs" />
         </Routes>
       </Router>
     </ChakraProvider>
