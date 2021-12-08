@@ -37,7 +37,7 @@ const AccountPage = props => {
 
   useEffect(async () => {
     setLoading(true);
-    getAccountInfo();
+    await getAccountInfo();
     setLoading(false);
   }, []);
 
@@ -47,9 +47,9 @@ const AccountPage = props => {
 
   return (
     <div>
-      <Container h="100vh" maxW="100vw" bg="white">
+      <Container h="100vh" maxW="100vw">
         <VStack>
-          <Heading size="lg" color="black" py="10">
+          <Heading size="lg" py="10">
             Account Information
           </Heading>
           <Image
@@ -60,46 +60,46 @@ const AccountPage = props => {
             src="https://bit.ly/dan-abramov"
             alt="Profile picture"
           />
-          <Heading size="lg" color="black" alignSelf="flex-start" px={55} py={10}>
+          <Heading size="lg" alignSelf="flex-start" pl={200} py={50}>
             Personal Information
           </Heading>
           <SimpleGrid columns={3} rows={2} spacing={10} w="70vw" h={100}>
             <GridItem colSpan={1}>
               <FormControl>
-                <FormLabel color="black">First Name</FormLabel>
-                <Input outlineColor="black" placeholder="Petr" color="black" />
+                <FormLabel pb={5}>First Name</FormLabel>
+                <Input placeholder="Petr" />
               </FormControl>
             </GridItem>
             <GridItem>
               <FormControl>
-                <FormLabel color="black">Preferred Name (Optional)</FormLabel>
-                <Input outlineColor="black" placeholder="Petr" color="black" />
+                <FormLabel pb={5}>Preferred Name (Optional)</FormLabel>
+                <Input placeholder="Petr" />
               </FormControl>
             </GridItem>
             <GridItem>
               <FormControl>
-                <FormLabel gridRowStart={1} color="black">
+                <FormLabel gridRowStart={1} pb={5}>
                   Last Name
                 </FormLabel>
-                <Input outlineColor="black" placeholder="Anteater" color="black" />
+                <Input placeholder="Anteater" />
               </FormControl>
             </GridItem>
             <GridItem colSpan={1} gridRowStart={2}>
               <FormControl>
-                <FormLabel color="black">Email</FormLabel>
-                <Input outlineColor="black" placeholder={user.email} color="black" />
+                <FormLabel pb={5}>Email</FormLabel>
+                <Input placeholder={user.email} />
               </FormControl>
             </GridItem>
             <GridItem colSpan={1} gridRowStart={2}>
               <FormControl>
-                <FormLabel color="black">Active Status</FormLabel>
-                <Input outlineColor="black" placeholder={user.activeStatus} color="black" />
+                <FormLabel pb={5}>Active Status</FormLabel>
+                <Input placeholder={user.activeStatus} />
               </FormControl>
             </GridItem>
             <GridItem colSpan={1} gridRowStart={2}>
               <FormControl>
-                <FormLabel color="black">Training Status</FormLabel>
-                <Input outlineColor="black" placeholder={user.trainingStatus} color="black" />
+                <FormLabel pb={5}>Training Status</FormLabel>
+                <Input placeholder={user.trainingStatus} />
               </FormControl>
             </GridItem>
           </SimpleGrid>
