@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, React } from 'react';
+import { useEffect, useState, React } from 'react';
 import {
   Text,
   FormLabel,
@@ -14,13 +14,15 @@ import {
 } from '@chakra-ui/react';
 
 const AccountPage = props => {
+  const [isLoading, setLoading] = useState(false);
+
   const user = {
     firstName: '',
     preferredName: '',
     lastName: '',
     email: '',
     trainingStatus: '',
-    activeStatus: false,
+    activeStatus: 'Active',
   };
 
   const getAccountInfo = () => {
@@ -30,12 +32,18 @@ const AccountPage = props => {
     user.lastName = 'Anteater';
     user.email = 'petr@uci.edu';
     user.trainingStatus = 'in-Training';
-    user.activeStatus = true;
+    user.activeStatus = 'Active';
   };
 
   useEffect(async () => {
+    setLoading(true);
     getAccountInfo();
+    setLoading(false);
   }, []);
+
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
 
   return (
     <div>
@@ -52,25 +60,46 @@ const AccountPage = props => {
             src="https://bit.ly/dan-abramov"
             alt="Profile picture"
           />
-          <Text color="black" h="md" w="md">
+          <Heading size="lg" color="black" alignSelf="flex-start" px={55} py={10}>
             Personal Information
-          </Text>
-          <SimpleGrid columns={3} rows={3} spacing={10} maxW="full" maxH="full">
-            <GridItem colSpan={1} rowSpan={1}>
-              <Text color="black" size="sm">
-                Personal Information
-              </Text>
-            </GridItem>
+          </Heading>
+          <SimpleGrid columns={3} rows={2} spacing={10} w="70vw" h={100}>
             <GridItem colSpan={1}>
               <FormControl>
-                <FormLabel>First Name</FormLabel>
-                <Input placeholder={user.firstName} />
+                <FormLabel color="black">First Name</FormLabel>
+                <Input outlineColor="black" placeholder="Petr" color="black" />
               </FormControl>
             </GridItem>
             <GridItem>
               <FormControl>
-                <FormLabel>Preferred Name (Optional)</FormLabel>
-                <Input placeholder={user.preferredName} />
+                <FormLabel color="black">Preferred Name (Optional)</FormLabel>
+                <Input outlineColor="black" placeholder="Petr" color="black" />
+              </FormControl>
+            </GridItem>
+            <GridItem>
+              <FormControl>
+                <FormLabel gridRowStart={1} color="black">
+                  Last Name
+                </FormLabel>
+                <Input outlineColor="black" placeholder="Anteater" color="black" />
+              </FormControl>
+            </GridItem>
+            <GridItem colSpan={1} gridRowStart={2}>
+              <FormControl>
+                <FormLabel color="black">Email</FormLabel>
+                <Input outlineColor="black" placeholder={user.email} color="black" />
+              </FormControl>
+            </GridItem>
+            <GridItem colSpan={1} gridRowStart={2}>
+              <FormControl>
+                <FormLabel color="black">Active Status</FormLabel>
+                <Input outlineColor="black" placeholder={user.activeStatus} color="black" />
+              </FormControl>
+            </GridItem>
+            <GridItem colSpan={1} gridRowStart={2}>
+              <FormControl>
+                <FormLabel color="black">Training Status</FormLabel>
+                <Input outlineColor="black" placeholder={user.trainingStatus} color="black" />
               </FormControl>
             </GridItem>
           </SimpleGrid>
