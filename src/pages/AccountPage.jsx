@@ -67,13 +67,13 @@ const AccountPage = props => {
             <GridItem colSpan={1}>
               <FormControl>
                 <FormLabel pb={5}>First Name</FormLabel>
-                <Input placeholder="Petr" />
+                <Input placeholder={user.firstName} />
               </FormControl>
             </GridItem>
             <GridItem>
               <FormControl>
                 <FormLabel pb={5}>Preferred Name (Optional)</FormLabel>
-                <Input placeholder="Petr" />
+                <Input placeholder={user.preferredName} />
               </FormControl>
             </GridItem>
             <GridItem>
@@ -81,7 +81,7 @@ const AccountPage = props => {
                 <FormLabel gridRowStart={1} pb={5}>
                   Last Name
                 </FormLabel>
-                <Input placeholder="Anteater" />
+                <Input placeholder={user.lastName} />
               </FormControl>
             </GridItem>
             <GridItem colSpan={1} gridRowStart={2}>
