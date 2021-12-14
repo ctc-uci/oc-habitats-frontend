@@ -1,22 +1,11 @@
-/* eslint-disable no-unused-vars */
 import { React } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Container,
-  Text,
-  Stack,
-  VStack,
-  HStack,
-  Select,
-  Button,
-  Tooltip,
-  Heading,
-} from '@chakra-ui/react';
+import { VStack, HStack, Select, Button, Tooltip, Heading } from '@chakra-ui/react';
 
 function AttributeList({ title }) {
   return (
-    <VStack>
-      <HStack>
+    <VStack align="start" w="24%" bgColor="wheat">
+      <HStack spacing="2em" justify="space-between">
         <Heading as="h5" size="md">
           {title}
         </Heading>
@@ -29,7 +18,9 @@ function AttributeList({ title }) {
         <option value="option2">Option 2</option>
         <option value="option3">Option 3</option>
       </Select>
-      <Button>Add behavior +</Button>
+      <Button colorScheme="gray" w="100%">
+        Add behavior +
+      </Button>
     </VStack>
   );
 }
