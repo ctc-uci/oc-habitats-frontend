@@ -2,6 +2,8 @@ import React from 'react';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import './App.css';
+import HomePage from './pages/HomePage';
+import SectionPage from './pages/SectionPage';
 
 function App() {
   return (
@@ -9,10 +11,10 @@ function App() {
       <Router>
         <Routes>
           {/* Add routes as needed; route names subject to change */}
-          <Route exact path="/" />
+          <Route exact path="/" element={<HomePage />} />
           <Route exact path="/account" />
           <Route exact path="/create-log" />
-          <Route exact path="/sections" />
+          <Route exact path="/sections" element={<SectionPage />} />
           {/* Admin only routes (TO DO, make admin only) */}
           <Route exact path="/people" />
           <Route exact path="/logs" />
