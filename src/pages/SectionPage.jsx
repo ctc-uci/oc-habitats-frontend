@@ -1,7 +1,8 @@
 import { React } from 'react';
+import Section from '../components/Section';
 
 const SectionPage = () => {
-  return <div>This is the sections page</div>;
+  return <Section />;
 };
 
 export default SectionPage;
