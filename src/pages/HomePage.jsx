@@ -1,12 +1,7 @@
 import { React } from 'react';
-import Section from '../components/Section';
 //  used from User Account Page group
 const HomePage = () => {
-  return (
-    <div>
-      <Section />
-    </div>
-  );
+  return <div>sample home page</div>;
 };
 
 export default HomePage;
