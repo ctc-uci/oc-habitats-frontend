@@ -5,7 +5,7 @@ const HomePage = props => {
   return (
     <div>
       This page is just a placeholder so React will stop giving me errors theres not actually a base
-      page for this site LUL
+      page for this site LUL xd
     </div>
   );
 };

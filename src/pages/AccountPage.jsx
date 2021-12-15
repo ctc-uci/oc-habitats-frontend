@@ -89,36 +89,41 @@ const AccountPage = props => {
             </GridItem>
             <GridItem colSpan={1} gridRowStart={2}>
               <FormControl>
-                <FormLabel pb={5}>Active Status</FormLabel>
-                <Input placeholder={user.activeStatus} />
+                <FormLabel pb={5}>Training Status</FormLabel>
+                <Input placeholder={user.trainingStatus} />
               </FormControl>
             </GridItem>
             <GridItem colSpan={1} gridRowStart={2}>
               <FormControl>
-                <FormLabel pb={5}>Training Status</FormLabel>
-                <Input placeholder={user.trainingStatus} />
+                <FormLabel pb={5}>Active Status</FormLabel>
+                <Input placeholder={user.activeStatus} />
               </FormControl>
             </GridItem>
           </SimpleGrid>
           <Heading size="lg" alignSelf="flex-start" pl={200} py={50}>
             Change Password
           </Heading>
-          <HStack alignSelf="flex-start" w="50vw" pl={200} spacing="100">
-            <FormControl>
-              <FormLabel>Current Password</FormLabel>
-              <InputGroup>
-                <Input type="password" placeholder="Enter Password" />
-                <InputRightAddon children="show" />
-              </InputGroup>
-            </FormControl>
-            <FormControl>
-              <FormLabel>New Password</FormLabel>
-              <InputGroup>
-                <Input type="password" placeholder="Enter Password" />
-                <InputRightAddon children="show" />
-              </InputGroup>
-            </FormControl>
-          </HStack>
+
+          <SimpleGrid columns={3} rows={2} spacing={10} w="70vw" h={100} pb={300}>
+            <GridItem colSpan={1}>
+              <FormControl>
+                <FormLabel>Current Password</FormLabel>
+                <InputGroup>
+                  <Input type="password" placeholder="Enter Password" />
+                  <InputRightAddon children="show" />
+                </InputGroup>
+              </FormControl>
+            </GridItem>
+            <GridItem colSpan={1}>
+              <FormControl>
+                <FormLabel>New Password</FormLabel>
+                <InputGroup>
+                  <Input type="password" placeholder="Enter Password" />
+                  <InputRightAddon children="show" />
+                </InputGroup>
+              </FormControl>
+            </GridItem>
+          </SimpleGrid>
         </VStack>
       </Container>
     </div>
