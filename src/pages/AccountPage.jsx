@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState, React } from 'react';
 import {
@@ -11,30 +12,25 @@ import {
   VStack,
   Container,
   Heading,
+  HStack,
+  InputGroup,
+  InputRightAddon,
 } from '@chakra-ui/react';
 
 const AccountPage = props => {
   const [isLoading, setLoading] = useState(false);
 
   const user = {
-    firstName: '',
-    preferredName: '',
-    lastName: '',
-    email: '',
-    trainingStatus: '',
+    firstName: 'Petr',
+    preferredName: 'Petr',
+    lastName: 'Anteater',
+    email: 'petr@uci.edu',
+    trainingStatus: 'In-Training',
     activeStatus: 'Active',
   };
 
   const getAccountInfo = () => {
     // FILL OUT WITH API ENDPOINT CALL
-    console.log('getAccountInfo called');
-    user.firstName = 'Petr';
-    user.preferredName = 'Petr';
-    user.lastName = 'Anteater';
-    user.email = 'petr@uci.edu';
-    user.trainingStatus = 'in-Training';
-    user.activeStatus = 'Active';
-    console.log('getAccountInfo finished');
     console.log(user);
   };
 
@@ -66,7 +62,7 @@ const AccountPage = props => {
           <Heading size="lg" alignSelf="flex-start" pl={200} py={50}>
             Personal Information
           </Heading>
-          <SimpleGrid columns={3} rows={2} spacing={10} w="70vw" h={100}>
+          <SimpleGrid columns={3} rows={2} spacing={10} w="70vw" h={100} pb={300}>
             <GridItem colSpan={1}>
               <FormControl>
                 <FormLabel pb={5}>First Name</FormLabel>
@@ -104,6 +100,25 @@ const AccountPage = props => {
               </FormControl>
             </GridItem>
           </SimpleGrid>
+          <Heading size="lg" alignSelf="flex-start" pl={200} py={50}>
+            Change Password
+          </Heading>
+          <HStack alignSelf="flex-start" w="50vw" pl={200} spacing="100">
+            <FormControl>
+              <FormLabel>Current Password</FormLabel>
+              <InputGroup>
+                <Input type="password" placeholder="Enter Password" />
+                <InputRightAddon children="show" />
+              </InputGroup>
+            </FormControl>
+            <FormControl>
+              <FormLabel>New Password</FormLabel>
+              <InputGroup>
+                <Input type="password" placeholder="Enter Password" />
+                <InputRightAddon children="show" />
+              </InputGroup>
+            </FormControl>
+          </HStack>
         </VStack>
       </Container>
     </div>
