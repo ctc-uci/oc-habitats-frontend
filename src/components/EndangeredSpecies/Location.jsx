@@ -1,31 +1,46 @@
 import { React } from 'react';
-import { Text, VStack, HStack, Input, Tooltip, Heading } from '@chakra-ui/react';
+import {
+  VStack,
+  HStack,
+  Input,
+  Tooltip,
+  Heading,
+  FormControl,
+  FormLabel,
+  Flex,
+} from '@chakra-ui/react';
 
 function Location() {
+  // console.log('Location');
   return (
-    <VStack w="40%" align="start" bgColor="yellow">
+    <VStack w="40%" align="start">
       <Heading as="h5" size="md">
         Location
       </Heading>
-      <HStack bgColor="papayawhip">
-        <VStack w="100%" align="start">
-          <Text>GPS</Text>
-          <HStack w="100%">
-            <Input defaultValue="000.00000" />
-            <Input defaultValue="000.00000" />
+
+      <HStack>
+        <FormControl>
+          <FormLabel htmlFor="latitude">GPS</FormLabel>
+          <FormLabel htmlFor="longitude" />
+          <HStack w="75%">
+            <Input id="latitude" defaultValue="000.00000" />
+            <Input id="longitude" defaultValue="000.00000" />
           </HStack>
-        </VStack>
+        </FormControl>
       </HStack>
-      <HStack w="100%" bgColor="darkorchid">
-        <VStack w="100%" align="start">
-          <HStack w="100%" justify="space-between">
-            <Text>Cross Street/Towers</Text>
-            <Tooltip label="info" fontSize="md">
-              icon
-            </Tooltip>
-          </HStack>
-          <Input defaultValue="Cross Street Names" />
-        </VStack>
+
+      <HStack w="100%">
+        <FormControl>
+          <FormLabel htmlFor="cross-street">
+            <Flex justify="space-between">
+              Cross Street/Towers
+              <Tooltip label="info" fontSize="md">
+                icon
+              </Tooltip>
+            </Flex>
+          </FormLabel>
+          <Input id="cross-street" defaultValue="Cross Street Names" />
+        </FormControl>
       </HStack>
     </VStack>
   );

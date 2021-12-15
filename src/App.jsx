@@ -14,7 +14,11 @@ function App() {
           <Route exact path="/account" />
           <Route exact path="/create-log" />
           <Route exact path="/sections" />
-          <Route exact path="/endangered" element={<EndangeredSpecies />} />
+          <Route
+            exact
+            path="/endangered"
+            element={<EndangeredSpecies adultName="Snowy Plovers" childName="Fledges" />}
+          />
           {/* Admin only routes (TO DO, make admin only) */}
           <Route exact path="/people" />
           <Route exact path="/logs" />

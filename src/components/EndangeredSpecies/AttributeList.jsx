@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { VStack, HStack, Select, Button, Tooltip, Heading } from '@chakra-ui/react';
 
 function AttributeList({ title }) {
+  // console.log('AttributeList');
   return (
-    <VStack align="start" w="24%" bgColor="wheat">
+    <VStack align="start" w="24%">
       <HStack spacing="2em" justify="space-between">
         <Heading as="h5" size="md">
           {title}
