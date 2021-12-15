@@ -27,12 +27,15 @@ const AccountPage = props => {
 
   const getAccountInfo = () => {
     // FILL OUT WITH API ENDPOINT CALL
+    console.log('getAccountInfo called');
     user.firstName = 'Petr';
     user.preferredName = 'Petr';
     user.lastName = 'Anteater';
     user.email = 'petr@uci.edu';
     user.trainingStatus = 'in-Training';
     user.activeStatus = 'Active';
+    console.log('getAccountInfo finished');
+    console.log(user);
   };
 
   useEffect(async () => {
@@ -70,17 +73,15 @@ const AccountPage = props => {
                 <Input placeholder={user.firstName} />
               </FormControl>
             </GridItem>
-            <GridItem>
+            <GridItem colSpan={1}>
               <FormControl>
                 <FormLabel pb={5}>Preferred Name (Optional)</FormLabel>
                 <Input placeholder={user.preferredName} />
               </FormControl>
             </GridItem>
-            <GridItem>
+            <GridItem colSpan={1}>
               <FormControl>
-                <FormLabel gridRowStart={1} pb={5}>
-                  Last Name
-                </FormLabel>
+                <FormLabel pb={5}>Last Name</FormLabel>
                 <Input placeholder={user.lastName} />
               </FormControl>
             </GridItem>
