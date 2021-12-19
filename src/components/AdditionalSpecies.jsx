@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { BsPersonFill, BsArrowDown } from 'react-icons/bs';
 import { nanoid } from 'nanoid';
 import {
   Heading,
@@ -20,134 +21,133 @@ import {
   FormControl,
   IconButton,
   Container,
+  Icon,
 } from '@chakra-ui/react';
-import { DeleteIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import DropdownSearch from './DropdownSearch';
+import { DeleteIcon } from '@chakra-ui/icons';
+import Select from 'react-select';
+import PropTypes from 'prop-types';
 
-// const rows = [
-//   {
-//     id: nanoid(),
-//     check: null,
-//     name: <Input size="lg" backgroundColor="#EDF2F7" defaultValue="Beach Cast" isReadOnly />,
-//     total: (
-//       <NumberInput size="lg" defaultValue={0}>
-//         <NumberInputField />
-//       </NumberInput>
-//     ),
-//   },
-// ];
-
-const rows = new Map([[nanoid(), { name: 'Beach Cast', total: 0, isChecked: false }]]);
-
-const sp = [
-  {
-    value: 'Corvid: Common Raven',
-    label: 'Corvid: Common Raven (CORA)',
-  },
-  {
-    value: 'Cormorant: Double Crested',
-    label: 'Cormorant: Double Crested (BRAC)',
-  },
-  {
-    value: "Hummingbird: Alan's",
-    label: "Hummingbird: Alan's (ALHU)",
-  },
-  {
-    value: 'Pelican: American White',
-    label: 'Pelican: American White (AWPE)',
-  },
-  {
-    value: 'Sandpiper: Long-billed Curlew',
-    label: 'Sandpiper: Long-billed Curlew (LBCU)',
-  },
+const rows = [
+  { name: 'Beach Cast', total: 0, isChecked: false, isVisible: 'hidden', isDisabled: true },
 ];
 
-const AdditionalSpecies = () => {
+const AdditionalSpecies = ({ options }) => {
   const [species, setSpecies] = useState(rows);
-  useEffect(() => {
-    // Update the document title using the browser API
-    console.log(species);
-  }, [species]);
+  const [allChecked, setAllChecked] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+  const [option, setOption] = useState('');
 
-  // const handleAddInputChange = event => {
-  //   event.preventDefault();
+  const findChecked = value => {
+    return value.isChecked;
+  };
 
-  //   const fieldName = event.target.getAttribute('check');
-  //   const fieldValue = event.target.value;
+  const handleAddTotalChange = (value, id) => {
+    const newTotalData = [...species];
+    newTotalData[id].total = value;
 
-  //   const newTotalData = addTotalData.concat(fieldValue);
+    setSpecies(newTotalData);
+  };
 
-  //   setSpecies(newTotalData);
-  // };
+  const handleAllChecked = () => {
+    const newCheckedData = [...species];
+    if (allChecked) {
+      for (let i = 1; i < newCheckedData.length; i += 1) {
+        newCheckedData[i].isChecked = false;
+      }
+    } else {
+      for (let i = 1; i < newCheckedData.length; i += 1) {
+        newCheckedData[i].isChecked = true;
+      }
+    }
+    setDisabled(!newCheckedData.some(findChecked));
+    setAllChecked(!allChecked);
+    setSpecies(newCheckedData);
+  };
 
-  const handleCheckedItems = id => {
-    const newCheckedData = new Map(species);
-    // const currentValue = newCheckedData.get(id);
-
-    // newCheckedData.set(id, { ...currentValue, isChecked: true });
-    console.log(id);
+  const handleRowCheckedItems = id => {
+    const newCheckedData = [...species];
+    newCheckedData[id].isChecked = !newCheckedData[id].isChecked;
+    setDisabled(!newCheckedData.some(findChecked));
     setSpecies(newCheckedData);
   };
 
   const handleAddRow = () => {
-    const newData = {
-      name: 'Input Name',
-      total: 0,
-      isChecked: false,
-    };
+    if (option !== '') {
+      const newData = {
+        name: option.label,
+        total: 0,
+        isChecked: false,
+        isVisible: 'visible',
+        isDisabled: false,
+      };
+      const newSpecies = [...species, newData];
 
-    const newSpecies = new Map(species);
-    newSpecies.set(nanoid(), newData);
-
-    setSpecies(newSpecies);
+      setOption('');
+      setSpecies(newSpecies);
+    }
   };
 
   const handleDeleteRows = () => {
-    const newSpecies = new Map(species);
-
-    newSpecies.forEach(function (value, key) {
-      if (value.isChecked) {
-        newSpecies.delete(key);
-      }
-    });
-
+    const newSpecies = species.filter(row => !row.isChecked);
+    setDisabled(!newSpecies.some(findChecked));
     setSpecies(newSpecies);
   };
 
+  const handleSelectedOption = v => {
+    setOption(v);
+  };
+
   const createTable = m => {
-    return m.forEach((key, value) => (
-      <Tr height="72px" key={key}>
+    return m.map((row, index) => (
+      <Tr height="72px" key={nanoid()}>
         <Td paddingRight="8px">
           <Checkbox
             size="md"
-            isChecked={value.isChecked}
-            onChange={() => handleCheckedItems(key)}
+            isChecked={row.isChecked}
+            onChange={() => handleRowCheckedItems(index)}
+            visibility={row.isVisible}
+            isDisabled={row.isDisabled}
           />
         </Td>
         <Td>
-          <Input size="lg" backgroundColor="#EDF2F7" defaultValue={value.name} isReadOnly />
+          <Input size="lg" backgroundColor="#EDF2F7" value={row.name} isReadOnly />
         </Td>
         <Td>
-          <NumberInput size="lg" defaultValue={0}>
-            <NumberInputField defaultValue={value.total} />{' '}
+          <NumberInput size="lg" value={row.total} onChange={v => handleAddTotalChange(v, index)}>
+            <NumberInputField />
           </NumberInput>
         </Td>
       </Tr>
     ));
   };
+
   return (
     <Container maxW="container.xl">
       <VStack w="full" h="full" spacing="29px" alignItems="flex.start">
-        <Heading size="2xl">Additional Species</Heading>
+        <Heading fontWeight="600" size="2xl">
+          Additional Species
+        </Heading>
         <FormControl>
-          <FormLabel>Search for a Species:</FormLabel>
-          <SimpleGrid columns={2} columnGap="26px">
+          <FormLabel fontWeight="600">Search for a Species:</FormLabel>
+          <SimpleGrid columns={2} h="166px" columnGap="26px">
             <GridItem colSpan={1}>
-              <SimpleGrid columns={6} columnGap="9px">
+              <SimpleGrid columns={6} h="100%" columnGap="9px">
                 <GridItem colSpan={5}>
-                  <VStack w="full" spacing="70px" alignItems="flex.start">
-                    <DropdownSearch options={sp} />
-                    <Button w="full" onClick={() => handleDeleteRows()} rightIcon={<DeleteIcon />}>
+                  <VStack w="full" h="100%" position="relative" alignItems>
+                    <Select
+                      value={option}
+                      options={options}
+                      onChange={v => handleSelectedOption(v)}
+                    />
+                    <Button
+                      w="full"
+                      position="absolute"
+                      bottom={0}
+                      fontWeight="700"
+                      isDisabled={disabled}
+                      onClick={() => handleDeleteRows()}
+                      rightIcon={<DeleteIcon />}
+                    >
                       Delete Selected
                     </Button>
                   </VStack>
@@ -157,7 +157,7 @@ const AdditionalSpecies = () => {
                     w="full"
                     onClick={() => handleAddRow()}
                     aria-label="Enter"
-                    icon={<ChevronDownIcon />}
+                    icon={<BsArrowDown />}
                   />
                 </GridItem>
               </SimpleGrid>
@@ -167,10 +167,17 @@ const AdditionalSpecies = () => {
                 <Thead>
                   <Tr>
                     <Th w="48px" h="40px" paddingRight="8px" backgroundColor="#F7FAFC">
-                      <Checkbox backgroundColor="#ffffff" />
+                      <Checkbox
+                        backgroundColor="#ffffff"
+                        isChecked={allChecked}
+                        onChange={() => handleAllChecked()}
+                      />
                     </Th>
-                    <Th backgroundColor="#F7FAFC">Species</Th>
-                    <Th w="200px" h="40px" backgroundColor="#F7FAFC">
+                    <Th fontWeight="700" backgroundColor="#F7FAFC">
+                      <Icon as={BsPersonFill} w={7} h={3.5} /> Species
+                    </Th>
+                    <Th fontWeight="700" w="200px" h="40px" backgroundColor="#F7FAFC">
+                      <Icon as={BsPersonFill} w={7} h={3.5} />
                       Total
                     </Th>
                   </Tr>
@@ -183,6 +190,15 @@ const AdditionalSpecies = () => {
       </VStack>
     </Container>
   );
+};
+
+AdditionalSpecies.propTypes = {
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default AdditionalSpecies;

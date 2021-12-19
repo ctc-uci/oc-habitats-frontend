@@ -1,17 +1,17 @@
 .react-datepicker-wrapper {
-    margin-top: 8px;
+  margin-top: 8px;
 }
 .react-datepicker__input-container {
-    border-width: 1px;
-    border-radius: 6px;
-    /* width: 100%;
+  border-width: 1px;
+  border-radius: 6px;
+  /* width: 100%;
     height: 40px; */
-  }
+}
 
 .react-datepicker__input-container input {
-    width: 100%;
-    height: 40px;
-    font-size: 16px;
-    border-radius: 6px;
-    padding-left: 16px;
-} 
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  border-radius: 6px;
+  padding-left: 16px;
+}
