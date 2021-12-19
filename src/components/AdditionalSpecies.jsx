@@ -93,10 +93,6 @@ const AdditionalSpecies = ({ options }) => {
     setSpecies(newSpecies);
   };
 
-  const handleSelectedOption = v => {
-    setOption(v);
-  };
-
   const createTable = m => {
     return m.map((row, index) => (
       <Tr height="72px" key={nanoid()}>
@@ -134,11 +130,7 @@ const AdditionalSpecies = ({ options }) => {
               <SimpleGrid columns={6} h="100%" columnGap="9px">
                 <GridItem colSpan={5}>
                   <VStack w="full" h="100%" position="relative" alignItems>
-                    <Select
-                      value={option}
-                      options={options}
-                      onChange={v => handleSelectedOption(v)}
-                    />
+                    <Select value={option} options={options} onChange={v => setOption(v)} />
                     <Button
                       w="full"
                       position="absolute"
