@@ -1,4 +1,5 @@
 import { React } from 'react';
+import { InfoIcon } from '@chakra-ui/icons';
 import {
   VStack,
   HStack,
@@ -9,15 +10,16 @@ import {
   FormLabel,
   Flex,
 } from '@chakra-ui/react';
+import footNotes from './FootNotes';
 
 function Location() {
   // console.log('Location');
   return (
     <VStack w="40%" align="start">
-      <Heading as="h5" size="md">
+      <Heading as="h3" size="md">
         Location
       </Heading>
-
+      <br />
       <HStack>
         <FormControl>
           <FormLabel htmlFor="latitude">GPS</FormLabel>
@@ -28,14 +30,14 @@ function Location() {
           </HStack>
         </FormControl>
       </HStack>
-
+      <br />
       <HStack w="100%">
         <FormControl>
           <FormLabel htmlFor="cross-street">
-            <Flex justify="space-between">
+            <Flex justify="space-between" aling="center">
               Cross Street/Towers
-              <Tooltip label="info" fontSize="md">
-                icon
+              <Tooltip label={footNotes.streets} fontSize="md">
+                <InfoIcon />
               </Tooltip>
             </Flex>
           </FormLabel>

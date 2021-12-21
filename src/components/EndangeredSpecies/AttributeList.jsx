@@ -1,17 +1,18 @@
 import { React } from 'react';
 import PropTypes from 'prop-types';
+import { InfoIcon } from '@chakra-ui/icons';
 import { VStack, HStack, Select, Button, Tooltip, Heading } from '@chakra-ui/react';
 
-function AttributeList({ title }) {
+function AttributeList({ title, description }) {
   // console.log('AttributeList');
   return (
     <VStack align="start" w="24%">
-      <HStack spacing="2em" justify="space-between">
+      <HStack spacing="1.5em" justify="space-between">
         <Heading as="h5" size="md">
           {title}
         </Heading>
-        <Tooltip label="info" fontSize="md">
-          icon
+        <Tooltip label={description} fontSize="md">
+          <InfoIcon />
         </Tooltip>
       </HStack>
       <Select placeholder="None">
@@ -28,10 +29,12 @@ function AttributeList({ title }) {
 
 AttributeList.defaultProps = {
   title: PropTypes.string,
+  description: PropTypes.string,
 };
 
 AttributeList.propTypes = {
   title: PropTypes.string,
+  description: PropTypes.string,
 };
 
 export default AttributeList;

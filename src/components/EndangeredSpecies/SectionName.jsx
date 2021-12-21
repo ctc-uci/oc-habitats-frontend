@@ -1,5 +1,6 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import PropTypes from 'prop-types';
+import { InfoIcon } from '@chakra-ui/icons';
 import {
   Stack,
   VStack,
@@ -16,18 +17,30 @@ import {
   FormLabel,
   FormControl,
   Flex,
+  InputGroup,
+  InputRightElement,
+  Button,
 } from '@chakra-ui/react';
+import footNotes from './FootNotes';
+
 // component/section name not final
-function SectionName({ childName, setTotalAdults }) {
-  // console.log('ChildName: ', childName);
+function SectionName({ setTotalAdults }) {
+  const [isAM, setIsAM] = useState(true);
+
+  const handleTime = () => {
+    setIsAM(!isAM);
+  };
+
   return (
-    <VStack w="60%" align="start">
+    <VStack w="60%" align="start" mb="4em">
       <HStack>
-        <Heading as="h5" size="md">
+        <Heading as="h4" size="md">
           Section Name
         </Heading>
       </HStack>
-      <Stack direction={['column', 'row']} w="100%">
+      <br />
+
+      <Stack direction={['column', 'row']} w="100%" spacing="5em">
         <FormControl>
           <FormLabel htmlFor="adult"># of Adults</FormLabel>
           <NumberInput
@@ -48,10 +61,10 @@ function SectionName({ childName, setTotalAdults }) {
 
         <FormControl>
           <FormLabel htmlFor="children">
-            <Flex justify="space-between">
-              # of {childName}
-              <Tooltip label="info" fontSize="md">
-                icon
+            <Flex justify="space-between" align="center">
+              # of Fledges
+              <Tooltip label={footNotes.fledge} fontSize="md">
+                <InfoIcon />
               </Tooltip>
             </Flex>
           </FormLabel>
@@ -76,10 +89,19 @@ function SectionName({ childName, setTotalAdults }) {
         </FormControl>
       </Stack>
 
-      <Stack direction={['column', 'row']} w="100%">
+      <br />
+
+      <Stack direction={['column', 'row']} w="100%" spacing="5em">
         <FormControl>
           <FormLabel htmlFor="time">Time</FormLabel>
-          <Input id="time" defaultValue="07:00" />
+          <InputGroup>
+            <Input id="time" defaultValue="07:00" />
+            <InputRightElement w="4.5rem">
+              <Button h="2rem" w="3.9rem" size="sm" onClick={handleTime}>
+                {isAM ? 'AM' : 'PM'}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
         </FormControl>
 
         <FormControl>
@@ -88,10 +110,10 @@ function SectionName({ childName, setTotalAdults }) {
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="habitat">
-            <Flex justify="space-between">
+            <Flex justify="space-between" align="center">
               Habitat Decription
-              <Tooltip label="info" fontSize="md">
-                icon
+              <Tooltip label={footNotes.habitat} fontSize="md">
+                <InfoIcon />
               </Tooltip>
             </Flex>
           </FormLabel>
@@ -107,12 +129,10 @@ function SectionName({ childName, setTotalAdults }) {
 }
 
 SectionName.defaultProps = {
-  childName: PropTypes.string,
   setTotalAdults: PropTypes.func,
 };
 
 SectionName.propTypes = {
-  childName: PropTypes.string,
   setTotalAdults: PropTypes.func,
 };
 

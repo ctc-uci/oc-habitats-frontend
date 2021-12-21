@@ -1,5 +1,6 @@
 import { React } from 'react';
 import PropTypes from 'prop-types';
+import { InfoIcon } from '@chakra-ui/icons';
 import {
   Text,
   VStack,
@@ -11,6 +12,7 @@ import {
   FormControl,
   FormLabel,
 } from '@chakra-ui/react';
+import footNotes from './FootNotes';
 
 // eslint-disable-next-line no-unused-vars
 function BandsSex({ totalAdults }) {
@@ -48,12 +50,12 @@ function BandsSex({ totalAdults }) {
 
   return (
     <VStack align="start" w="75%">
-      <HStack spacing="2em">
+      <HStack spacing="2em" align="center">
         <Heading as="h5" size="md">
           {title}
         </Heading>
-        <Tooltip label="info" fontSize="md">
-          icon
+        <Tooltip label={footNotes.banding} fontSize="md">
+          <InfoIcon />
         </Tooltip>
       </HStack>
       <VStack w="100%">{adultRows()}</VStack>

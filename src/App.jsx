@@ -17,7 +17,7 @@ function App() {
           <Route
             exact
             path="/endangered"
-            element={<EndangeredSpecies adultName="Snowy Plovers" childName="Fledges" />}
+            element={<EndangeredSpecies adultName="Snowy Plovers" />}
           />
           {/* Admin only routes (TO DO, make admin only) */}
           <Route exact path="/people" />
