@@ -19,6 +19,10 @@ import {
 
 const AccountPage = props => {
   const [isLoading, setLoading] = useState(false);
+  const [leftPasswordType, setLeftPasswordType] = useState('password');
+  const [rightPasswordType, setRightPasswordType] = useState('password');
+  const [leftButtonText, setLeftButtonText] = useState('show');
+  const [rightButtonText, setRightButtonText] = useState('show');
 
   const user = {
     firstName: 'Petr',
@@ -27,6 +31,26 @@ const AccountPage = props => {
     email: 'petr@uci.edu',
     trainingStatus: 'In-Training',
     activeStatus: 'Active',
+  };
+
+  const toggleLeftPassword = () => {
+    if (leftPasswordType === 'password') {
+      setLeftPasswordType('text');
+      setLeftButtonText('hide');
+    } else {
+      setLeftPasswordType('password');
+      setLeftButtonText('show');
+    }
+  };
+
+  const toggleRightPassword = () => {
+    if (rightPasswordType === 'password') {
+      setRightPasswordType('text');
+      setRightButtonText('hide');
+    } else {
+      setRightPasswordType('password');
+      setRightButtonText('show');
+    }
   };
 
   const getAccountInfo = () => {
@@ -109,8 +133,8 @@ const AccountPage = props => {
               <FormControl>
                 <FormLabel>Current Password</FormLabel>
                 <InputGroup>
-                  <Input type="password" placeholder="Enter Password" />
-                  <InputRightAddon children="show" />
+                  <Input type={leftPasswordType} placeholder="Enter Password" />
+                  <InputRightAddon children={leftButtonText} onClick={toggleLeftPassword} />
                 </InputGroup>
               </FormControl>
             </GridItem>
@@ -118,8 +142,8 @@ const AccountPage = props => {
               <FormControl>
                 <FormLabel>New Password</FormLabel>
                 <InputGroup>
-                  <Input type="password" placeholder="Enter Password" />
-                  <InputRightAddon children="show" />
+                  <Input type={rightPasswordType} placeholder="Enter Password" />
+                  <InputRightAddon children={rightButtonText} onClick={toggleRightPassword} />
                 </InputGroup>
               </FormControl>
             </GridItem>
