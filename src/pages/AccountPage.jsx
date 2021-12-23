@@ -81,6 +81,8 @@ const AccountPage = props => {
     setLoading(false);
   }, []);
 
+  // submits the information the user entered into the form, bypassing default form submission effect
+  // TODO: replace with POST call to backend when endpoints are ready
   const handleSubmit = e => {
     e.preventDefault();
 
