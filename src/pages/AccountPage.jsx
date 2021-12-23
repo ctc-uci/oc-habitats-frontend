@@ -20,12 +20,14 @@ import {
 
 const AccountPage = props => {
   const [isLoading, setLoading] = useState(false);
+
   // stores information on whether the passwords are hidden/shown, plus the state of the button text
   const [leftPasswordType, setLeftPasswordType] = useState('password');
   const [rightPasswordType, setRightPasswordType] = useState('password');
   const [leftButtonText, setLeftButtonText] = useState('show');
   const [rightButtonText, setRightButtonText] = useState('show');
 
+  // storing form data in state for retrieval on submission
   const [firstName, setFirstName] = useState('');
   const [prefName, setPrefName] = useState('');
   const [lastName, setLastName] = useState('');
