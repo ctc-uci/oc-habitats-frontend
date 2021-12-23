@@ -117,7 +117,7 @@ const AccountPage = props => {
             Personal Information
           </Heading>
           <FormControl>
-            <SimpleGrid columns={3} rows={2} spacing={10} pl="50" w="80vw" h="100vh" pb={300}>
+            <SimpleGrid columns={3} rows={2} spacing={10} pl="50" w="80vw" h="30vh">
               <GridItem colSpan={1}>
                 <FormControl>
                   <FormLabel pb={5}>First Name</FormLabel>
@@ -194,7 +194,7 @@ const AccountPage = props => {
             <Heading size="lg" alignSelf="flex-start" pl={50} py={50}>
               Change Password
             </Heading>
-            <SimpleGrid columns={3} rows={2} spacing={10} w="70vw" pl={50} h={100} pb={300}>
+            <SimpleGrid columns={3} rows={2} spacing={10} w="70vw" pl={50} h={100} pb={30}>
               <GridItem colSpan={1}>
                 <FormControl>
                   <FormLabel>Current Password</FormLabel>
