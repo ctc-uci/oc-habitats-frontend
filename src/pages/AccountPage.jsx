@@ -113,11 +113,11 @@ const AccountPage = props => {
             src="https://bit.ly/dan-abramov"
             alt="Profile picture"
           />
-          <Heading size="lg" alignSelf="flex-start" pl={200} py={50}>
+          <Heading size="lg" alignSelf="flex-start" pl={50} py={50}>
             Personal Information
           </Heading>
           <FormControl>
-            <SimpleGrid columns={3} rows={2} spacing={10} w="70vw" h={100} pb={300}>
+            <SimpleGrid columns={3} rows={2} spacing={10} pl="50" w="80vw" h="100vh" pb={300}>
               <GridItem colSpan={1}>
                 <FormControl>
                   <FormLabel pb={5}>First Name</FormLabel>
@@ -191,10 +191,10 @@ const AccountPage = props => {
                 </FormControl>
               </GridItem>
             </SimpleGrid>
-            <Heading size="lg" alignSelf="flex-start" pl={200} py={50}>
+            <Heading size="lg" alignSelf="flex-start" pl={50} py={50}>
               Change Password
             </Heading>
-            <SimpleGrid columns={3} rows={2} spacing={10} w="70vw" h={100} pb={300}>
+            <SimpleGrid columns={3} rows={2} spacing={10} w="70vw" pl={50} h={100} pb={300}>
               <GridItem colSpan={1}>
                 <FormControl>
                   <FormLabel>Current Password</FormLabel>
@@ -214,10 +214,13 @@ const AccountPage = props => {
                 </FormControl>
               </GridItem>
             </SimpleGrid>
-            <HStack alignSelf="flex-end">
-              <Button size="md">Cancel</Button>
+            <HStack pl="80%" alignSelf="flex-end">
+              <Button size="md" color="#2D3748" bg="#E5E5E5">
+                Cancel
+              </Button>
               <Input
-                bg="#F7FAFC"
+                color="#F7FAFC"
+                bg="#2D3748"
                 type="submit"
                 w="30"
                 onClick={handleSubmit}
