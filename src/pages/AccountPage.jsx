@@ -81,6 +81,15 @@ const AccountPage = props => {
     setLoading(false);
   }, []);
 
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    console.log('submitting form with this information: ');
+    console.log(
+      `first: ${firstName}, preferred: ${prefName}, last: ${lastName}, email: ${email}, ts: ${trainingStatus}, as: ${activeStatus}`,
+    );
+  };
+
   if (isLoading) {
     return <div>loading...</div>;
   }
@@ -203,7 +212,13 @@ const AccountPage = props => {
             </SimpleGrid>
             <HStack alignSelf="flex-end">
               <Button size="md">Cancel</Button>
-              <Input bg="#F7FAFC" type="submit" w="30" value="Save Changes" />
+              <Input
+                bg="#F7FAFC"
+                type="submit"
+                w="30"
+                onClick={handleSubmit}
+                value="Save Changes"
+              />
             </HStack>
           </FormControl>
         </VStack>
