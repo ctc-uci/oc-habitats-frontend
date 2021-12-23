@@ -201,9 +201,9 @@ const AccountPage = props => {
                 </FormControl>
               </GridItem>
             </SimpleGrid>
-            <HStack w="100" alignSelf="flex-end">
+            <HStack alignSelf="flex-end">
               <Button size="md">Cancel</Button>
-              <Input type="submit" size="md" value="Save Changes" />
+              <Input bg="#F7FAFC" type="submit" w="30" value="Save Changes" />
             </HStack>
           </FormControl>
         </VStack>
