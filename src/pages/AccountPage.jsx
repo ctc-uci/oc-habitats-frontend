@@ -47,7 +47,7 @@ const AccountPage = props => {
   };
 
   // shows/hides the left ("current") password accordingly
-  // and chsmges the button text from "show" to "hide"
+  // and changes the button text from "show" to "hide"
   // when appropriate
   const toggleLeftPassword = () => {
     if (leftPasswordType === 'password') {
@@ -60,7 +60,7 @@ const AccountPage = props => {
   };
 
   // shows/hides the right ("new") password accordingly
-  // and chsmges the button text from "show" to "hide"
+  // and changes the button text from "show" to "hide"
   // when appropriate
   const toggleRightPassword = () => {
     if (rightPasswordType === 'password') {
