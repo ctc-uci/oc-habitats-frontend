@@ -12,26 +12,26 @@ import {
   FormControl,
   FormLabel,
 } from '@chakra-ui/react';
-import footNotes from './FootNotes';
+import footNotes from '../../common/FootNotes';
 
 // eslint-disable-next-line no-unused-vars
-function BandsSex({ totalAdults }) {
+function BandsSex({ totalAdults, totalFledges }) {
   const title = 'Bands & Sex';
 
   // console.log('BandsSex');
-  const adultRows = () => {
-    return [...Array(totalAdults)].map((e, i) => {
+  const addRows = (amount, type) => {
+    return [...Array(amount)].map((e, i) => {
       return (
         // eslint-disable-next-line react/no-array-index-key
-        <HStack key={i} w="100%" justify="space-between">
-          <Text marginTop="1.5em">Adult {i + 1}</Text>
+        <HStack key={i} w="100%" spacing={12}>
+          <Text fontWeight={500} w="10%" marginTop="1.5em">{`${type} ${i + 1}`}</Text>
 
-          <FormControl w="19%">
+          <FormControl w="22%">
             <FormLabel htmlFor={`band${i}`}>Bands</FormLabel>
             <Input id={`band${i}`} defaultValue="xx:xx" />
           </FormControl>
 
-          <FormControl w="19%">
+          <FormControl w="22%">
             <FormLabel htmlFor={`sex${i}`}>Sex</FormLabel>
             <Select id={`sex${i}`} placeholder="Unknown">
               <option value="Male">Male</option>
@@ -39,7 +39,7 @@ function BandsSex({ totalAdults }) {
             </Select>
           </FormControl>
 
-          <FormControl w="34%">
+          <FormControl w="37%">
             <FormLabel htmlFor={`note${i}`}>Notes (Optional)</FormLabel>
             <Input id={`note${i}`} defaultValue="" />
           </FormControl>
@@ -49,25 +49,38 @@ function BandsSex({ totalAdults }) {
   };
 
   return (
-    <VStack align="start" w="75%">
+    <VStack align="start" w="80%" spacing="1.5em">
       <HStack spacing="2em" align="center">
         <Heading as="h5" size="md">
           {title}
         </Heading>
         <Tooltip label={footNotes.banding} fontSize="md">
-          <InfoIcon />
+          <InfoIcon boxSize={5} />
         </Tooltip>
       </HStack>
-      <VStack w="100%">{adultRows()}</VStack>
+      <>
+        <VStack spacing="1em" w="100%">
+          {addRows(totalAdults, 'Adult')}
+        </VStack>
+        {totalFledges ? (
+          <VStack spacing="1em" w="100%">
+            {addRows(totalFledges, 'Fledge')}
+          </VStack>
+        ) : (
+          <></>
+        )}
+      </>
     </VStack>
   );
 }
 
 BandsSex.defaultProps = {
   totalAdults: PropTypes.number,
+  totalFledges: PropTypes.number,
 };
 BandsSex.propTypes = {
   totalAdults: PropTypes.number,
+  totalFledges: PropTypes.number,
 };
 
 export default BandsSex;

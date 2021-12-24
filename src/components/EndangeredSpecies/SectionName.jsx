@@ -21,20 +21,31 @@ import {
   InputRightElement,
   Button,
 } from '@chakra-ui/react';
-import footNotes from './FootNotes';
+import footNotes from '../../common/FootNotes';
+import options from '../../common/DropdownOptions';
 
 // component/section name not final
-function SectionName({ setTotalAdults }) {
+function SectionName({ setTotalAdults, setTotalFledges, setTotalChicks }) {
   const [isAM, setIsAM] = useState(true);
 
   const handleTime = () => {
     setIsAM(!isAM);
   };
 
+  const createOptions = () => {
+    return options.habitat.map(option => {
+      return (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      );
+    });
+  };
+
   return (
-    <VStack w="60%" align="start" mb="4em">
+    <VStack w="70%" align="start">
       <HStack>
-        <Heading as="h4" size="md">
+        <Heading as="h4" size="md" fontWeight={600}>
           Section Name
         </Heading>
       </HStack>
@@ -68,7 +79,14 @@ function SectionName({ setTotalAdults }) {
               </Tooltip>
             </Flex>
           </FormLabel>
-          <NumberInput id="children" defaultValue={0} min={0}>
+          <NumberInput
+            id="children"
+            onChange={e => {
+              setTotalFledges(parseInt(e, 10));
+            }}
+            defaultValue={0}
+            min={0}
+          >
             <NumberInputField />
             <NumberInputStepper>
               <NumberIncrementStepper />
@@ -79,7 +97,14 @@ function SectionName({ setTotalAdults }) {
 
         <FormControl>
           <FormLabel htmlFor="chicks"># of Chicks</FormLabel>
-          <NumberInput id="chicks" defaultValue={0} min={0}>
+          <NumberInput
+            id="chicks "
+            onChange={e => {
+              setTotalChicks(parseInt(e, 10));
+            }}
+            defaultValue={0}
+            min={0}
+          >
             <NumberInputField />
             <NumberInputStepper>
               <NumberIncrementStepper />
@@ -118,9 +143,7 @@ function SectionName({ setTotalAdults }) {
             </Flex>
           </FormLabel>
           <Select id="habitat" placeholder="None">
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
+            {createOptions()}
           </Select>
         </FormControl>
       </Stack>
@@ -130,10 +153,14 @@ function SectionName({ setTotalAdults }) {
 
 SectionName.defaultProps = {
   setTotalAdults: PropTypes.func,
+  setTotalFledges: PropTypes.func,
+  setTotalChicks: PropTypes.func,
 };
 
 SectionName.propTypes = {
   setTotalAdults: PropTypes.func,
+  setTotalFledges: PropTypes.func,
+  setTotalChicks: PropTypes.func,
 };
 
 export default SectionName;

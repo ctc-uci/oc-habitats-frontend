@@ -18,11 +18,14 @@ import {
 import SectionName from '../components/EndangeredSpecies/SectionName';
 import Location from '../components/EndangeredSpecies/Location';
 import BandsSex from '../components/EndangeredSpecies/BandsSex';
-import AttributeList from '../components/EndangeredSpecies/AttributeList';
-import footNotes from '../components/EndangeredSpecies/FootNotes';
+import BehaviorsList from '../components/EndangeredSpecies/BehaviorsList';
+import footNotes from '../common/FootNotes';
+import options from '../common/DropdownOptions';
 
 function EndangeredSpecies({ adultName }) {
   const [totalAdults, setTotalAdults] = useState(1);
+  const [totalFledges, setTotalFledges] = useState(0);
+  const [totalChicks, setTotalChicks] = useState(0);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -30,23 +33,35 @@ function EndangeredSpecies({ adultName }) {
     // console.log(event.target);
   }
 
-  // console.log('EdangeredSpecies');
+  // TODO: Save all of the data w/ a button
   return (
     <>
       <HStack w="100%">
         <IconButton icon={<ArrowBackIcon />} bgColor="transparent" size="lg" left="1%" />
       </HStack>
       <Container maxW="container.xl">
-        <Stack align="center">
+        <Stack align="center" mb="3em">
           <Heading as="h1">Add Adult {adultName}</Heading>
         </Stack>
         <form onSubmit={handleSubmit}>
-          <VStack align="start" spacing={4}>
-            <SectionName setTotalAdults={setTotalAdults} />
-            <Location />
-            <BandsSex totalAdults={totalAdults} />
-            <AttributeList title="Nesting & Eggs" description={footNotes.nest} />
-            <AttributeList title="Behaviors Observed" description={footNotes.behavior} />
+          <VStack align="start" spacing="4em">
+            <SectionName
+              setTotalAdults={setTotalAdults}
+              setTotalFledges={setTotalFledges}
+              setTotalChicks={setTotalChicks}
+            />
+            <Location totalBirds={totalAdults + totalFledges} />
+            <BandsSex totalAdults={totalAdults} totalFledges={totalFledges} />
+            <BehaviorsList
+              title="Nesting & Eggs"
+              description={footNotes.nest}
+              options={options.nesting}
+            />
+            <BehaviorsList
+              title="Behaviors Observed"
+              description={footNotes.behavior}
+              options={options.behavior}
+            />
             <VStack align="start" w="100%">
               <Heading as="h5" size="md">
                 Additional Notes (Optional)
