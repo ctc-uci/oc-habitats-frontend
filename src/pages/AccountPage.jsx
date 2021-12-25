@@ -28,6 +28,7 @@ const AccountPage = props => {
   const [rightButtonText, setRightButtonText] = useState('show');
 
   // storing form data in state for retrieval on submission
+  const [changesMade, setChangesMade] = useState(false); // tracks whether user made changes to disable/enable 'Save Changes' button
   const [firstName, setFirstName] = useState('');
   const [prefName, setPrefName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -126,7 +127,10 @@ const AccountPage = props => {
                     name="firstName"
                     type="text"
                     value={firstName}
-                    onChange={e => setFirstName(e.target.value)}
+                    onChange={e => {
+                      setChangesMade(true);
+                      setFirstName(e.target.value);
+                    }}
                   />
                 </FormControl>
               </GridItem>
@@ -138,7 +142,10 @@ const AccountPage = props => {
                     name="prefName"
                     type="text"
                     value={prefName}
-                    onChange={e => setPrefName(e.target.value)}
+                    onChange={e => {
+                      setChangesMade(true);
+                      setPrefName(e.target.value);
+                    }}
                   />
                 </FormControl>
               </GridItem>
@@ -150,7 +157,10 @@ const AccountPage = props => {
                     name="lastName"
                     type="text"
                     value={lastName}
-                    onChange={e => setLastName(e.target.value)}
+                    onChange={e => {
+                      setChangesMade(true);
+                      setLastName(e.target.value);
+                    }}
                   />
                 </FormControl>
               </GridItem>
@@ -162,7 +172,10 @@ const AccountPage = props => {
                     name="email"
                     type="email"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={e => {
+                      setChangesMade(true);
+                      setEmail(e.target.value);
+                    }}
                   />
                 </FormControl>
               </GridItem>
@@ -174,7 +187,10 @@ const AccountPage = props => {
                     name="trainingStatus"
                     type="text"
                     value={trainingStatus}
-                    onChange={e => setTrainingStatus(e.target.value)}
+                    onChange={e => {
+                      setChangesMade(true);
+                      setTrainingStatus(e.target.value);
+                    }}
                   />
                 </FormControl>
               </GridItem>
@@ -186,7 +202,10 @@ const AccountPage = props => {
                     name="activeStatus"
                     type="text"
                     value={activeStatus}
-                    onChange={e => setActiveStatus(e.target.value)}
+                    onChange={e => {
+                      setChangesMade(true);
+                      setActiveStatus(e.target.value);
+                    }}
                   />
                 </FormControl>
               </GridItem>
@@ -214,19 +233,16 @@ const AccountPage = props => {
                 </FormControl>
               </GridItem>
             </SimpleGrid>
-            <HStack pl="80%" alignSelf="flex-end">
-              <Button size="md" color="#2D3748" bg="#E5E5E5">
-                Cancel
-              </Button>
-              <Input
-                color="#F7FAFC"
-                bg="#2D3748"
-                type="submit"
-                w="30"
-                onClick={handleSubmit}
-                value="Save Changes"
-              />
-            </HStack>
+            <Input
+              ml="80%"
+              color="#F7FAFC"
+              bg="#2D3748"
+              type="submit"
+              w="30"
+              disabled={!changesMade}
+              onClick={handleSubmit}
+              value="Save Changes"
+            />
           </FormControl>
         </VStack>
       </Container>
