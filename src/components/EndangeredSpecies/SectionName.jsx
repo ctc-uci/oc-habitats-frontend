@@ -21,15 +21,20 @@ import {
   InputRightElement,
   Button,
 } from '@chakra-ui/react';
-import footNotes from '../../common/FootNotes';
-import options from '../../common/DropdownOptions';
+import footNotes from './FootNotes';
+import options from './DropdownOptions';
+import './SectionName.css';
 
 // component/section name not final
-function SectionName({ setTotalAdults, setTotalFledges, setTotalChicks }) {
-  const [isAM, setIsAM] = useState(true);
+function SectionName({ setTotalAdults, setTotalFledges }) {
+  const [meridiem, setMeridiem] = useState('AM');
 
-  const handleTime = () => {
-    setIsAM(!isAM);
+  const toggleTime = () => {
+    if (meridiem === 'AM') {
+      setMeridiem('PM');
+    } else {
+      setMeridiem('AM');
+    }
   };
 
   const createOptions = () => {
@@ -45,7 +50,7 @@ function SectionName({ setTotalAdults, setTotalFledges, setTotalChicks }) {
   return (
     <VStack w="70%" align="start">
       <HStack>
-        <Heading as="h4" size="md" fontWeight={600}>
+        <Heading as="h3" size="md">
           Section Name
         </Heading>
       </HStack>
@@ -80,7 +85,7 @@ function SectionName({ setTotalAdults, setTotalFledges, setTotalChicks }) {
             </Flex>
           </FormLabel>
           <NumberInput
-            id="children"
+            id="fledges"
             onChange={e => {
               setTotalFledges(parseInt(e, 10));
             }}
@@ -97,14 +102,7 @@ function SectionName({ setTotalAdults, setTotalFledges, setTotalChicks }) {
 
         <FormControl>
           <FormLabel htmlFor="chicks"># of Chicks</FormLabel>
-          <NumberInput
-            id="chicks "
-            onChange={e => {
-              setTotalChicks(parseInt(e, 10));
-            }}
-            defaultValue={0}
-            min={0}
-          >
+          <NumberInput id="chicks" defaultValue={0} min={0}>
             <NumberInputField />
             <NumberInputStepper>
               <NumberIncrementStepper />
@@ -120,10 +118,17 @@ function SectionName({ setTotalAdults, setTotalFledges, setTotalChicks }) {
         <FormControl>
           <FormLabel htmlFor="time">Time</FormLabel>
           <InputGroup>
-            <Input id="time" defaultValue="07:00" />
+            <Input className="without-meridiem" id="time" defaultValue="07:00" type="time" />
             <InputRightElement w="4.5rem">
-              <Button h="2rem" w="3.9rem" size="sm" onClick={handleTime}>
-                {isAM ? 'AM' : 'PM'}
+              <Button
+                h="2rem"
+                w="3.9rem"
+                size="sm"
+                id="meridiem"
+                value={meridiem}
+                onClick={toggleTime}
+              >
+                {meridiem}
               </Button>
             </InputRightElement>
           </InputGroup>
@@ -154,13 +159,11 @@ function SectionName({ setTotalAdults, setTotalFledges, setTotalChicks }) {
 SectionName.defaultProps = {
   setTotalAdults: PropTypes.func,
   setTotalFledges: PropTypes.func,
-  setTotalChicks: PropTypes.func,
 };
 
 SectionName.propTypes = {
   setTotalAdults: PropTypes.func,
   setTotalFledges: PropTypes.func,
-  setTotalChicks: PropTypes.func,
 };
 
 export default SectionName;

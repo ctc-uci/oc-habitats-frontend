@@ -13,22 +13,19 @@ import {
   Grid,
   GridItem,
 } from '@chakra-ui/react';
-import footNotes from '../../common/FootNotes';
+import footNotes from './FootNotes';
 
 function Location({ totalBirds }) {
-  // console.log('Location');
-
   const createGPS = () => {
     if (totalBirds > 4) {
-      return [...Array(4)].map((e, i) => {
+      return [...Array(4)].map((element, i) => {
         return (
-          <GridItem rowStart={1} key={e}>
+          <GridItem rowStart={1} key={element}>
             <FormControl>
               <FormLabel htmlFor={`latitude ${i}`}>{i ? `GPS ${i + 1}` : 'GPS'}</FormLabel>
-              <FormLabel htmlFor={`latitude ${i}`} />
               <HStack w="75%">
                 <Input id={`latitude ${i}`} defaultValue="000.00000" />
-                <Input id={`latitude ${i}`} defaultValue="000.00000" />
+                <Input id={`longitude ${i}`} defaultValue="000.00000" />
               </HStack>
             </FormControl>
           </GridItem>
@@ -37,13 +34,13 @@ function Location({ totalBirds }) {
     }
 
     return (
-      <GridItem rowStart={1}>
+      <GridItem rowStart={1} key="gps">
         <FormControl>
           <FormLabel htmlFor="latitude">GPS</FormLabel>
           <FormLabel htmlFor="longitude" />
           <HStack w="75%">
-            <Input id="latitude" defaultValue="000.00000" />
-            <Input id="longitude" defaultValue="000.00000" />
+            <Input id="latitude 0" defaultValue="000.00000" />
+            <Input id="longitude 0" defaultValue="000.00000" />
           </HStack>
         </FormControl>
       </GridItem>
@@ -52,12 +49,12 @@ function Location({ totalBirds }) {
 
   return (
     <VStack w="100%" align="start" spacing="2em">
-      <Heading selfAlign="flex-end" as="h3" size="md">
+      <Heading as="h3" size="md">
         Location
       </Heading>
       <Grid
         w="100%"
-        h="25vh"
+        h="20vh"
         templateColumns="repeat(4, 25%)"
         columnGap={0}
         templateRows="repeat(1, 1fr)"
@@ -85,6 +82,7 @@ function Location({ totalBirds }) {
 Location.defaultProps = {
   totalBirds: PropTypes.number,
 };
+
 Location.propTypes = {
   totalBirds: PropTypes.number,
 };

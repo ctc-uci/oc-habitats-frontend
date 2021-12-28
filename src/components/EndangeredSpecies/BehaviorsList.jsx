@@ -1,12 +1,23 @@
 import { React, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { InfoIcon } from '@chakra-ui/icons';
-import { VStack, HStack, Select, Button, Tooltip, Heading, Stack, Flex } from '@chakra-ui/react';
+import {
+  VStack,
+  HStack,
+  Select,
+  Button,
+  Tooltip,
+  Heading,
+  Stack,
+  Flex,
+  FormControl,
+} from '@chakra-ui/react';
 
 function BehaviorsList({ title, description, options }) {
-  const [, setTrigger] = useState(false);
+  const [trigger, setTrigger] = useState(false);
   const flagsRef = useRef([0]);
 
+  // Populate dropdown menu with options
   const createOptions = () => {
     return options.map(option => {
       return (
@@ -18,6 +29,7 @@ function BehaviorsList({ title, description, options }) {
   };
 
   const setFlags = event => {
+    // Using index to keep order of dropdown menus after rerender
     const { selectedIndex } = event.target.options;
     const { value } = event.target.dataset;
 
@@ -28,59 +40,63 @@ function BehaviorsList({ title, description, options }) {
       // Selected None
       flagsRef.current.splice(value, 1);
     }
-    setTrigger(prevState => {
-      return !prevState;
-    });
+
+    // Trigger rerender
+    setTrigger(!trigger);
   };
 
+  // Create dropdown menu(s)
   const createBehaviorSelection = () => {
     return flagsRef.current.map((e, i) => {
       return (
-        <Select
-          // eslint-disable-next-line react/no-array-index-key
+        <FormControl // eslint-disable-next-line react/no-array-index-key
           key={`${title} ${i}`}
-          data-value={i}
-          value={options[e]}
           w="23%"
           mr="5em"
-          order={i}
-          onChange={event => {
-            setFlags(event);
-          }}
         >
-          {createOptions()}
-        </Select>
+          <Select
+            data-value={i}
+            id={`${title} ${i}`}
+            value={options[e]}
+            order={i}
+            onChange={event => {
+              setFlags(event);
+            }}
+          >
+            {createOptions()}
+          </Select>
+        </FormControl>
       );
     });
   };
 
+  // Add dropdown menu
   const addBehavior = () => {
+    // Check if a dropdown menu has None before adding new dropdown
     if (!flagsRef.current.includes(0)) {
       flagsRef.current.push(0);
-      setTrigger(prevState => {
-        return !prevState;
-      });
+      setTrigger(!trigger);
     }
   };
 
   return (
     <VStack align="start" w="100%">
       <HStack spacing="1.5em" justify="space-between">
-        <Heading as="h5" size="md">
+        <Heading as="h3" size="md">
           {title}
         </Heading>
         <Tooltip label={description} fontSize="md">
-          <InfoIcon />
+          <InfoIcon boxSize={5} />
         </Tooltip>
       </HStack>
 
       <Stack direction={['column', 'row']} w="100%">
-        <Flex d="inline-flex" gridGap={8} wrap="wrap" w="inherit" m="1em auto">
+        <Flex d="flex" gridGap={8} wrap="wrap" w="inherit" m="1em auto">
           {createBehaviorSelection()}
         </Flex>
       </Stack>
 
-      <Button bgColor="gray.700" textColor="gray.50" w="23%" onClick={addBehavior}>
+      <Button id={null} bgColor="gray.700" textColor="gray.50" w="23%" onClick={addBehavior}>
         Add behavior +
       </Button>
     </VStack>
