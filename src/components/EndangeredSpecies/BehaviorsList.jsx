@@ -13,7 +13,7 @@ import {
   FormControl,
 } from '@chakra-ui/react';
 
-function BehaviorsList({ title, description, options }) {
+const BehaviorsList = ({ title, description, options }) => {
   const [trigger, setTrigger] = useState(false);
   const flagsRef = useRef([0]);
 
@@ -101,7 +101,7 @@ function BehaviorsList({ title, description, options }) {
       </Button>
     </VStack>
   );
-}
+};
 
 BehaviorsList.defaultProps = {
   title: PropTypes.string,

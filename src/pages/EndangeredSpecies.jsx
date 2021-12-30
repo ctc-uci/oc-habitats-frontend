@@ -20,11 +20,11 @@ import BehaviorsList from '../components/EndangeredSpecies/BehaviorsList';
 import footNotes from '../components/EndangeredSpecies/FootNotes';
 import options from '../components/EndangeredSpecies/DropdownOptions';
 
-function EndangeredSpecies({ adultName }) {
+const EndangeredSpecies = ({ adultName }) => {
   const [totalAdults, setTotalAdults] = useState(1);
   const [totalFledges, setTotalFledges] = useState(0);
 
-  function handleSubmit(event) {
+  const handleSubmit = event => {
     event.preventDefault();
     const { length } = event.target;
     const formData = {};
@@ -96,7 +96,7 @@ function EndangeredSpecies({ adultName }) {
 
     // eslint-disable-next-line no-console
     console.log('formData', formData);
-  }
+  };
 
   return (
     <>
@@ -141,7 +141,7 @@ function EndangeredSpecies({ adultName }) {
       </Container>
     </>
   );
-}
+};
 
 EndangeredSpecies.defaultProps = {
   adultName: PropTypes.string,

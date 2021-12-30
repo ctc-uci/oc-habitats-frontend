@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import footNotes from './FootNotes';
 
-function BandsSex({ totalAdults, totalFledges }) {
+const BandsSex = ({ totalAdults, totalFledges }) => {
   const title = 'Bands & Sex';
 
   const addRows = (amount, type) => {
@@ -69,7 +69,7 @@ function BandsSex({ totalAdults, totalFledges }) {
       </>
     </VStack>
   );
-}
+};
 
 BandsSex.defaultProps = {
   totalAdults: PropTypes.number,

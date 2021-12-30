@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import footNotes from './FootNotes';
 
-function Location({ totalBirds }) {
+const Location = ({ totalBirds }) => {
   const createGPS = () => {
     if (totalBirds > 4) {
       return [...Array(4)].map((element, i) => {
@@ -77,7 +77,7 @@ function Location({ totalBirds }) {
       </Grid>
     </VStack>
   );
-}
+};
 
 Location.defaultProps = {
   totalBirds: PropTypes.number,

@@ -26,7 +26,7 @@ import options from './DropdownOptions';
 import './SectionName.css';
 
 // component/section name not final
-function SectionName({ setTotalAdults, setTotalFledges }) {
+const SectionName = ({ setTotalAdults, setTotalFledges }) => {
   const [meridiem, setMeridiem] = useState('AM');
 
   const toggleTime = () => {
@@ -154,7 +154,7 @@ function SectionName({ setTotalAdults, setTotalFledges }) {
       </Stack>
     </VStack>
   );
-}
+};
 
 SectionName.defaultProps = {
   setTotalAdults: PropTypes.func,
