@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BsPersonFill, BsArrowDown } from 'react-icons/bs';
 import { nanoid } from 'nanoid';
 import {
-  Heading,
+  Text,
   VStack,
   SimpleGrid,
   GridItem,
@@ -120,9 +120,9 @@ const AdditionalSpecies = ({ options }) => {
   return (
     <Container maxW="container.xl">
       <VStack w="full" h="full" spacing="29px" alignItems="flex.start">
-        <Heading fontWeight="600" size="2xl">
+        <Text fontWeight="600" fontSize="2xl">
           Additional Species
-        </Heading>
+        </Text>
         <FormControl>
           <FormLabel fontWeight="600">Search for a Species:</FormLabel>
           <SimpleGrid columns={2} h="166px" columnGap="26px">
