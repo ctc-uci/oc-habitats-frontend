@@ -71,7 +71,7 @@ const Location = ({ totalBirds }) => {
                 </Tooltip>
               </Flex>
             </FormLabel>
-            <Input id="cross-street" defaultValue="Cross Street Names" />
+            <Input id="cross-street" placeholder="Cross Street Names" />
           </FormControl>
         </GridItem>
       </Grid>
