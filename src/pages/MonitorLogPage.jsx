@@ -1,8 +1,8 @@
 import { Box, Heading, VStack } from '@chakra-ui/react';
 import React from 'react';
-import AdditionalSpecies from '../components/AdditionalSpecies';
-import PredatorsHumanActivity from '../components/PredatorsHumanActivity';
-import SectionName from '../components/SectionName';
+import AdditionalSpecies from '../components/monitorLog/AdditionalSpecies';
+import PredatorsHumanActivity from '../components/monitorLog/PredatorsHumanActivity';
+import SectionName from '../components/monitorLog/SectionName';
 
 const MonitorLogPage = () => {
   return (
