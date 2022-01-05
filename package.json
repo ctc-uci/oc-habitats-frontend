@@ -90,5 +90,8 @@
     "@storybook/react": "^6.3.12",
     "husky": "^7.0.0",
     "prettier": "^2.4.1"
+  },
+  "resolutions": {
+    "@chakra-ui/color-mode": "<1.2.0"
   }
 }
