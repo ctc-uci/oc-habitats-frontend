@@ -21,10 +21,10 @@ import './SectionName.css';
 
 function SectionName() {
   const [startDate, setDate] = useState(new Date());
-  const [startTime, setStartTime] = useState(true);
-  const handleStartTimeClick = () => setStartTime(!startTime);
-  const [endTime, setEndTime] = useState(true);
-  const handleEndTimeClick = () => setEndTime(!endTime);
+  const [startPeriod, setStartPeriod] = useState(true);
+  const [endPeriod, setEndPeriod] = useState(true);
+  const handleStartTimeClick = () => setStartPeriod(!startPeriod);
+  const handleEndTimeClick = () => setEndPeriod(!endPeriod);
 
   const user = {
     segments: [
@@ -32,8 +32,6 @@ function SectionName() {
       { id: '1', name: 'segment1' },
     ],
   };
-
-  const onChange = date => setDate(date);
 
   return (
     <div>
@@ -61,7 +59,7 @@ function SectionName() {
               <Text fontWeight="500" fontSize="md">
                 Date (MM/DD/YYYY)
               </Text>
-              <DatePicker selected={startDate} onChange={onChange} />
+              <DatePicker selected={startDate} onChange={e => setDate(e)} />
             </GridItem>
             <GridItem colSpan={1} rowSpan={1} width="200px">
               <VStack spacing="8px" align="left">
@@ -72,7 +70,7 @@ function SectionName() {
                   <Input placeholder="7:00" />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleStartTimeClick}>
-                      {startTime ? 'AM' : 'PM'}
+                      {startPeriod ? 'AM' : 'PM'}
                     </Button>
                   </InputRightElement>
                 </InputGroup>
@@ -87,7 +85,7 @@ function SectionName() {
                   <Input placeholder="7:00" />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleEndTimeClick}>
-                      {endTime ? 'AM' : 'PM'}
+                      {endPeriod ? 'AM' : 'PM'}
                     </Button>
                   </InputRightElement>
                 </InputGroup>
