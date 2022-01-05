@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { React, useEffect, useState } from 'react';
+import { React, useState } from 'react';
 import PropTypes from 'prop-types';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import {
@@ -34,9 +33,8 @@ const EndangeredSpecies = ({ adultName }) => {
     const nests = [];
     const behaviors = [];
     const time = { value: '', meridiem: '' };
-    // using i + 1 causes infinite loop
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < length; i++) {
+
+    for (let i = 0; i < length; i += 1) {
       const currentID = event.target[i].getAttribute('id');
       const currentValue = event.target[i].value;
       if (currentID !== null) {

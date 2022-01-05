@@ -20,7 +20,8 @@ const Location = ({ totalBirds }) => {
     if (totalBirds > 4) {
       return [...Array(4)].map((element, i) => {
         return (
-          <GridItem rowStart={1} key={element}>
+          // eslint-disable-next-line react/no-array-index-key
+          <GridItem rowStart={1} key={`GPS${i}`}>
             <FormControl>
               <FormLabel htmlFor={`latitude ${i}`}>{i ? `GPS ${i + 1}` : 'GPS'}</FormLabel>
               <HStack w="75%">
@@ -56,9 +57,8 @@ const Location = ({ totalBirds }) => {
         w="100%"
         h="20vh"
         templateColumns="repeat(4, 25%)"
-        columnGap={0}
         templateRows="repeat(1, 1fr)"
-        rowGap={0}
+        rowGap={6}
       >
         {createGPS()}
         <GridItem rowStart={2}>
