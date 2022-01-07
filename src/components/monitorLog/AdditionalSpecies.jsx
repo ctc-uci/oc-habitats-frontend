@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { BsPersonFill, BsArrowDown } from 'react-icons/bs';
-import { nanoid } from 'nanoid';
 import {
   Text,
   VStack,
@@ -28,8 +27,10 @@ import Select from 'react-select';
 import PropTypes from 'prop-types';
 
 const rows = [
-  { name: 'Beach Cast', total: 0, isChecked: false, isVisible: 'hidden', isDisabled: true },
+  { id: 1, name: 'Beach Cast', total: 0, isChecked: false, isVisible: 'hidden', isDisabled: true },
 ];
+
+let uniqueID = 2;
 
 const AdditionalSpecies = ({ options }) => {
   const [species, setSpecies] = useState(rows);
@@ -74,12 +75,14 @@ const AdditionalSpecies = ({ options }) => {
   const handleAddRow = () => {
     if (option !== '') {
       const newData = {
+        id: uniqueID,
         name: option.label,
         total: 0,
         isChecked: false,
         isVisible: 'visible',
         isDisabled: false,
       };
+      uniqueID += 1;
       const newSpecies = [...species, newData];
 
       setOption('');
@@ -95,7 +98,7 @@ const AdditionalSpecies = ({ options }) => {
 
   const createTable = m => {
     return m.map((row, index) => (
-      <Tr height="72px" key={nanoid()}>
+      <Tr height="72px" key={row.id}>
         <Td paddingRight="8px">
           <Checkbox
             size="md"
@@ -137,7 +140,7 @@ const AdditionalSpecies = ({ options }) => {
                       bottom={0}
                       fontWeight="700"
                       isDisabled={disabled}
-                      onClick={() => handleDeleteRows()}
+                      onClick={handleDeleteRows}
                       rightIcon={<DeleteIcon />}
                     >
                       Delete Selected
@@ -147,7 +150,7 @@ const AdditionalSpecies = ({ options }) => {
                 <GridItem colSpan={1}>
                   <IconButton
                     w="full"
-                    onClick={() => handleAddRow()}
+                    onClick={handleAddRow}
                     aria-label="Enter"
                     icon={<BsArrowDown />}
                   />
@@ -162,7 +165,7 @@ const AdditionalSpecies = ({ options }) => {
                       <Checkbox
                         backgroundColor="#ffffff"
                         isChecked={allChecked}
-                        onChange={() => handleAllChecked()}
+                        onChange={handleAllChecked}
                       />
                     </Th>
                     <Th fontWeight="700" backgroundColor="#F7FAFC">
