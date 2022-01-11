@@ -7,7 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Heroku Build Logs
-        uses: ctc-uci/github-action-heroku-logs@master
+        uses: ctc-uci/github-action-heroku-logs@add-deploy-delay
+        with:
+          build_delay: 60
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HEROKU_AUTH_TOKEN: ${{ secrets.CTC_HEROKU_API_KEY }}
