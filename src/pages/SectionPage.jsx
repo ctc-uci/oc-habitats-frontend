@@ -5,7 +5,7 @@ import Section from '../components/Section';
 const sectionsData = [
   {
     id: 1,
-    title: 'Section 1: Seal Beach to Huntington Beach (south)',
+    title: 'Section 1: Seal Beach to Huntington Beach (South)',
     segments: [
       {
         segment: 'OC01',
@@ -39,8 +39,8 @@ const sectionsData = [
         distance: 1.8,
       },
       {
-        segment: '[TEST2OC03',
-        segmentName: 'TEST2Sunset Beach (19th Street to Warner Avenue)',
+        segment: '[TEST 2]OC03',
+        segmentName: '[TEST 2]Sunset Beach (19th Street to Warner Avenue)',
         distance: 1.3,
       },
     ],
