@@ -28,6 +28,7 @@ const AccountPage = props => {
   const [rightButtonText, setRightButtonText] = useState('show');
 
   // storing form data in state for retrieval on submission
+  const [changesMade, setChangesMade] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [prefName, setPrefName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -74,7 +75,6 @@ const AccountPage = props => {
 
   const getAccountInfo = () => {
     // FILL OUT WITH API ENDPOINT CALL
-    console.log(user);
   };
 
   useEffect(async () => {
@@ -84,14 +84,9 @@ const AccountPage = props => {
   }, []);
 
   // submits the information the user entered into the form, bypassing default form submission effect
-  // TODO: replace with POST call to backend when endpoints are ready
+  // replace with POST call to backend when endpoints are ready
   const handleSubmit = e => {
     e.preventDefault();
-
-    console.log('submitting form with this information: ');
-    console.log(
-      `first: ${firstName}, preferred: ${prefName}, last: ${lastName}, email: ${email}, ts: ${trainingStatus}, as: ${activeStatus}`,
-    );
   };
 
   if (isLoading) {
@@ -126,7 +121,10 @@ const AccountPage = props => {
                     name="firstName"
                     type="text"
                     value={firstName}
-                    onChange={e => setFirstName(e.target.value)}
+                    onChange={e => {
+                      setFirstName(e.target.value);
+                      setChangesMade(true);
+                    }}
                   />
                 </FormControl>
               </GridItem>
@@ -138,7 +136,10 @@ const AccountPage = props => {
                     name="prefName"
                     type="text"
                     value={prefName}
-                    onChange={e => setPrefName(e.target.value)}
+                    onChange={e => {
+                      setPrefName(e.target.value);
+                      setChangesMade(true);
+                    }}
                   />
                 </FormControl>
               </GridItem>
@@ -150,7 +151,10 @@ const AccountPage = props => {
                     name="lastName"
                     type="text"
                     value={lastName}
-                    onChange={e => setLastName(e.target.value)}
+                    onChange={e => {
+                      setLastName(e.target.value);
+                      setChangesMade(true);
+                    }}
                   />
                 </FormControl>
               </GridItem>
@@ -162,7 +166,10 @@ const AccountPage = props => {
                     name="email"
                     type="email"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={e => {
+                      setEmail(e.target.value);
+                      setChangesMade(true);
+                    }}
                   />
                 </FormControl>
               </GridItem>
@@ -170,11 +177,14 @@ const AccountPage = props => {
                 <FormControl>
                   <FormLabel pb={5}>Training Status</FormLabel>
                   <Input
-                    placeholder={user.trainingStatus}
+                    disabled
                     name="trainingStatus"
                     type="text"
-                    value={trainingStatus}
-                    onChange={e => setTrainingStatus(e.target.value)}
+                    value={user.trainingStatus}
+                    onChange={e => {
+                      setTrainingStatus(e.target.value);
+                      setChangesMade(true);
+                    }}
                   />
                 </FormControl>
               </GridItem>
@@ -186,7 +196,10 @@ const AccountPage = props => {
                     name="activeStatus"
                     type="text"
                     value={activeStatus}
-                    onChange={e => setActiveStatus(e.target.value)}
+                    onChange={e => {
+                      setActiveStatus(e.target.value);
+                      setChangesMade(true);
+                    }}
                   />
                 </FormControl>
               </GridItem>
@@ -215,10 +228,8 @@ const AccountPage = props => {
               </GridItem>
             </SimpleGrid>
             <HStack pl="80%" alignSelf="flex-end">
-              <Button size="md" color="#2D3748" bg="#E5E5E5">
-                Cancel
-              </Button>
               <Input
+                disabled={!changesMade}
                 color="#F7FAFC"
                 bg="#2D3748"
                 type="submit"

@@ -3,10 +3,8 @@ import { React } from 'react';
 
 const HomePage = props => {
   return (
-    <div>
-      This page is just a placeholder so React will stop giving me errors theres not actually a base
-      page for this site LUL xd
-    </div>
+    // eslint-disable-next-line react/no-unescaped-entities
+    <div>"side note can you just change the homepage text to 'Homepage' lol" - Jane Vo, 2022</div>
   );
 };
 
