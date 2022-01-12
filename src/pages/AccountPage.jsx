@@ -28,7 +28,7 @@ const AccountPage = props => {
   const [rightButtonText, setRightButtonText] = useState('show');
 
   // storing form data in state for retrieval on submission
-  const [changesMade, setChangesMade] = useState(false); // tracks whether user made changes to disable/enable 'Save Changes' button
+  const [changesMade, setChangesMade] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [prefName, setPrefName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -75,7 +75,6 @@ const AccountPage = props => {
 
   const getAccountInfo = () => {
     // FILL OUT WITH API ENDPOINT CALL
-    console.log(user);
   };
 
   useEffect(async () => {
@@ -85,14 +84,9 @@ const AccountPage = props => {
   }, []);
 
   // submits the information the user entered into the form, bypassing default form submission effect
-  // TODO: replace with POST call to backend when endpoints are ready
+  // replace with POST call to backend when endpoints are ready
   const handleSubmit = e => {
     e.preventDefault();
-
-    console.log('submitting form with this information: ');
-    console.log(
-      `first: ${firstName}, preferred: ${prefName}, last: ${lastName}, email: ${email}, ts: ${trainingStatus}, as: ${activeStatus}`,
-    );
   };
 
   if (isLoading) {
@@ -128,8 +122,8 @@ const AccountPage = props => {
                     type="text"
                     value={firstName}
                     onChange={e => {
-                      setChangesMade(true);
                       setFirstName(e.target.value);
+                      setChangesMade(true);
                     }}
                   />
                 </FormControl>
@@ -143,8 +137,8 @@ const AccountPage = props => {
                     type="text"
                     value={prefName}
                     onChange={e => {
-                      setChangesMade(true);
                       setPrefName(e.target.value);
+                      setChangesMade(true);
                     }}
                   />
                 </FormControl>
@@ -158,8 +152,8 @@ const AccountPage = props => {
                     type="text"
                     value={lastName}
                     onChange={e => {
-                      setChangesMade(true);
                       setLastName(e.target.value);
+                      setChangesMade(true);
                     }}
                   />
                 </FormControl>
@@ -173,8 +167,8 @@ const AccountPage = props => {
                     type="email"
                     value={email}
                     onChange={e => {
-                      setChangesMade(true);
                       setEmail(e.target.value);
+                      setChangesMade(true);
                     }}
                   />
                 </FormControl>
@@ -183,13 +177,13 @@ const AccountPage = props => {
                 <FormControl>
                   <FormLabel pb={5}>Training Status</FormLabel>
                   <Input
-                    placeholder={user.trainingStatus}
+                    disabled
                     name="trainingStatus"
                     type="text"
-                    value={trainingStatus}
+                    value={user.trainingStatus}
                     onChange={e => {
-                      setChangesMade(true);
                       setTrainingStatus(e.target.value);
+                      setChangesMade(true);
                     }}
                   />
                 </FormControl>
@@ -203,8 +197,8 @@ const AccountPage = props => {
                     type="text"
                     value={activeStatus}
                     onChange={e => {
-                      setChangesMade(true);
                       setActiveStatus(e.target.value);
+                      setChangesMade(true);
                     }}
                   />
                 </FormControl>
@@ -233,16 +227,17 @@ const AccountPage = props => {
                 </FormControl>
               </GridItem>
             </SimpleGrid>
-            <Input
-              ml="80%"
-              color="#F7FAFC"
-              bg="#2D3748"
-              type="submit"
-              w="30"
-              disabled={!changesMade}
-              onClick={handleSubmit}
-              value="Save Changes"
-            />
+            <HStack pl="80%" alignSelf="flex-end">
+              <Input
+                disabled={!changesMade}
+                color="#F7FAFC"
+                bg="#2D3748"
+                type="submit"
+                w="30"
+                onClick={handleSubmit}
+                value="Save Changes"
+              />
+            </HStack>
           </FormControl>
         </VStack>
       </Container>

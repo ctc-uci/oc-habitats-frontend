@@ -1,0 +1,32 @@
+module.exports = {
+  nesting: [
+    'None',
+    'Copulation & Nest Construction',
+    'Incubation',
+    'Hatchling',
+    'Brooding',
+    'Other',
+  ],
+  behavior: [
+    'None',
+    'Roosting',
+    'Foraging (Feeding)',
+    'Sitting',
+    'Courting',
+    'Fishing',
+    'Flying',
+    'Flushing',
+    'Distraction Behavior',
+    'Feeding',
+    'Other',
+  ],
+  habitat: [
+    'Sandy beach',
+    'Dunes',
+    'Vegatation-Native',
+    'Vegatation-Non-Native',
+    'Groomed',
+    'Stone/cobble',
+    'Rocky/outcroppings',
+  ],
+};
