@@ -5,6 +5,7 @@ import './App.css';
 import MonitorLogPage from './pages/MonitorLogPage';
 import EndangeredSpecies from './pages/EndangeredSpecies';
 
+
 function App() {
   return (
     <ChakraProvider>
