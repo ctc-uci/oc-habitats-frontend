@@ -8,6 +8,7 @@ jobs:
     steps:
       - name: Heroku Build Logs
         uses: ctc-uci/github-action-heroku-logs@master
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HEROKU_AUTH_TOKEN: ${{ secrets.CTC_HEROKU_API_KEY }}
