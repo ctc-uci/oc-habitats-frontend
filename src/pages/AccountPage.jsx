@@ -33,8 +33,6 @@ const AccountPage = props => {
   const [prefName, setPrefName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [trainingStatus, setTrainingStatus] = useState('');
-  const [activeStatus, setActiveStatus] = useState('');
   const [currPassword, setCurrPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
@@ -176,31 +174,17 @@ const AccountPage = props => {
               <GridItem colSpan={1} gridRowStart={2}>
                 <FormControl>
                   <FormLabel pb={5}>Training Status</FormLabel>
-                  <Input
-                    disabled
-                    name="trainingStatus"
-                    type="text"
-                    value={user.trainingStatus}
-                    onChange={e => {
-                      setTrainingStatus(e.target.value);
-                      setChangesMade(true);
-                    }}
-                  />
+                  <Text pl="5" color="#4A5568">
+                    {user.trainingStatus}
+                  </Text>
                 </FormControl>
               </GridItem>
               <GridItem colSpan={1} gridRowStart={2}>
                 <FormControl>
                   <FormLabel pb={5}>Active Status</FormLabel>
-                  <Input
-                    placeholder={user.activeStatus}
-                    name="activeStatus"
-                    type="text"
-                    value={activeStatus}
-                    onChange={e => {
-                      setActiveStatus(e.target.value);
-                      setChangesMade(true);
-                    }}
-                  />
+                  <Text pl="5" color="#4A5568">
+                    {user.activeStatus}
+                  </Text>
                 </FormControl>
               </GridItem>
             </SimpleGrid>
