@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
 import EndangeredSpecies from './pages/EndangeredSpecies';
+import AccountPage from './pages/AccountPage';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
         <Routes>
           {/* Add routes as needed; route names subject to change */}
           <Route exact path="/" element={<HomePage />} />
-          <Route exact path="/account" />
+          <Route exact path="/account" element={<AccountPage />} />
           <Route exact path="/create-log" element={<MonitorLogPage />} />
           <Route exact path="/sections" element={<SectionPage />} />
           <Route
