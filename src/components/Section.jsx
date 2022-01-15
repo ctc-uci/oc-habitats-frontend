@@ -6,16 +6,86 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Button,
   Spacer,
   IconButton,
+  Modal,
+  useDisclosure,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
 import Segment from './Segment';
+
+function AddSegmentPopup() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <>
+      <Button color="#2D3748" colorScheme="white" variant="ghost" fontSize="16px" onClick={onOpen}>
+        + Add a segment
+      </Button>
+
+      <Modal size="xl" isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add a segment</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <div>*ADD A SEGMENT HERE*</div>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Save
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+
+function EditSectionNamePopup() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <>
+      <IconButton
+        size="sm"
+        variant="ghost"
+        colorScheme="white"
+        aria-label="Edit Section"
+        icon={<EditIcon />}
+        onClick={onOpen}
+      >
+        opened
+      </IconButton>
+
+      <Modal size="xl" isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>*EDIT SECTION TITLE HERE*</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <div>Testing testing</div>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Save
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
 
 const Section = ({ title, segments }) => {
   return (
@@ -27,17 +97,7 @@ const Section = ({ title, segments }) => {
             <Text fontSize="24px"> {title}</Text>
           </h1>
           <Spacer />
-          <Box paddingTop="6px">
-            <IconButton
-              size="sm"
-              variant="ghost"
-              colorScheme="white"
-              aria-label="Edit Section"
-              icon={<EditIcon />}
-            >
-              opened
-            </IconButton>
-          </Box>
+          <Box paddingTop="6px">{EditSectionNamePopup()}</Box>
         </Flex>
       </Box>
       <Box border="1px" borderRadius="12px" color="#E2E8F0">
@@ -67,12 +127,7 @@ const Section = ({ title, segments }) => {
               );
             })}
           </Tbody>
-          <Tr>
-            <Button color="#2D3748" colorScheme="white" variant="ghost" fontSize="16px">
-              + Add a segment
-            </Button>
-          </Tr>
-          <Tfoot />
+          <Tr>{AddSegmentPopup()}</Tr>
         </Table>
       </Box>
     </Box>

@@ -1,5 +1,17 @@
-import { React } from 'react';
-import { Box } from '@chakra-ui/react';
+import { React, useState } from 'react';
+import {
+  Box,
+  useDisclosure,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Flex,
+} from '@chakra-ui/react';
 import Section from '../components/Section';
 
 const sectionsData = [
@@ -47,10 +59,53 @@ const sectionsData = [
   },
 ];
 
-const SectionPage = () => {
+function AddSectionPopup(addSection) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      {sectionsData.map(sectionObj => {
+      <Button color="#2D3748" colorScheme="white" variant="ghost" fontSize="16px" onClick={onOpen}>
+        Add Section
+      </Button>
+
+      <Modal size="xl" isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add a Section</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <div>*Add section information here*</div>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={() => {
+                addSection();
+                onClose();
+              }}
+            >
+              Save
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+
+const SectionPage = () => {
+  const [sections, setSections] = useState(sectionsData);
+  const addSection = () => {
+    const newSection = {
+      id: sections.length + 1,
+      title: 'New Section',
+      segments: [],
+    };
+    setSections([...sections, newSection]);
+  };
+  return (
+    <>
+      {sections.map(sectionObj => {
         return (
           <>
             <Box h="25px" />
@@ -58,6 +113,10 @@ const SectionPage = () => {
           </>
         );
       })}
+      <Flex justify="space-between">
+        <Box />
+        <Box>{AddSectionPopup(addSection)}</Box>
+      </Flex>
     </>
   );
 };
