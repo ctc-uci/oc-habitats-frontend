@@ -13,11 +13,15 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  Input,
 } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
 
-function UpdateSegmentPopup() {
+function UpdateSegmentPopup(onUpdateSegment) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  let editedSegID = '[update] default id';
+  let editedSegName = '[update] default name';
+  let editedSegDist = '[update] default dist';
   return (
     <>
       <Button backgroundColor="#A0AEC0" color="white" size="sm" onClick={onOpen}>
@@ -30,11 +34,36 @@ function UpdateSegmentPopup() {
           <ModalHeader>Update Segment</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div>*UPDATE SEGMENT HERE*</div>
+            {/* <div>*UPDATE SEGMENT HERE*</div> */}
+            <Input
+              placeholder="Edit segment id here"
+              onChange={event => {
+                editedSegID = event.target.value;
+              }}
+            />
+            <Input
+              placeholder="Edit segment name here"
+              onChange={event => {
+                editedSegName = event.target.value;
+              }}
+            />
+            <Input
+              placeholder="Edit segment distance here"
+              onChange={event => {
+                editedSegDist = event.target.value;
+              }}
+            />
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={() => {
+                onUpdateSegment(editedSegID, editedSegName, editedSegDist);
+                onClose();
+              }}
+            >
               Save
             </Button>
           </ModalFooter>
@@ -44,7 +73,7 @@ function UpdateSegmentPopup() {
   );
 }
 
-const Segment = ({ segment, segmentName, distance }) => {
+const Segment = ({ segment, segmentName, distance, onUpdateSegment }) => {
   return (
     <Tr>
       <Td>{segment}</Td>
@@ -52,7 +81,7 @@ const Segment = ({ segment, segmentName, distance }) => {
       <Td>
         <Flex justifyContent="space-between">
           <Text>{distance}</Text>
-          {UpdateSegmentPopup()}
+          {UpdateSegmentPopup(onUpdateSegment)}
         </Flex>
       </Td>
     </Tr>
@@ -63,6 +92,7 @@ Segment.propTypes = {
   segment: PropTypes.string.isRequired,
   segmentName: PropTypes.string.isRequired,
   distance: PropTypes.number.isRequired,
+  onUpdateSegment: PropTypes.func.isRequired,
 };
 
 export default Segment;

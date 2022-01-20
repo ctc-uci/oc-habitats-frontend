@@ -19,13 +19,18 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  Input,
 } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
 import Segment from './Segment';
 
-function AddSegmentPopup() {
+function AddSegmentPopup(onAddSegment) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  let newSegId = 'defaultName';
+  let newSegName = 'defaultName';
+  let newSegDist = 'defaultName';
+
   return (
     <>
       <Button color="#2D3748" colorScheme="white" variant="ghost" fontSize="16px" onClick={onOpen}>
@@ -38,11 +43,35 @@ function AddSegmentPopup() {
           <ModalHeader>Add a segment</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div>*ADD A SEGMENT HERE*</div>
-          </ModalBody>
+            <Input
+              placeholder="Enter segment id here"
+              onChange={event => {
+                newSegId = event.target.value;
+              }}
+            />
+            <Input
+              placeholder="Enter segment name here"
+              onChange={event => {
+                newSegName = event.target.value;
+              }}
+            />
 
+            <Input
+              placeholder="Enter segment distance here"
+              onChange={event => {
+                newSegDist = event.target.value;
+              }}
+            />
+          </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={() => {
+                onAddSegment(newSegId, newSegName, newSegDist);
+                onClose();
+              }}
+            >
               Save
             </Button>
           </ModalFooter>
@@ -70,12 +99,12 @@ function EditSectionNamePopup() {
       <Modal size="xl" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>*EDIT SECTION TITLE HERE*</ModalHeader>
+          <ModalHeader>Edit Section Name</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div>Testing testing</div>
+            <Input placeholder="Edit section name here" />
+            {/* <div>Testing testing</div> */}
           </ModalBody>
-
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Save
@@ -87,7 +116,7 @@ function EditSectionNamePopup() {
   );
 }
 
-const Section = ({ title, segments }) => {
+const Section = ({ title, segments, onAddSegment, onUpdateSegment }) => {
   return (
     <Box ml="27px" mr="15px">
       <Box align="left">
@@ -123,11 +152,14 @@ const Section = ({ title, segments }) => {
                   segment={segmentItem.segment}
                   segmentName={segmentItem.segmentName}
                   distance={segmentItem.distance}
+                  onUpdateSegment={(updatedSeg, updatedSegName, updatedSegDist) =>
+                    onUpdateSegment(segmentItem.segment, updatedSeg, updatedSegName, updatedSegDist)
+                  }
                 />
               );
             })}
           </Tbody>
-          <Tr>{AddSegmentPopup()}</Tr>
+          <Tr>{AddSegmentPopup(onAddSegment)}</Tr>
         </Table>
       </Box>
     </Box>
@@ -143,6 +175,8 @@ Section.propTypes = {
       distance: PropTypes.number.isRequired,
     }),
   ).isRequired,
+  onAddSegment: PropTypes.func.isRequired,
+  onUpdateSegment: PropTypes.func.isRequired,
 };
 
 export default Section;
