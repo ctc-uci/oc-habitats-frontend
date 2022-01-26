@@ -1,5 +1,6 @@
 import { React } from 'react';
 import {
+  IconButton,
   Button,
   Tr,
   Td,
@@ -15,26 +16,33 @@ import {
   useDisclosure,
   Input,
 } from '@chakra-ui/react';
+import { EditIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
 
-function UpdateSegmentPopup(onUpdateSegment) {
+function UpdateSegmentPopup(segment, segmentName, distance, onUpdateSegment, onDeleteSegment) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  let editedSegID = '[update] default id';
-  let editedSegName = '[update] default name';
-  let editedSegDist = '[update] default dist';
+  let editedSegID = segment;
+  let editedSegName = segmentName;
+  let editedSegDist = distance;
   return (
     <>
-      <Button backgroundColor="#A0AEC0" color="white" size="sm" onClick={onOpen}>
-        Update
-      </Button>
+      <IconButton
+        size="sm"
+        variant="ghost"
+        colorScheme="white"
+        aria-label="Edit Section"
+        icon={<EditIcon />}
+        onClick={onOpen}
+      >
+        opened
+      </IconButton>
 
       <Modal size="xl" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Update Segment</ModalHeader>
+          <ModalHeader>Edit Segment</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* <div>*UPDATE SEGMENT HERE*</div> */}
             <Input
               placeholder="Edit segment id here"
               onChange={event => {
@@ -57,10 +65,23 @@ function UpdateSegmentPopup(onUpdateSegment) {
 
           <ModalFooter>
             <Button
+              colorScheme="red"
+              onClick={() => {
+                onDeleteSegment();
+                onClose();
+              }}
+            >
+              Delete Segment
+            </Button>
+            <Button
               colorScheme="blue"
               mr={3}
               onClick={() => {
-                onUpdateSegment(editedSegID, editedSegName, editedSegDist);
+                onUpdateSegment(
+                  editedSegID || segment,
+                  editedSegName || segmentName,
+                  editedSegDist || distance,
+                );
                 onClose();
               }}
             >
@@ -73,7 +94,7 @@ function UpdateSegmentPopup(onUpdateSegment) {
   );
 }
 
-const Segment = ({ segment, segmentName, distance, onUpdateSegment }) => {
+const Segment = ({ segment, segmentName, distance, onUpdateSegment, onDeleteSegment }) => {
   return (
     <Tr>
       <Td>{segment}</Td>
@@ -81,7 +102,7 @@ const Segment = ({ segment, segmentName, distance, onUpdateSegment }) => {
       <Td>
         <Flex justifyContent="space-between">
           <Text>{distance}</Text>
-          {UpdateSegmentPopup(onUpdateSegment)}
+          {UpdateSegmentPopup(segment, segmentName, distance, onUpdateSegment, onDeleteSegment)}
         </Flex>
       </Td>
     </Tr>
@@ -93,6 +114,7 @@ Segment.propTypes = {
   segmentName: PropTypes.string.isRequired,
   distance: PropTypes.number.isRequired,
   onUpdateSegment: PropTypes.func.isRequired,
+  onDeleteSegment: PropTypes.func.isRequired,
 };
 
 export default Segment;
