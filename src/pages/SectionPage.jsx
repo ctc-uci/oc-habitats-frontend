@@ -61,12 +61,12 @@ const sectionsData = [
 ];
 
 function AddSectionPopup(addSection) {
-  let newSecName = 'defaultName';
+  let newSecName = '';
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Button color="#2D3748" colorScheme="white" variant="ghost" fontSize="16px" onClick={onOpen}>
-        Add Section
+        + Add a section
       </Button>
 
       <Modal size="xl" isOpen={isOpen} onClose={onClose}>
@@ -113,6 +113,24 @@ const SectionPage = () => {
     setSections([...sections, newSection]);
   };
 
+  const updateSectionTitle = (sectionId, newSecTitle) => {
+    let updatedSection = -1;
+    for (let i = 0; i < sections.length; i += 1) {
+      if (sections[i].id === sectionId) {
+        updatedSection = i;
+        break;
+      }
+    }
+    const updatedSecTitle = [...sections];
+    updatedSecTitle[updatedSection].title = newSecTitle;
+    setSections(updatedSecTitle);
+  };
+
+  const deleteSection = sectionId => {
+    const updatedSegSections = [...sections].filter(section => section.id !== sectionId);
+    setSections(updatedSegSections);
+  };
+
   const addSegment = (sectionId, newSegId, newSegName, newSegDist) => {
     const newSegment = {
       segment: newSegId,
@@ -134,28 +152,42 @@ const SectionPage = () => {
       segmentName: updatedSegName,
       distance: updatedSegDist,
     };
+    let updatedSection = -1;
+    for (let i = 0; i < sections.length; i += 1) {
+      if (sections[i].id === sectionId) {
+        updatedSection = i;
+        break;
+      }
+    }
+    const { segments } = sections[updatedSection];
+    let updatedSegment = -1;
+    for (let i = 0; i < segments.length; i += 1) {
+      if (segments[i].segment === segmentId) {
+        updatedSegment = i;
+        break;
+      }
+    }
     const updatedSegSections = [...sections];
-    const { segments } = updatedSegSections.filter(section => section.id === sectionId)[0];
-    const leftSegments = [];
-    const rightSegments = [];
-    let lastLeftInd = 0;
-    console.log(segments);
-    for (
-      lastLeftInd = 0;
-      lastLeftInd < segments.length && segments[lastLeftInd].segment !== segmentId;
-      lastLeftInd += 1
-    ) {
-      leftSegments.push(segments[lastLeftInd]);
-    }
-    for (let rightInd = lastLeftInd + 1; rightInd < segments.length; rightInd += 1) {
-      rightSegments.push(segments[rightInd]);
-    }
-    updatedSegSections.filter(section => section.id === sectionId)[0].segments = [
-      leftSegments,
-      newSegment,
-      rightSegments,
-    ];
+    updatedSegSections[updatedSection].segments[updatedSegment] = newSegment;
+    setSections(updatedSegSections);
+  };
 
+  const deleteSegment = (sectionId, segmentId) => {
+    // step 1 find section with segment
+    // step 2 find the segment within the section
+    // step 3 delete and update sectionsData
+    let searchDeleteSection = -1;
+    for (let i = 0; i < sections.length; i += 1) {
+      if (sections[i].id === sectionId) {
+        searchDeleteSection = i;
+        break;
+      }
+    }
+    const { segments } = sections[searchDeleteSection];
+    const updatedSegSections = [...sections];
+    updatedSegSections[searchDeleteSection].segments = segments.filter(
+      segment => segment.segment !== segmentId,
+    );
     setSections(updatedSegSections);
   };
 
@@ -175,6 +207,9 @@ const SectionPage = () => {
               onUpdateSegment={(segmentId, updatedSeg, updatedSegName, updatedSegDist) =>
                 updateSegment(sectionObj.id, segmentId, updatedSeg, updatedSegName, updatedSegDist)
               }
+              onDeleteSegment={segmentId => deleteSegment(sectionObj.id, segmentId)}
+              onUpdateSectionTitle={newSecTitle => updateSectionTitle(sectionObj.id, newSecTitle)}
+              onDeleteSection={() => deleteSection(sectionObj.id)}
             />
           </>
         );

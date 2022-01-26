@@ -27,9 +27,9 @@ import Segment from './Segment';
 
 function AddSegmentPopup(onAddSegment) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  let newSegId = 'defaultName';
-  let newSegName = 'defaultName';
-  let newSegDist = 'defaultName';
+  let newSegId = '';
+  let newSegName = '';
+  let newSegDist = '';
 
   return (
     <>
@@ -81,8 +81,10 @@ function AddSegmentPopup(onAddSegment) {
   );
 }
 
-function EditSectionNamePopup() {
+function EditSectionNamePopup(title, onUpdateSectionTitle, onDeleteSection) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  let newSectionTitle = title;
+
   return (
     <>
       <IconButton
@@ -102,11 +104,31 @@ function EditSectionNamePopup() {
           <ModalHeader>Edit Section Name</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Input placeholder="Edit section name here" />
-            {/* <div>Testing testing</div> */}
+            <Input
+              placeholder="Edit section name here"
+              onChange={event => {
+                newSectionTitle = event.target.value;
+              }}
+            />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button
+              colorScheme="red"
+              onClick={() => {
+                onDeleteSection();
+                onClose();
+              }}
+            >
+              Delete
+            </Button>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={() => {
+                onUpdateSectionTitle(newSectionTitle || title);
+                onClose();
+              }}
+            >
               Save
             </Button>
           </ModalFooter>
@@ -116,7 +138,15 @@ function EditSectionNamePopup() {
   );
 }
 
-const Section = ({ title, segments, onAddSegment, onUpdateSegment }) => {
+const Section = ({
+  title,
+  segments,
+  onAddSegment,
+  onUpdateSegment,
+  onDeleteSegment,
+  onDeleteSection,
+  onUpdateSectionTitle,
+}) => {
   return (
     <Box ml="27px" mr="15px">
       <Box align="left">
@@ -126,7 +156,9 @@ const Section = ({ title, segments, onAddSegment, onUpdateSegment }) => {
             <Text fontSize="24px"> {title}</Text>
           </h1>
           <Spacer />
-          <Box paddingTop="6px">{EditSectionNamePopup()}</Box>
+          <Box paddingTop="6px">
+            {EditSectionNamePopup(title, onUpdateSectionTitle, onDeleteSection)}
+          </Box>
         </Flex>
       </Box>
       <Box border="1px" borderRadius="12px" color="#E2E8F0">
@@ -155,6 +187,7 @@ const Section = ({ title, segments, onAddSegment, onUpdateSegment }) => {
                   onUpdateSegment={(updatedSeg, updatedSegName, updatedSegDist) =>
                     onUpdateSegment(segmentItem.segment, updatedSeg, updatedSegName, updatedSegDist)
                   }
+                  onDeleteSegment={() => onDeleteSegment(segmentItem.segment)}
                 />
               );
             })}
@@ -177,6 +210,9 @@ Section.propTypes = {
   ).isRequired,
   onAddSegment: PropTypes.func.isRequired,
   onUpdateSegment: PropTypes.func.isRequired,
+  onDeleteSegment: PropTypes.func.isRequired,
+  onDeleteSection: PropTypes.func.isRequired,
+  onUpdateSectionTitle: PropTypes.func.isRequired,
 };
 
 export default Section;
