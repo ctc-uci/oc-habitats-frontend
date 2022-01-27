@@ -1,4 +1,4 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import {
   Text,
   Box,
@@ -83,7 +83,7 @@ function AddSegmentPopup(onAddSegment) {
 
 function EditSectionNamePopup(title, onUpdateSectionTitle, onDeleteSection) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  let newSectionTitle = title;
+  const [newTitle, setNewTitle] = useState(title);
 
   return (
     <>
@@ -105,9 +105,9 @@ function EditSectionNamePopup(title, onUpdateSectionTitle, onDeleteSection) {
           <ModalCloseButton />
           <ModalBody>
             <Input
-              placeholder="Edit section name here"
+              value={newTitle}
               onChange={event => {
-                newSectionTitle = event.target.value;
+                setNewTitle(event.target.value);
               }}
             />
           </ModalBody>
@@ -125,7 +125,7 @@ function EditSectionNamePopup(title, onUpdateSectionTitle, onDeleteSection) {
               colorScheme="blue"
               mr={3}
               onClick={() => {
-                onUpdateSectionTitle(newSectionTitle || title);
+                onUpdateSectionTitle(newTitle);
                 onClose();
               }}
             >

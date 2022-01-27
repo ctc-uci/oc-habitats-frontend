@@ -1,4 +1,4 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import {
   IconButton,
   Button,
@@ -21,9 +21,10 @@ import { PropTypes } from 'prop-types';
 
 function UpdateSegmentPopup(segment, segmentName, distance, onUpdateSegment, onDeleteSegment) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  let editedSegID = segment;
-  let editedSegName = segmentName;
-  let editedSegDist = distance;
+  const [segId, setSegId] = useState(segment);
+  const [segName, setSegName] = useState(segmentName);
+  const [segDist, setSegDist] = useState(distance);
+
   return (
     <>
       <IconButton
@@ -44,21 +45,21 @@ function UpdateSegmentPopup(segment, segmentName, distance, onUpdateSegment, onD
           <ModalCloseButton />
           <ModalBody>
             <Input
-              placeholder="Edit segment id here"
+              value={segId}
               onChange={event => {
-                editedSegID = event.target.value;
+                setSegId(event.target.value);
               }}
             />
             <Input
-              placeholder="Edit segment name here"
+              value={segName}
               onChange={event => {
-                editedSegName = event.target.value;
+                setSegName(event.target.value);
               }}
             />
             <Input
-              placeholder="Edit segment distance here"
+              value={segDist}
               onChange={event => {
-                editedSegDist = event.target.value;
+                setSegDist(event.target.value);
               }}
             />
           </ModalBody>
@@ -77,11 +78,7 @@ function UpdateSegmentPopup(segment, segmentName, distance, onUpdateSegment, onD
               colorScheme="blue"
               mr={3}
               onClick={() => {
-                onUpdateSegment(
-                  editedSegID || segment,
-                  editedSegName || segmentName,
-                  editedSegDist || distance,
-                );
+                onUpdateSegment(segId, segName, segDist);
                 onClose();
               }}
             >
