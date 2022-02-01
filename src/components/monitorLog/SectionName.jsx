@@ -38,7 +38,7 @@ function SectionName() {
       <Container maxW="100vw">
         <VStack spacing="23px" align="left">
           <Text fontWeight="600" fontSize="2xl">
-            Section Name
+            General Information
           </Text>
           <SimpleGrid columns={4} rows={3} spacingX="64px" spacingY="68px">
             <GridItem colSpan={1} rowSpan={1} width="200px">
