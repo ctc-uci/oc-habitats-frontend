@@ -1,4 +1,5 @@
-import { InfoIcon } from '@chakra-ui/icons';
+import { InfoIcon, AddIcon } from '@chakra-ui/icons';
+import { GrEdit } from 'react-icons/gr';
 import {
   Button,
   Container,
@@ -13,6 +14,12 @@ import {
   Text,
   Tooltip,
   VStack,
+  Table,
+  Th,
+  Tr,
+  Td,
+  Tbody,
+  IconButton,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
@@ -31,6 +38,36 @@ function SectionName() {
       { id: '0', name: 'segment0' },
       { id: '1', name: 'segment1' },
     ],
+  };
+
+  const rows = [];
+
+  const [partners, setSpecies] = useState(rows);
+
+  const editInfo = () => {
+    return ['Hello', 'World'];
+  };
+
+  const handleRowClick = index => {
+    const newData = [...partners];
+    const [name, email] = editInfo();
+    newData[index].name = name;
+    newData[index].name = email;
+    setSpecies(newData);
+  };
+
+  const createTable = m => {
+    return m.map((row, index) => (
+      <Tr height="72px" key={row.id}>
+        <Td paddingRight="8px">
+          <IconButton size="md" onChange={() => handleRowClick(index)} icon={<GrEdit />} />
+        </Td>
+        <Td>
+          {row.name}
+          {row.email}
+        </Td>
+      </Tr>
+    ));
   };
 
   return (
@@ -197,6 +234,17 @@ function SectionName() {
               </VStack>
             </GridItem>
           </SimpleGrid>
+          <Table w="50%">
+            <Th h="32px" bg="#F7FAFC">
+              Partner Information
+            </Th>
+            <Tbody h="72px" bg="#FFFFFF">
+              {createTable(partners)}
+            </Tbody>
+          </Table>
+          <Button w="50%" rightIcon={<AddIcon />}>
+            Add Partner
+          </Button>
         </VStack>
       </Container>
     </div>
