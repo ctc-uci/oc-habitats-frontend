@@ -1,5 +1,6 @@
 import { InfoIcon, AddIcon } from '@chakra-ui/icons';
 import { GrEdit } from 'react-icons/gr';
+import { FaRegSave } from 'react-icons/fa';
 import {
   Button,
   Container,
@@ -14,17 +15,81 @@ import {
   Text,
   Tooltip,
   VStack,
+  HStack,
   Table,
   Th,
   Tr,
   Td,
   Tbody,
   IconButton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Box,
+  Alert,
+  AlertIcon,
+  AlertTitle,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './SectionName.css';
+
+function AddPartnersPopup() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  return (
+    <>
+      <Button w="50%" rightIcon={<AddIcon />} onClick={onOpen}>
+        Add Partner
+      </Button>
+
+      <Modal size="3xl" isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Monitoring Session Partners</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack spacing="14px" align="left">
+              <Alert variant="solid">
+                <AlertIcon />
+                <AlertTitle>
+                  Add or remove group members for this monitor log submission.
+                </AlertTitle>
+              </Alert>
+              <Spacer />
+              <Text>
+                You may submit this monitoring log as a group if you completed this monitoring
+                session as a group. You can change the goup below. Session Partners added/removed
+                will be notified by email.
+              </Text>
+              <Spacer />
+              <Text fontWeight="500" fontSize="md">
+                Add Volunteer
+              </Text>
+              <Select placeholder="Search volunteer by name or email..." />
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <HStack spacing="15px">
+              <Button onClick={onClose} variant="ghost">
+                Cancel
+              </Button>
+              <Button colorScheme="gray" rightIcon={<FaRegSave />}>
+                Save
+              </Button>
+            </HStack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
 
 function SectionName() {
   const [startDate, setDate] = useState(new Date());
@@ -242,9 +307,7 @@ function SectionName() {
               {createTable(partners)}
             </Tbody>
           </Table>
-          <Button w="50%" rightIcon={<AddIcon />}>
-            Add Partner
-          </Button>
+          <Box>{AddPartnersPopup()}</Box>
         </VStack>
       </Container>
     </div>
