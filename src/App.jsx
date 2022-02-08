@@ -7,7 +7,7 @@ import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
 import EndangeredSpecies from './pages/EndangeredSpecies';
-// import PeoplePage from './pages/PeoplePage';
+import PeoplePage from './pages/PeoplePage';
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
             element={<EndangeredSpecies adultName="Snowy Plovers" />}
           />
           {/* Admin only routes (TO DO, make admin only) */}
-          <Route exact path="/people" />
+          <Route exact path="/people" element={<PeoplePage />} />
           <Route exact path="/logs" />
         </Routes>
       </Router>
