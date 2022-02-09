@@ -1,3 +1,9 @@
+@import url('https://rsms.me/inter/inter.css');
+html { font-family: 'Inter', sans-serif; }
+@supports (font-variation-settings: normal) {
+  html { font-family: 'Inter var', sans-serif; }
+}
+
 .table-container {
   overflow-y: auto;
   min-width: 900px;
@@ -28,7 +34,7 @@ th {
 }
 
 .name-container {
-  position: absolute;
+  /*position: absolute;*/
   width: 184px;
   height: 20px;
   left: 20%;
@@ -51,14 +57,13 @@ th {
   /* Inside auto layout */
 
   flex: none;
-  order: 0;
   align-self: stretch;
   flex-grow: 0;
   margin: 0px 0px;
 }
 
 .email-container {
-  position: static;
+  /* position: static; */
   width: 184px;
   height: 20px;
   left: calc(50% - 184px / 2);
@@ -81,8 +86,42 @@ th {
   /* Inside auto layout */
 
   flex: none;
-  order: 1;
   align-self: stretch;
   flex-grow: 0;
   margin: 0px 0px;
+}
+
+.training-badge {
+  position: flex;
+  width: 83px;
+  height: 16px;
+  top: 2px;
+  left: 8px;
+
+  font-family: Inter;
+  font-style: medium;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+
+  align-self: stretch;
+  vertical-align: center;
+}
+
+.last-updated{
+  position: flex;
+  width: 79px;
+  height: 20px;
+  top: 14px;
+  left: 10px;
+
+  font-family: Inter;
+  font-style: italic;
+  font-weight: 400px;
+  font-size: 12px;
+  line-height: 20px;
+
+  align-self: stretch;
+  vertical-align: center;
+
 }

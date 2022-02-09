@@ -23,7 +23,9 @@ import {
   Select,
   Icon,
   Badge,
-  Avatar
+  Avatar,
+  VStack,
+  Box
 } from "@chakra-ui/react";
 import {
   ChevronRightIcon,
@@ -35,7 +37,7 @@ import { BsFillClockFill, BsFillPersonFill } from "react-icons/bs";
 import { AiFillTag } from "react-icons/ai";
 
 //import makeData from "./makeData";
-import "./App.css";
+import "./Table.css";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -68,12 +70,14 @@ function GlobalFilter({
   );
 }
 
-function createData(name, email, activeStatus, trainingStatus) {
+function createData(name, email, activeStatus, trainingStatus, lastUpdated, assignedSegments) {
   return {
     name,
     email,
     activeStatus,
-    trainingStatus
+    trainingStatus,
+    lastUpdated,
+    assignedSegments,
   };
 }
 
@@ -83,65 +87,77 @@ const makeRows = [
     "Alexander Adebayo",
     "alexander@chakra-ui.com",
     "ACTIVE",
-    "In-Training"
+    "In-Training",
+    "01-20-2022",
+    ["OC03 Sunset Beach (19th Street to Warner Ave)"],
   ),
-  createData("Emily Sue", "emily@chakra-ui.com", "ACTIVE", "Training Complete"),
+  createData("Emily Sue", "emily@chakra-ui.com", "ACTIVE", "Training Complete", "01-29-2022"),
   createData(
     "Emmerick Hopkins",
     "emmerick@chakra-ui.com",
     "ACTIVE",
-    "In-Training"
+    "In-Training",
+    "01-20-2022"
   ),
   createData(
     "Ophelia Santiago",
     "ophelia@chakra-ui.com",
     "ACTIVE",
-    "Training Complete"
+    "Training Complete",
+    "12-20-2021"
   ),
   createData(
     "Steve Rogers",
     "steve@chakra-ui.com",
     "ACTIVE",
-    "Training Complete"
+    "Training Complete",
+    "12-27-2021"
   ),
   createData(
     "Edward Elrich",
     "edward@chakra-ui.com",
     "INACTIVE",
-    "Training Complete"
+    "Training Complete",
+    "11-07-2021"
   ),
   createData(
     "Edward Elrich",
     "edward@chakra-ui.com",
     "INACTIVE",
-    "Training Complete"
+    "Training Complete",
+    "11-14-2021"
   ),
   createData(
     "Edward Elrich",
     "edward@chakra-ui.com",
     "INACTIVE",
-    "Training Complete"
+    "Training Complete",
+    "01-20-2022"
   ),
   createData(
     "Edward Elrich",
     "edward@chakra-ui.com",
     "INACTIVE",
-    "Training Complete"
+    "Training Complete",
+    "01-20-2022"
   ),
   createData(
     "Edward Elrich",
     "edward@chakra-ui.com",
     "INACTIVE",
-    "Training Complete"
+    "Training Complete",
+    "01-20-2022"
   ),
   createData(
     "Edward Elrich",
     "edward@chakra-ui.com",
     "INACTIVE",
-    "Training Complete"
+    "Training Complete",
+    "01-20-2022"
   )
 ];
 
+// remove this
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
     const defaultRef = React.useRef();
@@ -159,52 +175,55 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 );
 
-function getActiveStatus(status) {
-  if (status === "ACTIVE") {
-    return (
-      <Badge variant="solid" colorScheme="green">
-        {status}
-      </Badge>
-    );
-  } else {
-    return <Badge variant="solid">{status}</Badge>;
-  }
-}
-
 function getTrainingStatus(status) {
-  if (status === "In-Training") {
-    return (
-      <Badge variant="solid" colorScheme="orange">
-        {status}
-      </Badge>
-    );
-  } else {
-    return (
-      <Badge variant="solid" colorScheme="purple">
-        {status}
-      </Badge>
-    );
-  }
+  return (
+    <Badge className="training-badge" variant="solid" colorScheme="orange" fontSize="12px">
+      {status}
+    </Badge>
+  );
 }
 
-// Custom component to render ActiveStatus
-const ActiveStatus = ({ value }) => {
-  return getActiveStatus(value);
-};
+function getLastUpdated(status) {
+  return (
+    <div className="last-updated">{status}</div>
+  );
+}
+
+function getAssignedSegments(status) {
+  return (
+    <div className="last-updated">{status}</div>
+  );
+}
 
 // Custom component to render TrainingStatus
 const TrainingStatus = ({ value }) => {
   return getTrainingStatus(value);
 };
 
+// Custom component to render LastUpdated
+const LastUpdated = ({ value }) => {
+  return getLastUpdated(value);
+};
+
+// Custom component to render LastUpdated
+const AssignedSegments = ({ value }) => {
+  return getAssignedSegments(value);
+};
+
 // Custom component to render Name
 const Name = ({ value }) => {
+  // value = value.split(" ");
+  //const nameAndEmail = value[0] + " " + value[1] + " " _;
   return (
     <>
       <div className="user-container">
-        <Avatar size="md" name={`${value}`} src="something" />
+        <Avatar size="md" name={value} src="something" />
+        <VStack className="user-info-container">
+          <div className="name-container">{`${value.split(" ")[0] + " " + value.split(" ")[1]}`}</div>
+          <div className="email-container">{`${value.split(" ")[2]}`}</div>
 
-        <div className="name-container">{`${value}`}</div>
+          {value.split(" ")[3] === "In-Training" ? <TrainingStatus value={`${value.split(" ")[3]}`} /> : null}
+        </VStack>
       </div>
     </>
   );
@@ -386,7 +405,7 @@ function App() {
     () => [
       {
         Header: "Name",
-        accessor: (d) => `${d.name} ${d.email}`,
+        accessor: (d) => `${d.name} ${d.email} ${d.trainingStatus}`,
         icon: <Icon as={BsFillPersonFill} mr={1} />,
         Cell: ({ cell: { value } }) => <Name value={value} />
       },
@@ -394,18 +413,24 @@ function App() {
       //   Header: "Email",
       //   accessor: "email"
       // },
-      {
+      /*{
         Header: "Active Status",
         accessor: "activeStatus",
         icon: <Icon as={BsFillClockFill} mr={1} />,
         Cell: ({ cell: { value } }) => <ActiveStatus value={value} />
+      },*/
+      {
+        Header: "Last Updated",
+        accessor: "lastUpdated",
+        //icon: <Icon as={AiFillTag} mr={1} />,
+        Cell: ({ cell: { value } }) => <LastUpdated value={value} />
       },
       {
-        Header: "Training Status",
-        accessor: "trainingStatus",
-        icon: <Icon as={AiFillTag} mr={1} />,
-        Cell: ({ cell: { value } }) => <TrainingStatus value={value} />
-      }
+        Header: "Assigned Segment(s)",
+        accessor: "assignedSegments",
+        //icon: <Icon as={AiFillTag} mr={1} />,
+        Cell: ({ cell: { value } }) => <AssignedSegments value={value} />
+      },
     ],
     []
   );
