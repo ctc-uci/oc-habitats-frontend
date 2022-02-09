@@ -25,13 +25,15 @@ import {
   Badge,
   Avatar,
   VStack,
-  Box
+  Box,
+  HStack
 } from "@chakra-ui/react";
 import {
   ChevronRightIcon,
   ChevronLeftIcon,
   ChevronUpIcon,
-  ChevronDownIcon
+  ChevronDownIcon,
+  Search2Icon,
 } from "@chakra-ui/icons";
 import { BsFillClockFill, BsFillPersonFill } from "react-icons/bs";
 import { AiFillTag } from "react-icons/ai";
@@ -40,6 +42,7 @@ import { AiFillTag } from "react-icons/ai";
 import "./Table.css";
 
 // Define a default UI for filtering
+//      Search:
 function GlobalFilter({
   preGlobalFilteredRows,
   globalFilter,
@@ -53,14 +56,15 @@ function GlobalFilter({
 
   return (
     <span>
-      Search:{" "}
+      {" "}
       <input
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
           onChange(e.target.value);
         }}
-        placeholder={`${count} records...`}
+
+        placeholder={`Search...`}
         style={{
           fontSize: "1.1rem",
           border: "0"
@@ -89,15 +93,21 @@ const makeRows = [
     "ACTIVE",
     "In-Training",
     "01-20-2022",
-    ["OC03 Sunset Beach (19th Street to Warner Ave)"],
+    ["OC03 Sunset Beach (19th Street to Warner Ave)", "OC19 Culver Drive"],
   ),
-  createData("Emily Sue", "emily@chakra-ui.com", "ACTIVE", "Training Complete", "01-29-2022"),
+  createData(
+    "Emily Sue",
+    "emily@chakra-ui.com",
+    "ACTIVE",
+    "Training Complete",
+    "01-29-2022"),
   createData(
     "Emmerick Hopkins",
     "emmerick@chakra-ui.com",
     "ACTIVE",
     "In-Training",
-    "01-20-2022"
+    "01-20-2022",
+    ["OC17 Laguna Beach"]
   ),
   createData(
     "Ophelia Santiago",
@@ -190,9 +200,26 @@ function getLastUpdated(status) {
 }
 
 function getAssignedSegments(status) {
-  return (
-    <div className="last-updated">{status}</div>
-  );
+  if (status != null) {
+    const options = [];
+    for (let i=0; i < status.length; i++){
+      options.push(
+        <HStack>
+        <div className="segment-id">{status[i].split(" ")[0]}</div>
+        <div className="segment-location" font-style="regular">{status[i].substring(status[i].indexOf(" ")+1)}</div>
+        </HStack>
+      )
+    }
+    return (
+      <VStack>
+        {options}
+      </VStack>
+    );
+  }
+  else{
+    return null;
+  }
+
 }
 
 // Custom component to render TrainingStatus
@@ -356,6 +383,8 @@ function PeopleTable({ columns, data }) {
           <Flex alignItems="center">
             <Text flexShrink="0">Show rows per page: </Text>{" "}
             <Select
+              backgroundColor="white"
+              color="#2d3748"
               ml={2}
               w={32}
               value={pageSize}
@@ -380,6 +409,7 @@ function PeopleTable({ columns, data }) {
             </Text>
             <Tooltip label="Previous Page">
               <IconButton
+                backgroundColor="#2d3748"
                 onClick={previousPage}
                 isDisabled={!canPreviousPage}
                 icon={<ChevronLeftIcon h={6} w={6} />}
@@ -387,6 +417,7 @@ function PeopleTable({ columns, data }) {
             </Tooltip>
             <Tooltip label="Next Page">
               <IconButton
+                backgroundColor="#2d3748"
                 onClick={nextPage}
                 isDisabled={!canNextPage}
                 icon={<ChevronRightIcon h={6} w={6} />}
@@ -406,8 +437,8 @@ function App() {
       {
         Header: "Name",
         accessor: (d) => `${d.name} ${d.email} ${d.trainingStatus}`,
-        icon: <Icon as={BsFillPersonFill} mr={1} />,
-        Cell: ({ cell: { value } }) => <Name value={value} />
+        //icon: <Icon as={BsFillPersonFill} mr={1} />,
+        Cell: ({ cell: { value } }) => <Name value={value}/>
       },
       // {
       //   Header: "Email",
@@ -429,7 +460,7 @@ function App() {
         Header: "Assigned Segment(s)",
         accessor: "assignedSegments",
         //icon: <Icon as={AiFillTag} mr={1} />,
-        Cell: ({ cell: { value } }) => <AssignedSegments value={value} />
+        Cell: ({ cell: { value } }) => <AssignedSegments value={value}/>
       },
     ],
     []

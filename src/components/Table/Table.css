@@ -9,6 +9,10 @@ html { font-family: 'Inter', sans-serif; }
   min-width: 900px;
   width: 100%;
   max-height: 400px;
+  background-color: white;
+
+  background-color: #f7fafc;
+
 }
 
 .footer-container {
@@ -16,12 +20,17 @@ html { font-family: 'Inter', sans-serif; }
   min-width: 900px;
   width: 100%;
   max-height: 400px;
-  background-color: white;
+
+  background-color: #2d3748;
+  color: white;
 }
 th {
   position: sticky;
   top: 0;
-  background-color: #f7fafc;
+
+  background-color: #2d3748;
+
+  color: white;
 }
 
 .user-container {
@@ -124,4 +133,42 @@ th {
   align-self: stretch;
   vertical-align: center;
 
+}
+
+.segment-id{
+  position: flex;
+  width: 40px;
+  height: 20px;
+  top: 14px;
+  left: 10px;
+
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500px;
+  font-size: 14px;
+  line-height: 20px;
+
+  align-self: stretch;
+  vertical-align: center;
+
+  color: #2d3748;
+}
+
+.segment-location{
+  position: flex;
+  width: 300px;
+  height: 20px;
+  top: 14px;
+  left: 56px;
+
+  font-family: Inter;
+  font-style: regular;
+  font-weight: 500px;
+  font-size: 14px;
+  line-height: 20px;
+
+  align-self: stretch;
+  vertical-align: center;
+
+  color: #718096;
 }
