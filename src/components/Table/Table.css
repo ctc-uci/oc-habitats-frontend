@@ -7,22 +7,24 @@ html { font-family: 'Inter', sans-serif; }
 .table-container {
   overflow-y: auto;
   min-width: 900px;
-  width: 100%;
+  width: 90%;
   max-height: 400px;
   background-color: white;
+  align-self: center;
 
-  background-color: #f7fafc;
-
+  border: gray solid;
 }
 
 .footer-container {
   overflow-y: auto;
   min-width: 900px;
-  width: 100%;
+  width: 90%;
   max-height: 400px;
 
   background-color: #2d3748;
   color: white;
+
+  align-self: center;
 }
 th {
   position: sticky;
@@ -31,6 +33,11 @@ th {
   background-color: #2d3748;
 
   color: white;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .user-container {
@@ -148,7 +155,7 @@ th {
   font-size: 14px;
   line-height: 20px;
 
-  align-self: stretch;
+  align-self: left;
   vertical-align: center;
 
   color: #2d3748;

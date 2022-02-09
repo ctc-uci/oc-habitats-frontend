@@ -57,7 +57,7 @@ function GlobalFilter({
   return (
     <span>
       {" "}
-      <input
+      <input Icon="Search2Icon"
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
@@ -67,7 +67,8 @@ function GlobalFilter({
         placeholder={`Search...`}
         style={{
           fontSize: "1.1rem",
-          border: "0"
+          border: "0",
+          color: "black",
         }}
       />
     </span>
@@ -291,7 +292,7 @@ function PeopleTable({ columns, data }) {
     useSortBy,
     usePagination,
     useRowSelect,
-    (hooks) => {
+    /*(hooks) => {
       hooks.visibleColumns.push((columns) => [
         // Let's make a column for selection
         {
@@ -313,7 +314,7 @@ function PeopleTable({ columns, data }) {
         },
         ...columns
       ]);
-    }
+    }*/
   );
 
   // Render the UI for your table

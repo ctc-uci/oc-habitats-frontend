@@ -1,16 +1,15 @@
 import { React } from 'react';
 import { VStack, Container, Stack, Heading } from '@chakra-ui/react';
 import App from '../components/Table/Table';
-
-//  const data = React.useMemo(() => makeRows, []);
+/*
+<Stack align="left" mb="3em" height="5px">
+          <Heading as="h3" align="left">People</Heading>
+        </Stack>
+*/
 const PeoplePage = () => {
   return (
-    <VStack spacing="72px" align="left">
-      <Container maxW="container.xl">
-        <Stack align="left" mb="3em" height="10px">
-          <Heading as="h1">People</Heading>
-        </Stack>
-      </Container>
+    <VStack spacing="40px" align="left">
+      <header></header>
       <App />
       <header></header>
       <App />
