@@ -11,7 +11,10 @@ const DraggableItem = ({ specie, index }) => {
         <Container
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          innerRef={provided.innerRef}
+          ref={provided.innerRef}
+          borderColor="black"
+          borderWidth="1px"
+          bgColor="white"
         >
           {specie}
         </Container>

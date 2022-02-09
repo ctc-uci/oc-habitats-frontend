@@ -23,8 +23,8 @@ module.exports = {
   habitat: [
     'Sandy beach',
     'Dunes',
-    'Vegatation-Native',
-    'Vegatation-Non-Native',
+    'Vegetation-Native',
+    'Vegetation-Non-Native',
     'Groomed',
     'Stone/cobble',
     'Rocky/outcroppings',
