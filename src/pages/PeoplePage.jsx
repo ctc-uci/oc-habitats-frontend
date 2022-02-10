@@ -1,11 +1,6 @@
 import { React } from 'react';
 import { VStack, Container, Heading, Button } from '@chakra-ui/react';
 import App from '../components/Table/Table';
-/*
-<Stack align="left" mb="3em" height="5px">
-          <Heading as="h3" align="left">People</Heading>
-        </Stack>
-*/
 
 const PeoplePage = () => {
   return (

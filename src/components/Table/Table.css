@@ -7,10 +7,9 @@ html { font-family: 'Inter', sans-serif; }
 .table-container {
   overflow-y: auto;
   min-width: 900px;
-  width: 90%;
+  width: 100%;
   max-height: 400px;
   background-color: white;
-  align-self: center;
 
   border: gray solid;
 }
@@ -18,13 +17,11 @@ html { font-family: 'Inter', sans-serif; }
 .footer-container {
   overflow-y: auto;
   min-width: 900px;
-  width: 90%;
+  width: 100%;
   max-height: 400px;
 
   background-color: #2d3748;
   color: white;
-
-  align-self: center;
 }
 th {
   position: sticky;
@@ -41,7 +38,7 @@ th {
 }
 
 .user-container {
-  position: relative;
+  /* position: relative; */
   width: 284px;
   height: 72px;
   left: 0px;

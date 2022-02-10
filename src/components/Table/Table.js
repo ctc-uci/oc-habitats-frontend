@@ -42,7 +42,6 @@ import { AiFillTag } from "react-icons/ai";
 import "./Table.css";
 
 // Define a default UI for filtering
-//      Search:
 function GlobalFilter({
   preGlobalFilteredRows,
   globalFilter,
@@ -94,7 +93,7 @@ const makeRows = [
     "ACTIVE",
     "In-Training",
     "01-20-2022",
-    ["OC03 Sunset Beach (19th Street to Warner Ave)", "OC19 Culver Drive"],
+    ["OC03 Sunset Beach (19th Street to Warner Ave)", "OC19 Seal Beach (1st Street)"],
   ),
   createData(
     "Emily Sue",
@@ -206,13 +205,13 @@ function getAssignedSegments(status) {
     for (let i=0; i < status.length; i++){
       options.push(
         <HStack>
-        <div className="segment-id">{status[i].split(" ")[0]}</div>
+        <div className="segment-id" align-self="left">{status[i].split(" ")[0]}</div>
         <div className="segment-location" font-style="regular">{status[i].substring(status[i].indexOf(" ")+1)}</div>
         </HStack>
       )
     }
     return (
-      <VStack>
+      <VStack align="normal">
         {options}
       </VStack>
     );
@@ -240,12 +239,10 @@ const AssignedSegments = ({ value }) => {
 
 // Custom component to render Name
 const Name = ({ value }) => {
-  // value = value.split(" ");
-  //const nameAndEmail = value[0] + " " + value[1] + " " _;
   return (
     <>
       <div className="user-container">
-        <Avatar size="md" name={value} src="something" />
+        <Avatar size="md" position="static" name={value} src="something" />
         <VStack className="user-info-container">
           <div className="name-container">{`${value.split(" ")[0] + " " + value.split(" ")[1]}`}</div>
           <div className="email-container">{`${value.split(" ")[2]}`}</div>
@@ -343,6 +340,7 @@ function PeopleTable({ columns, data }) {
                   <Th
                     userSelect="none"
                     {...column.getHeaderProps(column.getSortByToggleProps())}
+                    color="white"
                   >
                     <Flex alignItems="center">
                       {column.icon}
@@ -379,7 +377,7 @@ function PeopleTable({ columns, data }) {
         </Table>
       </div>
 
-      <div className="footer-container">
+      <div className="footer-container" style={{margin: "auto"}}>
         <Flex justifyContent="space-between" m={4} alignItems="center">
           <Flex alignItems="center">
             <Text flexShrink="0">Show rows per page: </Text>{" "}
@@ -441,16 +439,6 @@ function App() {
         //icon: <Icon as={BsFillPersonFill} mr={1} />,
         Cell: ({ cell: { value } }) => <Name value={value}/>
       },
-      // {
-      //   Header: "Email",
-      //   accessor: "email"
-      // },
-      /*{
-        Header: "Active Status",
-        accessor: "activeStatus",
-        icon: <Icon as={BsFillClockFill} mr={1} />,
-        Cell: ({ cell: { value } }) => <ActiveStatus value={value} />
-      },*/
       {
         Header: "Last Updated",
         accessor: "lastUpdated",
