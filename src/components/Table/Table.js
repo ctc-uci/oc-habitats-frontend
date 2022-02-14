@@ -66,7 +66,7 @@ function GlobalFilter({
         placeholder={`Search...`}
         style={{
           fontSize: "1.1rem",
-          border: "0",
+          border: "1px #E2E8F0 solid",
           color: "black",
         }}
       />
@@ -317,6 +317,13 @@ function PeopleTable({ columns, data }) {
   // Render the UI for your table
   return (
     <>
+      <div>
+        <GlobalFilter className="search-bar"
+          preGlobalFilteredRows={preGlobalFilteredRows}
+          globalFilter={state.globalFilter}
+          setGlobalFilter={setGlobalFilter}
+        />
+      </div>
       <div className="table-container">
         <Table {...getTableProps()}>
           <Thead>
@@ -327,11 +334,7 @@ function PeopleTable({ columns, data }) {
                   textAlign: "left"
                 }}
               >
-                <GlobalFilter
-                  preGlobalFilteredRows={preGlobalFilteredRows}
-                  globalFilter={state.globalFilter}
-                  setGlobalFilter={setGlobalFilter}
-                />
+
               </th>
             </tr>
             {headerGroups.map((headerGroup) => (
