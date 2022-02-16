@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Box, Container, Heading, Flex, Spacer, Text, VStack } from '@chakra-ui/react';
+import { Heading, Flex, Spacer, Stack, Text, VStack } from '@chakra-ui/react';
 import { DragDropContext } from 'react-beautiful-dnd';
-
+import NewSpeciesButton from '../components/NewSpeciesButton';
 import DropdownSearch from '../components/DropdownSearch';
 import DroppableList from '../components/DroppableList';
 
@@ -13,6 +13,14 @@ const initialData = {
   },
   additional: { id: 'additional', name: 'Additional Species', speciesIds: [] },
 };
+
+const options = [
+  { value: 'end1', label: 'end1' },
+  { value: 'end2', label: 'end2' },
+  { value: 'end3', label: 'end3' },
+  { value: 'add1', label: 'add1' },
+  { value: 'add2', label: 'add2' },
+];
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -59,35 +67,38 @@ const createLists = columns => {
 
 const Species = () => {
   const [columns, setColumns] = useState(initialData);
-
+  // const [searchItem, setSearchItem] = useState('');
+  // const highlightSearch = e => {
+  //   console.log('e', e);
+  //   setSearchItem(e.value);
+  // };
   return (
-    <Box ml="171px" mr="171px">
-      <Heading align="left" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
-        Species List
-      </Heading>
-      <VStack spacing={4} align="stretch">
-        <strong>Search for a Species:</strong>
-        <DropdownSearch />
-        <Flex align="center">
-          <Flex align="flex-end">
-            <Text as="i">
-              {' '}
-              Note: Adding a listed species will create a new section on the monitor log.{' '}
-            </Text>
+    <Stack w="container.xl" justify-content="center">
+      <VStack align="left" w="70%">
+        <Heading fontWeight="600" fontSize="36px" mb="40px" mt="40px">
+          Species List
+        </Heading>
+        <VStack spacing={4} align="stretch">
+          <strong>Search for a Species:</strong>
+          <DropdownSearch options={options} />
+          <Flex align="center">
+            <Flex align="flex-end">
+              <Text as="i">
+                {' '}
+                Note: Adding a listed species will create a new section on the monitor log.{' '}
+              </Text>
+            </Flex>
+            <Spacer />
+            <NewSpeciesButton />
           </Flex>
-          <Spacer />
-          <Button bg="#2D3748" color="#F7FAFC">
-            {' '}
-            + New Species{' '}
-          </Button>
-        </Flex>
-        <Container width="container.xl">
-          <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
-            {createLists(columns)}
-          </DragDropContext>
-        </Container>
+          <VStack align="flex-start" spacing="1.5em">
+            <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
+              {createLists(columns)}
+            </DragDropContext>
+          </VStack>
+        </VStack>
       </VStack>
-    </Box>
+    </Stack>
   );
 };
 export default Species;
