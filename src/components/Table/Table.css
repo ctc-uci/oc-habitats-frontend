@@ -23,6 +23,25 @@ html { font-family: 'Inter', sans-serif; }
   height: 40px;
 }
 
+.sort-by {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 10px;
+}
+
+.sort-options{
+  width: 100%;
+  /*min-width: 20px;
+  max-height: 30px;
+
+
+  height: 30px;
+
+  float: right;
+  align-items: right;
+  align-self: right;*/
+}
+
 .footer-container {
   overflow-y: auto;
   min-width: 900px;

@@ -26,6 +26,7 @@ import {
   Avatar,
   VStack,
   Box,
+  Button,
   HStack
 } from "@chakra-ui/react";
 import {
@@ -35,7 +36,7 @@ import {
   ChevronDownIcon,
   Search2Icon,
 } from "@chakra-ui/icons";
-import { BsFillClockFill, BsFillPersonFill } from "react-icons/bs";
+import { BsFillClockFill, BsFillPersonFill, BsThreeDotsVertical } from "react-icons/bs";
 import { AiFillTag } from "react-icons/ai";
 
 //import makeData from "./makeData";
@@ -221,6 +222,33 @@ function getAssignedSegments(status) {
   }
 
 }
+/*
+<VStack>
+      <Icon viewBox='0 0 100 100' >
+        <path
+          fill='currentColor'
+          d='M 20, 20 m -15, 0 a 15,15 0 1,0 30,0 a 15,15 0 1,0 -30,0'
+        />
+      </Icon>
+      <Icon viewBox='0 0 100 100' >
+        <path
+          fill='currentColor'
+          d='M 20, 20 m -15, 0 a 15,15 0 1,0 30,0 a 15,15 0 1,0 -30,0'
+        />
+      </Icon>
+      <Icon viewBox='0 0 100 100' >
+        <path
+          fill='currentColor'
+          d='M 20, 20 m -15, 0 a 15,15 0 1,0 30,0 a 15,15 0 1,0 -30,0'
+        />
+      </Icon>
+    </VStack>
+*/
+function getButton(){
+  return (
+    <IconButton icon={<BsThreeDotsVertical />} position="static" />
+  )
+}
 
 // Custom component to render TrainingStatus
 const TrainingStatus = ({ value }) => {
@@ -236,6 +264,10 @@ const LastUpdated = ({ value }) => {
 const AssignedSegments = ({ value }) => {
   return getAssignedSegments(value);
 };
+
+const ViewEditProfile = () => {
+  return getButton();
+}
 
 // Custom component to render Name
 const Name = ({ value }) => {
@@ -315,14 +347,27 @@ function PeopleTable({ columns, data }) {
   );
 
   // Render the UI for your table
+
+  // Needs to be updated such that sorting is possible
   return (
     <>
       <div>
-        <GlobalFilter className="search-bar"
-          preGlobalFilteredRows={preGlobalFilteredRows}
-          globalFilter={state.globalFilter}
-          setGlobalFilter={setGlobalFilter}
-        />
+        <Flex justifyContent="space-between">
+          <GlobalFilter className="search-bar"
+            preGlobalFilteredRows={preGlobalFilteredRows}
+            globalFilter={state.globalFilter}
+            setGlobalFilter={setGlobalFilter}
+          />
+          <div style={{display: "flex", justifyContent: "right", width: "50%"}}>
+            <p className="sort-by" >
+              SORT BY
+            </p>
+            <Select className="sort-options" width="30%" >
+              <option value='option1'>Name: A-Z</option>
+              <option value='option2'>Name: Z-A</option>
+            </Select>
+          </div>
+        </Flex>
       </div>
       <div className="table-container">
         <Table {...getTableProps()}>
@@ -453,6 +498,11 @@ function App() {
         accessor: "assignedSegments",
         //icon: <Icon as={AiFillTag} mr={1} />,
         Cell: ({ cell: { value } }) => <AssignedSegments value={value}/>
+      },
+      {
+        Header: "",
+        accessor: "button",
+        Cell: <ViewEditProfile />,
       },
     ],
     []
