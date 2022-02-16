@@ -14,12 +14,13 @@ const initialData = {
   additional: { id: 'additional', name: 'Additional Species', speciesIds: [] },
 };
 
-const options = [
+const dummyOptions = [
   { value: 'end1', label: 'end1' },
   { value: 'end2', label: 'end2' },
   { value: 'end3', label: 'end3' },
   { value: 'add1', label: 'add1' },
   { value: 'add2', label: 'add2' },
+  { value: 'add3', label: 'add3' },
 ];
 
 const onDragEnd = (result, columns, setColumns) => {
@@ -52,7 +53,7 @@ const onDragEnd = (result, columns, setColumns) => {
   input: columns - contains id, names of columns, and species that belong to each column
   populates the page with each type of column and the species that belong to them
 */
-const createLists = columns => {
+const createLists = (columns, searchItem) => {
   // Sort the species alphabetically for each column in case stored data is out of order
   Object.entries(columns).forEach(column => {
     column[1].speciesIds.sort();
@@ -61,17 +62,27 @@ const createLists = columns => {
   // Create DroppableLists by iterating over each column in columns
   // Will pass in the species that belong to each list as well as their titles and ids
   return Object.entries(columns).map(([id, col]) => {
-    return <DroppableList key={id} name={col.name} species={col.speciesIds} colID={id} />;
+    return (
+      <DroppableList
+        key={id}
+        name={col.name}
+        species={col.speciesIds}
+        colID={id}
+        searchItem={searchItem}
+      />
+    );
   });
 };
 
 const Species = () => {
   const [columns, setColumns] = useState(initialData);
-  // const [searchItem, setSearchItem] = useState('');
-  // const highlightSearch = e => {
-  //   console.log('e', e);
-  //   setSearchItem(e.value);
-  // };
+  const [options] = useState(dummyOptions);
+  const [searchItem, setSearchItem] = useState('');
+  const highlightSearch = e => {
+    if (e) setSearchItem(e.value);
+    else setSearchItem('');
+  };
+
   return (
     <Stack w="container.xl" justify-content="center">
       <VStack align="left" w="70%">
@@ -80,7 +91,7 @@ const Species = () => {
         </Heading>
         <VStack spacing={4} align="stretch">
           <strong>Search for a Species:</strong>
-          <DropdownSearch options={options} />
+          <DropdownSearch options={options} highlightSearch={highlightSearch} />
           <Flex align="center">
             <Flex align="flex-end">
               <Text as="i">
@@ -93,7 +104,7 @@ const Species = () => {
           </Flex>
           <VStack align="flex-start" spacing="1.5em">
             <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
-              {createLists(columns)}
+              {createLists(columns, searchItem)}
             </DragDropContext>
           </VStack>
         </VStack>
