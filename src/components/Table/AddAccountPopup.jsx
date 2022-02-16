@@ -14,6 +14,7 @@ import {
   Stack,
   Input,
 } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 
 function AddAccountPopup() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -26,8 +27,8 @@ function AddAccountPopup() {
   const adminEmailHandleChange = event => setAdminEmail(event.target.value);
   return (
     <>
-      <Button onClick={onOpen} colorScheme="blue" variant="solid">
-        Open Modal
+      <Button onClick={onOpen} colorScheme="blue" variant="solid" rightIcon={<AddIcon />}>
+        Create New Account
       </Button>
 
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
