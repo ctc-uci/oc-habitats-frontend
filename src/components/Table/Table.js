@@ -8,6 +8,7 @@ import {
   useGlobalFilter,
   useAsyncDebounce
 } from "react-table";
+import { Link } from "react-router-dom";
 import {
   Table,
   Thead,
@@ -27,7 +28,8 @@ import {
   VStack,
   Box,
   Button,
-  HStack
+  HStack,
+  Spacer
 } from "@chakra-ui/react";
 import {
   ChevronRightIcon,
@@ -35,6 +37,7 @@ import {
   ChevronUpIcon,
   ChevronDownIcon,
   Search2Icon,
+  EditIcon
 } from "@chakra-ui/icons";
 import { BsFillClockFill, BsFillPersonFill, BsThreeDotsVertical } from "react-icons/bs";
 import { AiFillTag } from "react-icons/ai";
@@ -351,6 +354,8 @@ function PeopleTable({ columns, data }) {
   // Needs to be updated such that sorting is possible
   return (
     <>
+      
+
       <div>
         <Flex justifyContent="space-between">
           <GlobalFilter className="search-bar"
@@ -367,6 +372,15 @@ function PeopleTable({ columns, data }) {
               <option value='option2'>Name: Z-A</option>
             </Select>
           </div>
+          <Flex>
+          <Spacer />      
+          <Link to={"/account"} style={{ textDecoration: 'none' }}>
+            <Button rightIcon={<EditIcon />} bg='#2BC0E3' color='#F7FAFC' variant='solid'>
+              Edit Segment Assignments
+            </Button>
+          </Link>
+          
+        </Flex>
         </Flex>
       </div>
       <div className="table-container">
