@@ -1,6 +1,8 @@
 import { useState, React } from 'react';
-import { VStack, Container, Heading, Button } from '@chakra-ui/react';
+import { VStack, Container, Heading, Button, Flex, Spacer} from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { FiEdit2 } from "react-icons/fi";
 import App from '../components/Table/Table';
 import AddAccountPopup from '../components/Table/AddAccountPopup';
 
@@ -12,8 +14,18 @@ const PeoplePage = () => {
         <Heading fontWeight="600" fontSize="36px" mb="40px" mt="40px" align="left">
           People
         </Heading>
-        <AddAccountPopup />
+        <Flex justifyContent="space-between">
+          <AddAccountPopup />
+          <Flex>
+              <Spacer />      
+              <Link to={"/account"} style={{ textDecoration: 'none' }}>
+              <Button rightIcon={<FiEdit2 />} bg='#2BC0E3' color='#F7FAFC' variant='solid'>
+                  Edit Segment Assignments
+              </Button>
+              </Link>
 
+          </Flex>
+        </Flex>
         <Heading fontWeight="600" fontSize="20px" mb="20px" mt="40px" align="left">
           Volunteers
         </Heading>
