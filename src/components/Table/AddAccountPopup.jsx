@@ -67,7 +67,10 @@ function AddAccountPopup() {
             </Button>
             <Button
               colorScheme="blue"
-              disabled={volInput === '' && (adminEmail === '' || adminName === '')}
+              disabled={
+                (value === 1 && volInput === '') ||
+                (value === 2 && (adminEmail === '' || adminName === ''))
+              }
             >
               Create New User
             </Button>
