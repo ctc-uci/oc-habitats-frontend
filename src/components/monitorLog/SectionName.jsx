@@ -1,5 +1,4 @@
-import { InfoIcon, AddIcon } from '@chakra-ui/icons';
-import { GrEdit } from 'react-icons/gr';
+import { InfoIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { FaRegSave } from 'react-icons/fa';
 import {
   Button,
@@ -37,61 +36,12 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import Search from 'react-select';
+import PropTypes from 'prop-types';
 import 'react-datepicker/dist/react-datepicker.css';
 import './SectionName.css';
 
-function AddPartnersPopup() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  return (
-    <>
-      <Button w="50%" rightIcon={<AddIcon />} onClick={onOpen}>
-        Add Partner
-      </Button>
-
-      <Modal size="3xl" isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Monitoring Session Partners</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <VStack spacing="14px" align="left">
-              <Alert variant="solid">
-                <AlertIcon />
-                <AlertTitle>
-                  Add or remove group members for this monitor log submission.
-                </AlertTitle>
-              </Alert>
-              <Spacer />
-              <Text>
-                You may submit this monitoring log as a group if you completed this monitoring
-                session as a group. You can change the goup below. Session Partners added/removed
-                will be notified by email.
-              </Text>
-              <Spacer />
-              <Text fontWeight="500" fontSize="md">
-                Add Volunteer
-              </Text>
-              <Select placeholder="Search volunteer by name or email..." />
-            </VStack>
-          </ModalBody>
-          <ModalFooter>
-            <HStack spacing="15px">
-              <Button onClick={onClose} variant="ghost">
-                Cancel
-              </Button>
-              <Button colorScheme="gray" rightIcon={<FaRegSave />}>
-                Save
-              </Button>
-            </HStack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-}
-
-function SectionName() {
+function SectionName({ options }) {
   const [startDate, setDate] = useState(new Date());
   const [startPeriod, setStartPeriod] = useState(true);
   const [endPeriod, setEndPeriod] = useState(true);
@@ -105,35 +55,130 @@ function SectionName() {
     ],
   };
 
-  const rows = [];
+  let uniqueID = 1;
 
-  const [partners, setSpecies] = useState(rows);
+  const [partners, setPartners] = useState([]);
+  const [popup, setPopup] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const editInfo = () => {
-    return ['Hello', 'World'];
+  const handleDeleteRow = (table, index) => {
+    const newData = table.filter((row, i) => i !== index);
+    if (table === partners) {
+      setPartners(newData);
+      setPopup(newData);
+    } else {
+      setPopup(newData);
+    }
   };
 
-  const handleRowClick = index => {
-    const newData = [...partners];
-    const [name, email] = editInfo();
-    newData[index].name = name;
-    newData[index].name = email;
-    setSpecies(newData);
+  const handleAddRow = v => {
+    if (v !== null) {
+      const newData = {
+        id: uniqueID,
+        name: v.name,
+        email: v.email,
+      };
+      uniqueID += 1;
+      setPopup(
+        [...popup, newData].sort((a, b) => {
+          if (a.name > b.name) return 1;
+          if (a.name < b.name) return -1;
+          return 0;
+        }),
+      );
+    }
   };
 
   const createTable = m => {
     return m.map((row, index) => (
       <Tr height="72px" key={row.id}>
-        <Td paddingRight="8px">
-          <IconButton size="md" onChange={() => handleRowClick(index)} icon={<GrEdit />} />
-        </Td>
         <Td>
-          {row.name}
-          {row.email}
+          <HStack spacing="26px">
+            <IconButton size="md" icon={<DeleteIcon />} onClick={() => handleDeleteRow(m, index)} />
+            <VStack alignItems="flex.start">
+              <Text>{row.name}</Text>
+              <Text>{row.email}</Text>
+            </VStack>
+          </HStack>
         </Td>
       </Tr>
     ));
   };
+
+  const changeTable = () => {
+    setPartners(popup);
+    onClose();
+  };
+
+  const closeTable = () => {
+    setPopup(partners);
+    onClose();
+  };
+
+  function AddPartnersPopup() {
+    return (
+      <>
+        <Button w="50%" rightIcon={<AddIcon />} onClick={onOpen}>
+          Add Partner
+        </Button>
+
+        <Modal size="3xl" isOpen={isOpen} onClose={closeTable}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Monitoring Session Partners</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <VStack spacing="14px" align="left">
+                <Alert variant="solid">
+                  <AlertIcon />
+                  <AlertTitle>
+                    Add or remove group members for this monitor log submission.
+                  </AlertTitle>
+                </Alert>
+                <Spacer />
+                <Text>
+                  You may submit this monitoring log as a group if you completed this monitoring
+                  session as a group. You can change the group below. Session Partners added/removed
+                  will be notified by email.
+                </Text>
+                <Spacer />
+                <Text fontWeight="500" fontSize="md">
+                  Add Volunteer
+                </Text>
+                <Search
+                  placeholder="Search volunteer by name or email..."
+                  options={options.sort((a, b) => {
+                    if (a.name > b.name) return 1;
+                    if (a.name < b.name) return -1;
+                    return 0;
+                  })}
+                  onChange={option => handleAddRow(option)}
+                />
+                <Table id="partnertable">
+                  <Th h="32px" bg="#F7FAFC">
+                    Partner Information
+                  </Th>
+                  <Tbody h="72px" bg="#FFFFFF">
+                    {createTable(popup)}
+                  </Tbody>
+                </Table>
+              </VStack>
+            </ModalBody>
+            <ModalFooter>
+              <HStack spacing="15px">
+                <Button onClick={closeTable} variant="ghost">
+                  Cancel
+                </Button>
+                <Button colorScheme="gray" rightIcon={<FaRegSave />} onClick={changeTable}>
+                  Save
+                </Button>
+              </HStack>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  }
 
   return (
     <div>
@@ -299,7 +344,7 @@ function SectionName() {
               </VStack>
             </GridItem>
           </SimpleGrid>
-          <Table w="50%">
+          <Table id="partnertable" w="50%">
             <Th h="32px" bg="#F7FAFC">
               Partner Information
             </Th>
@@ -313,5 +358,17 @@ function SectionName() {
     </div>
   );
 }
+
+// const tupple = ()
+SectionName.propTypes = {
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+};
 
 export default SectionName;

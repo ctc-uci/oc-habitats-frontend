@@ -6,6 +6,21 @@ import HumanActivity from '../components/monitorLog/HumanActivity';
 
 import SectionName from '../components/monitorLog/SectionName';
 
+const options = [
+  {
+    value: 'Dave (dave@gmail.com)',
+    label: 'Dave (dave@gmail.com)',
+    name: 'Dave',
+    email: 'dave@gmail.com',
+  },
+  {
+    value: 'Brenda (brenda@gmail.com)',
+    label: 'Brenda (brenda@gmail.com)',
+    name: 'Brenda',
+    email: 'brenda@gmail.com',
+  },
+];
+
 const MonitorLogPage = () => {
   return (
     <Box ml="171px" mr="171px">
@@ -40,7 +55,7 @@ const MonitorLogPage = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <SectionName />
+            <SectionName options={options} />
           </TabPanel>
           <TabPanel>
             <p>Least Terns</p>
