@@ -169,7 +169,7 @@ function SectionName() {
                   Survey Start Time
                 </Text>
                 <InputGroup>
-                  <Input placeholder="7:00" />
+                  <Input className="without-meridiem" defaultValue="07:00" type="time" />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleStartTimeClick}>
                       {startPeriod ? 'AM' : 'PM'}
@@ -184,7 +184,7 @@ function SectionName() {
                   Survey End Time
                 </Text>
                 <InputGroup>
-                  <Input placeholder="7:00" />
+                  <Input className="without-meridiem" defaultValue="07:00" type="time" />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleEndTimeClick}>
                       {endPeriod ? 'AM' : 'PM'}
