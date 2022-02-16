@@ -1,7 +1,9 @@
-import { Box, Heading, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Box, HStack, Heading, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import React from 'react';
 import AdditionalSpecies from '../components/monitorLog/AdditionalSpecies';
-import PredatorsHumanActivity from '../components/monitorLog/PredatorsHumanActivity';
+import Predators from '../components/monitorLog/Predators';
+import HumanActivity from '../components/monitorLog/HumanActivity';
+
 import SectionName from '../components/monitorLog/SectionName';
 
 const MonitorLogPage = () => {
@@ -10,22 +12,38 @@ const MonitorLogPage = () => {
       <Heading align="center" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
         Coastal Dune Habitat Survey Log
       </Heading>
-      <Tabs variant="soft-rounded">
-        <TabList>
-          <Tab>General Info</Tab>
-          <Tab>Least Tern</Tab>
-          <Tab>Snowy Polvers</Tab>
-          <Tab>Additional Species</Tab>
-          <Tab>Predators</Tab>
-          <Tab>Human Activity</Tab>
-          <Tab>Review and Submit</Tab>
+      <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange">
+        <TabList p="32px" alignItems="center">
+          <HStack spacing="24px">
+            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+              General Info
+            </Tab>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+              Least Terns
+            </Tab>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+              Snowy Plovers
+            </Tab>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+              Additional Species
+            </Tab>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+              Predators
+            </Tab>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+              Human Activity
+            </Tab>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+              Review and Submit
+            </Tab>
+          </HStack>
         </TabList>
         <TabPanels>
           <TabPanel>
             <SectionName />
           </TabPanel>
           <TabPanel>
-            <p>Least Tern</p>
+            <p>Least Terns</p>
           </TabPanel>
           <TabPanel>
             <p>Snowy Plovers</p>
@@ -34,10 +52,10 @@ const MonitorLogPage = () => {
             <AdditionalSpecies />
           </TabPanel>
           <TabPanel>
-            <PredatorsHumanActivity />
+            <Predators />
           </TabPanel>
           <TabPanel>
-            <p>Human Activity</p>
+            <HumanActivity />
           </TabPanel>
           <TabPanel>
             <p>Review and Submit!</p>
