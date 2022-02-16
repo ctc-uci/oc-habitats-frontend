@@ -45,12 +45,14 @@ function AddAccountPopup() {
             </RadioGroup>
             {value === '1' && (
               <Stack columnt="vertical">
+                <br />
                 <p>Enter volunteer&apos;s email:</p>
                 <Input variant="filled" value={volInput} onChange={volHandleChange} />
               </Stack>
             )}
             {value === '2' && (
               <Stack column="vertical">
+                <br />
                 <p>Enter admin&apos;s name:</p>
                 <Input variant="filled" value={adminName} onChange={adminNameHandleChange} />
                 <p>
