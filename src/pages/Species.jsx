@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heading, Flex, Spacer, Stack, Text, VStack } from '@chakra-ui/react';
+import { Box, Center, Flex, Spacer, Stack, Text, VStack } from '@chakra-ui/react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import NewSpeciesButton from '../components/NewSpeciesButton';
 import DropdownSearch from '../components/DropdownSearch';
@@ -84,32 +84,33 @@ const Species = () => {
   };
 
   return (
-    <Stack w="container.xl" justify-content="center">
-      <VStack align="left" w="70%">
-        <Heading fontWeight="600" fontSize="36px" mb="40px" mt="40px">
-          Species List
-        </Heading>
-        <VStack spacing={4} align="stretch">
-          <strong>Search for a Species:</strong>
-          <DropdownSearch options={options} highlightSearch={highlightSearch} />
-          <Flex align="center">
-            <Flex align="flex-end">
-              <Text as="i">
-                {' '}
-                Note: Adding a listed species will create a new section on the monitor log.{' '}
-              </Text>
+    <Center>
+      <Stack w="container.xl" justify-content="center">
+        <VStack align="left" spacing="1.5em" w="100%" bgColor="yellow.400">
+          <Text fontWeight="600" fontSize="36px" mt="40px">
+            Species List
+          </Text>
+          <VStack spacing={2} align="stretch">
+            <strong>Search for a Species:</strong>
+            <Box w="32.5%">
+              <DropdownSearch options={options} highlightSearch={highlightSearch} />
+            </Box>
+            <Flex align="center">
+              <Flex align="flex-end">
+                <Text as="i">
+                  Note: Adding a listed species will create a new section on the monitor log.
+                </Text>
+              </Flex>
+              <Spacer />
+              <NewSpeciesButton />
             </Flex>
-            <Spacer />
-            <NewSpeciesButton />
-          </Flex>
-          <VStack align="flex-start" spacing="1.5em">
-            <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
-              {createLists(columns, searchItem)}
-            </DragDropContext>
           </VStack>
+          <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
+            {createLists(columns, searchItem)}
+          </DragDropContext>
         </VStack>
-      </VStack>
-    </Stack>
+      </Stack>
+    </Center>
   );
 };
 export default Species;

@@ -52,15 +52,15 @@ function NewSpeciesButton() {
             }}
           />
           <ModalBody>
-            <HStack>
+            <HStack mt="2.5em">
               <InputGroup>
                 <VStack align="left">
                   <Text>Species Name</Text>
-                  <Input placeholder="Enter Name" />
+                  <Input placeholder="Enter Name" style={{ width: '15em' }} />
                 </VStack>
                 <VStack align="left">
                   <Text>Species Code</Text>
-                  <Input placeholder="Enter Code" />
+                  <Input placeholder="Enter Code" style={{ width: '8.5em' }} />
                 </VStack>
               </InputGroup>
             </HStack>

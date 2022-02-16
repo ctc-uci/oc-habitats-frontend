@@ -3,7 +3,12 @@ import Select from 'react-select';
 import PropTypes from 'prop-types';
 
 const DropdownSearch = ({ options, highlightSearch }) => (
-  <Select options={options} onChange={highlightSearch} isClearable />
+  <Select
+    placeholder="Enter species name..."
+    options={options}
+    onChange={highlightSearch}
+    isClearable
+  />
 );
 
 DropdownSearch.defaultProps = {
