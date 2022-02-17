@@ -21,7 +21,7 @@ import {
   Spacer,
 } from '@chakra-ui/react';
 
-function NewSpeciesButton({ addNewSpecies }) {
+function NewSpeciesModal({ addNewSpecies }) {
   const [isToggled, setIsToggled] = useState(false);
   const [speciesName, setSpeciesName] = useState(null);
   const [speciesCode, setSpeciesCode] = useState(null);
@@ -134,12 +134,12 @@ function NewSpeciesButton({ addNewSpecies }) {
   );
 }
 
-NewSpeciesButton.defaultProps = {
+NewSpeciesModal.defaultProps = {
   addNewSpecies: PropTypes.func,
 };
 
-NewSpeciesButton.propTypes = {
+NewSpeciesModal.propTypes = {
   addNewSpecies: PropTypes.func,
 };
 
-export default NewSpeciesButton;
+export default NewSpeciesModal;
