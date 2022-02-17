@@ -3,8 +3,7 @@ import React from 'react';
 import AdditionalSpecies from '../components/monitorLog/AdditionalSpecies';
 import Predators from '../components/monitorLog/Predators';
 import HumanActivity from '../components/monitorLog/HumanActivity';
-
-import SectionName from '../components/monitorLog/SectionName';
+import GeneralInfo from '../components/monitorLog/GeneralInfo';
 
 const options = [
   {
@@ -34,10 +33,10 @@ const MonitorLogPage = () => {
               General Info
             </Tab>
             <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
-              Least Terns
+              Least Tern
             </Tab>
             <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
-              Snowy Plovers
+              Snow Plover
             </Tab>
             <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
               Additional Species
@@ -55,7 +54,7 @@ const MonitorLogPage = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <SectionName options={options} />
+            <GeneralInfo options={options} />
           </TabPanel>
           <TabPanel>
             <p>Least Terns</p>

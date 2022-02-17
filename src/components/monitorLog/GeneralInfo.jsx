@@ -39,9 +39,9 @@ import DatePicker from 'react-datepicker';
 import Search from 'react-select';
 import PropTypes from 'prop-types';
 import 'react-datepicker/dist/react-datepicker.css';
-import './SectionName.css';
+import './GeneralInfo.css';
 
-function SectionName({ options }) {
+function GeneralInfo({ options }) {
   const [startDate, setDate] = useState(new Date());
   const [startPeriod, setStartPeriod] = useState(true);
   const [endPeriod, setEndPeriod] = useState(true);
@@ -360,7 +360,7 @@ function SectionName({ options }) {
 }
 
 // const tupple = ()
-SectionName.propTypes = {
+GeneralInfo.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string.isRequired,
@@ -371,4 +371,4 @@ SectionName.propTypes = {
   ).isRequired,
 };
 
-export default SectionName;
+export default GeneralInfo;
