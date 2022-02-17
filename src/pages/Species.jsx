@@ -76,11 +76,24 @@ const createLists = (columns, searchItem) => {
 
 const Species = () => {
   const [columns, setColumns] = useState(initialData);
-  const [options] = useState(dummyOptions);
+  const [options, setOptions] = useState(dummyOptions);
   const [searchItem, setSearchItem] = useState('');
   const highlightSearch = e => {
     if (e) setSearchItem(e.value);
     else setSearchItem('');
+  };
+
+  const addNewSpecies = newSpecies => {
+    setOptions(prev => {
+      return [...prev, { value: newSpecies.name, label: newSpecies.name }];
+    });
+    setColumns({
+      ...columns,
+      [newSpecies.group]: {
+        ...columns[newSpecies.group],
+        speciesIds: [...columns[newSpecies.group].speciesIds, newSpecies.name],
+      },
+    });
   };
 
   return (
@@ -102,7 +115,7 @@ const Species = () => {
                 </Text>
               </Flex>
               <Spacer />
-              <NewSpeciesModal />
+              <NewSpeciesModal addNewSpecies={addNewSpecies} />
             </Flex>
           </VStack>
           <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
