@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Center, Flex, Spacer, Stack, Text, VStack } from '@chakra-ui/react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import NewSpeciesButton from '../components/NewSpeciesButton';
+import NewSpeciesModal from '../components/NewSpeciesModal';
 import DropdownSearch from '../components/DropdownSearch';
 import DroppableList from '../components/DroppableList';
 
@@ -86,7 +86,7 @@ const Species = () => {
   return (
     <Center>
       <Stack w="container.xl" justify-content="center">
-        <VStack align="left" spacing="1.5em" w="100%" bgColor="yellow.400">
+        <VStack align="left" spacing="1.5em" w="100%">
           <Text fontWeight="600" fontSize="36px" mt="40px">
             Species List
           </Text>
@@ -102,7 +102,7 @@ const Species = () => {
                 </Text>
               </Flex>
               <Spacer />
-              <NewSpeciesButton />
+              <NewSpeciesModal />
             </Flex>
           </VStack>
           <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>

@@ -30,8 +30,8 @@ function NewSpeciesButton() {
   return (
     <>
       <Button
-        bg="#2D3748"
-        color="#F7FAFC"
+        bg="#F49923"
+        color="#4E4E4E"
         onClick={e => {
           e.preventDefault();
           setIsToggled(!isToggled);
@@ -40,10 +40,13 @@ function NewSpeciesButton() {
         {' '}
         + New Species{' '}
       </Button>
-      <Modal isOpen={isToggled}>
+      <Modal isOpen={isToggled} size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader align="center">Add a New Species</ModalHeader>
+          <ModalHeader align="center" fontWeight={650} fontSize="28px">
+            {' '}
+            Add a New Species{' '}
+          </ModalHeader>
 
           <ModalCloseButton
             onClick={e => {
@@ -52,45 +55,51 @@ function NewSpeciesButton() {
             }}
           />
           <ModalBody>
-            <HStack mt="2.5em">
+            <HStack m="1.5em 1em 3em 1em">
               <InputGroup>
-                <VStack align="left">
-                  <Text>Species Name</Text>
-                  <Input placeholder="Enter Name" style={{ width: '15em' }} />
+                <VStack align="left" mr="2em">
+                  <Text fontWeight={550} fontSize="18px">
+                    Species Name
+                  </Text>
+                  <Input placeholder="Enter Name" style={{ width: '18em' }} />
                 </VStack>
-                <VStack align="left">
-                  <Text>Species Code</Text>
-                  <Input placeholder="Enter Code" style={{ width: '8.5em' }} />
+                <VStack align="left" ml="1em">
+                  <Text fontWeight={550} fontSize="18px">
+                    Species Code
+                  </Text>
+                  <Input placeholder="Enter Code" style={{ width: '10em' }} />
                 </VStack>
               </InputGroup>
             </HStack>
             <Spacer />
             <RadioGroup defaultValue="2">
-              <Stack spacing={5} direction="column">
+              <Stack spacing={2} direction="column" m="1.5em 1em 2em 1em">
                 <Radio colorScheme="teal" value="1">
-                  Listed Species (Endangered)
+                  <Text fontWeight={475}>Listed Species (Endangered)</Text>
                 </Radio>
                 <Radio colorScheme="teal" value="2">
-                  Additional Species
+                  <Text fontWeight={475}>Additional Species</Text>
                 </Radio>
               </Stack>
             </RadioGroup>
           </ModalBody>
           <ModalFooter>
-            <Button
-              colorScheme="teal"
-              variant="outline"
-              mr={3}
-              onClick={e => {
-                e.preventDefault();
-                setIsToggled(false);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button colorScheme="teal" variant="solid">
-              Add Species
-            </Button>
+            <HStack spacing={4}>
+              <Button
+                colorScheme="teal"
+                variant="outline"
+                mr={3}
+                onClick={e => {
+                  e.preventDefault();
+                  setIsToggled(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button colorScheme="teal" variant="solid">
+                Add Species
+              </Button>
+            </HStack>
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import PropTypes from 'prop-types';
-import { Box, Flex, VStack, Heading } from '@chakra-ui/react';
+import { Flex, VStack, Heading } from '@chakra-ui/react';
 import DraggableItem from './DraggableItem';
 
 const DroppableList = ({ name, species, colID, searchItem }) => {
@@ -18,25 +18,23 @@ const DroppableList = ({ name, species, colID, searchItem }) => {
         <Heading fontWeight={450} fontSize="1em">
           {name}
         </Heading>
-        <Box bgColor="red.400" w="100%">
-          <Droppable droppableId={colID} direction="row">
-            {provided => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                {species.map((specie, index) => {
-                  return (
-                    <DraggableItem
-                      key={specie}
-                      specie={specie}
-                      index={index}
-                      searchItem={searchItem}
-                    />
-                  );
-                })}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </Box>
+        <Droppable droppableId={colID} direction="horizontal">
+          {provided => (
+            <Flex ref={provided.innerRef} {...provided.droppableProps}>
+              {species.map((specie, index) => {
+                return (
+                  <DraggableItem
+                    key={specie}
+                    specie={specie}
+                    index={index}
+                    searchItem={searchItem}
+                  />
+                );
+              })}
+              {provided.placeholder}
+            </Flex>
+          )}
+        </Droppable>
       </VStack>
     </Flex>
   );
