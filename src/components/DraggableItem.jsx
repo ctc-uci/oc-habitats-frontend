@@ -12,13 +12,14 @@ const DraggableItem = ({ specie, index, searchItem }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          borderColor="black"
+          borderColor="#CBD5E0"
           borderWidth="1px"
+          borderRadius="6px"
           pl=".75em"
-          w="40%"
+          w="100%"
           bgColor={searchItem === specie ? 'skyblue' : 'white'}
         >
-          <Text fontSize="1em" fontWeight={400}>
+          <Text fontSize="1em" fontWeight={450} color="#2D3748" p=".5em">
             {specie}
           </Text>
         </Box>

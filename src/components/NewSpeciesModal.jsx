@@ -22,10 +22,6 @@ import {
 } from '@chakra-ui/react';
 
 function NewSpeciesButton() {
-  // eslint-disable-next-line no-undef
-  // const { isOpen, onOpen, onClose } = useDisclosure();
-  // eslint-disable-next-line no-undef
-  // const { isOpen } = useDisclosure();
   const [isToggled, setIsToggled] = useState(false);
   return (
     <>
@@ -37,15 +33,13 @@ function NewSpeciesButton() {
           setIsToggled(!isToggled);
         }}
       >
-        {' '}
-        + New Species{' '}
+        + New Species
       </Button>
       <Modal isOpen={isToggled} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader align="center" fontWeight={650} fontSize="28px">
-            {' '}
-            Add a New Species{' '}
+            Add a New Species
           </ModalHeader>
 
           <ModalCloseButton

@@ -9,13 +9,13 @@ const initialData = {
   endangered: {
     id: 'endangered',
     name: 'Listed Species (Endangered)',
-    speciesIds: ['end1', 'end2', 'end3', 'add1', 'add2', 'add3'],
+    speciesIds: ['Plover: Snowy (WSPL)', 'end2', 'end3', 'add1', 'add2', 'add3'],
   },
   additional: { id: 'additional', name: 'Additional Species', speciesIds: [] },
 };
 
 const dummyOptions = [
-  { value: 'end1', label: 'end1' },
+  { value: 'Plover: Snowy (WSPL)', label: 'Plover: Snowy (WSPL)' },
   { value: 'end2', label: 'end2' },
   { value: 'end3', label: 'end3' },
   { value: 'add1', label: 'add1' },
@@ -85,7 +85,7 @@ const Species = () => {
 
   return (
     <Center>
-      <Stack w="container.xl" justify-content="center">
+      <Stack w="container.xl" justify-content="center" mb="4em">
         <VStack align="left" spacing="1.5em" w="100%">
           <Text fontWeight="600" fontSize="36px" mt="40px">
             Species List
@@ -95,9 +95,9 @@ const Species = () => {
             <Box w="32.5%">
               <DropdownSearch options={options} highlightSearch={highlightSearch} />
             </Box>
-            <Flex align="center">
-              <Flex align="flex-end">
-                <Text as="i">
+            <Flex align="end">
+              <Flex align="center">
+                <Text as="i" fontWeight={450}>
                   Note: Adding a listed species will create a new section on the monitor log.
                 </Text>
               </Flex>

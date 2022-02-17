@@ -2,7 +2,7 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import PropTypes from 'prop-types';
-import { Flex, VStack, Heading } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, Heading, VStack } from '@chakra-ui/react';
 import DraggableItem from './DraggableItem';
 
 const DroppableList = ({ name, species, colID, searchItem }) => {
@@ -11,28 +11,39 @@ const DroppableList = ({ name, species, colID, searchItem }) => {
       border="1px"
       borderRadius="5px"
       borderColor="#A0AEC0"
-      bgColor="#FBFBFB"
+      bgColor="#F7F7F7"
       justifyContent="center"
     >
-      <VStack bgColor="green.200" w="93%" align="left">
-        <Heading fontWeight={450} fontSize="1em">
+      <VStack w="93%" align="left" m="1.75em 0" spacing="1.6em">
+        <Heading fontWeight={450} fontSize="1.25em">
           {name}
         </Heading>
         <Droppable droppableId={colID} direction="horizontal">
           {provided => (
-            <Flex ref={provided.innerRef} {...provided.droppableProps}>
+            <Grid
+              templateColumns="repeat(3, 1fr)"
+              autoFlow="row dense"
+              w="100%"
+              columnGap="5em"
+              rowGap="1em"
+              minHeight="7em"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
               {species.map((specie, index) => {
                 return (
-                  <DraggableItem
-                    key={specie}
-                    specie={specie}
-                    index={index}
-                    searchItem={searchItem}
-                  />
+                  <GridItem key={specie}>
+                    <DraggableItem
+                      key={specie}
+                      specie={specie}
+                      index={index}
+                      searchItem={searchItem}
+                    />
+                  </GridItem>
                 );
               })}
               {provided.placeholder}
-            </Flex>
+            </Grid>
           )}
         </Droppable>
       </VStack>
