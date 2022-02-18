@@ -16,9 +16,10 @@ import {
   Tooltip,
   VStack,
 } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
 import React from 'react';
 
-function Predators() {
+function Predators(props) {
   return (
     <Container maxW="100vw">
       <VStack spacing="23px" align="left">
@@ -40,7 +41,14 @@ function Predators() {
                   <InfoIcon />
                 </Tooltip>
               </Flex>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalCrows(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -63,7 +71,14 @@ function Predators() {
                   <InfoIcon />
                 </Tooltip>
               </Flex>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalRavens(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -77,7 +92,14 @@ function Predators() {
               <Text fontWeight="500" fontSize="md">
                 Raptors
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalRaptors(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -91,7 +113,14 @@ function Predators() {
               <Text fontWeight="500" fontSize="md">
                 Horses
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalHorses(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -105,7 +134,14 @@ function Predators() {
               <Text fontWeight="500" fontSize="md">
                 Coyotes
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalCoyotes(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -119,7 +155,14 @@ function Predators() {
               <Text fontWeight="500" fontSize="md">
                 Foxes
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalFoxes(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -133,7 +176,14 @@ function Predators() {
               <Text fontWeight="500" fontSize="md">
                 Cats
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalCats(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -157,7 +207,13 @@ function Predators() {
               <InfoIcon />
             </Tooltip>
           </HStack>
-          <Textarea width="536px" placeholder="Type here..." />
+          <Textarea
+            width="536px"
+            placeholder="Type here..."
+            onChange={e => {
+              props.setOtherPredators(e.target.value);
+            }}
+          />
           <Spacer />
           <Spacer />
         </VStack>
@@ -165,5 +221,27 @@ function Predators() {
     </Container>
   );
 }
+
+Predators.defaultProps = {
+  setTotalCrows: PropTypes.func,
+  setTotalRavens: PropTypes.func,
+  setTotalRaptors: PropTypes.func,
+  setTotalHorses: PropTypes.func,
+  setTotalCoyotes: PropTypes.func,
+  setTotalFoxes: PropTypes.func,
+  setTotalCats: PropTypes.func,
+  setOtherPredators: PropTypes.func,
+};
+
+Predators.propTypes = {
+  setTotalCrows: PropTypes.func,
+  setTotalRavens: PropTypes.func,
+  setTotalRaptors: PropTypes.func,
+  setTotalHorses: PropTypes.func,
+  setTotalCoyotes: PropTypes.func,
+  setTotalFoxes: PropTypes.func,
+  setTotalCats: PropTypes.func,
+  setOtherPredators: PropTypes.func,
+};
 
 export default Predators;

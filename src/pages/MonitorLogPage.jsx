@@ -1,5 +1,5 @@
 import { Box, HStack, Heading, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import AdditionalSpecies from '../components/monitorLog/AdditionalSpecies';
 import Predators from '../components/monitorLog/Predators';
 import HumanActivity from '../components/monitorLog/HumanActivity';
@@ -21,6 +21,27 @@ const options = [
 ];
 
 const MonitorLogPage = () => {
+  const [totalCrows, setTotalCrows] = useState(0);
+  const [totalRavens, setTotalRavens] = useState(0);
+  const [totalRaptors, setTotalRaptors] = useState(0);
+  const [totalHorses, setTotalHorses] = useState(0);
+  const [totalCoyotes, setTotalCoyotes] = useState(0);
+  const [totalFoxes, setTotalFoxes] = useState(0);
+  const [totalCats, setTotalCats] = useState(0);
+  const [otherPredators, setOtherPredators] = useState();
+  const [totalSitting, setTotalSitting] = useState(0);
+  const [totalWalkingRunning, setTotalWalkingRunning] = useState(0);
+  const [totalBikes, setTotalBikes] = useState(0);
+  const [totalSurfers, setTotalSurfers] = useState(0);
+  const [totalSports, setTotalSports] = useState(0);
+  const [totalFires, setTotalFires] = useState(0);
+  const [totalFishing, setTotalFishing] = useState(0);
+  const [totalVehicles, setTotalVehicles] = useState(0);
+  const [totalEquipmentATV, setTotalEquipmentATV] = useState(0);
+  const [totalDogsOnLeash, setTotalDogsOnLeash] = useState(0);
+  const [totalDogsOffLeash, setTotalDogsOffLeash] = useState(0);
+  const [outreachNotes, setOutreachNotes] = useState();
+  const [otherNotes, setOtherNotes] = useState();
   return (
     <Box ml="171px" mr="171px">
       <Heading align="center" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
@@ -66,13 +87,45 @@ const MonitorLogPage = () => {
             <AdditionalSpecies />
           </TabPanel>
           <TabPanel>
-            <Predators />
+            <Predators
+              setTotalCrows={setTotalCrows}
+              setTotalRavens={setTotalRavens}
+              setTotalRaptors={setTotalRaptors}
+              setTotalHorses={setTotalHorses}
+              setTotalCoyotes={setTotalCoyotes}
+              setTotalFoxes={setTotalFoxes}
+              setTotalCats={setTotalCats}
+              setOtherPredators={setOtherPredators}
+            />
           </TabPanel>
           <TabPanel>
-            <HumanActivity />
+            <HumanActivity
+              setTotalSitting={setTotalSitting}
+              setTotalWalkingRunning={setTotalWalkingRunning}
+              setTotalBikes={setTotalBikes}
+              setTotalSurfers={setTotalSurfers}
+              setTotalSports={setTotalSports}
+              setTotalFires={setTotalFires}
+              setTotalFishing={setTotalFishing}
+              setTotalVehicles={setTotalVehicles}
+              setTotalEquipmentATV={setTotalEquipmentATV}
+              setTotalDogsOnLeash={setTotalDogsOnLeash}
+              setTotalDogsOffLeash={setTotalDogsOffLeash}
+              setTOutreachNotes={setOutreachNotes}
+              setOtherNotes={setOtherNotes}
+            />
           </TabPanel>
           <TabPanel>
-            <p>Review and Submit!</p>
+            <p>
+              {/* Printing values to avoid not-used eslint error */}
+              {/* Pass all these values into review and submit component */}
+              Review and Submit!{totalCrows} {totalRavens} {totalRaptors} {totalHorses}{' '}
+              {totalCoyotes} {totalFoxes} {totalCats} {otherPredators} {totalSitting}{' '}
+              {totalWalkingRunning} {totalBikes}
+              {totalSurfers} {totalSports} {totalFires} {totalFishing} {totalVehicles}{' '}
+              {totalEquipmentATV}
+              {totalDogsOnLeash} {totalDogsOffLeash} {outreachNotes} {otherNotes}
+            </p>
           </TabPanel>
         </TabPanels>
       </Tabs>

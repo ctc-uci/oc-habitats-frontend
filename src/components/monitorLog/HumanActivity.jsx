@@ -1,23 +1,24 @@
 import { InfoIcon } from '@chakra-ui/icons';
-import React from 'react';
 import {
   Container,
+  Flex,
   GridItem,
-  SimpleGrid,
-  Text,
-  VStack,
-  Spacer,
-  Textarea,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Flex,
+  SimpleGrid,
+  Spacer,
+  Text,
+  Textarea,
   Tooltip,
+  VStack,
 } from '@chakra-ui/react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-function HumanActivity() {
+function HumanActivity(props) {
   return (
     <Container maxW="100vw">
       <VStack spacing="23px" align="left">
@@ -30,7 +31,14 @@ function HumanActivity() {
               <Text fontWeight="500" fontSize="md">
                 Human Sitting
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalSitting(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -44,7 +52,14 @@ function HumanActivity() {
               <Text fontWeight="500" fontSize="md">
                 Human Walking/Running
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalWalkingRunning(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -58,7 +73,14 @@ function HumanActivity() {
               <Text fontWeight="500" fontSize="md">
                 Bikes
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalBikes(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -72,7 +94,14 @@ function HumanActivity() {
               <Text fontWeight="500" fontSize="md">
                 Surfers
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalSurfers(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -86,7 +115,14 @@ function HumanActivity() {
               <Text fontWeight="500" fontSize="md">
                 Sports
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalSports(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -100,7 +136,14 @@ function HumanActivity() {
               <Text fontWeight="500" fontSize="md">
                 Fires
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalFires(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -114,7 +157,14 @@ function HumanActivity() {
               <Text fontWeight="500" fontSize="md">
                 Fishing
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalFishing(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -128,7 +178,14 @@ function HumanActivity() {
               <Text fontWeight="500" fontSize="md">
                 Vehicles
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalVehicles(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -142,7 +199,14 @@ function HumanActivity() {
               <Text fontWeight="500" fontSize="md">
                 Equipment & ATV
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalEquipmentATV(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -156,7 +220,14 @@ function HumanActivity() {
               <Text fontWeight="500" fontSize="md">
                 Dogs ON Leash
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalDogsOnLeash(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -170,7 +241,14 @@ function HumanActivity() {
               <Text fontWeight="500" fontSize="md">
                 Dogs OFF Leash
               </Text>
-              <NumberInput step={1} defaultValue={0} min={0}>
+              <NumberInput
+                onChange={e => {
+                  props.setTotalDogsOffLeash(parseInt(e, 10));
+                }}
+                step={1}
+                defaultValue={0}
+                min={0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -191,7 +269,12 @@ function HumanActivity() {
               <InfoIcon />
             </Tooltip>
           </Flex>
-          <Textarea placeholder="Type here..." />
+          <Textarea
+            placeholder="Type here..."
+            onChange={e => {
+              props.setTOutreachNotes(e.target.value);
+            }}
+          />
           <Spacer />
           <Spacer />
         </VStack>
@@ -199,7 +282,12 @@ function HumanActivity() {
           <Text fontWeight="500" fontSize="md">
             Other Notes
           </Text>
-          <Textarea placeholder="Type here..." />
+          <Textarea
+            placeholder="Type here..."
+            onChange={e => {
+              props.setOtherNotes(e.target.value);
+            }}
+          />
           <Spacer />
           <Spacer />
         </VStack>
@@ -208,4 +296,35 @@ function HumanActivity() {
   );
 }
 
+HumanActivity.defaultProps = {
+  setTotalSitting: PropTypes.func,
+  setTotalWalkingRunning: PropTypes.func,
+  setTotalBikes: PropTypes.func,
+  setTotalSurfers: PropTypes.func,
+  setTotalSports: PropTypes.func,
+  setTotalFires: PropTypes.func,
+  setTotalFishing: PropTypes.func,
+  setTotalVehicles: PropTypes.func,
+  setTotalEquipmentATV: PropTypes.func,
+  setTotalDogsOnLeash: PropTypes.func,
+  setTotalDogsOffLeash: PropTypes.func,
+  setTOutreachNotes: PropTypes.func,
+  setOtherNotes: PropTypes.func,
+};
+
+HumanActivity.propTypes = {
+  setTotalSitting: PropTypes.func,
+  setTotalWalkingRunning: PropTypes.func,
+  setTotalBikes: PropTypes.func,
+  setTotalSurfers: PropTypes.func,
+  setTotalSports: PropTypes.func,
+  setTotalFires: PropTypes.func,
+  setTotalFishing: PropTypes.func,
+  setTotalVehicles: PropTypes.func,
+  setTotalEquipmentATV: PropTypes.func,
+  setTotalDogsOnLeash: PropTypes.func,
+  setTotalDogsOffLeash: PropTypes.func,
+  setTOutreachNotes: PropTypes.func,
+  setOtherNotes: PropTypes.func,
+};
 export default HumanActivity;
