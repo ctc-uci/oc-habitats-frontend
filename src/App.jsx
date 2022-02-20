@@ -7,6 +7,9 @@ import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
 import EndangeredSpecies from './pages/EndangeredSpecies';
 import AccountPage from './pages/AccountPage';
+import SectionPage from './pages/SectionPage';
+import MonitorLogPage from './pages/MonitorLogPage';
+import EndangeredSpecies from './pages/EndangeredSpecies';
 
 function App() {
   return (

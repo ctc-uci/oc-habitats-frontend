@@ -1,0 +1,13 @@
+#table-body {
+  color: black;
+  width: 100%;
+}
+
+#table-head{
+  background-color: #4E4E4E;
+  width: 100%;
+}
+
+#table-head th{
+  color: white;
+}
