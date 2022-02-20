@@ -7,9 +7,7 @@ import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
 import EndangeredSpecies from './pages/EndangeredSpecies';
 import AccountPage from './pages/AccountPage';
-import SectionPage from './pages/SectionPage';
-import MonitorLogPage from './pages/MonitorLogPage';
-import EndangeredSpecies from './pages/EndangeredSpecies';
+import AdminPage from './pages/AdminPage'; // monitor-log table
 
 function App() {
   return (
@@ -29,6 +27,7 @@ function App() {
           {/* Admin only routes (TO DO, make admin only) */}
           <Route exact path="/people" />
           <Route exact path="/logs" />
+          <Route exact path="/monitor-log" element={<AdminPage />} />
         </Routes>
       </Router>
     </ChakraProvider>
