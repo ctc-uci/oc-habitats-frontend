@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   useTable,
   usePagination,
@@ -6,13 +6,13 @@ import {
   useSortBy,
   useRowSelect,
   useGlobalFilter,
-  useAsyncDebounce
-} from "react-table";
+  useAsyncDebounce,
+} from 'react-table';
 import {
   Table,
   Thead,
   Tbody,
-  //Tfoot,
+  // Tfoot,
   Tr,
   Th,
   Td,
@@ -23,45 +23,41 @@ import {
   Select,
   Icon,
   Badge,
-  Avatar
-} from "@chakra-ui/react";
+  Avatar,
+} from '@chakra-ui/react';
 import {
   ChevronRightIcon,
   ChevronLeftIcon,
   ChevronUpIcon,
-  ChevronDownIcon
-} from "@chakra-ui/icons";
-import { BsFillClockFill, BsFillPersonFill } from "react-icons/bs";
-import { AiFillTag } from "react-icons/ai";
+  ChevronDownIcon,
+} from '@chakra-ui/icons';
+import { BsFillClockFill, BsFillPersonFill } from 'react-icons/bs';
+import { AiFillTag } from 'react-icons/ai';
 
-//import makeData from "./makeData";
-import "./App.css";
+// import makeData from "./makeData";
+import './App.css';
 
 // Define a default UI for filtering
-function GlobalFilter({
-  preGlobalFilteredRows,
-  globalFilter,
-  setGlobalFilter
-}) {
+function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) {
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = React.useState(globalFilter);
-  const onChange = useAsyncDebounce((value) => {
+  const onChange = useAsyncDebounce(value => {
     setGlobalFilter(value || undefined);
   }, 200);
 
   return (
     <span>
-      Search:{" "}
+      Search:{' '}
       <input
-        value={value || ""}
-        onChange={(e) => {
+        value={value || ''}
+        onChange={e => {
           setValue(e.target.value);
           onChange(e.target.value);
         }}
         placeholder={`${count} records...`}
         style={{
-          fontSize: "1.1rem",
-          border: "0"
+          fontSize: '1.1rem',
+          border: '0',
         }}
       />
     </span>
@@ -73,118 +69,64 @@ function createData(name, email, activeStatus, trainingStatus) {
     name,
     email,
     activeStatus,
-    trainingStatus
+    trainingStatus,
   };
 }
 
 // Some Test Static Data
 const makeRows = [
-  createData(
-    "Alexander Adebayo",
-    "alexander@chakra-ui.com",
-    "ACTIVE",
-    "In-Training"
-  ),
-  createData("Emily Sue", "emily@chakra-ui.com", "ACTIVE", "Training Complete"),
-  createData(
-    "Emmerick Hopkins",
-    "emmerick@chakra-ui.com",
-    "ACTIVE",
-    "In-Training"
-  ),
-  createData(
-    "Ophelia Santiago",
-    "ophelia@chakra-ui.com",
-    "ACTIVE",
-    "Training Complete"
-  ),
-  createData(
-    "Steve Rogers",
-    "steve@chakra-ui.com",
-    "ACTIVE",
-    "Training Complete"
-  ),
-  createData(
-    "Edward Elrich",
-    "edward@chakra-ui.com",
-    "INACTIVE",
-    "Training Complete"
-  ),
-  createData(
-    "Edward Elrich",
-    "edward@chakra-ui.com",
-    "INACTIVE",
-    "Training Complete"
-  ),
-  createData(
-    "Edward Elrich",
-    "edward@chakra-ui.com",
-    "INACTIVE",
-    "Training Complete"
-  ),
-  createData(
-    "Edward Elrich",
-    "edward@chakra-ui.com",
-    "INACTIVE",
-    "Training Complete"
-  ),
-  createData(
-    "Edward Elrich",
-    "edward@chakra-ui.com",
-    "INACTIVE",
-    "Training Complete"
-  ),
-  createData(
-    "Edward Elrich",
-    "edward@chakra-ui.com",
-    "INACTIVE",
-    "Training Complete"
-  )
+  createData('Alexander Adebayo', 'alexander@chakra-ui.com', 'ACTIVE', 'In-Training'),
+  createData('Emily Sue', 'emily@chakra-ui.com', 'ACTIVE', 'Training Complete'),
+  createData('Emmerick Hopkins', 'emmerick@chakra-ui.com', 'ACTIVE', 'In-Training'),
+  createData('Ophelia Santiago', 'ophelia@chakra-ui.com', 'ACTIVE', 'Training Complete'),
+  createData('Steve Rogers', 'steve@chakra-ui.com', 'ACTIVE', 'Training Complete'),
+  createData('Edward Elrich', 'edward@chakra-ui.com', 'INACTIVE', 'Training Complete'),
+  createData('Edward Elrich', 'edward@chakra-ui.com', 'INACTIVE', 'Training Complete'),
+  createData('Edward Elrich', 'edward@chakra-ui.com', 'INACTIVE', 'Training Complete'),
+  createData('Edward Elrich', 'edward@chakra-ui.com', 'INACTIVE', 'Training Complete'),
+  createData('Edward Elrich', 'edward@chakra-ui.com', 'INACTIVE', 'Training Complete'),
+  createData('Edward Elrich', 'edward@chakra-ui.com', 'INACTIVE', 'Training Complete'),
 ];
 
-const IndeterminateCheckbox = React.forwardRef(
-  ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef();
-    const resolvedRef = ref || defaultRef;
+const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
+  const defaultRef = React.useRef();
+  const resolvedRef = ref || defaultRef;
 
-    React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate;
-    }, [resolvedRef, indeterminate]);
+  React.useEffect(() => {
+    resolvedRef.current.indeterminate = indeterminate;
+  }, [resolvedRef, indeterminate]);
 
-    return (
-      <>
-        <input type="checkbox" ref={resolvedRef} {...rest} />
-      </>
-    );
-  }
-);
+  return (
+    <>
+      <input type="checkbox" ref={resolvedRef} {...rest} />
+    </>
+  );
+});
 
 function getActiveStatus(status) {
-  if (status === "ACTIVE") {
+  if (status === 'ACTIVE') {
     return (
       <Badge variant="solid" colorScheme="green">
         {status}
       </Badge>
     );
-  } else {
-    return <Badge variant="solid">{status}</Badge>;
   }
+  return <Badge variant="solid">{status}</Badge>;
 }
 
 function getTrainingStatus(status) {
-  if (status === "In-Training") {
+  if (status === 'In-Training') {
     return (
       <Badge variant="solid" colorScheme="orange">
         {status}
       </Badge>
     );
-  } else {
-    return (
-      <Badge variant="solid" colorScheme="purple">
-        {status}
-      </Badge>
-    );
   }
+  return (
+    <Badge variant="solid" colorScheme="purple">
+      {status}
+    </Badge>
+  );
 }
 
 // Custom component to render ActiveStatus
@@ -220,9 +162,9 @@ function PeopleTable({ columns, data }) {
     page, // used instead of rows
     canPreviousPage,
     canNextPage,
-    //pageOptions,
+    // pageOptions,
     rows,
-    //pageCount,
+    // pageCount,
     nextPage,
     previousPage,
     setPageSize,
@@ -230,26 +172,26 @@ function PeopleTable({ columns, data }) {
     setGlobalFilter,
     state,
     visibleColumns,
-    //selectedFlatRows,
-    state: { pageIndex, pageSize }
+    // selectedFlatRows,
+    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
       data,
       initialState: {
-        pageIndex: 0
-      }
+        pageIndex: 0,
+      },
     },
     useFilters, // useFilters!
     useGlobalFilter,
     useSortBy,
     usePagination,
     useRowSelect,
-    (hooks) => {
-      hooks.visibleColumns.push((columns) => [
+    hooks => {
+      hooks.visibleColumns.push(columns => [
         // Let's make a column for selection
         {
-          id: "selection",
+          id: 'selection',
           // The header can use the table's getToggleAllRowsSelectedProps method
           // to render a checkbox
           Header: ({ getToggleAllPageRowsSelectedProps }) => (
@@ -263,11 +205,11 @@ function PeopleTable({ columns, data }) {
             <div>
               <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
             </div>
-          )
+          ),
         },
-        ...columns
+        ...columns,
       ]);
-    }
+    },
   );
 
   // Render the UI for your table
@@ -280,7 +222,7 @@ function PeopleTable({ columns, data }) {
               <th
                 colSpan={visibleColumns.length}
                 style={{
-                  textAlign: "left"
+                  textAlign: 'left',
                 }}
               >
                 <GlobalFilter
@@ -290,16 +232,13 @@ function PeopleTable({ columns, data }) {
                 />
               </th>
             </tr>
-            {headerGroups.map((headerGroup) => (
+            {headerGroups.map(headerGroup => (
               <Tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <Th
-                    userSelect="none"
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                  >
+                {headerGroup.headers.map(column => (
+                  <Th userSelect="none" {...column.getHeaderProps(column.getSortByToggleProps())}>
                     <Flex alignItems="center">
                       {column.icon}
-                      {column.render("Header")}
+                      {column.render('Header')}
                       {column.isSorted ? (
                         column.isSortedDesc ? (
                           <ChevronDownIcon ml={1} w={4} h={4} />
@@ -307,7 +246,7 @@ function PeopleTable({ columns, data }) {
                           <ChevronUpIcon ml={1} w={4} h={4} />
                         )
                       ) : (
-                        ""
+                        ''
                       )}
                     </Flex>
                   </Th>
@@ -320,10 +259,8 @@ function PeopleTable({ columns, data }) {
               prepareRow(row);
               return (
                 <Tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
-                    );
+                  {row.cells.map(cell => {
+                    return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>;
                   })}
                 </Tr>
               );
@@ -335,16 +272,16 @@ function PeopleTable({ columns, data }) {
       <div className="footer-container">
         <Flex justifyContent="space-between" m={4} alignItems="center">
           <Flex alignItems="center">
-            <Text flexShrink="0">Show rows per page: </Text>{" "}
+            <Text flexShrink="0">Show rows per page: </Text>{' '}
             <Select
               ml={2}
               w={32}
               value={pageSize}
-              onChange={(e) => {
+              onChange={e => {
                 setPageSize(Number(e.target.value));
               }}
             >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
+              {[10, 20, 30, 40, 50].map(pageSize => (
                 <option key={pageSize} value={pageSize}>
                   {pageSize}
                 </option>
@@ -356,7 +293,7 @@ function PeopleTable({ columns, data }) {
             <Text flexShrink="0" mr={8}>
               <Text fontWeight="bold" as="span">
                 {1}-{pageSize * (pageIndex + 1) + 1}
-              </Text>{" "}
+              </Text>{' '}
               of <Text as="span">{rows.length}</Text>
             </Text>
             <Tooltip label="Previous Page">
@@ -385,34 +322,33 @@ function App() {
   const columns = React.useMemo(
     () => [
       {
-        Header: "Name",
-        accessor: (d) => `${d.name} ${d.email}`,
+        Header: 'Name',
+        accessor: d => `${d.name} ${d.email}`,
         icon: <Icon as={BsFillPersonFill} mr={1} />,
-        Cell: ({ cell: { value } }) => <Name value={value} />
+        Cell: ({ cell: { value } }) => <Name value={value} />,
       },
       // {
       //   Header: "Email",
       //   accessor: "email"
       // },
       {
-        Header: "Active Status",
-        accessor: "activeStatus",
+        Header: 'Active Status',
+        accessor: 'activeStatus',
         icon: <Icon as={BsFillClockFill} mr={1} />,
-        Cell: ({ cell: { value } }) => <ActiveStatus value={value} />
+        Cell: ({ cell: { value } }) => <ActiveStatus value={value} />,
       },
       {
-        Header: "Training Status",
-        accessor: "trainingStatus",
+        Header: 'Training Status',
+        accessor: 'trainingStatus',
         icon: <Icon as={AiFillTag} mr={1} />,
-        Cell: ({ cell: { value } }) => <TrainingStatus value={value} />
-      }
+        Cell: ({ cell: { value } }) => <TrainingStatus value={value} />,
+      },
     ],
-    []
+    [],
   );
 
   const data = React.useMemo(() => makeRows, []);
 
   return <PeopleTable columns={columns} data={data} />;
 }
-
 export default App;
