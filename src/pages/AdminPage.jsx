@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import { Th, Thead, Table, Td, Tr, Tbody, Heading, Checkbox, Select } from '@chakra-ui/react';
 import './AdminPage.css';
+import EditLogPopup from '../components/Table/EditLogPopup';
 
 const dummy = [
   {
@@ -73,6 +74,9 @@ const AdminPage = () => {
           <Td>{row.approved}</Td>
           <Td>{row.volunteer}</Td>
           <Td>{row.status}</Td>
+          <Td>
+            <EditLogPopup />
+          </Td>
         </Tr>
       ) : (
         <></>
