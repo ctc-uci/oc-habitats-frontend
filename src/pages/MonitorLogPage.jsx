@@ -111,7 +111,7 @@ const MonitorLogPage = () => {
               setTotalEquipmentATV={setTotalEquipmentATV}
               setTotalDogsOnLeash={setTotalDogsOnLeash}
               setTotalDogsOffLeash={setTotalDogsOffLeash}
-              setTOutreachNotes={setOutreachNotes}
+              setOutreachNotes={setOutreachNotes}
               setOtherNotes={setOtherNotes}
             />
           </TabPanel>

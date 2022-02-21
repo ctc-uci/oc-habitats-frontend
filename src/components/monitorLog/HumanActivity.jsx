@@ -19,6 +19,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function HumanActivity(props) {
+  const {
+    setTotalSitting,
+    setTotalWalkingRunning,
+    setTotalBikes,
+    setTotalSurfers,
+    setTotalSports,
+    setTotalFires,
+    setTotalFishing,
+    setTotalVehicles,
+    setTotalEquipmentATV,
+    setTotalDogsOnLeash,
+    setTotalDogsOffLeash,
+    setOutreachNotes,
+    setOtherNotes,
+  } = props;
   return (
     <Container maxW="100vw">
       <VStack spacing="23px" align="left">
@@ -33,7 +48,7 @@ function HumanActivity(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalSitting(parseInt(e, 10));
+                  setTotalSitting(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -54,7 +69,7 @@ function HumanActivity(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalWalkingRunning(parseInt(e, 10));
+                  setTotalWalkingRunning(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -75,7 +90,7 @@ function HumanActivity(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalBikes(parseInt(e, 10));
+                  setTotalBikes(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -96,7 +111,7 @@ function HumanActivity(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalSurfers(parseInt(e, 10));
+                  setTotalSurfers(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -117,7 +132,7 @@ function HumanActivity(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalSports(parseInt(e, 10));
+                  setTotalSports(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -138,7 +153,7 @@ function HumanActivity(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalFires(parseInt(e, 10));
+                  setTotalFires(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -159,7 +174,7 @@ function HumanActivity(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalFishing(parseInt(e, 10));
+                  setTotalFishing(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -180,7 +195,7 @@ function HumanActivity(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalVehicles(parseInt(e, 10));
+                  setTotalVehicles(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -201,7 +216,7 @@ function HumanActivity(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalEquipmentATV(parseInt(e, 10));
+                  setTotalEquipmentATV(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -222,7 +237,7 @@ function HumanActivity(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalDogsOnLeash(parseInt(e, 10));
+                  setTotalDogsOnLeash(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -243,7 +258,7 @@ function HumanActivity(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalDogsOffLeash(parseInt(e, 10));
+                  setTotalDogsOffLeash(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -272,7 +287,7 @@ function HumanActivity(props) {
           <Textarea
             placeholder="Type here..."
             onChange={e => {
-              props.setTOutreachNotes(e.target.value);
+              setOutreachNotes(e.target.value);
             }}
           />
           <Spacer />
@@ -285,7 +300,7 @@ function HumanActivity(props) {
           <Textarea
             placeholder="Type here..."
             onChange={e => {
-              props.setOtherNotes(e.target.value);
+              setOtherNotes(e.target.value);
             }}
           />
           <Spacer />
@@ -308,7 +323,7 @@ HumanActivity.defaultProps = {
   setTotalEquipmentATV: PropTypes.func,
   setTotalDogsOnLeash: PropTypes.func,
   setTotalDogsOffLeash: PropTypes.func,
-  setTOutreachNotes: PropTypes.func,
+  setOutreachNotes: PropTypes.func,
   setOtherNotes: PropTypes.func,
 };
 
@@ -324,7 +339,7 @@ HumanActivity.propTypes = {
   setTotalEquipmentATV: PropTypes.func,
   setTotalDogsOnLeash: PropTypes.func,
   setTotalDogsOffLeash: PropTypes.func,
-  setTOutreachNotes: PropTypes.func,
+  setOutreachNotes: PropTypes.func,
   setOtherNotes: PropTypes.func,
 };
 export default HumanActivity;

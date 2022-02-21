@@ -20,6 +20,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 function Predators(props) {
+  const {
+    setTotalCrows,
+    setTotalRavens,
+    setTotalRaptors,
+    setTotalHorses,
+    setTotalCoyotes,
+    setTotalFoxes,
+    setTotalCats,
+    setOtherPredators,
+  } = props;
   return (
     <Container maxW="100vw">
       <VStack spacing="23px" align="left">
@@ -43,7 +53,7 @@ function Predators(props) {
               </Flex>
               <NumberInput
                 onChange={e => {
-                  props.setTotalCrows(parseInt(e, 10));
+                  setTotalCrows(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -73,7 +83,7 @@ function Predators(props) {
               </Flex>
               <NumberInput
                 onChange={e => {
-                  props.setTotalRavens(parseInt(e, 10));
+                  setTotalRavens(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -94,7 +104,7 @@ function Predators(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalRaptors(parseInt(e, 10));
+                  setTotalRaptors(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -115,7 +125,7 @@ function Predators(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalHorses(parseInt(e, 10));
+                  setTotalHorses(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -136,7 +146,7 @@ function Predators(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalCoyotes(parseInt(e, 10));
+                  setTotalCoyotes(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -157,7 +167,7 @@ function Predators(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalFoxes(parseInt(e, 10));
+                  setTotalFoxes(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -178,7 +188,7 @@ function Predators(props) {
               </Text>
               <NumberInput
                 onChange={e => {
-                  props.setTotalCats(parseInt(e, 10));
+                  setTotalCats(parseInt(e, 10));
                 }}
                 step={1}
                 defaultValue={0}
@@ -211,7 +221,7 @@ function Predators(props) {
             width="536px"
             placeholder="Type here..."
             onChange={e => {
-              props.setOtherPredators(e.target.value);
+              setOtherPredators(e.target.value);
             }}
           />
           <Spacer />
