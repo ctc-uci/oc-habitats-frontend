@@ -1,4 +1,5 @@
-import { InfoIcon } from '@chakra-ui/icons';
+import { InfoIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons';
+import { FaRegSave } from 'react-icons/fa';
 import {
   Button,
   Container,
@@ -13,13 +14,34 @@ import {
   Text,
   Tooltip,
   VStack,
+  HStack,
+  Table,
+  Th,
+  Tr,
+  Td,
+  Tbody,
+  IconButton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Box,
+  Alert,
+  AlertIcon,
+  AlertTitle,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import Search from 'react-select';
+import PropTypes from 'prop-types';
 import 'react-datepicker/dist/react-datepicker.css';
-import './SectionName.css';
+import './GeneralInfo.css';
 
-function SectionName() {
+function GeneralInfo({ options }) {
   const [startDate, setDate] = useState(new Date());
   const [startPeriod, setStartPeriod] = useState(true);
   const [endPeriod, setEndPeriod] = useState(true);
@@ -33,12 +55,137 @@ function SectionName() {
     ],
   };
 
+  let uniqueID = 1;
+
+  const [partners, setPartners] = useState([]);
+  const [popup, setPopup] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleDeleteRow = (table, index) => {
+    const newData = table.filter((row, i) => i !== index);
+    if (table === partners) {
+      setPartners(newData);
+      setPopup(newData);
+    } else {
+      setPopup(newData);
+    }
+  };
+
+  const handleAddRow = v => {
+    if (v !== null) {
+      const newData = {
+        id: uniqueID,
+        name: v.name,
+        email: v.email,
+      };
+      uniqueID += 1;
+      setPopup(
+        [...popup, newData].sort((a, b) => {
+          if (a.name > b.name) return 1;
+          if (a.name < b.name) return -1;
+          return 0;
+        }),
+      );
+    }
+  };
+
+  const createTable = m => {
+    return m.map((row, index) => (
+      <Tr height="72px" key={row.id}>
+        <Td>
+          <HStack spacing="26px">
+            <IconButton size="md" icon={<DeleteIcon />} onClick={() => handleDeleteRow(m, index)} />
+            <VStack alignItems="flex.start">
+              <Text>{row.name}</Text>
+              <Text>{row.email}</Text>
+            </VStack>
+          </HStack>
+        </Td>
+      </Tr>
+    ));
+  };
+
+  const changeTable = () => {
+    setPartners(popup);
+    onClose();
+  };
+
+  const closeTable = () => {
+    setPopup(partners);
+    onClose();
+  };
+
+  function AddPartnersPopup() {
+    return (
+      <>
+        <Button w="50%" rightIcon={<AddIcon />} onClick={onOpen}>
+          Add Partner
+        </Button>
+
+        <Modal size="3xl" isOpen={isOpen} onClose={closeTable}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Monitoring Session Partners</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <VStack spacing="14px" align="left">
+                <Alert variant="solid">
+                  <AlertIcon />
+                  <AlertTitle>
+                    Add or remove group members for this monitor log submission.
+                  </AlertTitle>
+                </Alert>
+                <Spacer />
+                <Text>
+                  You may submit this monitoring log as a group if you completed this monitoring
+                  session as a group. You can change the group below. Session Partners added/removed
+                  will be notified by email.
+                </Text>
+                <Spacer />
+                <Text fontWeight="500" fontSize="md">
+                  Add Volunteer
+                </Text>
+                <Search
+                  placeholder="Search volunteer by name or email..."
+                  options={options.sort((a, b) => {
+                    if (a.name > b.name) return 1;
+                    if (a.name < b.name) return -1;
+                    return 0;
+                  })}
+                  onChange={option => handleAddRow(option)}
+                />
+                <Table id="partnertable">
+                  <Th h="32px" bg="#F7FAFC">
+                    Partner Information
+                  </Th>
+                  <Tbody h="72px" bg="#FFFFFF">
+                    {createTable(popup)}
+                  </Tbody>
+                </Table>
+              </VStack>
+            </ModalBody>
+            <ModalFooter>
+              <HStack spacing="15px">
+                <Button onClick={closeTable} variant="ghost">
+                  Cancel
+                </Button>
+                <Button colorScheme="gray" rightIcon={<FaRegSave />} onClick={changeTable}>
+                  Save
+                </Button>
+              </HStack>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  }
+
   return (
     <div>
       <Container maxW="100vw">
         <VStack spacing="23px" align="left">
           <Text fontWeight="600" fontSize="2xl">
-            Section Name
+            General Information
           </Text>
           <SimpleGrid columns={4} rows={3} spacingX="64px" spacingY="68px">
             <GridItem colSpan={1} rowSpan={1} width="200px">
@@ -67,7 +214,7 @@ function SectionName() {
                   Survey Start Time
                 </Text>
                 <InputGroup>
-                  <Input placeholder="7:00" />
+                  <Input className="without-meridiem" defaultValue="07:00" type="time" />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleStartTimeClick}>
                       {startPeriod ? 'AM' : 'PM'}
@@ -82,7 +229,7 @@ function SectionName() {
                   Survey End Time
                 </Text>
                 <InputGroup>
-                  <Input placeholder="7:00" />
+                  <Input className="without-meridiem" defaultValue="07:00" type="time" />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleEndTimeClick}>
                       {endPeriod ? 'AM' : 'PM'}
@@ -197,10 +344,31 @@ function SectionName() {
               </VStack>
             </GridItem>
           </SimpleGrid>
+          <Table id="partnertable" w="50%">
+            <Th h="32px" bg="#F7FAFC">
+              Partner Information
+            </Th>
+            <Tbody h="72px" bg="#FFFFFF">
+              {createTable(partners)}
+            </Tbody>
+          </Table>
+          <Box>{AddPartnersPopup()}</Box>
         </VStack>
       </Container>
     </div>
   );
 }
 
-export default SectionName;
+// const tupple = ()
+GeneralInfo.propTypes = {
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+};
+
+export default GeneralInfo;
