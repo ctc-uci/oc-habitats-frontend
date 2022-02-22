@@ -1,5 +1,18 @@
 import { React, useState } from 'react';
-import { Th, Thead, Table, Td, Tr, Tbody, Heading, Checkbox, Select } from '@chakra-ui/react';
+import {
+  Th,
+  Thead,
+  Table,
+  Td,
+  Tr,
+  Tbody,
+  Heading,
+  Checkbox,
+  Select,
+  InputGroup,
+  InputRightAddon,
+  Input,
+} from '@chakra-ui/react';
 import './AdminPage.css';
 import EditLogPopup from '../components/Table/EditLogPopup';
 
@@ -47,6 +60,18 @@ const AdminPage = () => {
   const [dateFilter, setDateFilter] = useState('');
   const [approvalFilter, setApprovalFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [allChecked, setAllChecked] = useState(false);
+
+  const handleAllChecked = () => {
+    let newCheckedData = [...checked];
+    if (allChecked) {
+      newCheckedData = [];
+    } else {
+      newCheckedData = [...Array(dummy.length).keys()];
+    }
+    setAllChecked(!allChecked);
+    setChecked(newCheckedData);
+  };
 
   const createTable = m => {
     return m.map((row, index) =>
@@ -58,6 +83,7 @@ const AdminPage = () => {
           <Td>
             <Checkbox
               bg="#FFFFFF"
+              isChecked={checked.includes(index)}
               onChange={event => {
                 if (event.target.checked) {
                   setChecked([...checked, index]);
@@ -166,11 +192,18 @@ const AdminPage = () => {
                   ))}
               </Select>
             </Th>
-            <Th>Search Filter</Th>
+            <Th>
+              <InputGroup>
+                <Input bg="#FFFFFF" color="#2D3748" />
+                <InputRightAddon bg="#EDF2F7" color="#2D3748">
+                  search
+                </InputRightAddon>
+              </InputGroup>
+            </Th>
           </Tr>
           <Tr id="table-head">
             <Th>
-              <Checkbox bg="#FFFFFF" />
+              <Checkbox bg="#FFFFFF" onChange={handleAllChecked} />
             </Th>
             <Th color="#FFFFFF">Segment</Th>
             <Th>Date</Th>
