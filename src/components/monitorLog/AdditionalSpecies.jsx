@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { BsPersonFill, BsArrowDown } from 'react-icons/bs';
 import {
@@ -21,10 +22,13 @@ import {
   IconButton,
   Container,
   Icon,
+  Collapse,
+  Box,
 } from '@chakra-ui/react';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
+import SpeciesRowModal from './SpeciesRowModal';
 
 const rows = [
   { id: 1, name: 'Beach Cast', total: 0, isChecked: false, isVisible: 'hidden', isDisabled: true },
@@ -37,6 +41,7 @@ const AdditionalSpecies = ({ options }) => {
   const [allChecked, setAllChecked] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [option, setOption] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
   const findChecked = value => {
     return value.isChecked;
@@ -99,23 +104,41 @@ const AdditionalSpecies = ({ options }) => {
   const createTable = m => {
     return m.map((row, index) => (
       <Tr height="72px" key={row.id}>
-        <Td paddingRight="8px">
-          <Checkbox
+        <Td>
+          <Button fontWeight="700" rightIcon={<EditIcon />} />
+        </Td>
+        <Td>
+          {/* <Checkbox
             size="md"
             isChecked={row.isChecked}
             onChange={() => handleRowCheckedItems(index)}
             visibility={row.isVisible}
             isDisabled={row.isDisabled}
-          />
+          /> */}
+          {/* <Input size="lg" backgroundColor="#EDF2F7" value={row.name} isReadOnly /> */}
+          <Button
+            w="100%"
+            rightIcon={<ChevronDownIcon />}
+            onClick={e => {
+              setIsOpen(!isOpen);
+            }}
+          >
+            Click Me
+          </Button>
+          <Collapse in={isOpen} animateOpacity>
+            <Box p="40px" color="black" mt="4" bg="white" rounded="md" shadow="md">
+              <NumberInput size="lg" value={row.total} isReadOnly>
+                <NumberInputField />
+              </NumberInput>
+            </Box>
+          </Collapse>
         </Td>
-        <Td>
-          <Input size="lg" backgroundColor="#EDF2F7" value={row.name} isReadOnly />
-        </Td>
-        <Td>
+        <Td />
+        {/* <Td>
           <NumberInput size="lg" value={row.total} onChange={v => handleAddTotalChange(v, index)}>
             <NumberInputField />
           </NumberInput>
-        </Td>
+        </Td> */}
       </Tr>
     ));
   };
@@ -127,10 +150,10 @@ const AdditionalSpecies = ({ options }) => {
           Additional Species
         </Text>
         <FormControl>
-          <FormLabel fontWeight="600">Search for a Species:</FormLabel>
+          {/* <FormLabel fontWeight="600">Search for a Species:</FormLabel> */}
           <SimpleGrid columns={2} h="166px" columnGap="26px">
-            <GridItem colSpan={1}>
-              <SimpleGrid columns={6} h="100%" columnGap="9px">
+            {/* <GridItem colSpan={1}> */}
+            {/* <SimpleGrid columns={6} h="100%" columnGap="9px">
                 <GridItem colSpan={5}>
                   <VStack w="full" h="100%" position="relative" alignItems>
                     <Select value={option} options={options} onChange={v => setOption(v)} />
@@ -147,6 +170,8 @@ const AdditionalSpecies = ({ options }) => {
                     </Button>
                   </VStack>
                 </GridItem>
+
+
                 <GridItem colSpan={1}>
                   <IconButton
                     w="full"
@@ -155,26 +180,27 @@ const AdditionalSpecies = ({ options }) => {
                     icon={<BsArrowDown />}
                   />
                 </GridItem>
-              </SimpleGrid>
-            </GridItem>
+              </SimpleGrid> */}
+            {/* </GridItem> */}
+
             <GridItem colSpan={1}>
               <Table id="speciesTable" variant="simple" borderRadius="10px" overflow="hidden">
                 <Thead>
                   <Tr>
                     <Th w="48px" h="40px" paddingRight="8px" backgroundColor="#F7FAFC">
-                      <Checkbox
+                      {/* <Checkbox
                         backgroundColor="#ffffff"
                         isChecked={allChecked}
                         onChange={handleAllChecked}
-                      />
+                      /> */}
                     </Th>
                     <Th fontWeight="700" backgroundColor="#F7FAFC">
                       <Icon as={BsPersonFill} w={7} h={3.5} /> Species
                     </Th>
-                    <Th fontWeight="700" w="200px" h="40px" backgroundColor="#F7FAFC">
+                    {/* <Th fontWeight="700" w="200px" h="40px" backgroundColor="#F7FAFC">
                       <Icon as={BsPersonFill} w={7} h={3.5} />
                       Total
-                    </Th>
+                    </Th> */}
                   </Tr>
                 </Thead>
                 <Tbody>{createTable(species)}</Tbody>
@@ -182,6 +208,7 @@ const AdditionalSpecies = ({ options }) => {
             </GridItem>
           </SimpleGrid>
         </FormControl>
+        <SpeciesRowModal />
       </VStack>
     </Container>
   );
