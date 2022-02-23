@@ -12,6 +12,7 @@ import {
   InputGroup,
   InputRightAddon,
   Input,
+  Container,
 } from '@chakra-ui/react';
 import './AdminPage.css';
 import EditLogPopup from '../components/Table/EditLogPopup';
@@ -111,110 +112,114 @@ const AdminPage = () => {
   };
 
   return (
-    <div>
-      <Heading>Monitor Logs</Heading>
-      <Table>
-        <Thead>
-          <Tr id="table-head">
-            <Th>{checked.length} Selected</Th>
-            <Th>
-              <Select
-                backgroundColor="white"
-                color="black"
-                placeholder="Segment"
-                onChange={event => {
-                  setSegmentFilter(event.target.value);
-                }}
-              >
-                {dummy
-                  .filter(
-                    (value, index, self) =>
-                      self.findIndex(v => v.segment === value.segment) === index,
-                  )
-                  .map(val => (
-                    <option key={val.segment}>{val.segment}</option>
-                  ))}
-              </Select>
-            </Th>
-            <Th>
-              <Select
-                backgroundColor="white"
-                color="black"
-                placeholder="Date"
-                onChange={event => {
-                  setDateFilter(event.target.value);
-                }}
-              >
-                {dummy
-                  .filter(
-                    (value, index, self) => self.findIndex(v => v.date === value.date) === index,
-                  )
-                  .map(val => (
-                    <option key={val.date}>{val.date}</option>
-                  ))}
-              </Select>
-            </Th>
-            <Th>
-              <Select
-                backgroundColor="white"
-                color="black"
-                placeholder="Approval"
-                onChange={event => {
-                  setApprovalFilter(event.target.value);
-                }}
-              >
-                {dummy
-                  .filter(
-                    (value, index, self) =>
-                      self.findIndex(v => v.approved === value.approved) === index,
-                  )
-                  .map(val => (
-                    <option key={val.approved}>{val.approved}</option>
-                  ))}
-              </Select>
-            </Th>
-            <Th>
-              <Select
-                backgroundColor="white"
-                color="black"
-                placeholder="Status"
-                onChange={event => {
-                  setStatusFilter(event.target.value);
-                }}
-              >
-                {dummy
-                  .filter(
-                    (value, index, self) =>
-                      self.findIndex(v => v.status === value.status) === index,
-                  )
-                  .map(val => (
-                    <option key={val.status}>{val.status}</option>
-                  ))}
-              </Select>
-            </Th>
-            <Th>
-              <InputGroup>
-                <Input bg="#FFFFFF" color="#2D3748" />
-                <InputRightAddon bg="#EDF2F7" color="#2D3748">
-                  search
-                </InputRightAddon>
-              </InputGroup>
-            </Th>
-          </Tr>
-          <Tr id="table-head">
-            <Th>
-              <Checkbox bg="#FFFFFF" onChange={handleAllChecked} />
-            </Th>
-            <Th color="#FFFFFF">Segment</Th>
-            <Th>Date</Th>
-            <Th>Approved</Th>
-            <Th>Volunteer</Th>
-            <Th>Training Status</Th>
-          </Tr>
-        </Thead>
-        <Tbody id="table-body">{createTable(dummy)}</Tbody>
-      </Table>
-    </div>
+    <Container maxW="container.xl">
+      <div>
+        <Heading>Monitor Logs</Heading>
+        <Table>
+          <Thead>
+            <Tr id="table-head">
+              <Th>{checked.length} Selected</Th>
+              <Th>
+                <Select
+                  backgroundColor="white"
+                  color="black"
+                  placeholder="Segment"
+                  onChange={event => {
+                    setSegmentFilter(event.target.value);
+                  }}
+                >
+                  {dummy
+                    .filter(
+                      (value, index, self) =>
+                        self.findIndex(v => v.segment === value.segment) === index,
+                    )
+                    .map(val => (
+                      <option key={val.segment}>{val.segment}</option>
+                    ))}
+                </Select>
+              </Th>
+              <Th>
+                <Select
+                  backgroundColor="white"
+                  color="black"
+                  placeholder="Date"
+                  onChange={event => {
+                    setDateFilter(event.target.value);
+                  }}
+                >
+                  {dummy
+                    .filter(
+                      (value, index, self) => self.findIndex(v => v.date === value.date) === index,
+                    )
+                    .map(val => (
+                      <option key={val.date}>{val.date}</option>
+                    ))}
+                </Select>
+              </Th>
+              <Th>
+                <Select
+                  backgroundColor="white"
+                  color="black"
+                  placeholder="Approval"
+                  onChange={event => {
+                    setApprovalFilter(event.target.value);
+                  }}
+                >
+                  {dummy
+                    .filter(
+                      (value, index, self) =>
+                        self.findIndex(v => v.approved === value.approved) === index,
+                    )
+                    .map(val => (
+                      <option key={val.approved}>{val.approved}</option>
+                    ))}
+                </Select>
+              </Th>
+              <Th>
+                <Select
+                  backgroundColor="white"
+                  color="black"
+                  placeholder="Status"
+                  onChange={event => {
+                    setStatusFilter(event.target.value);
+                  }}
+                >
+                  {dummy
+                    .filter(
+                      (value, index, self) =>
+                        self.findIndex(v => v.status === value.status) === index,
+                    )
+                    .map(val => (
+                      <option key={val.status}>{val.status}</option>
+                    ))}
+                </Select>
+              </Th>
+              <Th>
+                <InputGroup>
+                  <Input bg="#FFFFFF" color="#2D3748" />
+                  <InputRightAddon bg="#EDF2F7" color="#2D3748">
+                    search
+                  </InputRightAddon>
+                </InputGroup>
+              </Th>
+              <Th />
+            </Tr>
+            <Tr id="table-head">
+              <Th>
+                <Checkbox bg="#FFFFFF" onChange={handleAllChecked} />
+              </Th>
+              <Th color="#FFFFFF">Segment</Th>
+              <Th>Date</Th>
+              <Th>Approved</Th>
+              <Th>Volunteer</Th>
+              <Th>Training Status</Th>
+              <Th />
+            </Tr>
+          </Thead>
+          <Tbody id="table-body">{createTable(dummy)}</Tbody>
+        </Table>
+      </div>
+    </Container>
   );
 };
 
