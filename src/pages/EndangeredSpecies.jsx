@@ -12,7 +12,7 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 
-import SectionName from '../components/EndangeredSpecies/SectionName';
+import GeneralListedInformation from '../components/EndangeredSpecies/GeneralListedInformation';
 import Location from '../components/EndangeredSpecies/Location';
 import BandsSex from '../components/EndangeredSpecies/BandsSex';
 import BehaviorsList from '../components/EndangeredSpecies/BehaviorsList';
@@ -108,11 +108,14 @@ const EndangeredSpecies = ({ adultName }) => {
       </HStack>
       <Container maxW="container.xl">
         <Stack align="center" mb="3em">
-          <Heading as="h1">Add Adult {adultName}</Heading>
+          <Heading as="h1">Add {adultName}</Heading>
         </Stack>
         <form onSubmit={handleSubmit}>
           <VStack align="start" spacing="4em">
-            <SectionName setTotalAdults={setTotalAdults} setTotalFledges={setTotalFledges} />
+            <GeneralListedInformation
+              setTotalAdults={setTotalAdults}
+              setTotalFledges={setTotalFledges}
+            />
             <Location totalBirds={totalAdults + totalFledges} />
             <BandsSex totalAdults={totalAdults} totalFledges={totalFledges} />
             <BehaviorsList

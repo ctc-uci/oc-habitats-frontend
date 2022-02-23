@@ -23,10 +23,10 @@ import {
 } from '@chakra-ui/react';
 import footNotes from './FootNotes';
 import options from './DropdownOptions';
-import './SectionName.css';
+import './GeneralListedInformation.css';
 
 // component/section name not final
-const SectionName = ({ setTotalAdults, setTotalFledges }) => {
+const GeneralListedInformation = ({ setTotalAdults, setTotalFledges }) => {
   const [meridiem, setMeridiem] = useState('AM');
 
   const toggleTime = () => {
@@ -51,7 +51,7 @@ const SectionName = ({ setTotalAdults, setTotalFledges }) => {
     <VStack w="70%" align="start">
       <HStack>
         <Heading as="h3" size="md">
-          Section Name
+          Genral Information
         </Heading>
       </HStack>
       <br />
@@ -136,7 +136,7 @@ const SectionName = ({ setTotalAdults, setTotalFledges }) => {
 
         <FormControl>
           <FormLabel htmlFor="map">Map #</FormLabel>
-          <Input id="map" defaultValue="None" />
+          <Input id="map" placeholder="None" />
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="habitat">
@@ -156,14 +156,14 @@ const SectionName = ({ setTotalAdults, setTotalFledges }) => {
   );
 };
 
-SectionName.defaultProps = {
+GeneralListedInformation.defaultProps = {
   setTotalAdults: PropTypes.func,
   setTotalFledges: PropTypes.func,
 };
 
-SectionName.propTypes = {
+GeneralListedInformation.propTypes = {
   setTotalAdults: PropTypes.func,
   setTotalFledges: PropTypes.func,
 };
 
-export default SectionName;
+export default GeneralListedInformation;
