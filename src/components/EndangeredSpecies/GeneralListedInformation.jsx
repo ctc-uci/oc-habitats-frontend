@@ -51,7 +51,7 @@ const GeneralListedInformation = ({ speciesName, setTotalAdults, setTotalFledges
     <VStack w="70%" align="start">
       <HStack>
         <Heading as="h3" size="md">
-          Genral {speciesName} Information
+          General {speciesName} Information
         </Heading>
       </HStack>
       <br />

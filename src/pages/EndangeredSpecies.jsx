@@ -18,6 +18,7 @@ import BandsSex from '../components/EndangeredSpecies/BandsSex';
 import BehaviorsList from '../components/EndangeredSpecies/BehaviorsList';
 import footNotes from '../components/EndangeredSpecies/FootNotes';
 import options from '../components/EndangeredSpecies/DropdownOptions';
+import BandingColorKey from '../components/EndangeredSpecies/BandingColorKey';
 
 const EndangeredSpecies = ({ adultName }) => {
   const [totalAdults, setTotalAdults] = useState(1);
@@ -129,6 +130,8 @@ const EndangeredSpecies = ({ adultName }) => {
               description={footNotes.behavior}
               options={options.behavior}
             />
+            {/* temporarily rendering color key here */}
+            <BandingColorKey />
             <VStack align="start" w="100%">
               <Heading as="h3" size="md">
                 Additional Notes (Optional)

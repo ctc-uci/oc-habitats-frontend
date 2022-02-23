@@ -3,10 +3,11 @@ import { Box, HStack, VStack, Text } from '@chakra-ui/react';
 
 const BandingColorKey = () => {
   const createRow = (colorName, colorCode) => {
+    const bc = colorName === 'White (W)' ? 'gray.200' : colorCode;
     return (
       <HStack spacing={3}>
         <Text>{colorName}</Text>
-        <Box borderRadius="md" bg={colorCode} px={7} h={5} />
+        <Box borderRadius="md" bg={colorCode} borderWidth={1} borderColor={bc} px={7} h={5} />
       </HStack>
     );
   };
