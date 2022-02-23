@@ -113,6 +113,7 @@ const EndangeredSpecies = ({ adultName }) => {
         <form onSubmit={handleSubmit}>
           <VStack align="start" spacing="4em">
             <GeneralListedInformation
+              speciesName={adultName}
               setTotalAdults={setTotalAdults}
               setTotalFledges={setTotalFledges}
             />

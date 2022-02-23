@@ -26,7 +26,7 @@ import options from './DropdownOptions';
 import './GeneralListedInformation.css';
 
 // component/section name not final
-const GeneralListedInformation = ({ setTotalAdults, setTotalFledges }) => {
+const GeneralListedInformation = ({ speciesName, setTotalAdults, setTotalFledges }) => {
   const [meridiem, setMeridiem] = useState('AM');
 
   const toggleTime = () => {
@@ -51,7 +51,7 @@ const GeneralListedInformation = ({ setTotalAdults, setTotalFledges }) => {
     <VStack w="70%" align="start">
       <HStack>
         <Heading as="h3" size="md">
-          Genral Information
+          Genral {speciesName} Information
         </Heading>
       </HStack>
       <br />
@@ -157,11 +157,13 @@ const GeneralListedInformation = ({ setTotalAdults, setTotalFledges }) => {
 };
 
 GeneralListedInformation.defaultProps = {
+  speciesName: PropTypes.string,
   setTotalAdults: PropTypes.func,
   setTotalFledges: PropTypes.func,
 };
 
 GeneralListedInformation.propTypes = {
+  speciesName: PropTypes.string,
   setTotalAdults: PropTypes.func,
   setTotalFledges: PropTypes.func,
 };
