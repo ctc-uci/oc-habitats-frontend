@@ -24,9 +24,9 @@ const Location = ({ totalBirds }) => {
           <GridItem rowStart={1} key={`GPS${i}`}>
             <FormControl>
               <FormLabel htmlFor={`latitude ${i}`}>{i ? `GPS ${i + 1}` : 'GPS'}</FormLabel>
-              <HStack w="75%">
-                <Input id={`latitude ${i}`} defaultValue="000.00000" />
-                <Input id={`longitude ${i}`} defaultValue="000.00000" />
+              <HStack w="90%">
+                <Input id={`latitude ${i}`} placeholder="000.00000" />
+                <Input id={`longitude ${i}`} placeholder="000.00000" />
               </HStack>
             </FormControl>
           </GridItem>
@@ -39,9 +39,9 @@ const Location = ({ totalBirds }) => {
         <FormControl>
           <FormLabel htmlFor="latitude">GPS</FormLabel>
           <FormLabel htmlFor="longitude" />
-          <HStack w="75%">
-            <Input id="latitude 0" defaultValue="000.00000" />
-            <Input id="longitude 0" defaultValue="000.00000" />
+          <HStack w="90%">
+            <Input id="latitude 0" placeholder="000.00000" />
+            <Input id="longitude 0" placeholder="000.00000" />
           </HStack>
         </FormControl>
       </GridItem>
