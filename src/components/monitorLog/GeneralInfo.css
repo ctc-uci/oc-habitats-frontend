@@ -15,3 +15,7 @@
   border-radius: 6px;
   padding-left: 16px;
 }
+
+.without-meridiem::-webkit-datetime-edit-ampm-field {
+  display: none;
+}
