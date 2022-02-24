@@ -9,11 +9,13 @@ import MonitorLogPage from './pages/MonitorLogPage';
 import EndangeredSpecies from './pages/EndangeredSpecies';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
+import Navbar from './components/Navbar/Navbar';
 
 function App() {
   return (
     <ChakraProvider>
       <Router>
+        <Navbar />
         <Routes>
           {/* Add routes as needed; route names subject to change */}
           <Route exact path="/" element={<HomePage />} />
