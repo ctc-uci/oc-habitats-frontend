@@ -22,7 +22,11 @@ import {
   IconButton,
   Container,
   Icon,
-  Collapse,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
   Box,
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon, ChevronDownIcon } from '@chakra-ui/icons';
@@ -116,22 +120,24 @@ const AdditionalSpecies = ({ options }) => {
             isDisabled={row.isDisabled}
           /> */}
           {/* <Input size="lg" backgroundColor="#EDF2F7" value={row.name} isReadOnly /> */}
-          <Button
-            w="100%"
-            rightIcon={<ChevronDownIcon />}
-            onClick={e => {
-              setIsOpen(!isOpen);
-            }}
-          >
-            Click Me
-          </Button>
-          <Collapse in={isOpen} animateOpacity>
-            <Box p="40px" color="black" mt="4" bg="white" rounded="md" shadow="md">
-              <NumberInput size="lg" value={row.total} isReadOnly>
-                <NumberInputField />
-              </NumberInput>
-            </Box>
-          </Collapse>
+
+          <Accordion allowToggle>
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box flex="1" textAlign="left">
+                    Sandpiper: Long-billed Curlew (LBCU)
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <NumberInput size="lg" value={row.total} isReadOnly>
+                  <NumberInputField />
+                </NumberInput>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         </Td>
         <Td />
         {/* <Td>
