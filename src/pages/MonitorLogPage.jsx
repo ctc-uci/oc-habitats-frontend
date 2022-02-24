@@ -1,4 +1,14 @@
-import { Box, HStack, Heading, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  HStack,
+  Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from '@chakra-ui/react';
 import React, { useState } from 'react';
 import AdditionalSpecies from '../components/monitorLog/AdditionalSpecies';
 import Predators from '../components/monitorLog/Predators';
@@ -126,6 +136,9 @@ const MonitorLogPage = () => {
               {totalEquipmentATV}
               {totalDogsOnLeash} {totalDogsOffLeash} {outreachNotes} {otherNotes}
             </p>
+            <Box>
+              <Text fontSize="24px">Predators</Text>
+            </Box>
           </TabPanel>
         </TabPanels>
       </Tabs>
