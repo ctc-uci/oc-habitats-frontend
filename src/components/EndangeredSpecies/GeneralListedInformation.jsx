@@ -26,7 +26,12 @@ import options from './DropdownOptions';
 import './GeneralListedInformation.css';
 
 // component/section name not final
-const GeneralListedInformation = ({ speciesName, setTotalAdults, setTotalFledges }) => {
+const GeneralListedInformation = ({
+  speciesName,
+  setTotalAdults,
+  setTotalFledges,
+  setTotalChicks,
+}) => {
   const [meridiem, setMeridiem] = useState('AM');
 
   const toggleTime = () => {
@@ -102,7 +107,14 @@ const GeneralListedInformation = ({ speciesName, setTotalAdults, setTotalFledges
 
         <FormControl>
           <FormLabel htmlFor="chicks"># of Chicks</FormLabel>
-          <NumberInput id="chicks" defaultValue={0} min={0}>
+          <NumberInput
+            id="chicks"
+            onChange={e => {
+              setTotalChicks(parseInt(e, 10));
+            }}
+            defaultValue={0}
+            min={0}
+          >
             <NumberInputField />
             <NumberInputStepper>
               <NumberIncrementStepper />
@@ -156,16 +168,11 @@ const GeneralListedInformation = ({ speciesName, setTotalAdults, setTotalFledges
   );
 };
 
-GeneralListedInformation.defaultProps = {
-  speciesName: PropTypes.string,
-  setTotalAdults: PropTypes.func,
-  setTotalFledges: PropTypes.func,
-};
-
 GeneralListedInformation.propTypes = {
-  speciesName: PropTypes.string,
-  setTotalAdults: PropTypes.func,
-  setTotalFledges: PropTypes.func,
+  speciesName: PropTypes.string.isRequired,
+  setTotalAdults: PropTypes.func.isRequired,
+  setTotalFledges: PropTypes.func.isRequired,
+  setTotalChicks: PropTypes.func.isRequired,
 };
 
 export default GeneralListedInformation;

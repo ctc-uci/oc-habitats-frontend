@@ -20,9 +20,10 @@ import footNotes from '../components/EndangeredSpecies/FootNotes';
 import options from '../components/EndangeredSpecies/DropdownOptions';
 import BandingColorKey from '../components/EndangeredSpecies/BandingColorKey';
 
-const EndangeredSpecies = ({ adultName }) => {
+const EndangeredSpecies = ({ closeModal, adultName, addRow }) => {
   const [totalAdults, setTotalAdults] = useState(1);
   const [totalFledges, setTotalFledges] = useState(0);
+  const [totalChicks, setTotalChicks] = useState(0);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -87,6 +88,9 @@ const EndangeredSpecies = ({ adultName }) => {
       }
     }
     const bands = [...adultBands, ...fledgeBands];
+    formData.totalAdults = totalAdults;
+    formData.totalFledges = totalFledges;
+    formData.totalChicks = totalChicks;
     formData.time = time;
     formData.gps = gps;
     formData.nests = nests;
@@ -95,6 +99,8 @@ const EndangeredSpecies = ({ adultName }) => {
 
     // eslint-disable-next-line no-console
     console.log('formData', formData);
+    addRow(formData);
+    closeModal();
   };
 
   return (
@@ -103,11 +109,13 @@ const EndangeredSpecies = ({ adultName }) => {
         <IconButton
           icon={<ArrowBackIcon boxSize={10} />}
           bgColor="transparent"
-          left="1%"
-          mt="1em"
+          position="fixed"
+          top="16px"
+          left="16px"
+          onClick={closeModal}
         />
       </HStack>
-      <Container maxW="container.xl">
+      <Container maxW="container.xl" paddingTop="40px" paddingBottom="40px">
         <Stack align="center" mb="3em">
           <Heading as="h1">Add {adultName}</Heading>
         </Stack>
@@ -117,6 +125,7 @@ const EndangeredSpecies = ({ adultName }) => {
               speciesName={adultName}
               setTotalAdults={setTotalAdults}
               setTotalFledges={setTotalFledges}
+              setTotalChicks={setTotalChicks}
             />
             <Location totalBirds={totalAdults + totalFledges} />
             <BandsSex totalAdults={totalAdults} totalFledges={totalFledges} />
@@ -148,12 +157,10 @@ const EndangeredSpecies = ({ adultName }) => {
   );
 };
 
-EndangeredSpecies.defaultProps = {
-  adultName: PropTypes.string,
-};
-
 EndangeredSpecies.propTypes = {
-  adultName: PropTypes.string,
+  adultName: PropTypes.string.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  addRow: PropTypes.func.isRequired,
 };
 
 export default EndangeredSpecies;

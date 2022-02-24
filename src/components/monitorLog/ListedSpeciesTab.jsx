@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { BsPencil } from 'react-icons/bs';
 import {
   Text,
@@ -20,11 +20,27 @@ import {
   AccordionButton,
   AccordionIcon,
   Collapse,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { InfoIcon } from '@chakra-ui/icons';
+import EndangeredSpecies from '../../pages/EndangeredSpecies';
 
 const ListedSpeciesTab = ({ speciesName }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [data, setData] = useState([]);
+
+  const addRow = useCallback(
+    formData => {
+      setData([...data, formData]);
+    },
+    [data, setData],
+  );
+
   return (
     <Container maxW="100vw">
       <Text fontWeight="600" fontSize="2xl">
@@ -83,8 +99,8 @@ const ListedSpeciesTab = ({ speciesName }) => {
                   <Th width="0" />
                 </tr>
               </Thead>
-              {/* <Tbody> */}
-              {[1, 2, 3].map(n => (
+              {data.map((row, n) => (
+                // eslint-disable-next-line react/no-array-index-key
                 <AccordionItem key={n} as={Tbody}>
                   {({ isExpanded }) => (
                     <>
@@ -93,9 +109,9 @@ const ListedSpeciesTab = ({ speciesName }) => {
                           <IconButton icon={<BsPencil />} />
                         </Td>
                         <Td borderBottomWidth="0">WSPL {n}</Td>
-                        <Td borderBottomWidth="0">3</Td>
-                        <Td borderBottomWidth="0">2</Td>
-                        <Td borderBottomWidth="0">{isExpanded ? '1' : '2'}</Td>
+                        <Td borderBottomWidth="0">{row.totalAdults}</Td>
+                        <Td borderBottomWidth="0">{row.totalFledges}</Td>
+                        <Td borderBottomWidth="0">{row.totalChicks}</Td>
                         <Td width="0" borderBottomWidth="0">
                           <AccordionButton fontSize="2xl">
                             <AccordionIcon />
@@ -103,32 +119,54 @@ const ListedSpeciesTab = ({ speciesName }) => {
                         </Td>
                       </Tr>
                       <Tr>
-                        <Td colspan="6" padding="0">
-                          <Collapse in={isExpanded} as="td" colspan="6">
+                        <Td colSpan="6" padding="0">
+                          <Collapse in={isExpanded} as="td" colSpan="6">
                             <Table>
                               <Tbody>
                                 <Tr>
-                                  <Td border="0">Time</Td>
+                                  <Td border="0">
+                                    <Text fontWeight="500">Time</Text>
+                                  </Td>
                                   <Td border="0" isNumeric>
-                                    07:05 AM
+                                    {row.time.value} {row.time.meridiem}
+                                  </Td>
+                                </Tr>
+                                <Tr>
+                                  <Td border="0">
+                                    <Text fontWeight="500">Map #</Text>
+                                  </Td>
+                                  <Td border="0" isNumeric>
+                                    1
+                                  </Td>
+                                </Tr>
+                                <Tr>
+                                  <Td border="0">
+                                    <Text fontWeight="500">GPS</Text>
+                                  </Td>
+                                  <Td border="0" isNumeric>
+                                    {row.gps[0].latitude}, {row.gps[0].longitude}
+                                  </Td>
+                                </Tr>
+                                <Tr>
+                                  <Td border="0">
+                                    <Text fontWeight="500">Cross Street/Towers</Text>
+                                  </Td>
+                                  <Td border="0" isNumeric>
+                                    {row['cross-street']}
+                                  </Td>
+                                </Tr>
+                                <Tr>
+                                  <Td border="0">
+                                    <Text fontWeight="500">Habitat Description</Text>
+                                  </Td>
+                                  <Td border="0" isNumeric>
+                                    {row.habitat}
                                   </Td>
                                 </Tr>
                               </Tbody>
                             </Table>
                           </Collapse>
                         </Td>
-                        {/* {isExpanded && (
-                          <Collapse in={isExpanded} as="td" colspan="6" unmountOnExit>
-                            <Table>
-                              <Tbody>
-                                <Tr>
-                                  <Td>Time</Td>
-                                  <Td isNumeric>07:05 AM</Td>
-                                </Tr>
-                              </Tbody>
-                            </Table>
-                          </Collapse>
-                        )} */}
                       </Tr>
                     </>
                   )}
@@ -136,6 +174,15 @@ const ListedSpeciesTab = ({ speciesName }) => {
               ))}
             </Accordion>
           </Box>
+          <Button onClick={onOpen} width="100%" marginTop="10px" colorScheme="cyan">
+            Add New Row +
+          </Button>
+          <Modal size="full" isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent margin={0} rounded="none">
+              <EndangeredSpecies closeModal={onClose} adultName={speciesName} addRow={addRow} />
+            </ModalContent>
+          </Modal>
         </GridItem>
       </Grid>
     </Container>
