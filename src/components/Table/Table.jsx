@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   useTable,
   usePagination,
@@ -6,13 +6,13 @@ import {
   useSortBy,
   useRowSelect,
   useGlobalFilter,
-  useAsyncDebounce
-} from "react-table";
+  useAsyncDebounce,
+} from 'react-table';
 import {
   Table,
   Thead,
   Tbody,
-  //Tfoot,
+  // Tfoot,
   Tr,
   Th,
   Td,
@@ -44,14 +44,10 @@ import { AiFillTag } from "react-icons/ai";
 import "./Table.css";
 
 // Define a default UI for filtering
-function GlobalFilter({
-  preGlobalFilteredRows,
-  globalFilter,
-  setGlobalFilter
-}) {
+function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) {
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = React.useState(globalFilter);
-  const onChange = useAsyncDebounce((value) => {
+  const onChange = useAsyncDebounce(value => {
     setGlobalFilter(value || undefined);
   }, 200);
 
@@ -175,17 +171,16 @@ const IndeterminateCheckbox = React.forwardRef(
     const defaultRef = React.useRef();
     const resolvedRef = ref || defaultRef;
 
-    React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate;
-    }, [resolvedRef, indeterminate]);
+  React.useEffect(() => {
+    resolvedRef.current.indeterminate = indeterminate;
+  }, [resolvedRef, indeterminate]);
 
-    return (
-      <>
-        <input type="checkbox" ref={resolvedRef} {...rest} />
-      </>
-    );
-  }
-);
+  return (
+    <>
+      <input type="checkbox" ref={resolvedRef} {...rest} />
+    </>
+  );
+});
 
 function getTrainingStatus(status) {
   return (
@@ -297,9 +292,9 @@ function PeopleTable({ columns, data }) {
     page, // used instead of rows
     canPreviousPage,
     canNextPage,
-    //pageOptions,
+    // pageOptions,
     rows,
-    //pageCount,
+    // pageCount,
     nextPage,
     previousPage,
     setPageSize,
@@ -307,15 +302,15 @@ function PeopleTable({ columns, data }) {
     setGlobalFilter,
     state,
     visibleColumns,
-    //selectedFlatRows,
-    state: { pageIndex, pageSize }
+    // selectedFlatRows,
+    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
       data,
       initialState: {
-        pageIndex: 0
-      }
+        pageIndex: 0,
+      },
     },
     useFilters, // useFilters!
     useGlobalFilter,
@@ -326,7 +321,7 @@ function PeopleTable({ columns, data }) {
       hooks.visibleColumns.push((columns) => [
         // Let's make a column for selection
         {
-          id: "selection",
+          id: 'selection',
           // The header can use the table's getToggleAllRowsSelectedProps method
           // to render a checkbox
           Header: ({ getToggleAllPageRowsSelectedProps }) => (
@@ -340,9 +335,9 @@ function PeopleTable({ columns, data }) {
             <div>
               <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
             </div>
-          )
+          ),
         },
-        ...columns
+        ...columns,
       ]);
     }*/
   );
@@ -352,7 +347,7 @@ function PeopleTable({ columns, data }) {
   // Needs to be updated such that sorting is possible
   return (
     <>
-      
+
 
       <div>
         <Flex justifyContent="space-between">
@@ -370,7 +365,7 @@ function PeopleTable({ columns, data }) {
               <option value='option2'>Name: Z-A</option>
             </Select>
           </div>
-          
+
         </Flex>
       </div>
       <div className="table-container">
@@ -380,13 +375,13 @@ function PeopleTable({ columns, data }) {
               <th
                 colSpan={visibleColumns.length}
                 style={{
-                  textAlign: "left"
+                  textAlign: 'left',
                 }}
               >
 
               </th>
             </tr>
-            {headerGroups.map((headerGroup) => (
+            {headerGroups.map(headerGroup => (
               <Tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
                   <Th
@@ -396,7 +391,7 @@ function PeopleTable({ columns, data }) {
                   >
                     <Flex alignItems="center">
                       {column.icon}
-                      {column.render("Header")}
+                      {column.render('Header')}
                       {column.isSorted ? (
                         column.isSortedDesc ? (
                           <ChevronDownIcon ml={1} w={4} h={4} />
@@ -404,7 +399,7 @@ function PeopleTable({ columns, data }) {
                           <ChevronUpIcon ml={1} w={4} h={4} />
                         )
                       ) : (
-                        ""
+                        ''
                       )}
                     </Flex>
                   </Th>
@@ -417,10 +412,8 @@ function PeopleTable({ columns, data }) {
               prepareRow(row);
               return (
                 <Tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
-                    );
+                  {row.cells.map(cell => {
+                    return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>;
                   })}
                 </Tr>
               );
@@ -432,18 +425,18 @@ function PeopleTable({ columns, data }) {
       <div className="footer-container" style={{margin: "auto"}}>
         <Flex justifyContent="space-between" m={4} alignItems="center">
           <Flex alignItems="center">
-            <Text flexShrink="0">Show rows per page: </Text>{" "}
+            <Text flexShrink="0">Show rows per page: </Text>{' '}
             <Select
               backgroundColor="white"
               color="#2d3748"
               ml={2}
               w={32}
               value={pageSize}
-              onChange={(e) => {
+              onChange={e => {
                 setPageSize(Number(e.target.value));
               }}
             >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
+              {[10, 20, 30, 40, 50].map(pageSize => (
                 <option key={pageSize} value={pageSize}>
                   {pageSize}
                 </option>
@@ -455,7 +448,7 @@ function PeopleTable({ columns, data }) {
             <Text flexShrink="0" mr={8}>
               <Text fontWeight="bold" as="span">
                 {1}-{pageSize * (pageIndex + 1) + 1}
-              </Text>{" "}
+              </Text>{' '}
               of <Text as="span">{rows.length}</Text>
             </Text>
             <Tooltip label="Previous Page">
@@ -509,12 +502,11 @@ function App() {
         Cell: <ViewEditProfile />,
       },
     ],
-    []
+    [],
   );
 
   const data = React.useMemo(() => makeRows, []);
 
   return <PeopleTable columns={columns} data={data} />;
 }
-
 export default App;

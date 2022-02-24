@@ -121,8 +121,8 @@ const AdditionalSpecies = ({ options }) => {
   };
 
   return (
-    <Container maxW="container.xl">
-      <VStack w="full" h="full" spacing="29px" alignItems="flex.start">
+    <Container maxW="100vw">
+      <VStack align="left" spacing="29px">
         <Text fontWeight="600" fontSize="2xl">
           Additional Species
         </Text>
