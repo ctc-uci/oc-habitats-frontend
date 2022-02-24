@@ -128,6 +128,7 @@ const EndangeredSpecies = ({ closeModal, adultName, addRow }) => {
               setTotalChicks={setTotalChicks}
             />
             <Location totalBirds={totalAdults + totalFledges} />
+            <BandingColorKey />
             <BandsSex totalAdults={totalAdults} totalFledges={totalFledges} />
             <BehaviorsList
               title="Nesting & Eggs"
@@ -140,7 +141,6 @@ const EndangeredSpecies = ({ closeModal, adultName, addRow }) => {
               options={options.behavior}
             />
             {/* temporarily rendering color key here */}
-            <BandingColorKey />
             <VStack align="start" w="100%">
               <Heading as="h3" size="md">
                 Additional Notes (Optional)
