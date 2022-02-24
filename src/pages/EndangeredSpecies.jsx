@@ -19,6 +19,7 @@ import BehaviorsList from '../components/EndangeredSpecies/BehaviorsList';
 import footNotes from '../components/EndangeredSpecies/FootNotes';
 import options from '../components/EndangeredSpecies/DropdownOptions';
 import BandingColorKey from '../components/EndangeredSpecies/BandingColorKey';
+import BandsSexBehaviors from '../components/EndangeredSpecies/BandsSexBehaviors';
 
 const EndangeredSpecies = ({ closeModal, adultName, addRow }) => {
   const [totalAdults, setTotalAdults] = useState(1);
@@ -129,6 +130,7 @@ const EndangeredSpecies = ({ closeModal, adultName, addRow }) => {
             />
             <Location totalBirds={totalAdults + totalFledges} />
             <BandingColorKey />
+            <BandsSexBehaviors totalAdults={totalAdults} totalFledges={totalFledges} />
             <BandsSex totalAdults={totalAdults} totalFledges={totalFledges} />
             <BehaviorsList
               title="Nesting & Eggs"
@@ -140,7 +142,6 @@ const EndangeredSpecies = ({ closeModal, adultName, addRow }) => {
               description={footNotes.behavior}
               options={options.behavior}
             />
-            {/* temporarily rendering color key here */}
             <VStack align="start" w="100%">
               <Heading as="h3" size="md">
                 Additional Notes (Optional)
