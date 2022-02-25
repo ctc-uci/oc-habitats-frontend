@@ -16,9 +16,23 @@ import {
   VStack,
   Select,
   IconButton,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  Textarea,
+  Icon,
+  Box,
+  HStack,
+  Text,
+  Container,
+  Flex,
 } from '@chakra-ui/react';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon, InfoIcon } from '@chakra-ui/icons';
+import PropTypes from 'prop-types';
 import { BsArrowDown } from 'react-icons/bs';
+import { RiSaveFill } from 'react-icons/ri';
 import DropdownSearch from '../DropdownSearch';
 
 const options = [
@@ -30,49 +44,41 @@ const options = [
   { value: 'add3', label: 'add3' },
 ];
 
-const SpeciesRowModal = () => {
-  const [isOpen, setIsOpen, onClose] = useState(false);
+const SpeciesRowModal = ({ type, isOpen, setIsOpen }) => {
+  // const [isOpen, setIsOpen, onClose] = useState(false);
   const [option, setOption] = useState('test');
 
   return (
     <div>
-      <Button
-        onClick={e => {
-          setIsOpen(!isOpen);
-        }}
-        bgColor="#2BC0E3"
-        width="584px"
-        height="48px"
-        margin-top="15px"
-      >
-        Add New Row +
-      </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen}>
         <ModalOverlay />
-        <ModalContent h="70vh">
-          <ModalHeader>Add Species Row</ModalHeader>
+        <ModalContent h="85vh" w="50em">
+          <ModalHeader>{type} Species Row</ModalHeader>
           <ModalCloseButton
             onClick={e => {
               setIsOpen(false);
             }}
           />
+
+          <HStack bgColor="orange" p=".4em">
+            <Container>
+              <Flex alignItems="center" w="87%" justifyContent="space-between">
+                <InfoIcon />
+                <Text>Search and add a species from the drop down.</Text>
+              </Flex>
+            </Container>
+          </HStack>
+
           <ModalBody>
+            <Text fontSize="12px">
+              {`If the specimen is not listed, choose "Other" and note the possible species in the
+              Notes.`}
+            </Text>
             <FormLabel fontWeight="600">Search for a Species:</FormLabel>
-            <SimpleGrid columns={6} h="100%" columnGap="9px">
+            <SimpleGrid columns={6} h="100%" columnGap="9px" rowGap=".75em">
               <GridItem colSpan={5}>
                 <VStack w="full" h="100%" position="relative" alignItems>
-                  <DropdownSearch options={options} />
-                  <Button
-                    w="full"
-                    position="relative"
-                    bottom={0}
-                    fontWeight="700"
-                    //   isDisabled={disabled}
-                    //   onClick={handleDeleteRows}
-                    rightIcon={<DeleteIcon />}
-                  >
-                    Delete Selected
-                  </Button>
+                  <DropdownSearch options={options} onChange={opt => opt.label} />
                 </VStack>
               </GridItem>
 
@@ -84,18 +90,67 @@ const SpeciesRowModal = () => {
                   icon={<BsArrowDown />}
                 />
               </GridItem>
+
+              <GridItem colSpan={5}>
+                <FormLabel fontWeight="600">Total Sighted:</FormLabel>
+                <NumberInput defaultValue={0} min={0} max={20}>
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </GridItem>
+              <GridItem colSpan={6}>
+                <FormLabel fontWeight="600">Notes (Optional)</FormLabel>
+                <Textarea placeholder="Type Here..." />
+              </GridItem>
             </SimpleGrid>
           </ModalBody>
           <ModalFooter>
-            <Button bgColor="#2BC0E3" mr={3} width="536px" height="48px">
-              Save
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
+            <VStack>
+              <Button bgColor="#2BC0E3" width="400px">
+                Save <RiSaveFill />
+              </Button>
+              {type === 'Add' ? (
+                <Button
+                  width="400px"
+                  onClick={e => {
+                    setIsOpen(false);
+                  }}
+                >
+                  Cancel
+                </Button>
+              ) : (
+                <Button
+                  w="full"
+                  position="relative"
+                  bottom={0}
+                  fontWeight="700"
+                  //   isDisabled={disabled}
+                  //   onClick={handleDeleteRows}
+                  rightIcon={<DeleteIcon />}
+                >
+                  Delete Selected
+                </Button>
+              )}
+            </VStack>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </div>
   );
+};
+
+SpeciesRowModal.defaultProps = {
+  type: PropTypes.string,
+  isOpen: PropTypes.bool,
+  setIsOpen: PropTypes.func,
+};
+SpeciesRowModal.propTypes = {
+  type: PropTypes.string,
+  isOpen: PropTypes.bool,
+  setIsOpen: PropTypes.func,
 };
 
 export default SpeciesRowModal;

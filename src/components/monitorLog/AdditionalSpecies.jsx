@@ -28,6 +28,8 @@ import {
   AccordionPanel,
   AccordionIcon,
   Box,
+  HStack,
+  Flex,
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import Select from 'react-select';
@@ -40,12 +42,13 @@ const rows = [
 
 let uniqueID = 2;
 
-const AdditionalSpecies = ({ options }) => {
+const AdditionalSpecies = () => {
   const [species, setSpecies] = useState(rows);
   const [allChecked, setAllChecked] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [option, setOption] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen, onClose] = useState(false);
+  const [type, setType] = useState(null);
 
   const findChecked = value => {
     return value.isChecked;
@@ -109,9 +112,6 @@ const AdditionalSpecies = ({ options }) => {
     return m.map((row, index) => (
       <Tr height="72px" key={row.id}>
         <Td>
-          <Button fontWeight="700" rightIcon={<EditIcon />} />
-        </Td>
-        <Td>
           {/* <Checkbox
             size="md"
             isChecked={row.isChecked}
@@ -126,15 +126,26 @@ const AdditionalSpecies = ({ options }) => {
               <h2>
                 <AccordionButton>
                   <Box flex="1" textAlign="left">
+                    <Button
+                      fontWeight="700"
+                      rightIcon={<EditIcon />}
+                      onClick={e => {
+                        setType('Edit');
+                        setIsOpen(true);
+                      }}
+                    />
                     Sandpiper: Long-billed Curlew (LBCU)
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4}>
-                <NumberInput size="lg" value={row.total} isReadOnly>
-                  <NumberInputField />
-                </NumberInput>
+                <HStack>
+                  <Flex justifyContent="space-between" w="100%">
+                    <Text>Total</Text>
+                    <Text>{row.total}</Text>
+                  </Flex>
+                </HStack>
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
@@ -214,19 +225,22 @@ const AdditionalSpecies = ({ options }) => {
             </GridItem>
           </SimpleGrid>
         </FormControl>
-        <SpeciesRowModal />
+        <Button
+          onClick={e => {
+            setType('Add');
+            setIsOpen(true);
+          }}
+          bgColor="#2BC0E3"
+          width="584px"
+          height="48px"
+          margin-top="15px"
+        >
+          Add New Row +
+        </Button>
+        <SpeciesRowModal type={type} isOpen={isOpen} setIsOpen={setIsOpen} />
       </VStack>
     </Container>
   );
-};
-
-AdditionalSpecies.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
 };
 
 export default AdditionalSpecies;
