@@ -130,7 +130,7 @@ const EndangeredSpecies = ({ closeModal, adultName, addRow }) => {
             />
             <Location totalBirds={totalAdults + totalFledges} />
             <BandingColorKey />
-            <BandsSexBehaviors totalAdults={totalAdults} totalFledges={totalFledges} />
+            <BandsSexBehaviors />
             <BandsSex totalAdults={totalAdults} totalFledges={totalFledges} />
             <BehaviorsList
               title="Nesting & Eggs"
