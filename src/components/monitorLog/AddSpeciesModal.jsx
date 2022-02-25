@@ -28,6 +28,7 @@ import {
   Text,
   Container,
   Flex,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { DeleteIcon, InfoIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
@@ -44,21 +45,20 @@ const options = [
   { value: 'add3', label: 'add3' },
 ];
 
-const SpeciesRowModal = ({ type, isOpen, setIsOpen }) => {
-  // const [isOpen, setIsOpen, onClose] = useState(false);
+const AddSpeciesModal = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [option, setOption] = useState('test');
 
   return (
     <div>
+      <Button onClick={onOpen} bgColor="#2BC0E3" width="584px" height="48px" margin-top="15px">
+        Add New Row +
+      </Button>
       <Modal isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent h="85vh" w="50em">
-          <ModalHeader>{type} Species Row</ModalHeader>
-          <ModalCloseButton
-            onClick={e => {
-              setIsOpen(false);
-            }}
-          />
+          <ModalHeader alignSelf="center">Add Species Row</ModalHeader>
+          <ModalCloseButton onClick={onClose} />
 
           <HStack bgColor="orange" p=".4em">
             <Container>
@@ -112,28 +112,9 @@ const SpeciesRowModal = ({ type, isOpen, setIsOpen }) => {
               <Button bgColor="#2BC0E3" width="400px">
                 Save <RiSaveFill />
               </Button>
-              {type === 'Add' ? (
-                <Button
-                  width="400px"
-                  onClick={e => {
-                    setIsOpen(false);
-                  }}
-                >
-                  Cancel
-                </Button>
-              ) : (
-                <Button
-                  w="full"
-                  position="relative"
-                  bottom={0}
-                  fontWeight="700"
-                  //   isDisabled={disabled}
-                  //   onClick={handleDeleteRows}
-                  rightIcon={<DeleteIcon />}
-                >
-                  Delete Selected
-                </Button>
-              )}
+              <Button width="400px" onClick={onClose}>
+                Cancel
+              </Button>
             </VStack>
           </ModalFooter>
         </ModalContent>
@@ -142,15 +123,4 @@ const SpeciesRowModal = ({ type, isOpen, setIsOpen }) => {
   );
 };
 
-SpeciesRowModal.defaultProps = {
-  type: PropTypes.string,
-  isOpen: PropTypes.bool,
-  setIsOpen: PropTypes.func,
-};
-SpeciesRowModal.propTypes = {
-  type: PropTypes.string,
-  isOpen: PropTypes.bool,
-  setIsOpen: PropTypes.func,
-};
-
-export default SpeciesRowModal;
+export default AddSpeciesModal;

@@ -34,7 +34,8 @@ import {
 import { DeleteIcon, EditIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
-import SpeciesRowModal from './SpeciesRowModal';
+import AddSpeciesModal from './AddSpeciesModal';
+import EditSpeciesModal from './EditSpeciesModal';
 
 const rows = [
   { id: 1, name: 'Beach Cast', total: 0, isChecked: false, isVisible: 'hidden', isDisabled: true },
@@ -47,8 +48,7 @@ const AdditionalSpecies = () => {
   const [allChecked, setAllChecked] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [option, setOption] = useState('');
-  const [isOpen, setIsOpen, onClose] = useState(false);
-  const [type, setType] = useState(null);
+  // const [isOpen, setIsOpen, onClose] = useState(false);
 
   const findChecked = value => {
     return value.isChecked;
@@ -126,14 +126,7 @@ const AdditionalSpecies = () => {
               <h2>
                 <AccordionButton>
                   <Box flex="1" textAlign="left">
-                    <Button
-                      fontWeight="700"
-                      rightIcon={<EditIcon />}
-                      onClick={e => {
-                        setType('Edit');
-                        setIsOpen(true);
-                      }}
-                    />
+                    <EditSpeciesModal />
                     Sandpiper: Long-billed Curlew (LBCU)
                   </Box>
                   <AccordionIcon />
@@ -225,19 +218,7 @@ const AdditionalSpecies = () => {
             </GridItem>
           </SimpleGrid>
         </FormControl>
-        <Button
-          onClick={e => {
-            setType('Add');
-            setIsOpen(true);
-          }}
-          bgColor="#2BC0E3"
-          width="584px"
-          height="48px"
-          margin-top="15px"
-        >
-          Add New Row +
-        </Button>
-        <SpeciesRowModal type={type} isOpen={isOpen} setIsOpen={setIsOpen} />
+        <AddSpeciesModal />
       </VStack>
     </Container>
   );
