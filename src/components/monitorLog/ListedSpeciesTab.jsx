@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { BsPencil } from 'react-icons/bs';
 import {
   Text,
@@ -33,6 +33,15 @@ import EndangeredSpecies from '../../pages/EndangeredSpecies';
 const ListedSpeciesTab = ({ speciesName }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data, setData] = useState([]);
+  const [totals, setTotals] = useState([0, 0, 0]);
+
+  useEffect(() => {
+    setTotals(
+      data
+        .map(row => [row.totalAdults, row.totalFledges, row.totalChicks])
+        .reduce((l, r) => [l[0] + r[0], l[1] + r[1], l[2] + r[2]], [0, 0, 0]),
+    );
+  }, [data]);
 
   const addRow = useCallback(
     formData => {
@@ -67,9 +76,9 @@ const ListedSpeciesTab = ({ speciesName }) => {
               </Thead>
               <Tbody size="xs">
                 <Tr>
-                  <Td>0</Td>
-                  <Td>0</Td>
-                  <Td>0</Td>
+                  <Td>{totals[0]}</Td>
+                  <Td>{totals[1]}</Td>
+                  <Td>{totals[2]}</Td>
                 </Tr>
               </Tbody>
             </Table>
