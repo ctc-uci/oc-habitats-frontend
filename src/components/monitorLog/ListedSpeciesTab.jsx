@@ -30,7 +30,7 @@ import PropTypes from 'prop-types';
 import { InfoIcon } from '@chakra-ui/icons';
 import EndangeredSpecies from '../../pages/EndangeredSpecies';
 
-const ListedSpeciesTab = ({ speciesName }) => {
+const ListedSpeciesTab = ({ speciesName, speciesCode }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data, setData] = useState([]);
   const [totals, setTotals] = useState([0, 0, 0]);
@@ -117,7 +117,9 @@ const ListedSpeciesTab = ({ speciesName }) => {
                         <Td width="0" borderBottomWidth="0">
                           <IconButton icon={<BsPencil />} />
                         </Td>
-                        <Td borderBottomWidth="0">WSPL {n}</Td>
+                        <Td borderBottomWidth="0">
+                          {speciesCode} {n + 1}
+                        </Td>
                         <Td borderBottomWidth="0">{row.totalAdults}</Td>
                         <Td borderBottomWidth="0">{row.totalFledges}</Td>
                         <Td borderBottomWidth="0">{row.totalChicks}</Td>
@@ -200,6 +202,7 @@ const ListedSpeciesTab = ({ speciesName }) => {
 
 ListedSpeciesTab.propTypes = {
   speciesName: PropTypes.string.isRequired,
+  speciesCode: PropTypes.string.isRequired,
 };
 
 export default ListedSpeciesTab;

@@ -118,10 +118,10 @@ const MonitorLogPage = () => {
             <GeneralInfo options={options} />
           </TabPanel>
           <TabPanel>
-            <ListedSpeciesTab speciesName="Least Tern" />
+            <ListedSpeciesTab speciesName="Least Tern" speciesCode="LETE" />
           </TabPanel>
           <TabPanel>
-            <ListedSpeciesTab speciesName="Snowy Plover" />
+            <ListedSpeciesTab speciesName="Snowy Plover" speciesCode="WSPL" />
           </TabPanel>
           <TabPanel>
             <AdditionalSpecies />
