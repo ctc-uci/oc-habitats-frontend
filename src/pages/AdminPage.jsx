@@ -13,55 +13,66 @@ import {
   InputRightAddon,
   Input,
   Container,
+  Text,
+  Flex,
+  IconButton,
+  Spacer,
+  HStack,
+  Box,
+  Button,
 } from '@chakra-ui/react';
+import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import DatePicker from 'react-datepicker';
 import './AdminPage.css';
-import EditLogPopup from '../components/Table/EditLogPopup';
 
 const dummy = [
   {
-    segment: 'Coastal Dune',
+    segment: 'OC21',
     date: '11/15/2021',
-    approved: 'yes',
+    approved: 'APPROVED',
     volunteer: 'Segun Adebayo',
-    status: 'in-training',
+    status: 'IN-TRAINING',
   },
   {
-    segment: 'Coastal Dune',
-    date: '11/15/2021',
-    approved: 'no',
+    segment: 'OC20',
+    date: '12/15/2021',
+    approved: 'READY TO REVIEW',
     volunteer: 'Segun Adebayo',
-    status: 'in-training',
+    status: 'TRAINED',
   },
   {
-    segment: 'Coastal Dune',
-    date: '11/15/2021',
-    approved: 'yes',
+    segment: 'OC09b',
+    date: '01/15/2021',
+    approved: 'RESUBMITTED',
     volunteer: 'Segun Adebayo',
-    status: 'in-training',
+    status: 'TRAINED',
   },
   {
-    segment: 'Coastal Dune',
-    date: '11/15/2021',
-    approved: 'yes',
+    segment: 'OC16',
+    date: '02/15/2021',
+    approved: 'EDITS REQUESTED',
     volunteer: 'Segun Adebayo',
-    status: 'in-training',
+    status: 'IN-TRAINING',
   },
   {
-    segment: 'Coastal Dune',
+    segment: 'OC16',
     date: '11/15/2021',
-    approved: 'no',
-    volunteer: 'Segun Adebayo',
-    status: 'training',
+    approved: 'APPROVED',
+    volunteer: 'Yae Miko',
+    status: 'TRAINED',
   },
 ];
 
 const AdminPage = () => {
   const [checked, setChecked] = useState([]);
   const [segmentFilter, setSegmentFilter] = useState('');
-  const [dateFilter, setDateFilter] = useState('');
+  const [dateFilter, setDateFilter] = useState(new Date());
   const [approvalFilter, setApprovalFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [allChecked, setAllChecked] = useState(false);
+  const [pageSize, setPageSize] = useState(10);
+  const [searchFilter, setSearchFilter] = useState('');
+  const [nameFilter, setNameFilter] = useState('');
 
   const handleAllChecked = () => {
     let newCheckedData = [...checked];
@@ -77,9 +88,10 @@ const AdminPage = () => {
   const createTable = m => {
     return m.map((row, index) =>
       (!segmentFilter || row.segment === segmentFilter) &&
-      (!dateFilter || row.date === dateFilter) &&
+      // (!dateFilter || row.date === dateFilter) &&
       (!approvalFilter || row.approved === approvalFilter) &&
-      (!statusFilter || row.status === statusFilter) ? (
+      (!statusFilter || row.status === statusFilter) &&
+      (!nameFilter || row.volunteer.toLowerCase().includes(nameFilter.toLowerCase())) ? (
         <Tr key={row.id} bg="#FBFBFB">
           <Td>
             <Checkbox
@@ -98,12 +110,13 @@ const AdminPage = () => {
           </Td>
           <Td>{row.segment}</Td>
           <Td>{row.date}</Td>
-          <Td>{row.approved}</Td>
-          <Td>{row.volunteer}</Td>
-          <Td>{row.status}</Td>
           <Td>
-            <EditLogPopup />
+            <HStack>
+              <Text>{row.volunteer}</Text>
+              <Text>{row.status}</Text>
+            </HStack>
           </Td>
+          <Td>{row.approved}</Td>
         </Tr>
       ) : (
         <></>
@@ -115,109 +128,136 @@ const AdminPage = () => {
     <Container maxW="container.xl">
       <div>
         <Heading>Monitor Logs</Heading>
-        <Table>
+        <Flex bg="#4E4E4E" pt="2" pr="3" pl="3">
+          <Box>
+            <Text color="white">{checked.length} Selected</Text>
+          </Box>
+          <Spacer />
+          <Box>
+            <Select
+              backgroundColor="white"
+              color="black"
+              placeholder="Segment"
+              onChange={event => {
+                setSegmentFilter(event.target.value);
+              }}
+            >
+              {dummy
+                .filter(
+                  (value, index, self) =>
+                    self.findIndex(v => v.segment === value.segment) === index,
+                )
+                .map(val => (
+                  <option key={val.segment}>{val.segment}</option>
+                ))}
+            </Select>
+          </Box>
+          <Spacer />
+          <Box>
+            <DatePicker
+              selected={dateFilter}
+              onChange={date => setDateFilter(date)}
+              dateFormat="MMMM, yyyy"
+              showMonthYearPicker
+            />
+          </Box>
+          <Spacer />
+          <Box>
+            <Select
+              backgroundColor="white"
+              color="black"
+              placeholder="Approval"
+              onChange={event => {
+                setApprovalFilter(event.target.value);
+              }}
+            >
+              {dummy
+                .filter(
+                  (value, index, self) =>
+                    self.findIndex(v => v.approved === value.approved) === index,
+                )
+                .map(val => (
+                  <option key={val.approved}>{val.approved}</option>
+                ))}
+            </Select>
+          </Box>
+          <Spacer />
+          <Box>
+            <Select
+              backgroundColor="white"
+              color="black"
+              placeholder="Status"
+              onChange={event => {
+                setStatusFilter(event.target.value);
+              }}
+            >
+              {dummy
+                .filter(
+                  (value, index, self) => self.findIndex(v => v.status === value.status) === index,
+                )
+                .map(val => (
+                  <option key={val.status}>{val.status}</option>
+                ))}
+            </Select>
+          </Box>
+          <Spacer />
+          <Box>
+            <InputGroup>
+              <Input
+                bg="#FFFFFF"
+                color="#2D3748"
+                onChange={event => {
+                  setSearchFilter(event.target.value);
+                  console.log(searchFilter);
+                }}
+              />
+              <InputRightAddon>
+                <Button
+                  onClick={() => {
+                    setNameFilter(searchFilter);
+                    console.log(nameFilter);
+                  }}
+                >
+                  search
+                </Button>
+              </InputRightAddon>
+            </InputGroup>
+          </Box>
+        </Flex>
+        <Table w="100%">
           <Thead>
-            <Tr id="table-head">
-              <Th>{checked.length} Selected</Th>
-              <Th>
-                <Select
-                  backgroundColor="white"
-                  color="black"
-                  placeholder="Segment"
-                  onChange={event => {
-                    setSegmentFilter(event.target.value);
-                  }}
-                >
-                  {dummy
-                    .filter(
-                      (value, index, self) =>
-                        self.findIndex(v => v.segment === value.segment) === index,
-                    )
-                    .map(val => (
-                      <option key={val.segment}>{val.segment}</option>
-                    ))}
-                </Select>
-              </Th>
-              <Th>
-                <Select
-                  backgroundColor="white"
-                  color="black"
-                  placeholder="Date"
-                  onChange={event => {
-                    setDateFilter(event.target.value);
-                  }}
-                >
-                  {dummy
-                    .filter(
-                      (value, index, self) => self.findIndex(v => v.date === value.date) === index,
-                    )
-                    .map(val => (
-                      <option key={val.date}>{val.date}</option>
-                    ))}
-                </Select>
-              </Th>
-              <Th>
-                <Select
-                  backgroundColor="white"
-                  color="black"
-                  placeholder="Approval"
-                  onChange={event => {
-                    setApprovalFilter(event.target.value);
-                  }}
-                >
-                  {dummy
-                    .filter(
-                      (value, index, self) =>
-                        self.findIndex(v => v.approved === value.approved) === index,
-                    )
-                    .map(val => (
-                      <option key={val.approved}>{val.approved}</option>
-                    ))}
-                </Select>
-              </Th>
-              <Th>
-                <Select
-                  backgroundColor="white"
-                  color="black"
-                  placeholder="Status"
-                  onChange={event => {
-                    setStatusFilter(event.target.value);
-                  }}
-                >
-                  {dummy
-                    .filter(
-                      (value, index, self) =>
-                        self.findIndex(v => v.status === value.status) === index,
-                    )
-                    .map(val => (
-                      <option key={val.status}>{val.status}</option>
-                    ))}
-                </Select>
-              </Th>
-              <Th>
-                <InputGroup>
-                  <Input bg="#FFFFFF" color="#2D3748" />
-                  <InputRightAddon bg="#EDF2F7" color="#2D3748">
-                    search
-                  </InputRightAddon>
-                </InputGroup>
-              </Th>
-              <Th />
-            </Tr>
-            <Tr id="table-head">
+            <Tr id="table-head" w="parent">
               <Th>
                 <Checkbox bg="#FFFFFF" onChange={handleAllChecked} />
               </Th>
               <Th color="#FFFFFF">Segment</Th>
-              <Th>Date</Th>
-              <Th>Approved</Th>
-              <Th>Volunteer</Th>
-              <Th>Training Status</Th>
-              <Th />
+              <Th>DATE</Th>
+              <Th>VOLUNTEER(S)</Th>
+              <Th>APPROVAL STATUS</Th>
             </Tr>
           </Thead>
           <Tbody id="table-body">{createTable(dummy)}</Tbody>
         </Table>
+        <Flex bg="#4E4E4E" alignItems="center" p={1}>
+          <Text color="white">Show rows per page</Text>
+          <Select
+            value={pageSize}
+            onChange={e => {
+              setPageSize(e.target.value);
+            }}
+            bg="white"
+            w="75px"
+          >
+            {[10, 20, 30, 40, 50].map(size => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </Select>
+          <Spacer />
+          <IconButton icon={<ChevronLeftIcon />} />
+          <IconButton icon={<ChevronRightIcon />} />
+        </Flex>
       </div>
     </Container>
   );
