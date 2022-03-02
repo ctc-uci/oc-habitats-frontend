@@ -8,6 +8,7 @@ import MonitorLogPage from './pages/MonitorLogPage';
 import EndangeredSpecies from './pages/EndangeredSpecies';
 import AccountPage from './pages/AccountPage';
 import AdminPage from './pages/AdminPage'; // monitor-log table
+import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
           />
           <Route exact path="/species" element={<Species />} />
           {/* Admin only routes (TO DO, make admin only) */}
-          <Route exact path="/people" />
+          <Route exact path="/people" element={<PeoplePage />} />
           <Route exact path="/logs" />
           <Route exact path="/monitor-log" element={<AdminPage />} />
         </Routes>

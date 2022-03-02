@@ -1,8 +1,45 @@
+@import url('https://rsms.me/inter/inter.css');
+html { font-family: 'Inter', sans-serif; }
+@supports (font-variation-settings: normal) {
+  html { font-family: 'Inter var', sans-serif; }
+}
+
 .table-container {
   overflow-y: auto;
   min-width: 900px;
   width: 100%;
   max-height: 400px;
+  background-color: white;
+
+  border: gray solid;
+}
+
+.search-bar {
+  overflow-y: auto;
+  min-width: 40px;
+  max-height: 40px;
+
+  width: 90%;
+  height: 40px;
+}
+
+.sort-by {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 10px;
+}
+
+.sort-options{
+  width: 100%;
+  /*min-width: 20px;
+  max-height: 30px;
+
+
+  height: 30px;
+
+  float: right;
+  align-items: right;
+  align-self: right;*/
 }
 
 .footer-container {
@@ -10,16 +47,26 @@
   min-width: 900px;
   width: 100%;
   max-height: 400px;
-  background-color: white;
+
+  background-color: #2d3748;
+  color: white;
 }
 th {
   position: sticky;
   top: 0;
-  background-color: #f7fafc;
+
+  background-color: #2d3748;
+
+  color: white;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .user-container {
-  position: relative;
+  /* position: relative; */
   width: 284px;
   height: 72px;
   left: 0px;
@@ -28,7 +75,7 @@ th {
 }
 
 .name-container {
-  position: absolute;
+  /*position: absolute;*/
   width: 184px;
   height: 20px;
   left: 20%;
@@ -51,14 +98,13 @@ th {
   /* Inside auto layout */
 
   flex: none;
-  order: 0;
   align-self: stretch;
   flex-grow: 0;
   margin: 0px 0px;
 }
 
 .email-container {
-  position: static;
+  /* position: static; */
   width: 184px;
   height: 20px;
   left: calc(50% - 184px / 2);
@@ -81,8 +127,80 @@ th {
   /* Inside auto layout */
 
   flex: none;
-  order: 1;
   align-self: stretch;
   flex-grow: 0;
   margin: 0px 0px;
+}
+
+.training-badge {
+  position: flex;
+  width: 83px;
+  height: 16px;
+  top: 2px;
+  left: 8px;
+
+  font-family: Inter;
+  font-style: medium;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+
+  align-self: stretch;
+  vertical-align: center;
+}
+
+.last-updated{
+  position: flex;
+  width: 79px;
+  height: 20px;
+  top: 14px;
+  left: 10px;
+
+  font-family: Inter;
+  font-style: italic;
+  font-weight: 400px;
+  font-size: 12px;
+  line-height: 20px;
+
+  align-self: stretch;
+  vertical-align: center;
+
+}
+
+.segment-id{
+  position: flex;
+  width: 40px;
+  height: 20px;
+  top: 14px;
+  left: 10px;
+
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500px;
+  font-size: 14px;
+  line-height: 20px;
+
+  align-self: left;
+  vertical-align: center;
+
+  color: #2d3748;
+}
+
+.segment-location{
+  position: flex;
+  width: 300px;
+  height: 20px;
+  top: 14px;
+  left: 56px;
+
+  font-family: Inter;
+  font-style: regular;
+  font-weight: 500px;
+  font-size: 14px;
+  line-height: 20px;
+
+  align-self: stretch;
+  vertical-align: center;
+
+  color: #718096;
 }

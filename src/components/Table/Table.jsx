@@ -24,18 +24,24 @@ import {
   Icon,
   Badge,
   Avatar,
-} from '@chakra-ui/react';
+  VStack,
+  Box,
+  Button,
+  HStack,
+  Spacer
+} from "@chakra-ui/react";
 import {
   ChevronRightIcon,
   ChevronLeftIcon,
   ChevronUpIcon,
   ChevronDownIcon,
-} from '@chakra-ui/icons';
-import { BsFillClockFill, BsFillPersonFill } from 'react-icons/bs';
-import { AiFillTag } from 'react-icons/ai';
+  Search2Icon
+} from "@chakra-ui/icons";
+import { BsFillClockFill, BsFillPersonFill, BsThreeDotsVertical } from "react-icons/bs";
+import { AiFillTag } from "react-icons/ai";
 
-// import makeData from "./makeData";
-import './App.css';
+//import makeData from "./makeData";
+import "./Table.css";
 
 // Define a default UI for filtering
 function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) {
@@ -47,50 +53,123 @@ function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
 
   return (
     <span>
-      Search:{' '}
-      <input
-        value={value || ''}
-        onChange={e => {
+      {" "}
+      <input Icon="Search2Icon"
+        value={value || ""}
+        onChange={(e) => {
           setValue(e.target.value);
           onChange(e.target.value);
         }}
-        placeholder={`${count} records...`}
+
+        placeholder={`Search...`}
         style={{
-          fontSize: '1.1rem',
-          border: '0',
+          fontSize: "1.1rem",
+          border: "1px #E2E8F0 solid",
+          color: "black",
         }}
       />
     </span>
   );
 }
 
-function createData(name, email, activeStatus, trainingStatus) {
+function createData(name, email, activeStatus, trainingStatus, lastUpdated, assignedSegments) {
   return {
     name,
     email,
     activeStatus,
     trainingStatus,
+    lastUpdated,
+    assignedSegments,
   };
 }
 
 // Some Test Static Data
 const makeRows = [
-  createData('Alexander Adebayo', 'alexander@chakra-ui.com', 'ACTIVE', 'In-Training'),
-  createData('Emily Sue', 'emily@chakra-ui.com', 'ACTIVE', 'Training Complete'),
-  createData('Emmerick Hopkins', 'emmerick@chakra-ui.com', 'ACTIVE', 'In-Training'),
-  createData('Ophelia Santiago', 'ophelia@chakra-ui.com', 'ACTIVE', 'Training Complete'),
-  createData('Steve Rogers', 'steve@chakra-ui.com', 'ACTIVE', 'Training Complete'),
-  createData('Edward Elrich', 'edward@chakra-ui.com', 'INACTIVE', 'Training Complete'),
-  createData('Edward Elrich', 'edward@chakra-ui.com', 'INACTIVE', 'Training Complete'),
-  createData('Edward Elrich', 'edward@chakra-ui.com', 'INACTIVE', 'Training Complete'),
-  createData('Edward Elrich', 'edward@chakra-ui.com', 'INACTIVE', 'Training Complete'),
-  createData('Edward Elrich', 'edward@chakra-ui.com', 'INACTIVE', 'Training Complete'),
-  createData('Edward Elrich', 'edward@chakra-ui.com', 'INACTIVE', 'Training Complete'),
+  createData(
+    "Alexander Adebayo",
+    "alexander@chakra-ui.com",
+    "ACTIVE",
+    "In-Training",
+    "01-20-2022",
+    ["OC03 Sunset Beach (19th Street to Warner Ave)", "OC19 Seal Beach (1st Street)"],
+  ),
+  createData(
+    "Emily Sue",
+    "emily@chakra-ui.com",
+    "ACTIVE",
+    "Training Complete",
+    "01-29-2022"),
+  createData(
+    "Emmerick Hopkins",
+    "emmerick@chakra-ui.com",
+    "ACTIVE",
+    "In-Training",
+    "01-20-2022",
+    ["OC17 Laguna Beach"]
+  ),
+  createData(
+    "Ophelia Santiago",
+    "ophelia@chakra-ui.com",
+    "ACTIVE",
+    "Training Complete",
+    "12-20-2021"
+  ),
+  createData(
+    "Steve Rogers",
+    "steve@chakra-ui.com",
+    "ACTIVE",
+    "Training Complete",
+    "12-27-2021"
+  ),
+  createData(
+    "Edward Elrich",
+    "edward@chakra-ui.com",
+    "INACTIVE",
+    "Training Complete",
+    "11-07-2021"
+  ),
+  createData(
+    "Edward Elrich",
+    "edward@chakra-ui.com",
+    "INACTIVE",
+    "Training Complete",
+    "11-14-2021"
+  ),
+  createData(
+    "Edward Elrich",
+    "edward@chakra-ui.com",
+    "INACTIVE",
+    "Training Complete",
+    "01-20-2022"
+  ),
+  createData(
+    "Edward Elrich",
+    "edward@chakra-ui.com",
+    "INACTIVE",
+    "Training Complete",
+    "01-20-2022"
+  ),
+  createData(
+    "Edward Elrich",
+    "edward@chakra-ui.com",
+    "INACTIVE",
+    "Training Complete",
+    "01-20-2022"
+  ),
+  createData(
+    "Edward Elrich",
+    "edward@chakra-ui.com",
+    "INACTIVE",
+    "Training Complete",
+    "01-20-2022"
+  )
 ];
 
-const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
-  const defaultRef = React.useRef();
-  const resolvedRef = ref || defaultRef;
+// remove this
+const IndeterminateCheckbox = React.forwardRef(
+  ({ indeterminate, ...rest }, ref) => {
+    const defaultRef = React.useRef();
+    const resolvedRef = ref || defaultRef;
 
   React.useEffect(() => {
     resolvedRef.current.indeterminate = indeterminate;
@@ -103,50 +182,101 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
   );
 });
 
-function getActiveStatus(status) {
-  if (status === 'ACTIVE') {
-    return (
-      <Badge variant="solid" colorScheme="green">
-        {status}
-      </Badge>
-    );
-  }
-  return <Badge variant="solid">{status}</Badge>;
-}
-
 function getTrainingStatus(status) {
-  if (status === 'In-Training') {
-    return (
-      <Badge variant="solid" colorScheme="orange">
-        {status}
-      </Badge>
-    );
-  }
   return (
-    <Badge variant="solid" colorScheme="purple">
+    <Badge className="training-badge" variant="solid" colorScheme="orange" fontSize="12px">
       {status}
     </Badge>
   );
 }
 
-// Custom component to render ActiveStatus
-const ActiveStatus = ({ value }) => {
-  return getActiveStatus(value);
-};
+function getLastUpdated(status) {
+  return (
+    <div className="last-updated">{status}</div>
+  );
+}
+
+function getAssignedSegments(status) {
+  if (status != null) {
+    const options = [];
+    for (let i=0; i < status.length; i++){
+      options.push(
+        <HStack>
+        <div className="segment-id" align-self="left">{status[i].split(" ")[0]}</div>
+        <div className="segment-location" font-style="regular">{status[i].substring(status[i].indexOf(" ")+1)}</div>
+        </HStack>
+      )
+    }
+    return (
+      <VStack align="normal">
+        {options}
+      </VStack>
+    );
+  }
+  else{
+    return null;
+  }
+
+}
+/*
+<VStack>
+      <Icon viewBox='0 0 100 100' >
+        <path
+          fill='currentColor'
+          d='M 20, 20 m -15, 0 a 15,15 0 1,0 30,0 a 15,15 0 1,0 -30,0'
+        />
+      </Icon>
+      <Icon viewBox='0 0 100 100' >
+        <path
+          fill='currentColor'
+          d='M 20, 20 m -15, 0 a 15,15 0 1,0 30,0 a 15,15 0 1,0 -30,0'
+        />
+      </Icon>
+      <Icon viewBox='0 0 100 100' >
+        <path
+          fill='currentColor'
+          d='M 20, 20 m -15, 0 a 15,15 0 1,0 30,0 a 15,15 0 1,0 -30,0'
+        />
+      </Icon>
+    </VStack>
+*/
+function getButton(){
+  return (
+    <IconButton icon={<BsThreeDotsVertical />} position="static" />
+  )
+}
 
 // Custom component to render TrainingStatus
 const TrainingStatus = ({ value }) => {
   return getTrainingStatus(value);
 };
 
+// Custom component to render LastUpdated
+const LastUpdated = ({ value }) => {
+  return getLastUpdated(value);
+};
+
+// Custom component to render LastUpdated
+const AssignedSegments = ({ value }) => {
+  return getAssignedSegments(value);
+};
+
+const ViewEditProfile = () => {
+  return getButton();
+}
+
 // Custom component to render Name
 const Name = ({ value }) => {
   return (
     <>
       <div className="user-container">
-        <Avatar size="md" name={`${value}`} src="something" />
+        <Avatar size="md" position="static" name={value} src="something" />
+        <VStack className="user-info-container">
+          <div className="name-container">{`${value.split(" ")[0] + " " + value.split(" ")[1]}`}</div>
+          <div className="email-container">{`${value.split(" ")[2]}`}</div>
 
-        <div className="name-container">{`${value}`}</div>
+          {value.split(" ")[3] === "In-Training" ? <TrainingStatus value={`${value.split(" ")[3]}`} /> : null}
+        </VStack>
       </div>
     </>
   );
@@ -187,8 +317,8 @@ function PeopleTable({ columns, data }) {
     useSortBy,
     usePagination,
     useRowSelect,
-    hooks => {
-      hooks.visibleColumns.push(columns => [
+    /*(hooks) => {
+      hooks.visibleColumns.push((columns) => [
         // Let's make a column for selection
         {
           id: 'selection',
@@ -209,12 +339,35 @@ function PeopleTable({ columns, data }) {
         },
         ...columns,
       ]);
-    },
+    }*/
   );
 
   // Render the UI for your table
+
+  // Needs to be updated such that sorting is possible
   return (
     <>
+
+
+      <div>
+        <Flex justifyContent="space-between">
+          <GlobalFilter className="search-bar"
+            preGlobalFilteredRows={preGlobalFilteredRows}
+            globalFilter={state.globalFilter}
+            setGlobalFilter={setGlobalFilter}
+          />
+          <div style={{display: "flex", justifyContent: "right", width: "50%"}}>
+            <p className="sort-by" >
+              SORT BY
+            </p>
+            <Select className="sort-options" width="30%" >
+              <option value='option1'>Name: A-Z</option>
+              <option value='option2'>Name: Z-A</option>
+            </Select>
+          </div>
+
+        </Flex>
+      </div>
       <div className="table-container">
         <Table {...getTableProps()}>
           <Thead>
@@ -225,17 +378,17 @@ function PeopleTable({ columns, data }) {
                   textAlign: 'left',
                 }}
               >
-                <GlobalFilter
-                  preGlobalFilteredRows={preGlobalFilteredRows}
-                  globalFilter={state.globalFilter}
-                  setGlobalFilter={setGlobalFilter}
-                />
+
               </th>
             </tr>
             {headerGroups.map(headerGroup => (
               <Tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map(column => (
-                  <Th userSelect="none" {...column.getHeaderProps(column.getSortByToggleProps())}>
+                {headerGroup.headers.map((column) => (
+                  <Th
+                    userSelect="none"
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    color="white"
+                  >
                     <Flex alignItems="center">
                       {column.icon}
                       {column.render('Header')}
@@ -269,11 +422,13 @@ function PeopleTable({ columns, data }) {
         </Table>
       </div>
 
-      <div className="footer-container">
+      <div className="footer-container" style={{margin: "auto"}}>
         <Flex justifyContent="space-between" m={4} alignItems="center">
           <Flex alignItems="center">
             <Text flexShrink="0">Show rows per page: </Text>{' '}
             <Select
+              backgroundColor="white"
+              color="#2d3748"
               ml={2}
               w={32}
               value={pageSize}
@@ -298,6 +453,7 @@ function PeopleTable({ columns, data }) {
             </Text>
             <Tooltip label="Previous Page">
               <IconButton
+                backgroundColor="#2d3748"
                 onClick={previousPage}
                 isDisabled={!canPreviousPage}
                 icon={<ChevronLeftIcon h={6} w={6} />}
@@ -305,6 +461,7 @@ function PeopleTable({ columns, data }) {
             </Tooltip>
             <Tooltip label="Next Page">
               <IconButton
+                backgroundColor="#2d3748"
                 onClick={nextPage}
                 isDisabled={!canNextPage}
                 icon={<ChevronRightIcon h={6} w={6} />}
@@ -322,26 +479,27 @@ function App() {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Name',
-        accessor: d => `${d.name} ${d.email}`,
-        icon: <Icon as={BsFillPersonFill} mr={1} />,
-        Cell: ({ cell: { value } }) => <Name value={value} />,
-      },
-      // {
-      //   Header: "Email",
-      //   accessor: "email"
-      // },
-      {
-        Header: 'Active Status',
-        accessor: 'activeStatus',
-        icon: <Icon as={BsFillClockFill} mr={1} />,
-        Cell: ({ cell: { value } }) => <ActiveStatus value={value} />,
+        Header: "Name",
+        accessor: (d) => `${d.name} ${d.email} ${d.trainingStatus}`,
+        //icon: <Icon as={BsFillPersonFill} mr={1} />,
+        Cell: ({ cell: { value } }) => <Name value={value}/>
       },
       {
-        Header: 'Training Status',
-        accessor: 'trainingStatus',
-        icon: <Icon as={AiFillTag} mr={1} />,
-        Cell: ({ cell: { value } }) => <TrainingStatus value={value} />,
+        Header: "Last Updated",
+        accessor: "lastUpdated",
+        //icon: <Icon as={AiFillTag} mr={1} />,
+        Cell: ({ cell: { value } }) => <LastUpdated value={value} />
+      },
+      {
+        Header: "Assigned Segment(s)",
+        accessor: "assignedSegments",
+        //icon: <Icon as={AiFillTag} mr={1} />,
+        Cell: ({ cell: { value } }) => <AssignedSegments value={value}/>
+      },
+      {
+        Header: "",
+        accessor: "button",
+        Cell: <ViewEditProfile />,
       },
     ],
     [],
