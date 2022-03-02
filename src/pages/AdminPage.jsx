@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import {
   Th,
   Thead,
@@ -42,10 +42,17 @@ const dummy = [
   },
   {
     segment: 'OC09b',
-    date: '01/15/2021',
+    date: '03/15/2022',
     approved: 'RESUBMITTED',
-    volunteer: 'Segun Adebayo',
+    volunteer: 'Yae Miko',
     status: 'TRAINED',
+  },
+  {
+    segment: 'OC21',
+    date: '03/14/2022',
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: 'IN-TRAINING',
   },
   {
     segment: 'OC16',
@@ -63,7 +70,88 @@ const dummy = [
   },
 ];
 
+function segmentAscend(a, b) {
+  if (a.segment < b.segment) {
+    return -1;
+  }
+  if (a.segment > b.segment) {
+    return 1;
+  }
+  return 0;
+}
+
+function segmentDescend(a, b) {
+  if (a.segment > b.segment) {
+    return -1;
+  }
+  if (a.segment < b.segment) {
+    return 1;
+  }
+  return 0;
+}
+
+function dateAscend(a, b) {
+  if (a.date < b.date) {
+    return -1;
+  }
+  if (a.date > b.date) {
+    return 1;
+  }
+  return 0;
+}
+
+function dateDescend(a, b) {
+  if (a.date > b.date) {
+    return -1;
+  }
+  if (a.date < b.date) {
+    return 1;
+  }
+  return 0;
+}
+
+function volunteerAscend(a, b) {
+  if (a.volunteer < b.volunteer) {
+    return -1;
+  }
+  if (a.volunteer > b.volunteer) {
+    return 1;
+  }
+  return 0;
+}
+
+function volunteerDescend(a, b) {
+  if (a.volunteer > b.volunteer) {
+    return -1;
+  }
+  if (a.volunteer < b.volunteer) {
+    return 1;
+  }
+  return 0;
+}
+
+function approvalAscend(a, b) {
+  if (a.approved < b.approved) {
+    return -1;
+  }
+  if (a.approved > b.approved) {
+    return 1;
+  }
+  return 0;
+}
+
+function approvalDescend(a, b) {
+  if (a.approved > b.approved) {
+    return -1;
+  }
+  if (a.approved < b.approved) {
+    return 1;
+  }
+  return 0;
+}
+
 const AdminPage = () => {
+  // useStates and useEffect
   const [checked, setChecked] = useState([]);
   const [segmentFilter, setSegmentFilter] = useState('');
   const [dateFilter, setDateFilter] = useState(new Date());
@@ -73,6 +161,28 @@ const AdminPage = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchFilter, setSearchFilter] = useState('');
   const [nameFilter, setNameFilter] = useState('');
+  const [isSegmentAscend, setSegmentAscend] = useState(false);
+  const [isDateAscend, setDateAscend] = useState(false);
+  const [isVolunteerAscend, setVolunteerAscend] = useState(false);
+  const [isApprovalAscend, setApprovalAscend] = useState(false);
+
+  const isFiltered = row => {
+    return (
+      (!segmentFilter || row.segment === segmentFilter) &&
+      // (!dateFilter || row.date === dateFilter) &&
+      (!approvalFilter || row.approved === approvalFilter) &&
+      (!statusFilter || row.status === statusFilter) &&
+      (!nameFilter || row.volunteer.toLowerCase().includes(nameFilter.toLowerCase())) &&
+      parseInt([...row.date].splice(0, 2).join(''), 10) - 1 === dateFilter.getMonth() &&
+      parseInt([...row.date].splice(-4).join(''), 10) === dateFilter.getFullYear()
+    );
+  };
+
+  const [dataDisplay, setDataDisplay] = useState(dummy.filter(row => isFiltered(row)));
+
+  useEffect(() => {
+    setDataDisplay(dummy.filter(row => isFiltered(row)));
+  }, [segmentFilter, dateFilter, approvalFilter, statusFilter]);
 
   const handleAllChecked = () => {
     let newCheckedData = [...checked];
@@ -85,45 +195,35 @@ const AdminPage = () => {
     setChecked(newCheckedData);
   };
 
-  const createTable = m => {
-    return m.map((row, index) =>
-      (!segmentFilter || row.segment === segmentFilter) &&
-      // (!dateFilter || row.date === dateFilter) &&
-      (!approvalFilter || row.approved === approvalFilter) &&
-      (!statusFilter || row.status === statusFilter) &&
-      (!nameFilter || row.volunteer.toLowerCase().includes(nameFilter.toLowerCase())) &&
-      parseInt([...row.date].splice(0, 2).join(''), 10) - 1 === dateFilter.getMonth() &&
-      parseInt([...row.date].splice(-4).join(''), 10) === dateFilter.getFullYear() ? (
-        <Tr key={row.id} bg="#FBFBFB">
-          <Td>
-            <Checkbox
-              bg="#FFFFFF"
-              isChecked={checked.includes(index)}
-              onChange={event => {
-                if (event.target.checked) {
-                  setChecked([...checked, index]);
-                } else {
-                  const remainingChecks = [...checked];
-                  remainingChecks.splice(checked.indexOf(index), 1);
-                  setChecked(remainingChecks);
-                }
-              }}
-            />
-          </Td>
-          <Td>{row.segment}</Td>
-          <Td>{row.date}</Td>
-          <Td>
-            <HStack>
-              <Text>{row.volunteer}</Text>
-              <Text>{row.status}</Text>
-            </HStack>
-          </Td>
-          <Td>{row.approved}</Td>
-        </Tr>
-      ) : (
-        <></>
-      ),
-    );
+  const createTable = () => {
+    return dataDisplay.map((row, index) => (
+      <Tr key={row.id} bg="#FBFBFB">
+        <Td>
+          <Checkbox
+            bg="#FFFFFF"
+            isChecked={checked.includes(index)}
+            onChange={event => {
+              if (event.target.checked) {
+                setChecked([...checked, index]);
+              } else {
+                const remainingChecks = [...checked];
+                remainingChecks.splice(checked.indexOf(index), 1);
+                setChecked(remainingChecks);
+              }
+            }}
+          />
+        </Td>
+        <Td>{row.segment}</Td>
+        <Td>{row.date}</Td>
+        <Td>
+          <HStack>
+            <Text>{row.volunteer}</Text>
+            <Text>{row.status}</Text>
+          </HStack>
+        </Td>
+        <Td>{row.approved}</Td>
+      </Tr>
+    ));
   };
 
   return (
@@ -232,13 +332,81 @@ const AdminPage = () => {
               <Th>
                 <Checkbox bg="#FFFFFF" onChange={handleAllChecked} />
               </Th>
-              <Th color="#FFFFFF">Segment</Th>
-              <Th>DATE</Th>
-              <Th>VOLUNTEER(S)</Th>
-              <Th>APPROVAL STATUS</Th>
+              <Th color="#FFFFFF">
+                <Button
+                  colorScheme="#4e4e4e"
+                  variant="link"
+                  onClick={() => {
+                    if (isSegmentAscend) {
+                      const sortedData = [...dataDisplay].sort((a, b) => segmentDescend(a, b));
+                      setDataDisplay(sortedData);
+                    } else {
+                      const sortedData = [...dataDisplay].sort((a, b) => segmentAscend(a, b));
+                      setDataDisplay(sortedData);
+                    }
+                    setSegmentAscend(!isSegmentAscend);
+                  }}
+                >
+                  Segment
+                </Button>
+              </Th>
+              <Th>
+                <Button
+                  colorScheme="#4e4e4e"
+                  variant="link"
+                  onClick={() => {
+                    if (isDateAscend) {
+                      const sortedData = [...dataDisplay].sort((a, b) => dateDescend(a, b));
+                      setDataDisplay(sortedData);
+                    } else {
+                      const sortedData = [...dataDisplay].sort((a, b) => dateAscend(a, b));
+                      setDataDisplay(sortedData);
+                    }
+                    setDateAscend(!isDateAscend);
+                  }}
+                >
+                  DATE
+                </Button>
+              </Th>
+              <Th>
+                <Button
+                  colorScheme="#4e4e4e"
+                  variant="link"
+                  onClick={() => {
+                    if (isVolunteerAscend) {
+                      const sortedData = [...dataDisplay].sort((a, b) => volunteerDescend(a, b));
+                      setDataDisplay(sortedData);
+                    } else {
+                      const sortedData = [...dataDisplay].sort((a, b) => volunteerAscend(a, b));
+                      setDataDisplay(sortedData);
+                    }
+                    setVolunteerAscend(!isVolunteerAscend);
+                  }}
+                >
+                  VOLUNTEER(S)
+                </Button>
+              </Th>
+              <Th>
+                <Button
+                  colorScheme="#4e4e4e"
+                  variant="link"
+                  onClick={() => {
+                    if (isApprovalAscend) {
+                      const sortedData = [...dataDisplay].sort((a, b) => approvalDescend(a, b));
+                      setDataDisplay(sortedData);
+                    } else {
+                      const sortedData = [...dataDisplay].sort((a, b) => approvalAscend(a, b));
+                      setDataDisplay(sortedData);
+                    }
+                    setApprovalAscend(!isApprovalAscend);
+                  }}
+                >
+                  APPROVAL STATUS
+                </Button>
+              </Th>
             </Tr>
           </Thead>
-          <Tbody id="table-body">{createTable(dummy)}</Tbody>
+          <Tbody id="table-body">{createTable()}</Tbody>
         </Table>
         <Flex bg="#4E4E4E" alignItems="center" p={1}>
           <Text color="white">Show rows per page</Text>
