@@ -45,13 +45,25 @@ const options = [
   { value: 'add3', label: 'add3' },
 ];
 
-const AddSpeciesModal = () => {
+const AddSpeciesModal = ({ addNewRow }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [option, setOption] = useState('test');
+  const [specieName, setSpecieName] = useState(null);
+  const [totalSighted, setTotalSighted] = useState(1);
+  const [notes, setNotes] = useState(null);
+
+  const addNewSpecie = () => {
+    addNewRow({ name: specieName, total: totalSighted, notes });
+    onClose();
+  };
+
+  const setSpecie = e => {
+    setSpecieName(e.value);
+  };
 
   return (
     <div>
-      <Button onClick={onOpen} bgColor="#2BC0E3" width="584px" height="48px" margin-top="15px">
+      <Button onClick={onOpen} bgColor="#2BC0E3" width="584px" height="48px">
         Add New Row +
       </Button>
       <Modal isOpen={isOpen}>
@@ -78,7 +90,7 @@ const AddSpeciesModal = () => {
             <SimpleGrid columns={6} h="100%" columnGap="9px" rowGap=".75em">
               <GridItem colSpan={5}>
                 <VStack w="full" h="100%" position="relative" alignItems>
-                  <DropdownSearch options={options} onChange={opt => opt.label} />
+                  <DropdownSearch options={options} handleSelectedValue={setSpecie} />
                 </VStack>
               </GridItem>
 
@@ -93,7 +105,14 @@ const AddSpeciesModal = () => {
 
               <GridItem colSpan={5}>
                 <FormLabel fontWeight="600">Total Sighted:</FormLabel>
-                <NumberInput defaultValue={0} min={0} max={20}>
+                <NumberInput
+                  defaultValue={1}
+                  min={1}
+                  max={20}
+                  onChange={e => {
+                    setTotalSighted(e);
+                  }}
+                >
                   <NumberInputField />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
@@ -103,13 +122,18 @@ const AddSpeciesModal = () => {
               </GridItem>
               <GridItem colSpan={6}>
                 <FormLabel fontWeight="600">Notes (Optional)</FormLabel>
-                <Textarea placeholder="Type Here..." />
+                <Textarea
+                  placeholder="Type Here..."
+                  onChange={e => {
+                    setNotes(e.target.value);
+                  }}
+                />
               </GridItem>
             </SimpleGrid>
           </ModalBody>
           <ModalFooter>
             <VStack>
-              <Button bgColor="#2BC0E3" width="400px">
+              <Button bgColor="#2BC0E3" width="400px" onClick={addNewSpecie}>
                 Save <RiSaveFill />
               </Button>
               <Button width="400px" onClick={onClose}>
@@ -121,6 +145,14 @@ const AddSpeciesModal = () => {
       </Modal>
     </div>
   );
+};
+
+AddSpeciesModal.defaultProps = {
+  addNewRow: PropTypes.func,
+};
+
+AddSpeciesModal.propTypes = {
+  addNewRow: PropTypes.func,
 };
 
 export default AddSpeciesModal;

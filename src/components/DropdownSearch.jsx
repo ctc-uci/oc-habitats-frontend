@@ -2,17 +2,19 @@ import React from 'react';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 
-const DropdownSearch = ({ options, highlightSearch }) => (
+const DropdownSearch = ({ options, value, handleSelectedValue }) => (
   <Select
     placeholder="Enter species name..."
     options={options}
-    onChange={highlightSearch}
+    onChange={handleSelectedValue}
     isClearable
+    value={value ? { value, label: value } : { value: null, label: null }}
   />
 );
 
 DropdownSearch.defaultProps = {
-  highlightSearch: PropTypes.func,
+  handleSelectedValue: PropTypes.func,
+  value: PropTypes.string,
 };
 
 DropdownSearch.propTypes = {
@@ -22,7 +24,8 @@ DropdownSearch.propTypes = {
       label: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  highlightSearch: PropTypes.func,
+  handleSelectedValue: PropTypes.func,
+  value: PropTypes.string,
 };
 
 export default DropdownSearch;

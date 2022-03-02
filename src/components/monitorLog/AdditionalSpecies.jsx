@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import { BsPersonFill, BsArrowDown } from 'react-icons/bs';
 import {
   Text,
   VStack,
@@ -13,11 +12,6 @@ import {
   Tr,
   Th,
   Td,
-  Input,
-  NumberInput,
-  NumberInputField,
-  Checkbox,
-  FormLabel,
   FormControl,
   IconButton,
   Container,
@@ -38,10 +32,9 @@ import AddSpeciesModal from './AddSpeciesModal';
 import EditSpeciesModal from './EditSpeciesModal';
 
 const rows = [
-  { id: 1, name: 'Beach Cast', total: 0, isChecked: false, isVisible: 'hidden', isDisabled: true },
+  { name: 'Sandpiper: Long-billed Curlew (LBCU)', total: 2, notes: 'testing' },
+  { name: 'Test', total: 1, notes: 'hi' },
 ];
-
-let uniqueID = 2;
 
 const AdditionalSpecies = () => {
   const [species, setSpecies] = useState(rows);
@@ -84,22 +77,11 @@ const AdditionalSpecies = () => {
     setSpecies(newCheckedData);
   };
 
-  const handleAddRow = () => {
-    if (option !== '') {
-      const newData = {
-        id: uniqueID,
-        name: option.label,
-        total: 0,
-        isChecked: false,
-        isVisible: 'visible',
-        isDisabled: false,
-      };
-      uniqueID += 1;
-      const newSpecies = [...species, newData];
+  const handleAddRow = newSpecie => {
+    console.log('newSpecie', newSpecie);
+    const newSpecies = [...species, newSpecie];
 
-      setOption('');
-      setSpecies(newSpecies);
-    }
+    setSpecies(newSpecies);
   };
 
   const handleDeleteRows = () => {
@@ -108,47 +90,47 @@ const AdditionalSpecies = () => {
     setSpecies(newSpecies);
   };
 
+  const getSpecie = name => {
+    console.log('in func', name);
+    const specie = species.filter(currSpecie => {
+      return currSpecie.name === name;
+    });
+    console.log('passing in ', specie);
+    return specie[0];
+  };
+
   const createTable = m => {
     return m.map((row, index) => (
-      <Tr height="72px" key={row.id}>
-        <Td>
-          {/* <Checkbox
-            size="md"
-            isChecked={row.isChecked}
-            onChange={() => handleRowCheckedItems(index)}
-            visibility={row.isVisible}
-            isDisabled={row.isDisabled}
-          /> */}
-          {/* <Input size="lg" backgroundColor="#EDF2F7" value={row.name} isReadOnly /> */}
-
+      <Tr height="72px" key={row.name}>
+        <Td w="100%">
           <Accordion allowToggle>
-            <AccordionItem>
+            <AccordionItem id={row.name} borderColor="transparent">
               <h2>
                 <AccordionButton>
-                  <Box flex="1" textAlign="left">
-                    <EditSpeciesModal />
-                    Sandpiper: Long-billed Curlew (LBCU)
-                  </Box>
+                  <Flex flex="1" alignItems="center">
+                    <EditSpeciesModal specie={getSpecie(row.name)} />
+                    <Text ml="1.25em" fontSize="1.05em">
+                      {row.name}
+                    </Text>
+                  </Flex>
                   <AccordionIcon />
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4}>
-                <HStack>
+                <SimpleGrid columns={1}>
                   <Flex justifyContent="space-between" w="100%">
-                    <Text>Total</Text>
+                    <Text fontWeight={600}>Total</Text>
                     <Text>{row.total}</Text>
                   </Flex>
-                </HStack>
+                  <Flex justifyContent="space-between" w="100%">
+                    <Text fontWeight={600}>Notes (Optional)</Text>
+                    <Text>{row.notes ? row.notes : '--'}</Text>
+                  </Flex>
+                </SimpleGrid>
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
         </Td>
-        <Td />
-        {/* <Td>
-          <NumberInput size="lg" value={row.total} onChange={v => handleAddTotalChange(v, index)}>
-            <NumberInputField />
-          </NumberInput>
-        </Td> */}
       </Tr>
     ));
   };
@@ -160,65 +142,30 @@ const AdditionalSpecies = () => {
           Additional Species
         </Text>
         <FormControl>
-          {/* <FormLabel fontWeight="600">Search for a Species:</FormLabel> */}
           <SimpleGrid columns={2} h="166px" columnGap="26px">
-            {/* <GridItem colSpan={1}> */}
-            {/* <SimpleGrid columns={6} h="100%" columnGap="9px">
-                <GridItem colSpan={5}>
-                  <VStack w="full" h="100%" position="relative" alignItems>
-                    <Select value={option} options={options} onChange={v => setOption(v)} />
-                    <Button
-                      w="full"
-                      position="absolute"
-                      bottom={0}
-                      fontWeight="700"
-                      isDisabled={disabled}
-                      onClick={handleDeleteRows}
-                      rightIcon={<DeleteIcon />}
-                    >
-                      Delete Selected
-                    </Button>
-                  </VStack>
-                </GridItem>
-
-
-                <GridItem colSpan={1}>
-                  <IconButton
-                    w="full"
-                    onClick={handleAddRow}
-                    aria-label="Enter"
-                    icon={<BsArrowDown />}
-                  />
-                </GridItem>
-              </SimpleGrid> */}
-            {/* </GridItem> */}
-
             <GridItem colSpan={1}>
-              <Table id="speciesTable" variant="simple" borderRadius="10px" overflow="hidden">
+              <Table
+                id="speciesTable"
+                variant="simple"
+                borderRadius="10px"
+                overflow="hidden"
+                w="50em"
+              >
                 <Thead>
                   <Tr>
-                    <Th w="48px" h="40px" paddingRight="8px" backgroundColor="#F7FAFC">
-                      {/* <Checkbox
-                        backgroundColor="#ffffff"
-                        isChecked={allChecked}
-                        onChange={handleAllChecked}
-                      /> */}
+                    <Th pl="10em" backgroundColor="#F7FAFC">
+                      Species
                     </Th>
-                    <Th fontWeight="700" backgroundColor="#F7FAFC">
-                      <Icon as={BsPersonFill} w={7} h={3.5} /> Species
-                    </Th>
-                    {/* <Th fontWeight="700" w="200px" h="40px" backgroundColor="#F7FAFC">
-                      <Icon as={BsPersonFill} w={7} h={3.5} />
-                      Total
-                    </Th> */}
                   </Tr>
                 </Thead>
                 <Tbody>{createTable(species)}</Tbody>
               </Table>
             </GridItem>
+            <GridItem colSpan={2} mt="2em">
+              <AddSpeciesModal addNewRow={handleAddRow} />
+            </GridItem>
           </SimpleGrid>
         </FormControl>
-        <AddSpeciesModal />
       </VStack>
     </Container>
   );

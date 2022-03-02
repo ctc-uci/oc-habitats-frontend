@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 /* eslint-disable no-unused-vars */
 // import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -30,7 +31,8 @@ import {
   Flex,
   useDisclosure,
 } from '@chakra-ui/react';
-import { DeleteIcon, InfoIcon, EditIcon } from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { FiEdit2 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import { BsArrowDown } from 'react-icons/bs';
 import { RiSaveFill } from 'react-icons/ri';
@@ -46,14 +48,21 @@ const options = [
   { value: 'add3', label: 'add3' },
 ];
 
-const EditSpeciesModal = () => {
+const EditSpeciesModal = ({ specie }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDelete, setIsDelete] = useState(false);
-  const [option, setOption] = useState('test');
+  const [specieName, setSpecieName] = useState(specie.name);
+  const [totalSighted, setTotalSighted] = useState(specie.total);
+  const [notes, setNotes] = useState(specie.notes);
+
+  // console.log('edit specie', specie);
+  const setSpecie = e => {
+    setSpecieName(e.value);
+  };
 
   return (
     <div>
-      <Button fontWeight="700" rightIcon={<EditIcon />} onClick={onOpen} />
+      <IconButton size="md" icon={<Icon as={FiEdit2} />} onClick={onOpen} />
       {isDelete ? (
         <DeleteRowModal
           setIsShowing={setIsDelete}
@@ -74,7 +83,12 @@ const EditSpeciesModal = () => {
               <SimpleGrid columns={6} h="100%" columnGap="9px" rowGap=".75em">
                 <GridItem colSpan={5}>
                   <VStack w="full" h="100%" position="relative" alignItems>
-                    <DropdownSearch options={options} onChange={opt => opt.label} />
+                    <DropdownSearch
+                      options={options}
+                      value={specieName}
+                      onChange={opt => opt.label}
+                      handleSelectedValue={setSpecie}
+                    />
                   </VStack>
                 </GridItem>
 
@@ -89,7 +103,15 @@ const EditSpeciesModal = () => {
 
                 <GridItem colSpan={5}>
                   <FormLabel fontWeight="600">Total Sighted:</FormLabel>
-                  <NumberInput defaultValue={0} min={0} max={20}>
+                  <NumberInput
+                    defaultValue={0}
+                    value={totalSighted}
+                    onChange={e => {
+                      setTotalSighted(e);
+                    }}
+                    min={1}
+                    max={20}
+                  >
                     <NumberInputField />
                     <NumberInputStepper>
                       <NumberIncrementStepper />
@@ -99,7 +121,13 @@ const EditSpeciesModal = () => {
                 </GridItem>
                 <GridItem colSpan={6}>
                   <FormLabel fontWeight="600">Notes (Optional)</FormLabel>
-                  <Textarea placeholder="Type Here..." />
+                  <Textarea
+                    placeholder="Type Here..."
+                    value={notes}
+                    onChange={e => {
+                      setNotes(e.target.value);
+                    }}
+                  />
                 </GridItem>
               </SimpleGrid>
             </ModalBody>
@@ -131,6 +159,14 @@ const EditSpeciesModal = () => {
       )}
     </div>
   );
+};
+
+EditSpeciesModal.defaultProps = {
+  specie: PropTypes.object,
+};
+
+EditSpeciesModal.propTypes = {
+  specie: PropTypes.object,
 };
 
 export default EditSpeciesModal;

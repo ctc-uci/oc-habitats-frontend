@@ -6,8 +6,8 @@ import {
   SimpleGrid,
   GridItem,
   Button,
+  IconButton,
   Icon,
-  Box,
   HStack,
   Flex,
   useDisclosure,
@@ -19,7 +19,9 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
-import { DeleteIcon, TrashIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { DeleteIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { MdArrowBackIos } from 'react-icons/md';
+import { AiFillDelete } from 'react-icons/ai';
 
 import PropTypes from 'prop-types';
 
@@ -31,7 +33,7 @@ const DeleteRowModal = ({ species, isShowing, setIsShowing }) => {
         <ModalOverlay />
         <ModalContent>
           <HStack>
-            <Button
+            <IconButton
               bgColor="transparent"
               _hover={{ bg: 'transparent' }}
               _active={{
@@ -41,7 +43,7 @@ const DeleteRowModal = ({ species, isShowing, setIsShowing }) => {
               _focus={{
                 bg: 'transparent',
               }}
-              rightIcon={<ChevronLeftIcon />}
+              icon={<Icon as={MdArrowBackIos} />}
               onClick={e => {
                 setIsShowing(false);
               }}
@@ -51,27 +53,34 @@ const DeleteRowModal = ({ species, isShowing, setIsShowing }) => {
           <ModalHeader alignSelf="center">Delete Row</ModalHeader>
           <ModalBody>
             <HStack justify="center">
-              <DeleteIcon w={20} h={20} color="red" />
+              <Icon as={AiFillDelete} w={20} h={20} color="#CC0000" />
             </HStack>
             <Text>
               Are you sure you want to
-              <Text color="red" style={{ display: 'inline' }}>
+              <Text color="#CC0000" display="inline">
                 {' '}
                 delete{' '}
               </Text>
-              the {species} row? This action cannot be undone.
+              the{' '}
+              <Text fontWeight={500} display="inline">
+                {species}
+              </Text>{' '}
+              row? This action cannot be undone.
             </Text>
             <VStack width="400px">
-              <Button w="100%" bgColor="red" height="48px" onClick={onClose}>
+              <Button w="100%" bgColor="#CC0000" color="white" height="48px" onClick={onClose}>
                 Yes, Delete Row
               </Button>
               <Button
+                variant="outline"
                 w="100%"
                 height="48px"
                 mr={3}
                 onClick={e => {
                   setIsShowing(false);
                 }}
+                borderColor="#2D3748"
+                color="#2D3748"
               >
                 Cancel
               </Button>
