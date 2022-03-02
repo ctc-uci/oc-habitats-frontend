@@ -154,7 +154,7 @@ const AdminPage = () => {
   // useStates and useEffect
   const [checked, setChecked] = useState([]);
   const [segmentFilter, setSegmentFilter] = useState('');
-  const [dateFilter, setDateFilter] = useState(new Date());
+  const [dateFilter, setDateFilter] = useState(null);
   const [approvalFilter, setApprovalFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [allChecked, setAllChecked] = useState(false);
@@ -173,8 +173,10 @@ const AdminPage = () => {
       (!approvalFilter || row.approved === approvalFilter) &&
       (!statusFilter || row.status === statusFilter) &&
       (!nameFilter || row.volunteer.toLowerCase().includes(nameFilter.toLowerCase())) &&
-      parseInt([...row.date].splice(0, 2).join(''), 10) - 1 === dateFilter.getMonth() &&
-      parseInt([...row.date].splice(-4).join(''), 10) === dateFilter.getFullYear()
+      (dateFilter === null ||
+        parseInt([...row.date].splice(0, 2).join(''), 10) - 1 === dateFilter.getMonth()) &&
+      (dateFilter === null ||
+        parseInt([...row.date].splice(-4).join(''), 10) === dateFilter.getFullYear())
     );
   };
 
@@ -189,7 +191,7 @@ const AdminPage = () => {
     if (allChecked) {
       newCheckedData = [];
     } else {
-      newCheckedData = [...Array(dummy.length).keys()];
+      newCheckedData = [...Array(dataDisplay.length).keys()];
     }
     setAllChecked(!allChecked);
     setChecked(newCheckedData);
@@ -263,6 +265,8 @@ const AdminPage = () => {
               }}
               dateFormat="MMMM, yyyy"
               showMonthYearPicker
+              placeholderText="Select a month"
+              isClearable
             />
           </Box>
           <Spacer />
