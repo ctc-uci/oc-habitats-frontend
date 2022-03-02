@@ -8,12 +8,19 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import AdditionalSpecies from '../components/monitorLog/AdditionalSpecies';
 import Predators from '../components/monitorLog/Predators';
 import HumanActivity from '../components/monitorLog/HumanActivity';
 import GeneralInfo from '../components/monitorLog/GeneralInfo';
+import ReviewElementTooltip from '../components/monitorLog/ReviewElementTooltip';
+import MonitorLogSection from '../components/monitorLog/MonitorLogSection';
 
 const options = [
   {
@@ -52,6 +59,28 @@ const MonitorLogPage = () => {
   const [totalDogsOffLeash, setTotalDogsOffLeash] = useState(0);
   const [outreachNotes, setOutreachNotes] = useState();
   const [otherNotes, setOtherNotes] = useState();
+  const predatorItems = [
+    { sectionTitle: 'Crows', value: totalCrows },
+    { sectionTitle: 'Ravens', value: totalRavens },
+    { sectionTitle: 'Raptors', value: totalRaptors },
+    { sectionTitle: 'Horses', value: totalHorses },
+    { sectionTitle: 'Coyotes', value: totalCoyotes },
+    { sectionTitle: 'Foxes', value: totalFoxes },
+    { sectionTitle: 'Cats', value: totalCats },
+  ];
+  const humanActivityItems = [
+    { sectionTitle: 'Humans Sitting', value: totalSitting },
+    { sectionTitle: 'Humans Walking/Running', value: totalWalkingRunning },
+    { sectionTitle: 'Bikes', value: totalBikes },
+    { sectionTitle: 'Surfers', value: totalSurfers },
+    { sectionTitle: 'Sports', value: totalSports },
+    { sectionTitle: 'Fires', value: totalFires },
+    { sectionTitle: 'Fishing', value: totalFishing },
+    { sectionTitle: 'Vehicles', value: totalVehicles },
+    { sectionTitle: 'Equipment & ATV', value: totalEquipmentATV },
+    { sectionTitle: 'Dogs ON Leash', value: totalDogsOnLeash },
+    { sectionTitle: 'Dogs OFF Leash', value: totalDogsOffLeash },
+  ];
   return (
     <Box ml="171px" mr="171px">
       <Heading align="center" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
@@ -126,18 +155,56 @@ const MonitorLogPage = () => {
             />
           </TabPanel>
           <TabPanel>
-            <p>
-              {/* Printing values to avoid not-used eslint error */}
-              {/* Pass all these values into review and submit component */}
-              Review and Submit!{totalCrows} {totalRavens} {totalRaptors} {totalHorses}{' '}
-              {totalCoyotes} {totalFoxes} {totalCats} {otherPredators} {totalSitting}{' '}
-              {totalWalkingRunning} {totalBikes}
-              {totalSurfers} {totalSports} {totalFires} {totalFishing} {totalVehicles}{' '}
-              {totalEquipmentATV}
-              {totalDogsOnLeash} {totalDogsOffLeash} {outreachNotes} {otherNotes}
-            </p>
             <Box>
-              <Text fontSize="24px">Predators</Text>
+              <Accordion allowMultiple="true" defaultIndex={[0]}>
+                <AccordionItem borderColor="white">
+                  <HStack>
+                    <Text fontSize="24px" fontWeight={550}>
+                      Predators
+                    </Text>
+                    <AccordionButton _hover="white">
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </HStack>
+                  <AccordionPanel>
+                    <MonitorLogSection reviewElements={predatorItems} />
+                    <ReviewElementTooltip
+                      sectionTitle="Other Predator(s)"
+                      value={otherPredators}
+                      label="Any potential predator species not listed above"
+                      toggle="true"
+                    />
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
+              <Accordion allowMultiple="true" defaultIndex={[0]}>
+                <AccordionItem borderColor="white">
+                  <HStack>
+                    <Text fontSize="24px" fontWeight={550} width="30%">
+                      Human Activity
+                    </Text>
+                    <AccordionButton _hover="white">
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </HStack>
+                  <AccordionPanel>
+                    <MonitorLogSection reviewElements={humanActivityItems} />
+                    <ReviewElementTooltip
+                      sectionTitle="Outreach"
+                      value={outreachNotes}
+                      label="Any potential human activities not listed above"
+                      toggle="true"
+                    />
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
+
+              <ReviewElementTooltip
+                sectionTitle="Other Notes"
+                value={otherNotes}
+                label="Additional notes that have not been listed above"
+                toggle="false"
+              />
             </Box>
           </TabPanel>
         </TabPanels>

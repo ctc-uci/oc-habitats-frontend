@@ -6,7 +6,7 @@ const ReviewElement = ({ sectionTitle, value }) => {
   return (
     <Box>
       <Text>{sectionTitle}</Text>
-      <Input isReadOnly="true">{value}</Input>
+      <Input isReadOnly="true" bgColor="#EDF2F7" value={value} />
     </Box>
   );
 };
