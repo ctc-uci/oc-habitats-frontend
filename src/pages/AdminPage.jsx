@@ -91,7 +91,9 @@ const AdminPage = () => {
       // (!dateFilter || row.date === dateFilter) &&
       (!approvalFilter || row.approved === approvalFilter) &&
       (!statusFilter || row.status === statusFilter) &&
-      (!nameFilter || row.volunteer.toLowerCase().includes(nameFilter.toLowerCase())) ? (
+      (!nameFilter || row.volunteer.toLowerCase().includes(nameFilter.toLowerCase())) &&
+      parseInt([...row.date].splice(0, 2).join(''), 10) - 1 === dateFilter.getMonth() &&
+      parseInt([...row.date].splice(-4).join(''), 10) === dateFilter.getFullYear() ? (
         <Tr key={row.id} bg="#FBFBFB">
           <Td>
             <Checkbox
@@ -156,7 +158,9 @@ const AdminPage = () => {
           <Box>
             <DatePicker
               selected={dateFilter}
-              onChange={date => setDateFilter(date)}
+              onChange={date => {
+                setDateFilter(date);
+              }}
               dateFormat="MMMM, yyyy"
               showMonthYearPicker
             />
@@ -208,14 +212,12 @@ const AdminPage = () => {
                 color="#2D3748"
                 onChange={event => {
                   setSearchFilter(event.target.value);
-                  console.log(searchFilter);
                 }}
               />
               <InputRightAddon>
                 <Button
                   onClick={() => {
                     setNameFilter(searchFilter);
-                    console.log(nameFilter);
                   }}
                 >
                   search
