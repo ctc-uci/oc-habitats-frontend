@@ -25,10 +25,9 @@ import {
   Textarea,
   Icon,
   Box,
-  HStack,
+  Flex,
   Text,
   Container,
-  Flex,
   useDisclosure,
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
@@ -48,112 +47,146 @@ const options = [
   { value: 'add3', label: 'add3' },
 ];
 
-const EditSpeciesModal = ({ specie }) => {
+const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDelete, setIsDelete] = useState(false);
   const [specieName, setSpecieName] = useState(specie.name);
   const [totalSighted, setTotalSighted] = useState(specie.total);
   const [notes, setNotes] = useState(specie.notes);
 
-  // console.log('edit specie', specie);
-  const setSpecie = e => {
-    setSpecieName(e.value);
+  const updateSpecies = () => {
+    editRow({ oldName: specie.name, name: specieName, total: totalSighted, notes });
+    onClose();
+  };
+
+  const deleteSpecie = () => {
+    deleteRow(specie.name);
+    onClose();
   };
 
   return (
     <div>
-      <IconButton size="md" icon={<Icon as={FiEdit2} />} onClick={onOpen} />
+      <IconButton
+        size="md"
+        w="2.75em"
+        h="2.75em"
+        icon={<Icon as={FiEdit2} w="1.5em" h="1.5em" />}
+        onClick={onOpen}
+      />
+
       {isDelete ? (
         <DeleteRowModal
           setIsShowing={setIsDelete}
           isShowing={isDelete}
-          species="Sandpiper: Long-billed Curlew (LCBU)"
+          species={specieName}
+          deleteSpecie={deleteSpecie}
         />
       ) : (
-        <Modal isOpen={isOpen}>
+        <Modal isOpen={isOpen} isCentered size="md">
           <ModalOverlay />
-          <ModalContent h="85vh" w="50em">
-            <ModalHeader alignSelf="center">Edit Species Row</ModalHeader>
+          <ModalContent>
+            <ModalHeader alignSelf="center" fontWeight={650} fontSize="1.25em">
+              Edit Species Row
+            </ModalHeader>
             <ModalCloseButton onClick={onClose} />
-            <ModalBody>
-              <Text fontSize="12px">
-                To choose a new species, re-search using the Search for a Species dropdown.
-              </Text>
-              <FormLabel fontWeight="600">Search for a Species:</FormLabel>
-              <SimpleGrid columns={6} h="100%" columnGap="9px" rowGap=".75em">
-                <GridItem colSpan={5}>
-                  <VStack w="full" h="100%" position="relative" alignItems>
-                    <DropdownSearch
-                      options={options}
-                      value={specieName}
-                      onChange={opt => opt.label}
-                      handleSelectedValue={setSpecie}
-                    />
-                  </VStack>
-                </GridItem>
+            <Container>
+              <ModalBody>
+                <Text fontSize=".825em" fontWeight={450} mb="2em" color="black">
+                  To choose a new species, re-search using the{' '}
+                  <Text display="inline" fontWeight={600}>
+                    Search for a Species{' '}
+                  </Text>
+                  dropdown.
+                </Text>
+                <VStack align="left" spacing="1em">
+                  <SimpleGrid columns={6} columnGap="9px" rowGap="1.25em">
+                    <GridItem colSpan={5}>
+                      <FormLabel fontSize="14px" fontWeight="600">
+                        Search for a Species:
+                      </FormLabel>
+                      <VStack w="full" h="100%" position="relative" alignItems>
+                        <DropdownSearch
+                          options={options}
+                          onChange={opt => opt.label}
+                          value={specieName}
+                          handleSelectedValue={setSpecieName}
+                        />
+                      </VStack>
+                    </GridItem>
 
-                <GridItem colSpan={1}>
-                  <IconButton
-                    w="full"
-                    //   onClick={handleAddRow}
-                    aria-label="Enter"
-                    icon={<BsArrowDown />}
-                  />
-                </GridItem>
+                    <GridItem colSpan={1}>
+                      <Flex flexDirection="column" justifyContent="end" h="100%">
+                        <IconButton
+                          w="full"
+                          //   onClick={handleAddRow}
+                          aria-label="Enter"
+                          icon={<BsArrowDown />}
+                        />
+                      </Flex>
+                    </GridItem>
 
-                <GridItem colSpan={5}>
-                  <FormLabel fontWeight="600">Total Sighted:</FormLabel>
-                  <NumberInput
-                    defaultValue={0}
-                    value={totalSighted}
-                    onChange={e => {
-                      setTotalSighted(e);
-                    }}
-                    min={1}
-                    max={20}
+                    <GridItem colSpan={5}>
+                      <FormLabel fontSize="14px" fontWeight="600">
+                        Total Sighted
+                      </FormLabel>
+                      <NumberInput
+                        defaultValue={0}
+                        value={totalSighted}
+                        onChange={e => {
+                          setTotalSighted(e);
+                        }}
+                        min={1}
+                        max={20}
+                      >
+                        <NumberInputField />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                    </GridItem>
+                    <GridItem colSpan={6}>
+                      <FormLabel fontSize="14px" fontWeight="600">
+                        Notes (Optional)
+                      </FormLabel>
+                      <Textarea
+                        placeholder="Type Here..."
+                        minHeight="10em"
+                        value={notes}
+                        onChange={e => {
+                          setNotes(e.target.value);
+                        }}
+                      />
+                    </GridItem>
+                  </SimpleGrid>
+                </VStack>
+              </ModalBody>
+              <ModalFooter mb="1em">
+                <VStack w="100%">
+                  <Button
+                    rightIcon={<RiSaveFill />}
+                    bgColor="#2BC0E3"
+                    fontWeight="600"
+                    w="100%"
+                    onClick={updateSpecies}
                   >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </GridItem>
-                <GridItem colSpan={6}>
-                  <FormLabel fontWeight="600">Notes (Optional)</FormLabel>
-                  <Textarea
-                    placeholder="Type Here..."
-                    value={notes}
-                    onChange={e => {
-                      setNotes(e.target.value);
+                    Save
+                  </Button>
+                  <Button
+                    w="100%"
+                    fontWeight="600"
+                    colorScheme="red"
+                    variant="outline"
+                    rightIcon={<DeleteIcon />}
+                    onClick={e => {
+                      setIsDelete(true);
                     }}
-                  />
-                </GridItem>
-              </SimpleGrid>
-            </ModalBody>
-            <ModalFooter>
-              <VStack>
-                <Button bgColor="#2BC0E3" width="400px">
-                  Save <RiSaveFill />
-                </Button>
-                <Button
-                  w="full"
-                  position="relative"
-                  bottom={0}
-                  fontWeight="700"
-                  colorScheme="red"
-                  variant="outline"
-                  //   isDisabled={disabled}
-                  //   onClick={handleDeleteRows}
-                  rightIcon={<DeleteIcon />}
-                  onClick={e => {
-                    setIsDelete(true);
-                  }}
-                >
-                  Delete
-                </Button>
-              </VStack>
-            </ModalFooter>
+                  >
+                    Delete
+                  </Button>
+                </VStack>
+              </ModalFooter>
+            </Container>
           </ModalContent>
         </Modal>
       )}
@@ -163,10 +196,14 @@ const EditSpeciesModal = ({ specie }) => {
 
 EditSpeciesModal.defaultProps = {
   specie: PropTypes.object,
+  editRow: PropTypes.func,
+  deleteRow: PropTypes.func,
 };
 
 EditSpeciesModal.propTypes = {
   specie: PropTypes.object,
+  editRow: PropTypes.func,
+  deleteRow: PropTypes.func,
 };
 
 export default EditSpeciesModal;
