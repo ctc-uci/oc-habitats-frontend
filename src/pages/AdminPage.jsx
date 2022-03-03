@@ -27,6 +27,7 @@ import './AdminPage.css';
 
 const dummy = [
   {
+    id: 0,
     segment: 'OC21',
     date: '11/15/2021',
     approved: 'APPROVED',
@@ -34,6 +35,7 @@ const dummy = [
     status: 'IN-TRAINING',
   },
   {
+    id: 1,
     segment: 'OC20',
     date: '12/15/2021',
     approved: 'READY TO REVIEW',
@@ -41,6 +43,7 @@ const dummy = [
     status: 'TRAINED',
   },
   {
+    id: 2,
     segment: 'OC09b',
     date: '03/15/2022',
     approved: 'RESUBMITTED',
@@ -48,6 +51,7 @@ const dummy = [
     status: 'TRAINED',
   },
   {
+    id: 3,
     segment: 'OC21',
     date: '03/14/2022',
     approved: 'APPROVED',
@@ -55,6 +59,7 @@ const dummy = [
     status: 'IN-TRAINING',
   },
   {
+    id: 4,
     segment: 'OC16',
     date: '02/15/2021',
     approved: 'EDITS REQUESTED',
@@ -62,6 +67,7 @@ const dummy = [
     status: 'IN-TRAINING',
   },
   {
+    id: 5,
     segment: 'OC16',
     date: '11/15/2021',
     approved: 'APPROVED',
@@ -151,8 +157,13 @@ function approvalDescend(a, b) {
 }
 
 const AdminPage = () => {
+  const m = new Map();
+  for (let i = 0; i < dummy.length; i += 1) {
+    m.set(dummy[i].id, false);
+  }
+
   // useStates and useEffect
-  const [checked, setChecked] = useState([]);
+  const [checked, setChecked] = useState(m);
   const [segmentFilter, setSegmentFilter] = useState('');
   const [dateFilter, setDateFilter] = useState(null);
   const [approvalFilter, setApprovalFilter] = useState('');
@@ -187,29 +198,35 @@ const AdminPage = () => {
   }, [segmentFilter, dateFilter, approvalFilter, statusFilter]);
 
   const handleAllChecked = () => {
-    let newCheckedData = [...checked];
+    const newCheckedData = new Map(checked);
     if (allChecked) {
-      newCheckedData = [];
+      dataDisplay.forEach(row => {
+        newCheckedData.set(row.id, false);
+      });
     } else {
-      newCheckedData = [...Array(dataDisplay.length).keys()];
+      dataDisplay.forEach(row => {
+        newCheckedData.set(row.id, true);
+      });
     }
     setAllChecked(!allChecked);
     setChecked(newCheckedData);
   };
 
   const createTable = () => {
-    return dataDisplay.map((row, index) => (
+    return dataDisplay.map(row => (
       <Tr key={row.id} bg="#FBFBFB">
         <Td>
           <Checkbox
             bg="#FFFFFF"
-            isChecked={checked.includes(index)}
+            isChecked={checked.get(row.id)}
             onChange={event => {
               if (event.target.checked) {
-                setChecked([...checked, index]);
+                const remainingChecks = new Map(checked);
+                remainingChecks.set(row.id, true);
+                setChecked(remainingChecks);
               } else {
-                const remainingChecks = [...checked];
-                remainingChecks.splice(checked.indexOf(index), 1);
+                const remainingChecks = new Map(checked);
+                remainingChecks.set(row.id, false);
                 setChecked(remainingChecks);
               }
             }}
