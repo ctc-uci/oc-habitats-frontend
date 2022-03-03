@@ -8,9 +8,9 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 9,
+    "ecmaVersion": 2020,
     "sourceType": "module"
   },
   "plugins": ["react"],
-  "rules": {}
+  "rules": { "react/jsx-props-no-spreading": "off" }
 }
