@@ -15,7 +15,7 @@ function App() {
   return (
     <ChakraProvider>
       <Router>
-        <Navbar isAdmin={false} />
+        <Navbar isAdmin />
         <Routes>
           {/* Add routes as needed; route names subject to change */}
           <Route exact path="/" element={<HomePage />} />

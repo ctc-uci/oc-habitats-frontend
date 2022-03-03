@@ -12,14 +12,14 @@ const Navbar = ({ isAdmin }) => {
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'People', path: '/people' },
     { text: 'Species List', path: '/species' },
-    { text: 'Map', path: '/map' },
+    { text: 'Sections & Segments', path: '/map' },
     { text: 'Contacts', path: '/contacts' },
   ];
 
   const volunteer = [
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'Species List', path: '/species' },
-    { text: 'Map', path: '/map' },
+    { text: 'Sections & Segments', path: '/map' },
   ];
 
   return (
@@ -32,7 +32,7 @@ const Navbar = ({ isAdmin }) => {
       style={{ position: 'sticky', top: 0 }}
     >
       <Link to="/">
-        <Image pl={4} maxW="30%" src={logo} alt="logo" />
+        <Image pl={4} maxW="25%" src={logo} alt="logo" />
       </Link>
       <HStack spacing={12} justify="flex-end" pr={4}>
         {isAdmin
