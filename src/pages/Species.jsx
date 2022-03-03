@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
 import { Box, Center, Flex, Spacer, Stack, Text, VStack } from '@chakra-ui/react';
+import axios from 'axios';
+// import config from 'config';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import NewSpeciesModal from '../components/NewSpeciesModal';
 import DropdownSearch from '../components/DropdownSearch';
 import DroppableList from '../components/DroppableList';
-
+import NewSpeciesModal from '../components/NewSpeciesModal';
+// import router from '../species'
 const initialData = {
   endangered: {
     id: 'endangered',
@@ -13,7 +15,6 @@ const initialData = {
   },
   additional: { id: 'additional', name: 'Additional Species', speciesIds: [] },
 };
-
 const dummyOptions = [
   { value: 'Plover: Snowy (WSPL)', label: 'Plover: Snowy (WSPL)' },
   { value: 'end2', label: 'end2' },
@@ -22,7 +23,6 @@ const dummyOptions = [
   { value: 'add2', label: 'add2' },
   { value: 'add3', label: 'add3' },
 ];
-
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
   const { source, destination } = result;
@@ -48,7 +48,6 @@ const onDragEnd = (result, columns, setColumns) => {
     });
   }
 };
-
 /*
   input: columns - contains id, names of columns, and species that belong to each column
   populates the page with each type of column and the species that belong to them
@@ -58,7 +57,6 @@ const createLists = (columns, searchItem) => {
   Object.entries(columns).forEach(column => {
     column[1].speciesIds.sort();
   });
-
   // Create DroppableLists by iterating over each column in columns
   // Will pass in the species that belong to each list as well as their titles and ids
   return Object.entries(columns).map(([id, col]) => {
@@ -73,16 +71,56 @@ const createLists = (columns, searchItem) => {
     );
   });
 };
-
 const Species = () => {
   const [columns, setColumns] = useState(initialData);
+  // eslint-disable-next-line no-unused-vars
   const [options, setOptions] = useState(dummyOptions);
   const [searchItem, setSearchItem] = useState('');
+  // eslint-disable-next-line no-unused-vars
+  const [isLoading, setIsLoading] = useState(true);
+  const [species, setSpecies] = useState([]);
   const highlightSearch = e => {
     if (e) setSearchItem(e.value);
     else setSearchItem('');
   };
+  // const speciesID = searchParams.get('id');
+  const getSpecies = async () => {
+    try {
+      setIsLoading(true);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/species`);
+      // eslint-disable-next-line no-console
+      console.log(res);
 
+      const formattedData = {
+        endangered: {
+          id: 'endangered',
+          name: 'Listed Species (Endangered)',
+          speciesIds: species.filter(specie => specie.isEndangered).map(specie => specie.name),
+        },
+        additional: {
+          id: 'additional',
+          name: 'Additional Species',
+          speciesIds: species.filter(specie => !specie.isEndangered).map(specie => specie.name),
+        },
+      };
+
+      const formattedOptions = species.map(specie => ({
+        value: specie.name,
+        label: specie.name,
+      }));
+
+      setSpecies(res.data);
+      setColumns(formattedData);
+      setOptions(formattedOptions);
+      setIsLoading(false);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getSpecies();
+  }, []);
   const addNewSpecies = newSpecies => {
     setOptions(prev => {
       return [...prev, { value: newSpecies.name, label: newSpecies.name }];
@@ -95,7 +133,6 @@ const Species = () => {
       },
     });
   };
-
   return (
     <Center>
       <Stack w="container.xl" justify-content="center" mb="4em">
