@@ -17,7 +17,7 @@ import { AiFillDelete } from 'react-icons/ai';
 
 import PropTypes from 'prop-types';
 
-const DeleteRowModal = ({ species, setIsShowing, deleteSpecie }) => {
+const DeleteSpeciesModal = ({ species, setIsShowing, deleteSpecie }) => {
   const onClose = () => {
     setIsShowing(false);
   };
@@ -95,16 +95,16 @@ const DeleteRowModal = ({ species, setIsShowing, deleteSpecie }) => {
   );
 };
 
-DeleteRowModal.defaultProps = {
+DeleteSpeciesModal.defaultProps = {
   species: PropTypes.string,
   setIsShowing: PropTypes.func,
   deleteSpecie: PropTypes.func,
 };
 
-DeleteRowModal.propTypes = {
+DeleteSpeciesModal.propTypes = {
   species: PropTypes.string,
   setIsShowing: PropTypes.func,
   deleteSpecie: PropTypes.func,
 };
 
-export default DeleteRowModal;
+export default DeleteSpeciesModal;

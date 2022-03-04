@@ -30,7 +30,7 @@ import { FiEdit2 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import { RiSaveFill } from 'react-icons/ri';
 import DropdownSearch from '../DropdownSearch';
-import DeleteRowModal from './DeleteRowModal';
+import DeleteSpeciesModal from './DeleteSpeciesModal';
 
 const options = [
   { value: 'Plover: Snowy (WSPL)', label: 'Plover: Snowy (WSPL)' },
@@ -70,7 +70,7 @@ const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
       <Modal isOpen={isOpen} isCentered size="md">
         <ModalOverlay />
         {isDelete ? (
-          <DeleteRowModal
+          <DeleteSpeciesModal
             setIsShowing={setIsDelete}
             species={specieName}
             deleteSpecie={deleteSpecie}
