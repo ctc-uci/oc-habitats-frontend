@@ -25,16 +25,16 @@ import EditSpeciesModal from './EditSpeciesModal';
 
 const rows = [
   { name: 'Sandpiper: Long-billed Curlew (LBCU)', total: 2, notes: 'testing' },
-  { name: 'Test', total: 1, notes: 'hi' },
+  { name: 'Test', total: 1, notes: null },
 ];
 
 const AdditionalSpecies = () => {
   const [species, setSpecies] = useState(rows);
 
   const handleAddRow = newSpecie => {
-    const newSpecies = [...species, newSpecie];
-
-    setSpecies(newSpecies);
+    setSpecies(prevSpecies => {
+      return [...prevSpecies, newSpecie];
+    });
   };
 
   const handleEditRow = updatedSpecie => {
@@ -61,47 +61,53 @@ const AdditionalSpecies = () => {
     return specie[0];
   };
 
-  const createTable = m => {
-    return m.map(row => (
-      <Tr height="72px" key={row.name}>
-        <Td w="100%">
-          <Accordion allowToggle>
-            <AccordionItem id={row.name} borderColor="transparent">
-              <h2>
-                <AccordionButton>
-                  <Flex flex="1" alignItems="center">
-                    <EditSpeciesModal
-                      specie={getSpecie(row.name)}
-                      editRow={handleEditRow}
-                      deleteRow={handleDeleteRows}
-                    />
-                    <Text ml="1.25em" fontSize="1.05em">
-                      {row.name}
-                    </Text>
-                  </Flex>
-                  <AccordionIcon />
+  const createTable = data => {
+    return data.map((row, n) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <AccordionItem key={n} as={Tbody}>
+        {({ isExpanded }) => (
+          <>
+            <Tr>
+              <Td border="none">
+                <EditSpeciesModal
+                  specie={getSpecie(row.name)}
+                  editRow={handleEditRow}
+                  deleteRow={handleDeleteRows}
+                />
+              </Td>
+              <Td border="none">
+                <Text fontSize="1.05em">{row.name}</Text>
+              </Td>
+              <Td border="none">
+                <AccordionButton w="2em" h="2em">
+                  <AccordionIcon w="inherit" h="inherit" />
                 </AccordionButton>
-              </h2>
-              <AccordionPanel mt=".75em">
-                <SimpleGrid columns={1} rowGap="1.5em">
-                  <GridItem>
-                    <Flex justifyContent="space-between" w="100%">
-                      <Text fontWeight={500}>Total</Text>
-                      <Text>{row.total}</Text>
-                    </Flex>
-                  </GridItem>
-                  <GridItem>
-                    <Flex justifyContent="space-between" w="100%">
-                      <Text fontWeight={500}>Notes (Optional)</Text>
-                      <Text>{row.notes ? row.notes : '--'}</Text>
-                    </Flex>
-                  </GridItem>
-                </SimpleGrid>
-              </AccordionPanel>
-            </AccordionItem>
-          </Accordion>
-        </Td>
-      </Tr>
+              </Td>
+            </Tr>
+            <Tr w="100%">
+              {isExpanded && (
+                <>
+                  <Td colSpan={3}>
+                    <AccordionPanel>
+                      <VStack w="97.5%" spacing="1.5em" mb=".5em">
+                        <Flex justifyContent="space-between" w="100%">
+                          <Text fontWeight={500}>Total</Text>
+                          <Text>{row.total}</Text>
+                        </Flex>
+
+                        <Flex justifyContent="space-between" w="100%">
+                          <Text fontWeight={500}>Notes (Optional)</Text>
+                          <Text>{row.notes ? row.notes : '--'}</Text>
+                        </Flex>
+                      </VStack>
+                    </AccordionPanel>
+                  </Td>
+                </>
+              )}
+            </Tr>
+          </>
+        )}
+      </AccordionItem>
     ));
   };
 
@@ -114,22 +120,16 @@ const AdditionalSpecies = () => {
         <FormControl>
           <SimpleGrid columns={2} h="166px" columnGap="26px">
             <GridItem colSpan={1}>
-              <Table
-                id="speciesTable"
-                variant="simple"
-                borderRadius="10px"
-                overflow="hidden"
-                w="50em"
-              >
-                <Thead>
+              <Accordion as={Table} allowToggle width="50em" reduceMotion>
+                <Thead w="100%" bg="#F7FAFC">
                   <Tr>
-                    <Th pl="8.5em" backgroundColor="#F7FAFC">
-                      Species
-                    </Th>
+                    <Th />
+                    <Th w="100%">Specie</Th>
+                    <Th />
                   </Tr>
                 </Thead>
-                <Tbody>{createTable(species)}</Tbody>
-              </Table>
+                {createTable(species)}
+              </Accordion>
             </GridItem>
             <GridItem colSpan={2} mt="2em">
               <AddSpeciesModal addNewRow={handleAddRow} />

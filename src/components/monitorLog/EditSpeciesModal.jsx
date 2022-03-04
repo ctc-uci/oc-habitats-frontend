@@ -1,6 +1,4 @@
 /* eslint-disable react/forbid-prop-types */
-/* eslint-disable no-unused-vars */
-// import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import {
   Button,
@@ -10,12 +8,10 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
   FormLabel,
   SimpleGrid,
   GridItem,
   VStack,
-  Select,
   IconButton,
   NumberInput,
   NumberInputField,
@@ -24,16 +20,14 @@ import {
   NumberDecrementStepper,
   Textarea,
   Icon,
-  Box,
-  Flex,
+  HStack,
   Text,
   Container,
   useDisclosure,
 } from '@chakra-ui/react';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { CloseIcon, DeleteIcon } from '@chakra-ui/icons';
 import { FiEdit2 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
-import { BsArrowDown } from 'react-icons/bs';
 import { RiSaveFill } from 'react-icons/ri';
 import DropdownSearch from '../DropdownSearch';
 import DeleteRowModal from './DeleteRowModal';
@@ -73,22 +67,36 @@ const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
         icon={<Icon as={FiEdit2} w="1.5em" h="1.5em" />}
         onClick={onOpen}
       />
-
-      {isDelete ? (
-        <DeleteRowModal
-          setIsShowing={setIsDelete}
-          isShowing={isDelete}
-          species={specieName}
-          deleteSpecie={deleteSpecie}
-        />
-      ) : (
-        <Modal isOpen={isOpen} isCentered size="md">
-          <ModalOverlay />
+      <Modal isOpen={isOpen} isCentered size="md">
+        <ModalOverlay />
+        {isDelete ? (
+          <DeleteRowModal
+            setIsShowing={setIsDelete}
+            species={specieName}
+            deleteSpecie={deleteSpecie}
+          />
+        ) : (
           <ModalContent>
+            <HStack pl="4%" pt="3%">
+              <IconButton
+                size="xs"
+                icon={<CloseIcon w="1.25em" h="1.25em" />}
+                onClick={onClose}
+                bgColor="transparent"
+                _hover={{ bg: 'transparent' }}
+                _active={{
+                  bg: 'transparent',
+                  transform: 'scale(0.98)',
+                }}
+                _focus={{
+                  bg: 'transparent',
+                }}
+              />
+            </HStack>
             <ModalHeader alignSelf="center" fontWeight={650} fontSize="1.25em">
               Edit Species Row
             </ModalHeader>
-            <ModalCloseButton onClick={onClose} />
+
             <Container>
               <ModalBody>
                 <Text fontSize=".825em" fontWeight={450} mb="2em" color="black">
@@ -100,7 +108,7 @@ const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
                 </Text>
                 <VStack align="left" spacing="1em">
                   <SimpleGrid columns={6} columnGap="9px" rowGap="1.25em">
-                    <GridItem colSpan={5}>
+                    <GridItem colSpan={6}>
                       <FormLabel fontSize="14px" fontWeight="600">
                         Search for a Species:
                       </FormLabel>
@@ -114,18 +122,7 @@ const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
                       </VStack>
                     </GridItem>
 
-                    <GridItem colSpan={1}>
-                      <Flex flexDirection="column" justifyContent="end" h="100%">
-                        <IconButton
-                          w="full"
-                          //   onClick={handleAddRow}
-                          aria-label="Enter"
-                          icon={<BsArrowDown />}
-                        />
-                      </Flex>
-                    </GridItem>
-
-                    <GridItem colSpan={5}>
+                    <GridItem colSpan={6}>
                       <FormLabel fontSize="14px" fontWeight="600">
                         Total Sighted
                       </FormLabel>
@@ -152,7 +149,7 @@ const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
                       <Textarea
                         placeholder="Type Here..."
                         minHeight="10em"
-                        value={notes}
+                        value={notes || ''}
                         onChange={e => {
                           setNotes(e.target.value);
                         }}
@@ -179,6 +176,7 @@ const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
                     variant="outline"
                     rightIcon={<DeleteIcon />}
                     onClick={e => {
+                      e.preventDefault();
                       setIsDelete(true);
                     }}
                   >
@@ -188,8 +186,8 @@ const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
               </ModalFooter>
             </Container>
           </ModalContent>
-        </Modal>
-      )}
+        )}
+      </Modal>
     </div>
   );
 };

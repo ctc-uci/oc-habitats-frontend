@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-// import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import {
   Button,
@@ -9,12 +7,10 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
   FormLabel,
   SimpleGrid,
   GridItem,
   VStack,
-  Select,
   IconButton,
   NumberInput,
   NumberInputField,
@@ -22,17 +18,14 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Textarea,
-  Icon,
-  Box,
   HStack,
   Text,
   Container,
   Flex,
   useDisclosure,
 } from '@chakra-ui/react';
-import { DeleteIcon, InfoIcon } from '@chakra-ui/icons';
+import { CloseIcon, InfoIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
-import { BsArrowDown } from 'react-icons/bs';
 import { RiSaveFill } from 'react-icons/ri';
 import DropdownSearch from '../DropdownSearch';
 
@@ -47,7 +40,6 @@ const options = [
 
 const AddSpeciesModal = ({ addNewRow }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [option, setOption] = useState('test');
   const [specieName, setSpecieName] = useState(null);
   const [totalSighted, setTotalSighted] = useState(1);
   const [notes, setNotes] = useState(null);
@@ -65,11 +57,27 @@ const AddSpeciesModal = ({ addNewRow }) => {
       <Modal isOpen={isOpen} isCentered size="md">
         <ModalOverlay />
         <ModalContent bgColor="#FBFBFB">
+          <HStack ml="1em" mt="1em">
+            <IconButton
+              size="xs"
+              icon={<CloseIcon w="1.25em" h="1.25em" />}
+              onClick={onClose}
+              bgColor="transparent"
+              _hover={{ bg: 'transparent' }}
+              _active={{
+                bg: 'transparent',
+                transform: 'scale(0.98)',
+              }}
+              _focus={{
+                bg: 'transparent',
+              }}
+            />
+          </HStack>
           <ModalHeader alignSelf="center" fontWeight={650} fontSize="1.25em">
             Add Species Row
           </ModalHeader>
-          <ModalCloseButton onClick={onClose} />
-          <HStack bgColor="orange" p=".4em">
+
+          <HStack mt=".5em" bgColor="#F49923" p=".4em">
             <Container>
               <Flex alignItems="center" w="87%">
                 <InfoIcon mr="1em" />
@@ -81,14 +89,14 @@ const AddSpeciesModal = ({ addNewRow }) => {
           </HStack>
 
           <ModalBody>
-            <VStack mt="1em" spacing="2em">
+            <VStack mt="1em" spacing="1.75em">
               <Text fontSize=".825em" fontWeight={450} color="black">
                 {`If the specimen is not listed, choose "Other" and note the possible species in the
               Notes.`}
               </Text>
               <VStack align="left" w="100%" spacing="1.25em">
-                <SimpleGrid columns={6} h="relative" columnGap="9px" rowGap="15px">
-                  <GridItem colSpan={5}>
+                <SimpleGrid columns={6} h="relative" columnGap="9px" rowGap="1.5em">
+                  <GridItem colSpan={6}>
                     <FormLabel fontSize="14px" fontWeight="600">
                       Search for a Species:
                     </FormLabel>
@@ -101,18 +109,7 @@ const AddSpeciesModal = ({ addNewRow }) => {
                     </VStack>
                   </GridItem>
 
-                  <GridItem colSpan={1}>
-                    <Flex flexDirection="column" justifyContent="end" h="100%">
-                      <IconButton
-                        w="full"
-                        //   onClick={handleAddRow}
-                        aria-label="Enter"
-                        icon={<BsArrowDown />}
-                      />
-                    </Flex>
-                  </GridItem>
-
-                  <GridItem colSpan={5}>
+                  <GridItem colSpan={6}>
                     <FormLabel fontSize="14px" fontWeight="600">
                       Total Sighted:
                     </FormLabel>

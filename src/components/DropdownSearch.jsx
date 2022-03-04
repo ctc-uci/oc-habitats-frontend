@@ -20,7 +20,7 @@ const DropdownSearch = ({ options, value, handleSelectedValue }) => {
       placeholder="Enter species name..."
       options={options}
       onChange={getSelected}
-      value={{ value, label: selected }}
+      value={{ value: selected, label: selected }}
       isClearable
     />
   );
