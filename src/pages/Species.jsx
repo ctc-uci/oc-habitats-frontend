@@ -1,29 +1,21 @@
 import { Box, Center, Flex, Spacer, Stack, Text, VStack } from '@chakra-ui/react';
 import axios from 'axios';
-// import config from 'config';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import DropdownSearch from '../components/DropdownSearch';
 import DroppableList from '../components/DroppableList';
 import NewSpeciesModal from '../components/NewSpeciesModal';
-// import router from '../species'
+
 const initialData = {
   endangered: {
     id: 'endangered',
     name: 'Listed Species (Endangered)',
-    speciesIds: ['Plover: Snowy (WSPL)', 'end2', 'end3', 'add1', 'add2', 'add3'],
+    speciesIds: [],
   },
   additional: { id: 'additional', name: 'Additional Species', speciesIds: [] },
 };
-const dummyOptions = [
-  { value: 'Plover: Snowy (WSPL)', label: 'Plover: Snowy (WSPL)' },
-  { value: 'end2', label: 'end2' },
-  { value: 'end3', label: 'end3' },
-  { value: 'add1', label: 'add1' },
-  { value: 'add2', label: 'add2' },
-  { value: 'add3', label: 'add3' },
-];
-const onDragEnd = (result, columns, setColumns) => {
+
+const onDragEnd = async (result, columns, setColumns) => {
   if (!result.destination) return;
   const { source, destination } = result;
   if (source.droppableId !== destination.droppableId) {
@@ -35,7 +27,7 @@ const onDragEnd = (result, columns, setColumns) => {
     sourceItems.sort();
     destItems.push(removed);
     destItems.sort();
-    setColumns({
+    const newColumns = {
       ...columns,
       [source.droppableId]: {
         ...sourceColumn,
@@ -45,7 +37,17 @@ const onDragEnd = (result, columns, setColumns) => {
         ...destColumn,
         speciesIds: destItems,
       },
+    };
+    Object.entries(newColumns).forEach(column => {
+      column[1].speciesIds.sort((a, b) => (a.name > b.name ? 1 : -1));
     });
+    setColumns(newColumns);
+
+    const specie = columns[source.droppableId].speciesIds[source.index];
+    // eslint-disable-next-line no-underscore-dangle
+    const speciesID = specie._id;
+    const newListing = destination.droppableId === 'endangered';
+    await axios.put(`${process.env.REACT_APP_API_URL}/species/${speciesID}/${newListing}`);
   }
 };
 /*
@@ -53,18 +55,15 @@ const onDragEnd = (result, columns, setColumns) => {
   populates the page with each type of column and the species that belong to them
 */
 const createLists = (columns, searchItem) => {
-  // Sort the species alphabetically for each column in case stored data is out of order
-  Object.entries(columns).forEach(column => {
-    column[1].speciesIds.sort();
-  });
   // Create DroppableLists by iterating over each column in columns
   // Will pass in the species that belong to each list as well as their titles and ids
   return Object.entries(columns).map(([id, col]) => {
+    const specieNames = col.speciesIds.map(specie => specie.name);
     return (
       <DroppableList
         key={id}
         name={col.name}
-        species={col.speciesIds}
+        species={specieNames}
         colID={id}
         searchItem={searchItem}
       />
@@ -73,44 +72,39 @@ const createLists = (columns, searchItem) => {
 };
 const Species = () => {
   const [columns, setColumns] = useState(initialData);
-  // eslint-disable-next-line no-unused-vars
-  const [options, setOptions] = useState(dummyOptions);
+  const [options, setOptions] = useState([]);
   const [searchItem, setSearchItem] = useState('');
+  const [change, setChange] = useState(true);
   // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(true);
-  const [species, setSpecies] = useState([]);
   const highlightSearch = e => {
     if (e) setSearchItem(e.value);
     else setSearchItem('');
   };
-  // const speciesID = searchParams.get('id');
   const getSpecies = async () => {
     try {
       setIsLoading(true);
       const res = await axios.get(`${process.env.REACT_APP_API_URL}/species`);
-      // eslint-disable-next-line no-console
-      console.log(res);
-
       const formattedData = {
         endangered: {
           id: 'endangered',
           name: 'Listed Species (Endangered)',
-          speciesIds: species.filter(specie => specie.isEndangered).map(specie => specie.name),
+          speciesIds: res.data.filter(specie => specie.isEndangered),
         },
         additional: {
           id: 'additional',
           name: 'Additional Species',
-          speciesIds: species.filter(specie => !specie.isEndangered).map(specie => specie.name),
+          speciesIds: res.data.filter(specie => !specie.isEndangered),
         },
       };
-
-      const formattedOptions = species.map(specie => ({
+      Object.entries(formattedData).forEach(column => {
+        column[1].speciesIds.sort((a, b) => (a.name > b.name ? 1 : -1));
+      });
+      setColumns(formattedData);
+      const formattedOptions = res.data.map(specie => ({
         value: specie.name,
         label: specie.name,
       }));
-
-      setSpecies(res.data);
-      setColumns(formattedData);
       setOptions(formattedOptions);
       setIsLoading(false);
     } catch (err) {
@@ -120,18 +114,16 @@ const Species = () => {
   };
   useEffect(() => {
     getSpecies();
-  }, []);
-  const addNewSpecies = newSpecies => {
-    setOptions(prev => {
-      return [...prev, { value: newSpecies.name, label: newSpecies.name }];
+  }, [change]);
+
+  const addNewSpecies = async newSpecies => {
+    await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
+      name: newSpecies.name,
+      code: newSpecies.code,
+      isEndangered: newSpecies.group === 'endangered',
+      isAssigned: false,
     });
-    setColumns({
-      ...columns,
-      [newSpecies.group]: {
-        ...columns[newSpecies.group],
-        speciesIds: [...columns[newSpecies.group].speciesIds, newSpecies.name],
-      },
-    });
+    setChange(!change);
   };
   return (
     <Center>
