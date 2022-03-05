@@ -10,7 +10,7 @@ import {
   Checkbox,
   Select,
   InputGroup,
-  InputRightAddon,
+  InputRightElement,
   Input,
   Container,
   Text,
@@ -29,50 +29,50 @@ const dummy = [
   {
     id: 0,
     segment: 'OC21',
-    date: '11/15/2021',
+    date: new Date(2021, 10, 15),
     approved: 'APPROVED',
     volunteer: 'Segun Adebayo',
-    status: 'IN-TRAINING',
+    status: false,
   },
   {
     id: 1,
     segment: 'OC20',
-    date: '12/15/2021',
+    date: new Date(2021, 11, 15),
     approved: 'READY TO REVIEW',
     volunteer: 'Segun Adebayo',
-    status: 'TRAINED',
+    status: true,
   },
   {
     id: 2,
     segment: 'OC09b',
-    date: '03/15/2022',
+    date: new Date(2022, 2, 15),
     approved: 'RESUBMITTED',
     volunteer: 'Yae Miko',
-    status: 'TRAINED',
+    status: false,
   },
   {
     id: 3,
     segment: 'OC21',
-    date: '03/14/2022',
+    date: new Date(2022, 2, 14),
     approved: 'APPROVED',
     volunteer: 'Segun Adebayo',
-    status: 'IN-TRAINING',
+    status: false,
   },
   {
     id: 4,
     segment: 'OC16',
-    date: '02/15/2021',
+    date: new Date(2021, 1, 14),
     approved: 'EDITS REQUESTED',
     volunteer: 'Segun Adebayo',
-    status: 'IN-TRAINING',
+    status: true,
   },
   {
     id: 5,
     segment: 'OC16',
-    date: '11/15/2021',
+    date: new Date(2021, 10, 15),
     approved: 'APPROVED',
     volunteer: 'Yae Miko',
-    status: 'TRAINED',
+    status: true,
   },
 ];
 
@@ -156,6 +156,27 @@ function approvalDescend(a, b) {
   return 0;
 }
 
+function checkStatus(status, filter = false) {
+  if (filter) {
+    if (status) {
+      return 'TRAINED';
+    }
+    return 'IN-TRAINING';
+  }
+
+  if (status) {
+    return '';
+  }
+  return 'IN-TRAINING';
+}
+
+function checkStatusBoolean(status) {
+  if (status === 'TRAINED') {
+    return true;
+  }
+  return false;
+}
+
 const AdminPage = () => {
   const m = new Map();
   for (let i = 0; i < dummy.length; i += 1) {
@@ -167,7 +188,7 @@ const AdminPage = () => {
   const [segmentFilter, setSegmentFilter] = useState('');
   const [dateFilter, setDateFilter] = useState(null);
   const [approvalFilter, setApprovalFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState(null);
   const [allChecked, setAllChecked] = useState(false);
   const [pageSize, setPageSize] = useState(10);
   const [searchFilter, setSearchFilter] = useState('');
@@ -177,17 +198,24 @@ const AdminPage = () => {
   const [isVolunteerAscend, setVolunteerAscend] = useState(false);
   const [isApprovalAscend, setApprovalAscend] = useState(false);
 
+  const countChecked = () => {
+    let count = 0;
+    checked.forEach(function (val) {
+      if (val) {
+        count += 1;
+      }
+    });
+    return count;
+  };
+
   const isFiltered = row => {
     return (
       (!segmentFilter || row.segment === segmentFilter) &&
-      // (!dateFilter || row.date === dateFilter) &&
       (!approvalFilter || row.approved === approvalFilter) &&
       (!statusFilter || row.status === statusFilter) &&
       (!nameFilter || row.volunteer.toLowerCase().includes(nameFilter.toLowerCase())) &&
-      (dateFilter === null ||
-        parseInt([...row.date].splice(0, 2).join(''), 10) - 1 === dateFilter.getMonth()) &&
-      (dateFilter === null ||
-        parseInt([...row.date].splice(-4).join(''), 10) === dateFilter.getFullYear())
+      (dateFilter === null || row.date.getMonth() === dateFilter.getMonth()) &&
+      (dateFilter === null || row.date.getFullYear() === dateFilter.getFullYear())
     );
   };
 
@@ -195,7 +223,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     setDataDisplay(dummy.filter(row => isFiltered(row)));
-  }, [segmentFilter, dateFilter, approvalFilter, statusFilter]);
+  }, [segmentFilter, dateFilter, approvalFilter, statusFilter, nameFilter, checked]);
 
   const handleAllChecked = () => {
     const newCheckedData = new Map(checked);
@@ -233,11 +261,11 @@ const AdminPage = () => {
           />
         </Td>
         <Td>{row.segment}</Td>
-        <Td>{row.date}</Td>
+        <Td>{`${row.date.getMonth() + 1}/${row.date.getDate()}/${row.date.getFullYear()}`}</Td>
         <Td>
           <HStack>
             <Text>{row.volunteer}</Text>
-            <Text>{row.status}</Text>
+            <Text>{checkStatus(row.status)}</Text>
           </HStack>
         </Td>
         <Td>{row.approved}</Td>
@@ -251,7 +279,7 @@ const AdminPage = () => {
         <Heading>Monitor Logs</Heading>
         <Flex bg="#4E4E4E" pt="2" pr="3" pl="3">
           <Box>
-            <Text color="white">{checked.length} Selected</Text>
+            <Text color="white">{countChecked()} Selected</Text>
           </Box>
           <Spacer />
           <Box>
@@ -313,7 +341,7 @@ const AdminPage = () => {
               color="black"
               placeholder="Status"
               onChange={event => {
-                setStatusFilter(event.target.value);
+                setStatusFilter(checkStatusBoolean(event.target.value));
               }}
             >
               {dummy
@@ -321,7 +349,7 @@ const AdminPage = () => {
                   (value, index, self) => self.findIndex(v => v.status === value.status) === index,
                 )
                 .map(val => (
-                  <option key={val.status}>{val.status}</option>
+                  <option key={val.status}>{checkStatus(val.status, true)}</option>
                 ))}
             </Select>
           </Box>
@@ -335,7 +363,7 @@ const AdminPage = () => {
                   setSearchFilter(event.target.value);
                 }}
               />
-              <InputRightAddon>
+              <InputRightElement>
                 <Button
                   onClick={() => {
                     setNameFilter(searchFilter);
@@ -343,7 +371,7 @@ const AdminPage = () => {
                 >
                   search
                 </Button>
-              </InputRightAddon>
+              </InputRightElement>
             </InputGroup>
           </Box>
         </Flex>
