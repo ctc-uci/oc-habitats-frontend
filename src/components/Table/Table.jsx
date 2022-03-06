@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/prop-types */
 import React from 'react';
 import {
   useTable,
@@ -21,51 +23,45 @@ import {
   Text,
   Tooltip,
   Select,
-  Icon,
   Badge,
   Avatar,
   VStack,
-  Box,
-  Button,
   HStack,
-  Spacer
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 import {
   ChevronRightIcon,
   ChevronLeftIcon,
   ChevronUpIcon,
   ChevronDownIcon,
-  Search2Icon
-} from "@chakra-ui/icons";
-import { BsFillClockFill, BsFillPersonFill, BsThreeDotsVertical } from "react-icons/bs";
-import { AiFillTag } from "react-icons/ai";
+} from '@chakra-ui/icons';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import PropTypes from 'prop-types';
 
-//import makeData from "./makeData";
-import "./Table.css";
+// import makeData from "./makeData";
+import './Table.css';
 
 // Define a default UI for filtering
-function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) {
-  const count = preGlobalFilteredRows.length;
+function GlobalFilter({ globalFilter, setGlobalFilter }) {
   const [value, setValue] = React.useState(globalFilter);
-  const onChange = useAsyncDebounce(value => {
-    setGlobalFilter(value || undefined);
+  const onChange = useAsyncDebounce(val => {
+    setGlobalFilter(val || undefined);
   }, 200);
 
   return (
     <span>
-      {" "}
-      <input Icon="Search2Icon"
-        value={value || ""}
-        onChange={(e) => {
+      {' '}
+      <input
+        Icon="Search2Icon"
+        value={value || ''}
+        onChange={e => {
           setValue(e.target.value);
           onChange(e.target.value);
         }}
-
-        placeholder={`Search...`}
+        placeholder="Search..."
         style={{
-          fontSize: "1.1rem",
-          border: "1px #E2E8F0 solid",
-          color: "black",
+          fontSize: '1.1rem',
+          border: '1px #E2E8F0 solid',
+          color: 'black',
         }}
       />
     </span>
@@ -86,101 +82,68 @@ function createData(name, email, activeStatus, trainingStatus, lastUpdated, assi
 // Some Test Static Data
 const makeRows = [
   createData(
-    "Alexander Adebayo",
-    "alexander@chakra-ui.com",
-    "ACTIVE",
-    "In-Training",
-    "01-20-2022",
-    ["OC03 Sunset Beach (19th Street to Warner Ave)", "OC19 Seal Beach (1st Street)"],
+    'Alexander Adebayo',
+    'alexander@chakra-ui.com',
+    'ACTIVE',
+    'In-Training',
+    '01-20-2022',
+    ['OC03 Sunset Beach (19th Street to Warner Ave)', 'OC19 Seal Beach (1st Street)'],
+  ),
+  createData('Emily Sue', 'emily@chakra-ui.com', 'ACTIVE', 'Training Complete', '01-29-2022'),
+  createData('Emmerick Hopkins', 'emmerick@chakra-ui.com', 'ACTIVE', 'In-Training', '01-20-2022', [
+    'OC17 Laguna Beach',
+  ]),
+  createData(
+    'Ophelia Santiago',
+    'ophelia@chakra-ui.com',
+    'ACTIVE',
+    'Training Complete',
+    '12-20-2021',
+  ),
+  createData('Steve Rogers', 'steve@chakra-ui.com', 'ACTIVE', 'Training Complete', '12-27-2021'),
+  createData(
+    'Edward Elrich',
+    'edward@chakra-ui.com',
+    'INACTIVE',
+    'Training Complete',
+    '11-07-2021',
   ),
   createData(
-    "Emily Sue",
-    "emily@chakra-ui.com",
-    "ACTIVE",
-    "Training Complete",
-    "01-29-2022"),
-  createData(
-    "Emmerick Hopkins",
-    "emmerick@chakra-ui.com",
-    "ACTIVE",
-    "In-Training",
-    "01-20-2022",
-    ["OC17 Laguna Beach"]
+    'Edward Elrich',
+    'edward@chakra-ui.com',
+    'INACTIVE',
+    'Training Complete',
+    '11-14-2021',
   ),
   createData(
-    "Ophelia Santiago",
-    "ophelia@chakra-ui.com",
-    "ACTIVE",
-    "Training Complete",
-    "12-20-2021"
+    'Edward Elrich',
+    'edward@chakra-ui.com',
+    'INACTIVE',
+    'Training Complete',
+    '01-20-2022',
   ),
   createData(
-    "Steve Rogers",
-    "steve@chakra-ui.com",
-    "ACTIVE",
-    "Training Complete",
-    "12-27-2021"
+    'Edward Elrich',
+    'edward@chakra-ui.com',
+    'INACTIVE',
+    'Training Complete',
+    '01-20-2022',
   ),
   createData(
-    "Edward Elrich",
-    "edward@chakra-ui.com",
-    "INACTIVE",
-    "Training Complete",
-    "11-07-2021"
+    'Edward Elrich',
+    'edward@chakra-ui.com',
+    'INACTIVE',
+    'Training Complete',
+    '01-20-2022',
   ),
   createData(
-    "Edward Elrich",
-    "edward@chakra-ui.com",
-    "INACTIVE",
-    "Training Complete",
-    "11-14-2021"
+    'Edward Elrich',
+    'edward@chakra-ui.com',
+    'INACTIVE',
+    'Training Complete',
+    '01-20-2022',
   ),
-  createData(
-    "Edward Elrich",
-    "edward@chakra-ui.com",
-    "INACTIVE",
-    "Training Complete",
-    "01-20-2022"
-  ),
-  createData(
-    "Edward Elrich",
-    "edward@chakra-ui.com",
-    "INACTIVE",
-    "Training Complete",
-    "01-20-2022"
-  ),
-  createData(
-    "Edward Elrich",
-    "edward@chakra-ui.com",
-    "INACTIVE",
-    "Training Complete",
-    "01-20-2022"
-  ),
-  createData(
-    "Edward Elrich",
-    "edward@chakra-ui.com",
-    "INACTIVE",
-    "Training Complete",
-    "01-20-2022"
-  )
 ];
-
-// remove this
-const IndeterminateCheckbox = React.forwardRef(
-  ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef();
-    const resolvedRef = ref || defaultRef;
-
-  React.useEffect(() => {
-    resolvedRef.current.indeterminate = indeterminate;
-  }, [resolvedRef, indeterminate]);
-
-  return (
-    <>
-      <input type="checkbox" ref={resolvedRef} {...rest} />
-    </>
-  );
-});
 
 function getTrainingStatus(status) {
   return (
@@ -191,32 +154,28 @@ function getTrainingStatus(status) {
 }
 
 function getLastUpdated(status) {
-  return (
-    <div className="last-updated">{status}</div>
-  );
+  return <div className="last-updated">{status}</div>;
 }
 
 function getAssignedSegments(status) {
   if (status != null) {
     const options = [];
-    for (let i=0; i < status.length; i++){
+    for (let i = 0; i < status.length; i += 1) {
       options.push(
         <HStack>
-        <div className="segment-id" align-self="left">{status[i].split(" ")[0]}</div>
-        <div className="segment-location" font-style="regular">{status[i].substring(status[i].indexOf(" ")+1)}</div>
-        </HStack>
-      )
+          <div className="segment-id" align-self="left">
+            {status[i].split(' ')[0]}
+          </div>
+          <div className="segment-location" fontStyle="regular">
+            {status[i].substring(status[i].indexOf(' ') + 1)}
+          </div>
+        </HStack>,
+      );
     }
-    return (
-      <VStack align="normal">
-        {options}
-      </VStack>
-    );
-  }
-  else{
-    return null;
+    return <VStack align="normal">{options}</VStack>;
   }
 
+  return null;
 }
 /*
 <VStack>
@@ -240,10 +199,8 @@ function getAssignedSegments(status) {
       </Icon>
     </VStack>
 */
-function getButton(){
-  return (
-    <IconButton icon={<BsThreeDotsVertical />} position="static" />
-  )
+function getButton() {
+  return <IconButton icon={<BsThreeDotsVertical />} position="static" />;
 }
 
 // Custom component to render TrainingStatus
@@ -263,7 +220,7 @@ const AssignedSegments = ({ value }) => {
 
 const ViewEditProfile = () => {
   return getButton();
-}
+};
 
 // Custom component to render Name
 const Name = ({ value }) => {
@@ -272,14 +229,22 @@ const Name = ({ value }) => {
       <div className="user-container">
         <Avatar size="md" position="static" name={value} src="something" />
         <VStack className="user-info-container">
-          <div className="name-container">{`${value.split(" ")[0] + " " + value.split(" ")[1]}`}</div>
-          <div className="email-container">{`${value.split(" ")[2]}`}</div>
+          <div className="name-container">{`${`${value.split(' ')[0]} ${
+            value.split(' ')[1]
+          }`}`}</div>
+          <div className="email-container">{`${value.split(' ')[2]}`}</div>
 
-          {value.split(" ")[3] === "In-Training" ? <TrainingStatus value={`${value.split(" ")[3]}`} /> : null}
+          {value.split(' ')[3] === 'In-Training' ? (
+            <TrainingStatus value={`${value.split(' ')[3]}`} />
+          ) : null}
         </VStack>
       </div>
     </>
   );
+};
+
+Name.propTypes = {
+  value: PropTypes.string.isRequired,
 };
 
 function PeopleTable({ columns, data }) {
@@ -301,7 +266,6 @@ function PeopleTable({ columns, data }) {
     preGlobalFilteredRows,
     setGlobalFilter,
     state,
-    visibleColumns,
     // selectedFlatRows,
     state: { pageIndex, pageSize },
   } = useTable(
@@ -317,29 +281,6 @@ function PeopleTable({ columns, data }) {
     useSortBy,
     usePagination,
     useRowSelect,
-    /*(hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        // Let's make a column for selection
-        {
-          id: 'selection',
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
-          Header: ({ getToggleAllPageRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
-            </div>
-          ),
-          // The cell can use the individual row's getToggleRowSelectedProps method
-          // to the render a checkbox
-          Cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            </div>
-          ),
-        },
-        ...columns,
-      ]);
-    }*/
   );
 
   // Render the UI for your table
@@ -347,44 +288,31 @@ function PeopleTable({ columns, data }) {
   // Needs to be updated such that sorting is possible
   return (
     <>
-
-
       <div>
         <Flex justifyContent="space-between">
-          <GlobalFilter className="search-bar"
+          <GlobalFilter
+            className="search-bar"
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={state.globalFilter}
             setGlobalFilter={setGlobalFilter}
           />
-          <div style={{display: "flex", justifyContent: "right", width: "50%"}}>
-            <p className="sort-by" >
-              SORT BY
-            </p>
-            <Select className="sort-options" width="30%" >
-              <option value='option1'>Name: A-Z</option>
-              <option value='option2'>Name: Z-A</option>
+          <div style={{ display: 'flex', justifyContent: 'right', width: '50%' }}>
+            <p className="sort-by">SORT BY</p>
+            <Select className="sort-options" width="30%">
+              <option value="option1">Name: A-Z</option>
+              <option value="option2">Name: Z-A</option>
             </Select>
           </div>
-
         </Flex>
       </div>
       <div className="table-container">
         <Table {...getTableProps()}>
           <Thead>
-            <tr>
-              <th
-                colSpan={visibleColumns.length}
-                style={{
-                  textAlign: 'left',
-                }}
-              >
-
-              </th>
-            </tr>
             {headerGroups.map(headerGroup => (
-              <Tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
+              <Tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => (
                   <Th
+                    key={column.id}
                     userSelect="none"
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     color="white"
@@ -411,9 +339,14 @@ function PeopleTable({ columns, data }) {
             {page.map((row, i) => {
               prepareRow(row);
               return (
-                <Tr {...row.getRowProps()}>
+                // eslint-disable-next-line react/no-array-index-key
+                <Tr key={i} {...row.getRowProps()}>
                   {row.cells.map(cell => {
-                    return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>;
+                    return (
+                      <Td key={row.id} {...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </Td>
+                    );
                   })}
                 </Tr>
               );
@@ -422,7 +355,7 @@ function PeopleTable({ columns, data }) {
         </Table>
       </div>
 
-      <div className="footer-container" style={{margin: "auto"}}>
+      <div className="footer-container" style={{ margin: 'auto' }}>
         <Flex justifyContent="space-between" m={4} alignItems="center">
           <Flex alignItems="center">
             <Text flexShrink="0">Show rows per page: </Text>{' '}
@@ -436,9 +369,9 @@ function PeopleTable({ columns, data }) {
                 setPageSize(Number(e.target.value));
               }}
             >
-              {[10, 20, 30, 40, 50].map(pageSize => (
-                <option key={pageSize} value={pageSize}>
-                  {pageSize}
+              {[10, 20, 30, 40, 50].map(size => (
+                <option key={size} value={size}>
+                  {size}
                 </option>
               ))}
             </Select>
@@ -479,26 +412,26 @@ function App() {
   const columns = React.useMemo(
     () => [
       {
-        Header: "Name",
-        accessor: (d) => `${d.name} ${d.email} ${d.trainingStatus}`,
-        //icon: <Icon as={BsFillPersonFill} mr={1} />,
-        Cell: ({ cell: { value } }) => <Name value={value}/>
+        Header: 'Name',
+        accessor: d => `${d.name} ${d.email} ${d.trainingStatus}`,
+        // icon: <Icon as={BsFillPersonFill} mr={1} />,
+        Cell: ({ cell: { value } }) => <Name value={value} />,
       },
       {
-        Header: "Last Updated",
-        accessor: "lastUpdated",
-        //icon: <Icon as={AiFillTag} mr={1} />,
-        Cell: ({ cell: { value } }) => <LastUpdated value={value} />
+        Header: 'Last Updated',
+        accessor: 'lastUpdated',
+        // icon: <Icon as={AiFillTag} mr={1} />,
+        Cell: ({ cell: { value } }) => <LastUpdated value={value} />,
       },
       {
-        Header: "Assigned Segment(s)",
-        accessor: "assignedSegments",
-        //icon: <Icon as={AiFillTag} mr={1} />,
-        Cell: ({ cell: { value } }) => <AssignedSegments value={value}/>
+        Header: 'Assigned Segment(s)',
+        accessor: 'assignedSegments',
+        // icon: <Icon as={AiFillTag} mr={1} />,
+        Cell: ({ cell: { value } }) => <AssignedSegments value={value} />,
       },
       {
-        Header: "",
-        accessor: "button",
+        Header: '',
+        accessor: 'button',
         Cell: <ViewEditProfile />,
       },
     ],
