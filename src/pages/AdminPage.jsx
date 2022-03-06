@@ -74,6 +74,102 @@ const dummy = [
     volunteer: 'Yae Miko',
     status: true,
   },
+  {
+    id: 6,
+    segment: 'OC21',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 7,
+    segment: 'OC20',
+    date: new Date(2021, 11, 15),
+    approved: 'READY TO REVIEW',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 8,
+    segment: 'OC09b',
+    date: new Date(2022, 2, 15),
+    approved: 'RESUBMITTED',
+    volunteer: 'Yae Miko',
+    status: false,
+  },
+  {
+    id: 9,
+    segment: 'OC21',
+    date: new Date(2022, 2, 14),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 10,
+    segment: 'OC16',
+    date: new Date(2021, 1, 14),
+    approved: 'EDITS REQUESTED',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 11,
+    segment: 'OC16',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Yae Miko',
+    status: true,
+  },
+  {
+    id: 12,
+    segment: 'OC21',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 13,
+    segment: 'OC20',
+    date: new Date(2021, 11, 15),
+    approved: 'READY TO REVIEW',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 14,
+    segment: 'OC09b',
+    date: new Date(2022, 2, 15),
+    approved: 'RESUBMITTED',
+    volunteer: 'Yae Miko',
+    status: false,
+  },
+  {
+    id: 15,
+    segment: 'OC21',
+    date: new Date(2022, 2, 14),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 16,
+    segment: 'OC16',
+    date: new Date(2021, 1, 14),
+    approved: 'EDITS REQUESTED',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 17,
+    segment: 'OC16',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Yae Miko',
+    status: true,
+  },
 ];
 
 function segmentAscend(a, b) {
@@ -198,9 +294,12 @@ const AdminPage = () => {
   const [isVolunteerAscend, setVolunteerAscend] = useState(false);
   const [isApprovalAscend, setApprovalAscend] = useState(false);
 
+  const currentPage = 1;
+  let totalData;
+
   const countChecked = () => {
     let count = 0;
-    checked.forEach(function (val) {
+    checked.forEach(val => {
       if (val) {
         count += 1;
       }
@@ -219,10 +318,16 @@ const AdminPage = () => {
     );
   };
 
-  const [dataDisplay, setDataDisplay] = useState(dummy.filter(row => isFiltered(row)));
+  const perPage = () => {
+    const data = dummy.filter(row => isFiltered(row));
+    totalData = data.length;
+    return data.slice((currentPage - 1) * pageSize, (currentPage - 1) * pageSize + pageSize - 1);
+  };
+
+  const [dataDisplay, setDataDisplay] = useState(perPage());
 
   useEffect(() => {
-    setDataDisplay(dummy.filter(row => isFiltered(row)));
+    setDataDisplay(perPage());
   }, [segmentFilter, dateFilter, approvalFilter, statusFilter, nameFilter, checked]);
 
   const handleAllChecked = () => {
@@ -474,6 +579,9 @@ const AdminPage = () => {
             ))}
           </Select>
           <Spacer />
+          <Text color="white">
+            {currentPage} - {Math.ceil(totalData / pageSize)} of {totalData}
+          </Text>
           <IconButton icon={<ChevronLeftIcon />} />
           <IconButton icon={<ChevronRightIcon />} />
         </Flex>
