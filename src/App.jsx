@@ -9,10 +9,11 @@ import MonitorLogPage from './pages/MonitorLogPage';
 import EndangeredSpecies from './pages/EndangeredSpecies';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
+import theme from './theme/theme';
 
 function App() {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Router>
         <Routes>
           {/* Add routes as needed; route names subject to change */}
