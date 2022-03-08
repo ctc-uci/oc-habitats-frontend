@@ -27,7 +27,7 @@ function AddAccountPopup() {
   const adminEmailHandleChange = event => setAdminEmail(event.target.value);
   return (
     <>
-      <Button onClick={onOpen} bg="#2BC0E3" color="#F7FAFC" variant="solid" rightIcon={<AddIcon />}>
+      <Button onClick={onOpen} bg="ochBlue" color="#F7FAFC" variant="solid" rightIcon={<AddIcon />}>
         Create New Account
       </Button>
 
@@ -74,7 +74,7 @@ function AddAccountPopup() {
                 (value === '1' && volInput === '') ||
                 (value === '2' && (adminEmail === '' || adminName === ''))
               }
-              bg="#2BC0E3"
+              bg="ochBlue"
               color="#F7FAFC"
               variant="solid"
             >

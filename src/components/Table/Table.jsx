@@ -61,7 +61,7 @@ function GlobalFilter({ globalFilter, setGlobalFilter }) {
         style={{
           fontSize: '1.1rem',
           border: '1px #E2E8F0 solid',
-          color: 'black',
+          color: 'ochBlack',
         }}
       />
     </span>
@@ -312,6 +312,7 @@ function PeopleTable({ columns, data }) {
               <Tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map(column => (
                   <Th
+                    class="table-head"
                     key={column.id}
                     userSelect="none"
                     {...column.getHeaderProps(column.getSortByToggleProps())}

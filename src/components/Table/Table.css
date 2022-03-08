@@ -51,7 +51,8 @@ html { font-family: 'Inter', sans-serif; }
   background-color: #2d3748;
   color: white;
 }
-th {
+
+.table-head {
   position: sticky;
   top: 0;
 
