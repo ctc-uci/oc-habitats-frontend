@@ -3,10 +3,11 @@ import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import './App.css';
 import HomePage from './pages/HomePage';
-import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
 import EndangeredSpecies from './pages/EndangeredSpecies';
+import AccountPage from './pages/AccountPage';
+import AdminPage from './pages/AdminPage'; // monitor-log table
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import theme from './theme/theme';
@@ -29,7 +30,7 @@ function App() {
           <Route exact path="/species" element={<Species />} />
           {/* Admin only routes (TO DO, make admin only) */}
           <Route exact path="/people" element={<PeoplePage />} />
-          <Route exact path="/logs" />
+          <Route exact path="/logs" element={<AdminPage />} />
         </Routes>
       </Router>
     </ChakraProvider>
