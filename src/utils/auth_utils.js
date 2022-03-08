@@ -22,13 +22,12 @@ const { VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 /*
   TODO:
-  - Login:
-    - Fix refresh token bug
-  - Get roles working:
+  X Login:
+    X Fix refresh token bug
+  X Get roles working:
     X Switch from 2 booleans to string value for role
-    - Make sure correct cookies are being set
+    X Make sure correct cookies are being set
   - Admin Invite / Forgot password page
-  - Google Sign in
   X Test all CRUD routes for users
 */
 
@@ -120,10 +119,10 @@ const refreshToken = async () => {
 const createUserInDB = async (
   email,
   userId,
-  firstName,
-  lastName,
   role,
   signUpWithGoogle,
+  firstName = 'temporary first name',
+  lastName = 'temporary last name',
   password = null,
 ) => {
   try {
@@ -243,7 +242,7 @@ const createUserInFirebase = async (email, password) => {
  */
 const createUser = async (email, password, firstName, lastName, role) => {
   const user = await createUserInFirebase(email, password);
-  await createUserInDB(email, user.uid, firstName, lastName, role, false, password);
+  await createUserInDB(email, user.uid, role, false, firstName, lastName, password);
   sendEmailVerification(user);
 };
 
@@ -284,7 +283,7 @@ const sendInviteLink = async (email, role) => {
   // generate a random password (not going to be used as new account will reset password)
   const randomPassword = Math.random().toString(36).slice(-8);
   const user = await createUserInFirebase(email, randomPassword);
-  createUserInDB(email, user.uid, role, false, randomPassword);
+  createUserInDB(email, user.uid, role, false, null, null, randomPassword);
   sendPasswordReset(email);
 };
 
