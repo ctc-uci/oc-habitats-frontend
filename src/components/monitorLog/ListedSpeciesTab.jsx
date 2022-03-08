@@ -28,7 +28,7 @@ import {
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { InfoIcon } from '@chakra-ui/icons';
-import EndangeredSpecies from '../../pages/EndangeredSpecies';
+import EndangeredSpeciesPopup from '../../pages/EndangeredSpeciesPopup';
 
 const ListedSpeciesTab = ({ speciesName, speciesCode }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -191,7 +191,11 @@ const ListedSpeciesTab = ({ speciesName, speciesCode }) => {
           <Modal size="full" isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent margin={0} rounded="none">
-              <EndangeredSpecies closeModal={onClose} adultName={speciesName} addRow={addRow} />
+              <EndangeredSpeciesPopup
+                closeModal={onClose}
+                adultName={speciesName}
+                addRow={addRow}
+              />
             </ModalContent>
           </Modal>
         </GridItem>

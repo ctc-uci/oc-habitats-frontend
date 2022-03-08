@@ -18,10 +18,9 @@ import BandsSex from '../components/EndangeredSpecies/BandsSex';
 import BehaviorsList from '../components/EndangeredSpecies/BehaviorsList';
 import footNotes from '../components/EndangeredSpecies/FootNotes';
 import options from '../components/EndangeredSpecies/DropdownOptions';
-import BandingColorKey from '../components/EndangeredSpecies/BandingColorKey';
 import BandsSexBehaviors from '../components/EndangeredSpecies/BandsSexBehaviors';
 
-const EndangeredSpecies = ({ closeModal, adultName, addRow }) => {
+const EndangeredSpeciesPopup = ({ closeModal, adultName, addRow }) => {
   const [totalAdults, setTotalAdults] = useState(1);
   const [totalFledges, setTotalFledges] = useState(0);
   const [totalChicks, setTotalChicks] = useState(0);
@@ -129,7 +128,6 @@ const EndangeredSpecies = ({ closeModal, adultName, addRow }) => {
               setTotalChicks={setTotalChicks}
             />
             <Location totalBirds={totalAdults + totalFledges} />
-            <BandingColorKey />
             <BandsSexBehaviors />
             <BandsSex totalAdults={totalAdults} totalFledges={totalFledges} />
             <BehaviorsList
@@ -158,10 +156,10 @@ const EndangeredSpecies = ({ closeModal, adultName, addRow }) => {
   );
 };
 
-EndangeredSpecies.propTypes = {
+EndangeredSpeciesPopup.propTypes = {
   adultName: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
   addRow: PropTypes.func.isRequired,
 };
 
-export default EndangeredSpecies;
+export default EndangeredSpeciesPopup;
