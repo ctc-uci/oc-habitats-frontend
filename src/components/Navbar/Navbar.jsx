@@ -7,6 +7,11 @@ import logo from '../../assets/OCHlogo.png';
 
 const Navbar = ({ isAdmin }) => {
   // TO DO: get profile image and name
+  const user = {
+    firstName: 'Dan',
+    lastName: 'Abramov',
+    profilePic: 'https://bit.ly/dan-abramov',
+  };
 
   const admin = [
     { text: 'Monitor Logs', path: '/logs' },
@@ -29,12 +34,16 @@ const Navbar = ({ isAdmin }) => {
       color="white"
       align="center"
       justify="space-between"
-      style={{ position: 'sticky', top: 0 }}
+      position="sticky"
+      zIndex="sticky"
+      top={0}
+      h="60px"
     >
       <Link to="/">
-        <Image pl={4} maxW="25%" src={logo} alt="logo" />
+        <Image pl={4} pr={0} maxW="25%" src={logo} alt="logo" />
       </Link>
-      <HStack spacing={12} justify="flex-end" pr={4}>
+      {/* TO DO: if user is not signed in, only logo */}
+      <HStack h="inherit" spacing={6} pr={4}>
         {isAdmin
           ? admin.map(a => <NavbarLink key={a.text} text={a.text} path={a.path} />)
           : volunteer.map(v => <NavbarLink key={v.text} text={v.text} path={v.path} />)}
@@ -46,7 +55,7 @@ const Navbar = ({ isAdmin }) => {
           </Link>
         )}
         <Link to="/account">
-          <Avatar m={1} name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+          <Avatar m={1} name={user.firstName + user.lastName} src={user.profilePic} />
         </Link>
       </HStack>
     </Flex>
