@@ -24,7 +24,7 @@ import Species from './pages/Species';
 
 import AUTH_ROLES from './utils/auth_config';
 
-const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES.AUTH_ROLES;
+const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 function App() {
   return (
@@ -37,11 +37,7 @@ function App() {
             <Route path="/account" element={<AccountPage />} />
             <Route path="/create-log" element={<MonitorLogPage />} />
             <Route path="/sections" element={<SectionPage />} />
-            <Route
-              exact
-              path="/endangered"
-              element={<EndangeredSpecies adultName="Snowy Plovers" />}
-            />
+            <Route path="/endangered" element={<EndangeredSpecies adultName="Snowy Plovers" />} />
             <Route path="/species" element={<Species />} />
             {/* Admin only routes (TO DO, make admin only) */}
             <Route path="/people" element={<PeoplePage />} />
@@ -50,29 +46,34 @@ function App() {
             {/* NEW AUTH ROUTES */}
             <Route path="/login" element={<Login />} />
             <Route
-              exact
-              path="admin"
+              path="/admin"
               element={
-                <ProtectedRoute Component={Logout} redirectPath="/logout" roles={[ADMIN_ROLE]} />
+                <ProtectedRoute
+                  Component={Logout}
+                  redirectPath="/logout"
+                  roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
+                />
               }
             />
             <Route
-              exact
               path="/adminInvite"
               element={
-                <ProtectedRoute Component={AdminInvite} redirectPath="/" roles={[ADMIN_ROLE]} />
+                <ProtectedRoute
+                  Component={AdminInvite}
+                  redirectPath="/"
+                  roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
+                />
               }
             />
             <Route path="/emailAction" element={<EmailAction redirectPath="/" />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
             <Route
-              exact
               path="/logout"
               element={
                 <ProtectedRoute
                   Component={Logout}
                   redirectPath="/"
-                  roles={[ADMIN_ROLE, USER_ROLE]}
+                  roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE]}
                 />
               }
             />

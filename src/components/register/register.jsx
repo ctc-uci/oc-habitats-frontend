@@ -7,6 +7,7 @@ import { registerWithEmailAndPassword, signInWithGoogle } from '../../utils/auth
 const Register = ({ cookies }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [role, setRole] = useState();
   const [checkPassword, setCheckPassword] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [firstName, setFirstName] = useState();
@@ -19,7 +20,7 @@ const Register = ({ cookies }) => {
       if (password !== checkPassword) {
         throw new Error("Passwords don't match");
       }
-      await registerWithEmailAndPassword(email, password, firstName, lastName, navigate, '/');
+      await registerWithEmailAndPassword(email, password, firstName, lastName, role, navigate, '/');
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -57,6 +58,15 @@ const Register = ({ cookies }) => {
         <input onChange={({ target }) => setFirstName(target.value)} placeholder="First Name" />
         <br />
         <input onChange={({ target }) => setLastName(target.value)} placeholder="Last Name" />
+        <br />
+        <p>Role: </p>
+        <select onChange={e => setRole(e.target.value)} value={role}>
+          <option value="admin" selected>
+            Admin
+          </option>
+          <option value="super-admin">Super Admin</option>
+          <option value="volunteer">Volunteer</option>
+        </select>
         <br />
         <input
           onChange={({ target }) => setPassword(target.value)}

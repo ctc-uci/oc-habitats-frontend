@@ -18,7 +18,19 @@ import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
 
 import AUTH_ROLES from './auth_config';
 
-const { USER_ROLE } = AUTH_ROLES.AUTH_ROLES;
+const { VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
+
+/*
+  TODO:
+  - Login:
+    - Fix refresh token bug
+  - Get roles working:
+    X Switch from 2 booleans to string value for role
+    - Make sure correct cookies are being set
+  - Admin Invite / Forgot password page
+  - Google Sign in
+  X Test all CRUD routes for users
+*/
 
 // Using Firebase Web version 9
 const firebaseConfig = {
@@ -90,7 +102,8 @@ const refreshToken = async () => {
     // Sets the appropriate cookies after refreshing access token
     setCookie(cookieKeys.ACCESS_TOKEN, idToken, cookieConfig);
     const user = await NPOBackend.get(`/users/${auth.currentUser.uid}`);
-    setCookie(cookieKeys.ROLE, user.data.user.role, cookieConfig);
+    console.log(user.data.user);
+    setCookie(cookieKeys.ROLE, user.data.role, cookieConfig);
     return idToken;
   }
   return null;
@@ -109,12 +122,13 @@ const createUserInDB = async (
   userId,
   firstName,
   lastName,
+  role,
   signUpWithGoogle,
   password = null,
 ) => {
   try {
     if (signUpWithGoogle) {
-      await NPOBackend.post('/users/create', {
+      await NPOBackend.post('/users/', {
         email,
         userId,
         firstName,
@@ -122,11 +136,12 @@ const createUserInDB = async (
         registered: false,
       });
     } else {
-      await NPOBackend.post('/users/create', {
+      await NPOBackend.post('/users/', {
         email,
         userId,
         firstName,
         lastName,
+        role,
         registered: true,
       });
     }
@@ -143,7 +158,7 @@ const createUserInDB = async (
 };
 
 /**
- * Signs a user in with Google using Firebase. Users are given USER_ROLE by default
+ * Signs a user in with Google using Firebase. Users are given VOLUNTEER_ROLE by default
  * @param {string} newUserRedirectPath path to redirect new users to after signing in with Google Provider for the first time
  * @param {string} defaultRedirectPath path to redirect users to after signing in with Google Provider
  * @param {hook} navigate An instance of the useNavigate hook from react-router-dom
@@ -156,8 +171,8 @@ const signInWithGoogle = async (newUserRedirectPath, defaultRedirectPath, naviga
   const newUser = getAdditionalUserInfo(userCredential).isNewUser;
   cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
   if (newUser) {
-    await createUserInDB(auth.currentUser.email, userCredential.user.uid, USER_ROLE, true);
-    cookies.set(cookieKeys.ROLE, USER_ROLE, cookieConfig);
+    await createUserInDB(auth.currentUser.email, userCredential.user.uid, VOLUNTEER_ROLE, true);
+    cookies.set(cookieKeys.ROLE, VOLUNTEER_ROLE, cookieConfig);
     navigate(newUserRedirectPath);
   } else {
     const user = await NPOBackend.get(`/users/${auth.currentUser.uid}`);
@@ -178,7 +193,10 @@ const signInWithGoogle = async (newUserRedirectPath, defaultRedirectPath, naviga
  * @param {hook} navigate used to redirect the user after submitted
  */
 const finishGoogleLoginRegistration = async (redirectPath, navigate) => {
-  await NPOBackend.put(`/users/update/${auth.currentUser.uid}`);
+  // TODO: Switch to correct update route
+  await NPOBackend.put(`/users/update/${auth.currentUser.uid}`, {
+    registered: true,
+  });
   navigate(redirectPath);
 };
 
@@ -199,8 +217,9 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
   }
   cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
   const user = await NPOBackend.get(`/users/${auth.currentUser.uid}`);
-  const role = user.data ? 'admin' : 'admin';
-  cookies.set(cookieKeys.ROLE, role, cookieConfig);
+  console.log('Current user: ');
+  console.table(user.data);
+  cookies.set(cookieKeys.ROLE, user.data.role, cookieConfig);
   navigate(redirectPath);
 };
 
@@ -222,9 +241,9 @@ const createUserInFirebase = async (email, password) => {
  * @param {string} role
  * @returns A UserCredential object from firebase
  */
-const createUser = async (email, password, firstName, lastName) => {
+const createUser = async (email, password, firstName, lastName, role) => {
   const user = await createUserInFirebase(email, password);
-  await createUserInDB(email, user.uid, firstName, lastName, false, password);
+  await createUserInDB(email, user.uid, firstName, lastName, role, false, password);
   sendEmailVerification(user);
 };
 
@@ -241,10 +260,11 @@ const registerWithEmailAndPassword = async (
   password,
   firstName,
   lastName,
+  role,
   navigate,
   redirectPath,
 ) => {
-  await createUser(email, password, firstName, lastName);
+  await createUser(email, password, firstName, lastName, role);
   navigate(redirectPath);
 };
 

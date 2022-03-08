@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { instanceOf } from 'prop-types';
-import { Cookies, withCookies } from '../utils/cookie_utils';
+import { Cookies, withCookies, cookieConfig } from '../utils/cookie_utils';
 import { logInWithEmailAndPassword, signInWithGoogle, useNavigate } from '../utils/auth_utils';
 
 const Login = ({ cookies }) => {
@@ -15,6 +15,7 @@ const Login = ({ cookies }) => {
    * @param {Event} e
    */
   const handleSubmit = async e => {
+    cookies.set('role', 'admin', cookieConfig);
     try {
       e.preventDefault();
       await logInWithEmailAndPassword(email, password, '/logout', navigate, cookies);
@@ -51,7 +52,7 @@ const Login = ({ cookies }) => {
           placeholder="Password"
         />
         <br />
-        <button type="submit">Sign in</button>
+        <button type="submit"> Sign in </button>
       </form>
       <button type="submit" onClick={handleGoogleSignIn}>
         Sign in with Google
