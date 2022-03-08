@@ -18,7 +18,7 @@ const PeoplePage = () => {
           <Flex>
             <Spacer />
             <Link to="/account" style={{ textDecoration: 'none' }}>
-              <Button rightIcon={<FiEdit2 />} bg="#2BC0E3" color="#F7FAFC" variant="solid">
+              <Button rightIcon={<FiEdit2 />} bg="ochOrange" color="#F7FAFC" variant="solid">
                 Edit Segment Assignments
               </Button>
             </Link>

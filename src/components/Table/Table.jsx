@@ -61,7 +61,7 @@ function GlobalFilter({ globalFilter, setGlobalFilter }) {
         style={{
           fontSize: '1.1rem',
           border: '1px #E2E8F0 solid',
-          color: 'black',
+          color: 'ochBlack',
         }}
       />
     </span>

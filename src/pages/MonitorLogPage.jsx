@@ -89,25 +89,25 @@ const MonitorLogPage = () => {
       <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange">
         <TabList p="32px" alignItems="center">
           <HStack spacing="24px">
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               General Info
             </Tab>
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               Least Tern
             </Tab>
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               Snow Plover
             </Tab>
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               Additional Species
             </Tab>
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               Predators
             </Tab>
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               Human Activity
             </Tab>
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               Review and Submit
             </Tab>
           </HStack>

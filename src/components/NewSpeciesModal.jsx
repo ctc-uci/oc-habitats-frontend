@@ -39,8 +39,8 @@ function NewSpeciesModal({ addNewSpecies }) {
   return (
     <>
       <Button
-        bg="#F49923"
-        color="#4E4E4E"
+        bg="ochOrange"
+        color="ochGrey"
         onClick={e => {
           e.preventDefault();
           setIsToggled(!isToggled);
