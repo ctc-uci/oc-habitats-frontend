@@ -38,6 +38,17 @@ const options = [
 ];
 
 const MonitorLogPage = () => {
+  const [surveySegment, setSurveySegment] = useState();
+  const [surveyDate, setDate] = useState();
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
+  const [temperature, setTemperature] = useState();
+  const [cloudCover, setCloudCover] = useState();
+  const [precipitation, setPrecipitation] = useState();
+  const [windSpeedDirection, setWindSpeedDirection] = useState();
+  const [tides, setTides] = useState();
+  const [habitatType, setOverallHabitatType] = useState();
+  const [habitatWidth, setHabitatWidth] = useState();
   const [totalCrows, setTotalCrows] = useState(0);
   const [totalRavens, setTotalRavens] = useState(0);
   const [totalRaptors, setTotalRaptors] = useState(0);
@@ -59,6 +70,19 @@ const MonitorLogPage = () => {
   const [totalDogsOffLeash, setTotalDogsOffLeash] = useState(0);
   const [outreachNotes, setOutreachNotes] = useState();
   const [otherNotes, setOtherNotes] = useState();
+  const GeneralInformationItems = [
+    { sectionTitle: 'Survey Segment', value: surveySegment },
+    { sectionTitle: 'Date (MM/DD/YYY)', value: surveyDate },
+    { sectionTitle: 'Survey Start Time', value: startTime },
+    { sectionTitle: 'Survey End Time', value: endTime },
+    { sectionTitle: 'Temperature (F)', value: temperature },
+    { sectionTitle: 'Cloud Cover (%)', value: cloudCover },
+    { sectionTitle: 'Precipitation', value: precipitation },
+    { sectionTitle: 'Wind (Speed/Direction)', value: windSpeedDirection, splitField: 'true' },
+    { sectionTitle: 'Tides (ft)', value: tides },
+    { sectionTitle: 'Overall Habitat Type', value: habitatType, toolTip: 'hi' },
+    { sectionTitle: 'Habitat Width', value: habitatWidth },
+  ];
   const predatorItems = [
     { sectionTitle: 'Crows', value: totalCrows },
     { sectionTitle: 'Ravens', value: totalRavens },
@@ -114,7 +138,20 @@ const MonitorLogPage = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <GeneralInfo options={options} />
+            <GeneralInfo
+              options={options}
+              setSurveySegment={setSurveySegment}
+              setDate={setDate}
+              setStartTime={setStartTime}
+              setEndTime={setEndTime}
+              setTemperature={setTemperature}
+              setCloudCover={setCloudCover}
+              setPrecipitation={setPrecipitation}
+              setWindSpeedDirection={setWindSpeedDirection}
+              setTides={setTides}
+              setOverallHabitatType={setOverallHabitatType}
+              setHabitatWidth={setHabitatWidth}
+            />
           </TabPanel>
           <TabPanel>
             <p>Least Terns</p>
@@ -159,6 +196,21 @@ const MonitorLogPage = () => {
               <Accordion allowMultiple="true" defaultIndex={[0]}>
                 <AccordionItem borderColor="white">
                   <HStack>
+                    <Text fontSize="24px" fontWeight={550} width="30%">
+                      General Information
+                    </Text>
+                    <AccordionButton _hover="white">
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </HStack>
+                  <AccordionPanel>
+                    <MonitorLogSection reviewElements={GeneralInformationItems} />
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
+              <Accordion allowMultiple="true" defaultIndex={[0]}>
+                <AccordionItem borderColor="white">
+                  <HStack>
                     <Text fontSize="24px" fontWeight={550}>
                       Predators
                     </Text>
@@ -198,7 +250,6 @@ const MonitorLogPage = () => {
                   </AccordionPanel>
                 </AccordionItem>
               </Accordion>
-
               <ReviewElementTooltip
                 sectionTitle="Other Notes"
                 value={otherNotes}
