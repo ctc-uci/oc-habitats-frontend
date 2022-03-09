@@ -12,7 +12,7 @@ const Footer = () => {
       align="center"
       justify="center"
       mt={14}
-      h="100px"
+      h="90px"
       color="white"
       bgColor="ochGrey"
     >
@@ -26,14 +26,20 @@ const Footer = () => {
           <Text>15333 Culver Drive, Suite</Text>
           <Text>240-763, Irvine, CA 92604</Text>
         </Flex>
-        <Link href="ochabitats.org" isExternal>
+        <Link href="http://www.ochabitats.org" isExternal>
           ochabitats.org
         </Link>
         <Text>EIN # 82-2478090</Text>
-        <HStack align="center" justify="center" spacing={1}>
-          <Image src={facebook} />
-          <Image src={twitter} />
-          <Image src={instagram} />
+        <HStack spacing={1}>
+          <Link href="https://www.facebook.com/ochabitats" isExternal>
+            <Image src={facebook} />
+          </Link>
+          <Link href="https://twitter.com/ochabitats" isExternal>
+            <Image src={twitter} />
+          </Link>
+          <Link href="https://www.instagram.com/ochabitats/" isExternal>
+            <Image src={instagram} />
+          </Link>
         </HStack>
       </HStack>
     </Flex>

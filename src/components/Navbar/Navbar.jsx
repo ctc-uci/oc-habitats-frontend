@@ -49,7 +49,7 @@ const Navbar = ({ isAdmin }) => {
           : volunteer.map(v => <NavbarLink key={v.text} text={v.text} path={v.path} />)}
         {!isAdmin && (
           <Link to="/create-log">
-            <Button size="sm" bgColor="#2BC0E3" color="black">
+            <Button size="sm" bgColor="ochBlue" color="ochBlack">
               Start Session
             </Button>
           </Link>
