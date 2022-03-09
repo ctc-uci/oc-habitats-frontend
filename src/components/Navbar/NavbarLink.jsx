@@ -9,6 +9,7 @@ const NavbarLink = ({ text, path = '/' }) => {
     <Center
       h="inherit"
       paddingX={5}
+      borderTop="5px solid transparent"
       borderBottom={current === path ? '5px solid #2BC0E3' : '5px solid transparent'}
       _hover={{ transitionDuration: '0.25s', color: 'orange' }}
     >

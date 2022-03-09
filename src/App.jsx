@@ -12,6 +12,7 @@ import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import Navbar from './components/Navbar/Navbar';
 import theme from './theme/theme';
+import Footer from './components/Footer/Footer';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route exact path="/map" />
           <Route exact path="/logs" element={<AdminPage />} />
         </Routes>
+        <Footer />
       </Router>
     </ChakraProvider>
   );
