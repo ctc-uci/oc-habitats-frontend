@@ -1,9 +1,9 @@
 import React from 'react';
 import { Flex, Text, StackDivider, HStack, Link, Image } from '@chakra-ui/react';
 // temporary logo files — need to get source from designers
-import facebook from '../../assets/facebook.svg';
+import facebook from '../../assets/facebook.png';
 import instagram from '../../assets/instagram.svg';
-import twitter from '../../assets/twitter.svg';
+import twitter from '../../assets/twitter.png';
 
 const Footer = () => {
   return (
@@ -30,15 +30,15 @@ const Footer = () => {
           ochabitats.org
         </Link>
         <Text>EIN # 82-2478090</Text>
-        <HStack spacing={1}>
+        <HStack spacing={3}>
           <Link href="https://www.facebook.com/ochabitats" isExternal>
-            <Image src={facebook} />
+            <Image maxH="52px" src={facebook} _hover={{ opacity: '0.8' }} />
           </Link>
           <Link href="https://twitter.com/ochabitats" isExternal>
-            <Image src={twitter} />
+            <Image maxH="52px" src={twitter} _hover={{ opacity: '0.8' }} />
           </Link>
           <Link href="https://www.instagram.com/ochabitats/" isExternal>
-            <Image src={instagram} />
+            <Image maxH="52px" src={instagram} _hover={{ opacity: '0.8' }} />
           </Link>
         </HStack>
       </HStack>
