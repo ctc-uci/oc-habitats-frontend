@@ -1,18 +1,25 @@
-import { React, useState } from 'react';
 import {
   Box,
-  useDisclosure,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Flex,
+  Heading,
+  HStack,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useDisclosure,
 } from '@chakra-ui/react';
+import { React, useState } from 'react';
 import Section from '../components/Section';
 
 const sectionsData = [
@@ -193,27 +200,57 @@ const SectionPage = () => {
 
   return (
     <>
-      {sections.map(sectionObj => {
-        return (
-          <>
-            <Box h="25px" />
-            <Section
-              key={sectionObj.id}
-              title={sectionObj.title}
-              segments={sectionObj.segments}
-              onAddSegment={(newSeg, newSegName, newSegDist) =>
-                addSegment(sectionObj.id, newSeg, newSegName, newSegDist)
-              }
-              onUpdateSegment={(segmentId, updatedSeg, updatedSegName, updatedSegDist) =>
-                updateSegment(sectionObj.id, segmentId, updatedSeg, updatedSegName, updatedSegDist)
-              }
-              onDeleteSegment={segmentId => deleteSegment(sectionObj.id, segmentId)}
-              onUpdateSectionTitle={newSecTitle => updateSectionTitle(sectionObj.id, newSecTitle)}
-              onDeleteSection={() => deleteSection(sectionObj.id)}
-            />
-          </>
-        );
-      })}
+      <Heading align="left" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
+        Sections and Segments
+      </Heading>
+      <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange">
+        <TabList p="32px" alignItems="center">
+          <HStack spacing="24px">
+            {sections.map(sectionObj => {
+              return (
+                <Tab
+                  key={sectionObj.id}
+                  style={{ height: '40px' }}
+                  _selected={{ color: 'ochBlack', bg: 'ochOrange' }}
+                >
+                  Section {sectionObj.id}
+                </Tab>
+              );
+            })}
+          </HStack>
+        </TabList>
+        <TabPanels>
+          {sections.map(sectionObj => {
+            return (
+              <TabPanel key={sectionObj.id}>
+                <Box h="25px" />
+                <Section
+                  key={sectionObj.id}
+                  title={sectionObj.title}
+                  segments={sectionObj.segments}
+                  onAddSegment={(newSeg, newSegName, newSegDist) =>
+                    addSegment(sectionObj.id, newSeg, newSegName, newSegDist)
+                  }
+                  onUpdateSegment={(segmentId, updatedSeg, updatedSegName, updatedSegDist) =>
+                    updateSegment(
+                      sectionObj.id,
+                      segmentId,
+                      updatedSeg,
+                      updatedSegName,
+                      updatedSegDist,
+                    )
+                  }
+                  onDeleteSegment={segmentId => deleteSegment(sectionObj.id, segmentId)}
+                  onUpdateSectionTitle={newSecTitle =>
+                    updateSectionTitle(sectionObj.id, newSecTitle)
+                  }
+                  onDeleteSection={() => deleteSection(sectionObj.id)}
+                />
+              </TabPanel>
+            );
+          })}
+        </TabPanels>
+      </Tabs>
       <Flex justify="space-between">
         <Box />
         <Box>{AddSectionPopup(addSection)}</Box>
