@@ -12,6 +12,7 @@ const NavbarLink = ({ text, path = '/' }) => {
       borderTop="5px solid transparent"
       borderBottom={current === path ? '5px solid #2BC0E3' : '5px solid transparent'}
       _hover={{ transitionDuration: '0.25s', color: 'orange' }}
+      fontWeight={500}
     >
       <Link to={path}>{text}</Link>
     </Center>
