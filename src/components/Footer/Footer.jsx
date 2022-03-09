@@ -1,6 +1,5 @@
 import React from 'react';
 import { Flex, Text, StackDivider, HStack, Link, Image } from '@chakra-ui/react';
-// temporary logo files — need to get source from designers
 import facebook from '../../assets/facebook.png';
 import instagram from '../../assets/instagram.svg';
 import twitter from '../../assets/twitter.png';
