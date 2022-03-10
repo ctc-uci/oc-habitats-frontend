@@ -153,7 +153,7 @@ const Section = ({
         {/* was center */}
         <Flex align="left" justify="space-between" pb="7px">
           <h1>
-            <Text fontSize="24px"> {title}</Text>
+            <Text fontSize="24px">{title}</Text>
           </h1>
           <Spacer />
           <Box paddingTop="6px">
@@ -162,7 +162,7 @@ const Section = ({
         </Flex>
       </Box>
       <Box border="1px" borderRadius="12px" color="#E2E8F0">
-        <Table color="#2D3748" colorScheme="whiteAlpha">
+        <Table color="#2D3748" colorScheme="gray" variant="striped">
           <Thead>
             <Tr>
               <Th fontWeight="bold" style={{ width: '33%' }}>
@@ -184,8 +184,15 @@ const Section = ({
                   segment={segmentItem.segment}
                   segmentName={segmentItem.segmentName}
                   distance={segmentItem.distance}
-                  onUpdateSegment={(updatedSeg, updatedSegName, updatedSegDist) =>
-                    onUpdateSegment(segmentItem.segment, updatedSeg, updatedSegName, updatedSegDist)
+                  onUpdateSegment={
+                    (updatedSeg, updatedSegName, updatedSegDist) =>
+                      onUpdateSegment(
+                        segmentItem.segment,
+                        updatedSeg,
+                        updatedSegName,
+                        updatedSegDist,
+                      )
+                    // eslint-disable-next-line no-use-before-define
                   }
                   onDeleteSegment={() => onDeleteSegment(segmentItem.segment)}
                 />
