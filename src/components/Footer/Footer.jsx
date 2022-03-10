@@ -8,10 +8,12 @@ const Footer = () => {
   return (
     <Flex
       as="footer"
+      position="absolute"
+      bottom={0}
+      w="100%"
+      h="90px"
       align="center"
       justify="center"
-      mt={14}
-      h="90px"
       color="white"
       bgColor="ochGrey"
     >
