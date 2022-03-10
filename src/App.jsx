@@ -7,7 +7,7 @@ import './App.css';
 // NEW AUTH IMPORTS
 import AdminInvite from './components/AdminInvite';
 import ForgotPassword from './components/ForgotPassword';
-import Login from './components/Login';
+import Login from './components/login/Login';
 import Logout from './components/Logout';
 import ProtectedRoute from './utils/ProtectedRoute';
 import Register from './components/register/register';
