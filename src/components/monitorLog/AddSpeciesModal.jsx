@@ -109,7 +109,7 @@ const AddSpeciesModal = ({ addNewRow }) => {
                     </VStack>
                   </GridItem>
 
-                  <GridItem colSpan={6}>
+                  <GridItem colSpan={5}>
                     <FormLabel fontSize="14px" fontWeight="600">
                       Total Sighted:
                     </FormLabel>

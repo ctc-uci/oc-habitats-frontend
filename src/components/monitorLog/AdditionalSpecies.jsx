@@ -76,28 +76,34 @@ const AdditionalSpecies = () => {
                 />
               </Td>
               <Td border="none">
-                <Text fontSize="1.05em">{row.name}</Text>
+                <Text fontSize="1.05em" color="#2D3748" fontWeight={450}>
+                  {row.name}
+                </Text>
+              </Td>
+              <Td border="none" color="#2D3748" fontWeight={450}>
+                {row.total}
               </Td>
               <Td border="none">
-                <AccordionButton w="2em" h="2em">
-                  <AccordionIcon w="inherit" h="inherit" />
-                </AccordionButton>
+                <Flex justifyContent="flex-end">
+                  <AccordionButton w="2em" h="2em">
+                    <AccordionIcon w="inherit" h="inherit" />
+                  </AccordionButton>
+                </Flex>
               </Td>
             </Tr>
             <Tr w="100%">
               {isExpanded && (
                 <>
-                  <Td colSpan={3}>
+                  <Td colSpan={4}>
                     <AccordionPanel>
                       <VStack w="97.5%" spacing="1.5em" mb=".5em">
                         <Flex justifyContent="space-between" w="100%">
-                          <Text fontWeight={500}>Total</Text>
-                          <Text>{row.total}</Text>
-                        </Flex>
-
-                        <Flex justifyContent="space-between" w="100%">
-                          <Text fontWeight={500}>Notes (Optional)</Text>
-                          <Text>{row.notes ? row.notes : '--'}</Text>
+                          <Text fontSize=".95em" color="#2D3748" fontWeight={500}>
+                            Notes (Optional)
+                          </Text>
+                          <Text color="#2D3748" fontSize=".95em">
+                            {row.notes ? row.notes : '--'}
+                          </Text>
                         </Flex>
                       </VStack>
                     </AccordionPanel>
@@ -121,10 +127,27 @@ const AdditionalSpecies = () => {
           <SimpleGrid columns={2} h="166px" columnGap="26px">
             <GridItem colSpan={1}>
               <Accordion as={Table} allowToggle width="50em" reduceMotion>
-                <Thead w="100%" bg="#F7FAFC">
+                <Thead w="100%" bg="#4E4E4E" borderColor="gray.200">
                   <Tr>
-                    <Th />
-                    <Th w="100%">Specie</Th>
+                    <Th w="8%" bgColor="none" />
+                    <Th
+                      w="65%"
+                      fontWeight={600}
+                      color="#FFFFFF"
+                      textTransform="capitalize"
+                      fontSize=".8em"
+                    >
+                      Species
+                    </Th>
+                    <Th
+                      bgColor="none"
+                      fontWeight={600}
+                      color="#FFFFFF"
+                      textTransform="capitalize"
+                      fontSize=".8em"
+                    >
+                      Total
+                    </Th>
                     <Th />
                   </Tr>
                 </Thead>
