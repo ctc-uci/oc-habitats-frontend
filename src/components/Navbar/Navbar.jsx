@@ -30,7 +30,7 @@ const Navbar = ({ isAdmin }) => {
   return (
     <Flex
       as="nav"
-      bgColor="#4E4E4E"
+      bgColor="ochGrey"
       color="white"
       align="center"
       justify="space-between"
@@ -40,7 +40,7 @@ const Navbar = ({ isAdmin }) => {
       h="60px"
     >
       <Link to="/">
-        <Image pl={4} pr={0} maxW="25%" src={logo} alt="logo" />
+        <Image pl={4} pr={0} maxW="25%" src={logo} alt="logo" _hover={{ opacity: '0.8' }} />
       </Link>
       {/* TO DO: if user is not signed in, only logo */}
       <HStack h="inherit" spacing={6} pr={4}>
@@ -49,7 +49,7 @@ const Navbar = ({ isAdmin }) => {
           : volunteer.map(v => <NavbarLink key={v.text} text={v.text} path={v.path} />)}
         {!isAdmin && (
           <Link to="/create-log">
-            <Button size="sm" bgColor="ochBlue" color="ochBlack">
+            <Button size="sm" bgColor="ochBlue" color="ochBlack" _hover={{ opacity: '0.8' }}>
               Start Session
             </Button>
           </Link>
