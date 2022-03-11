@@ -20,6 +20,11 @@ import {
   ModalBody,
   ModalFooter,
   Input,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
@@ -86,19 +91,43 @@ function EditSectionNamePopup(title, onUpdateSectionTitle, onDeleteSection) {
   const [newTitle, setNewTitle] = useState(title);
 
   return (
-    <>
-      <IconButton
+    <Menu>
+      <MenuButton
+        as={Button}
         size="sm"
-        variant="ghost"
-        colorScheme="white"
+        bg="#2BC0E3"
+        variant="solid"
         aria-label="Edit Section"
-        icon={<EditIcon />}
+        rightIcon={<EditIcon />}
         onClick={onOpen}
       >
-        opened
-      </IconButton>
-
-      <Modal size="xl" isOpen={isOpen} onClose={onClose}>
+        Edit Section
+      </MenuButton>
+      <MenuList>
+        <MenuItem onClick={onOpen}>
+          <Text fontSize="16px" color="black">
+            Edit Section
+          </Text>
+        </MenuItem>
+        <MenuDivider />
+        <MenuItem>
+          <Text fontSize="16px" color="red">
+            Delete Section
+          </Text>
+        </MenuItem>
+      </MenuList>
+      {/* <Button
+        size="sm"
+        bg="#2BC0E3"
+        variant="solid"
+        aria-label="Edit Section"
+        rightIcon={<EditIcon />}
+        onClick={onOpen}
+      >
+        Edit Section
+      </Button> */}
+    </Menu>
+    /* {<Modal size="xl" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit Section Name</ModalHeader>
@@ -133,8 +162,8 @@ function EditSectionNamePopup(title, onUpdateSectionTitle, onDeleteSection) {
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
-    </>
+      </Modal> */
+    /* </> */
   );
 }
 

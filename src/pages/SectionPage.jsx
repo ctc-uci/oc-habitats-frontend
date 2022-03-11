@@ -19,6 +19,7 @@ import {
   Tabs,
   useDisclosure,
 } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 import { React, useState } from 'react';
 import Section from '../components/Section';
 
@@ -66,6 +67,15 @@ const sectionsData = [
     ],
   },
 ];
+
+function CreateNewSectionSegment(onAddSegment, addSection) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <Button size="md" bg="#2BC0E3" variant="solid" rightIcon={<AddIcon />} onClick={onOpen}>
+      Create New Section or Segment
+    </Button>
+  );
+}
 
 function AddSectionPopup(addSection) {
   let newSecName = '';
@@ -200,61 +210,64 @@ const SectionPage = () => {
 
   return (
     <>
-      <Heading align="left" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
-        Sections and Segments
-      </Heading>
-      <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange">
-        <TabList p="32px" alignItems="center">
-          <HStack spacing="24px">
+      <Box marginLeft="110px">
+        <Heading align="left" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
+          Sections & Segments
+        </Heading>
+        {CreateNewSectionSegment(addSegment, addSection)}
+        <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange">
+          <TabList paddingTop="32px" alignItems="center">
+            <HStack spacing="24px">
+              {sections.map(sectionObj => {
+                return (
+                  <Tab
+                    key={sectionObj.id}
+                    style={{ height: '40px' }}
+                    _selected={{ color: 'ochBlack', bg: 'ochOrange' }}
+                  >
+                    Section {sectionObj.id}
+                  </Tab>
+                );
+              })}
+            </HStack>
+          </TabList>
+          <TabPanels>
             {sections.map(sectionObj => {
               return (
-                <Tab
-                  key={sectionObj.id}
-                  style={{ height: '40px' }}
-                  _selected={{ color: 'ochBlack', bg: 'ochOrange' }}
-                >
-                  Section {sectionObj.id}
-                </Tab>
+                <TabPanel key={sectionObj.id}>
+                  <Box h="25px" />
+                  <Section
+                    key={sectionObj.id}
+                    title={sectionObj.title}
+                    segments={sectionObj.segments}
+                    onAddSegment={(newSeg, newSegName, newSegDist) =>
+                      addSegment(sectionObj.id, newSeg, newSegName, newSegDist)
+                    }
+                    onUpdateSegment={(segmentId, updatedSeg, updatedSegName, updatedSegDist) =>
+                      updateSegment(
+                        sectionObj.id,
+                        segmentId,
+                        updatedSeg,
+                        updatedSegName,
+                        updatedSegDist,
+                      )
+                    }
+                    onDeleteSegment={segmentId => deleteSegment(sectionObj.id, segmentId)}
+                    onUpdateSectionTitle={newSecTitle =>
+                      updateSectionTitle(sectionObj.id, newSecTitle)
+                    }
+                    onDeleteSection={() => deleteSection(sectionObj.id)}
+                  />
+                </TabPanel>
               );
             })}
-          </HStack>
-        </TabList>
-        <TabPanels>
-          {sections.map(sectionObj => {
-            return (
-              <TabPanel key={sectionObj.id}>
-                <Box h="25px" />
-                <Section
-                  key={sectionObj.id}
-                  title={sectionObj.title}
-                  segments={sectionObj.segments}
-                  onAddSegment={(newSeg, newSegName, newSegDist) =>
-                    addSegment(sectionObj.id, newSeg, newSegName, newSegDist)
-                  }
-                  onUpdateSegment={(segmentId, updatedSeg, updatedSegName, updatedSegDist) =>
-                    updateSegment(
-                      sectionObj.id,
-                      segmentId,
-                      updatedSeg,
-                      updatedSegName,
-                      updatedSegDist,
-                    )
-                  }
-                  onDeleteSegment={segmentId => deleteSegment(sectionObj.id, segmentId)}
-                  onUpdateSectionTitle={newSecTitle =>
-                    updateSectionTitle(sectionObj.id, newSecTitle)
-                  }
-                  onDeleteSection={() => deleteSection(sectionObj.id)}
-                />
-              </TabPanel>
-            );
-          })}
-        </TabPanels>
-      </Tabs>
-      <Flex justify="space-between">
-        <Box />
-        <Box>{AddSectionPopup(addSection)}</Box>
-      </Flex>
+          </TabPanels>
+        </Tabs>
+        <Flex justify="space-between">
+          <Box />
+          <Box>{AddSectionPopup(addSection)}</Box>
+        </Flex>
+      </Box>
     </>
   );
 };
