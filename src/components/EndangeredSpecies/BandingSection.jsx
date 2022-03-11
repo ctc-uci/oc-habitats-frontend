@@ -4,7 +4,6 @@ import {
   Heading,
   Tabs,
   TabList,
-  Tab,
   HStack,
   Button,
   TabPanels,
@@ -22,9 +21,9 @@ import {
 } from '@chakra-ui/react';
 import { Select, chakraComponents } from 'chakra-react-select';
 import update from 'immutability-helper';
-
-import { BsTrashFill } from 'react-icons/bs';
+import { CloseIcon } from '@chakra-ui/icons';
 import BandColors from '../../common/BandColors';
+import CloseableTab from './CloseableTab';
 
 const generateSingleBandCode = band => {
   if (band.leg === null || band.verticalPosition === null || band.colors.length === 0) return '';
@@ -82,7 +81,7 @@ const BandingSection = () => {
     ]);
   };
 
-  const removeCurrentBirdBandTab = idx => {
+  const removeBirdBandTab = idx => {
     setBirdBandTabs(update(birdBandTabs, { $splice: [[idx, 1]] }));
   };
 
@@ -135,7 +134,7 @@ const BandingSection = () => {
     ...option,
     colorScheme: option.selectColor,
     realValue: option.value,
-    // trick react-select into thinking nothing gets selected so we can have duplicates
+    // trick react-select into thinking nothing gets selected so we can have duplicate colors
     value: Math.random(),
   }));
 
@@ -146,31 +145,25 @@ const BandingSection = () => {
   const addTabs = () => {
     return birdBandTabs.map((d, i) => {
       return (
-        <Tab
-          key={d}
-          borderWidth={2}
-          borderColor="gray.200"
-          flexShrink={0}
-          _selected={{ color: 'black', bg: '#F49923', borderColor: '#F49923' }}
+        <CloseableTab
+          // eslint-disable-next-line react/no-array-index-key
+          key={i}
+          onClose={() => removeBirdBandTab(i)}
         >
           Banded Bird {i + 1}
-        </Tab>
+        </CloseableTab>
       );
     });
   };
 
   return (
     <Box width="container.lg">
-      <VStack spacing="2em" justify="start" align="start">
+      <VStack spacing="4" justify="start" align="start">
         <Heading as="h3" size="md">
           {title}
         </Heading>
-        <Box>For bands at the same position, input the higher ones first.</Box>
-        <HStack marginTop="18px">
-          <Button onClick={addBirdBandTab} colorScheme="cyan">
-            Add Banded Bird
-          </Button>
-        </HStack>
+        <Box>Note: Input the bands in top to bottom order (from the bird’s perspective).</Box>
+        <HStack marginTop="18px" />
         <Tabs
           variant="solid-rounded"
           size="md"
@@ -189,24 +182,23 @@ const BandingSection = () => {
           >
             <HStack spacing={5} overflowX="auto">
               {addTabs()}
+              <Button
+                onClick={addBirdBandTab}
+                variant="outline"
+                borderRadius="full"
+                colorScheme="cyan"
+              >
+                Add Banded Bird +
+              </Button>
             </HStack>
           </TabList>
           <TabPanels>
             {birdBandTabs.map((birdBandTab, tabIndex) => (
               // eslint-disable-next-line react/no-array-index-key
-              <TabPanel bgColor="gray.100" key={tabIndex} padding={4} marginTop={2} rounded="md">
-                <Button onClick={() => removeCurrentBirdBandTab(activeTabIndex)} colorScheme="red">
-                  Remove Bird {tabIndex + 1}
-                </Button>
-                <Button marginLeft="4" onClick={addBandRow} colorScheme="green">
-                  Add Band
-                </Button>
+              <TabPanel bgColor="gray.50" key={tabIndex} padding={4} marginTop={2} rounded="md">
                 <Table variant="unstyled" size="sm">
                   <Thead>
                     <Td width="5%" />
-                    <Td width="5%">
-                      <FormLabel>#</FormLabel>
-                    </Td>
                     <Td width="35%">
                       <FormLabel>Band Color(s)</FormLabel>
                     </Td>
@@ -216,7 +208,7 @@ const BandingSection = () => {
                     <Td width="20%">
                       <FormLabel>Band Ankle Position</FormLabel>
                     </Td>
-                    <Td width="15%">
+                    <Td width="20%">
                       <FormLabel>Alphanumeric Code (Optional)</FormLabel>
                     </Td>
                   </Thead>
@@ -224,13 +216,17 @@ const BandingSection = () => {
                     // eslint-disable-next-line react/no-array-index-key
                     <Tr key={rowIdx}>
                       <Td>
-                        <Button size="sm" colorScheme="red" onClick={() => removeBandRow(rowIdx)}>
-                          <BsTrashFill />
+                        <Button
+                          size="sm"
+                          colorScheme="gray"
+                          backgroundColor="gray.200"
+                          onClick={() => removeBandRow(rowIdx)}
+                        >
+                          <CloseIcon />
                         </Button>
                       </Td>
-                      <Td>{rowIdx + 1}</Td>
                       <Td>
-                        <FormControl>
+                        <FormControl backgroundColor="white">
                           <Select
                             isMulti
                             name="colors"
@@ -240,14 +236,16 @@ const BandingSection = () => {
                             onChange={selectedBands =>
                               updateBandRow(rowIdx, 'colors', selectedBands)
                             }
+                            value={row.colors}
                           />
                         </FormControl>
                       </Td>
                       <Td>
-                        <FormControl>
+                        <FormControl backgroundColor="white">
                           <ChakraSelect
                             onChange={e => updateBandRow(rowIdx, 'leg', e.target.value)}
                             placeholder="Select..."
+                            value={row.leg}
                           >
                             <option value="left">Left</option>
                             <option value="right">Right</option>
@@ -255,12 +253,13 @@ const BandingSection = () => {
                         </FormControl>
                       </Td>
                       <Td>
-                        <FormControl>
+                        <FormControl backgroundColor="white">
                           <ChakraSelect
                             onChange={e =>
                               updateBandRow(rowIdx, 'verticalPosition', e.target.value)
                             }
                             placeholder="Select..."
+                            value={row.verticalPosition}
                           >
                             <option value="above">Above ankle</option>
                             <option value="below">Below ankle</option>
@@ -268,21 +267,39 @@ const BandingSection = () => {
                         </FormControl>
                       </Td>
                       <Td>
-                        <FormControl>
+                        <FormControl backgroundColor="white">
                           <Input
                             onChange={e => updateBandRow(rowIdx, 'alphanumeric', e.target.value)}
+                            value={row.alphanumeric}
                           />
                         </FormControl>
                       </Td>
                     </Tr>
                   ))}
-                </Table>
-                <FormControl>
-                  <FormLabel>Generated Banding Code</FormLabel>
+                  <Tr>
+                    <Td />
+                    <Td>
+                      <Button
+                        width="100%"
+                        marginTop={2}
+                        marginBottom={2}
+                        onClick={addBandRow}
+                        colorScheme="cyan"
+                      >
+                        Add Band +
+                      </Button>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td />
+                    <Td>
+                      <FormLabel>Generated Banding Code</FormLabel>
 
-                  {/* <Input maxWidth="2xs" disabled value={generateCode(bandTabs[tabIndex])} /> */}
-                  <Code>{generateCode(birdBandTabs[tabIndex])}</Code>
-                </FormControl>
+                      {/* <Input maxWidth="2xs" disabled value={generateCode(bandTabs[tabIndex])} /> */}
+                      <Code>{generateCode(birdBandTabs[tabIndex])}</Code>
+                    </Td>
+                  </Tr>
+                </Table>
               </TabPanel>
             ))}
           </TabPanels>
