@@ -17,12 +17,14 @@ import Location from '../components/EndangeredSpecies/Location';
 import options from '../components/EndangeredSpecies/DropdownOptions';
 import BandingSection from '../components/EndangeredSpecies/BandingSection';
 import BehaviorsSection from '../components/EndangeredSpecies/BehaviorsSection';
+import SexSection from '../components/EndangeredSpecies/SexSection';
 
 const EndangeredSpeciesPopup = ({ closeModal, adultName, addRow }) => {
   const [totalAdults, setTotalAdults] = useState(1);
   const [totalFledges, setTotalFledges] = useState(0);
   const [totalChicks, setTotalChicks] = useState(0);
 
+  const [sexValues, setSexValues] = useState([0, 0, 0, 0, 0, 0]);
   const [behaviors, setBehaviors] = useState([]);
   const [nesting, setNesting] = useState([]);
 
@@ -119,6 +121,7 @@ const EndangeredSpeciesPopup = ({ closeModal, adultName, addRow }) => {
               setTotalChicks={setTotalChicks}
             />
             <Location totalBirds={totalAdults + totalFledges} />
+            <SexSection values={sexValues} setValues={setSexValues} />
             <BehaviorsSection
               behaviorOptions={options.behavior}
               nestingOptions={options.nesting}
