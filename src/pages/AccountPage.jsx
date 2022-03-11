@@ -16,6 +16,8 @@ import {
   InputGroup,
   InputRightAddon,
   Button,
+  Grid,
+  Flex,
 } from '@chakra-ui/react';
 
 const AccountPage = props => {
@@ -24,8 +26,8 @@ const AccountPage = props => {
   // stores information on whether the passwords are hidden/shown, plus the state of the button text
   const [leftPasswordType, setLeftPasswordType] = useState('password');
   const [rightPasswordType, setRightPasswordType] = useState('password');
-  const [leftButtonText, setLeftButtonText] = useState('show');
-  const [rightButtonText, setRightButtonText] = useState('show');
+  const [leftButtonText, setLeftButtonText] = useState('Show');
+  const [rightButtonText, setRightButtonText] = useState('Show');
 
   // storing form data in state for retrieval on submission
   const [changesMade, setChangesMade] = useState(false);
@@ -37,12 +39,12 @@ const AccountPage = props => {
   const [newPassword, setNewPassword] = useState('');
 
   const user = {
-    firstName: 'Petr',
-    preferredName: 'Petr',
+    firstName: 'Peter',
     lastName: 'Anteater',
-    email: 'petr@uci.edu',
+    email: 'panteater@uci.edu',
     trainingStatus: 'In-Training',
     activeStatus: 'Active',
+    assignedSegments: 'OC09A, OC09b',
   };
 
   // shows/hides the left ("current") password accordingly
@@ -54,7 +56,7 @@ const AccountPage = props => {
       setLeftButtonText('hide');
     } else {
       setLeftPasswordType('password');
-      setLeftButtonText('show');
+      setLeftButtonText('Show');
     }
   };
 
@@ -67,7 +69,7 @@ const AccountPage = props => {
       setRightButtonText('hide');
     } else {
       setRightPasswordType('password');
-      setRightButtonText('show');
+      setRightButtonText('Show');
     }
   };
 
@@ -93,136 +95,163 @@ const AccountPage = props => {
 
   return (
     <div>
-      <Container h="100vh" maxW="100vw">
-        <VStack>
+      <Container h="100vh" maxW="85vw">
+        <VStack align="left">
           <Heading size="lg" py="10">
             Account Information
           </Heading>
-          <Image
-            e="8"
-            h="8"
-            borderRadius="full"
-            boxSize="150px"
-            src="https://bit.ly/dan-abramov"
-            alt="Profile picture"
-          />
-          <Heading size="lg" alignSelf="flex-start" pl={50} py={50}>
-            Personal Information
-          </Heading>
-          <FormControl>
-            <SimpleGrid columns={3} rows={2} spacing={10} pl="50" w="80vw" h="30vh">
-              <GridItem colSpan={1}>
+          <Grid h="200px" templateRows="repeat(2, 1fr)" templateColumns="repeat(5, 1fr)">
+            <GridItem rowSpan={2} colSpan={1}>
+              <Flex justifyContent="center">
+                <Image
+                  e="8"
+                  h="8"
+                  borderRadius="full"
+                  boxSize="150px"
+                  src="https://bit.ly/dan-abramov"
+                  alt="Profile picture"
+                />
+              </Flex>
+            </GridItem>
+            <GridItem align="left" colSpan={4}>
+              <VStack align="left">
+                <Heading size="md" py={50}>
+                  Personal Information
+                </Heading>
                 <FormControl>
-                  <FormLabel pb={5}>First Name</FormLabel>
-                  <Input
-                    placeholder={user.firstName}
-                    name="firstName"
-                    type="text"
-                    value={firstName}
-                    onChange={e => {
-                      setFirstName(e.target.value);
-                      setChangesMade(true);
-                    }}
-                  />
+                  <SimpleGrid columns={3} rows={2} spacing={10} h="30vh">
+                    <GridItem colSpan={1}>
+                      <FormControl>
+                        <FormLabel>First Name</FormLabel>
+                        <Input
+                          placeholder={user.firstName}
+                          name="firstName"
+                          type="text"
+                          value={firstName}
+                          onChange={e => {
+                            setFirstName(e.target.value);
+                            setChangesMade(true);
+                          }}
+                        />
+                      </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={1}>
+                      <FormControl>
+                        <FormLabel>Last Name</FormLabel>
+                        <Input
+                          placeholder={user.lastName}
+                          name="lastName"
+                          type="text"
+                          value={lastName}
+                          onChange={e => {
+                            setLastName(e.target.value);
+                            setChangesMade(true);
+                          }}
+                        />
+                      </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={1}>
+                      <FormControl>
+                        <FormLabel>Email</FormLabel>
+                        <Input
+                          placeholder={user.email}
+                          name="email"
+                          type="email"
+                          value={email}
+                          onChange={e => {
+                            setEmail(e.target.value);
+                            setChangesMade(true);
+                          }}
+                        />
+                      </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={1} gridRowStart={2}>
+                      <FormControl>
+                        <FormLabel>Admin Training Status</FormLabel>
+                        <Text
+                          pl="5"
+                          pt="2"
+                          h="40px"
+                          color="#4A5568"
+                          bgColor="gray.200"
+                          borderRadius="5px"
+                        >
+                          {user.trainingStatus}
+                        </Text>
+                      </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={1} gridRowStart={2}>
+                      <FormControl>
+                        <FormLabel>Admin Active Status</FormLabel>
+                        <Text
+                          pl="5"
+                          pt="2"
+                          h="40px"
+                          color="#4A5568"
+                          bgColor="gray.200"
+                          borderRadius="5px"
+                        >
+                          {user.activeStatus}
+                        </Text>
+                      </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={1} gridRowStart={2}>
+                      <FormControl>
+                        <FormLabel>Assigned Segments</FormLabel>
+                        <Text
+                          pl="5"
+                          pt="2"
+                          h="40px"
+                          color="#4A5568"
+                          bgColor="gray.200"
+                          borderRadius="5px"
+                        >
+                          {user.assignedSegments}
+                        </Text>
+                      </FormControl>
+                    </GridItem>
+                  </SimpleGrid>
+                  <Heading size="md" alignSelf="flex-start" py={50}>
+                    Change Password
+                  </Heading>
+                  <SimpleGrid columns={3} rows={2} spacing={10} w="70vw" h={100} pb={30}>
+                    <GridItem colSpan={1}>
+                      <FormControl>
+                        <FormLabel>Current Password</FormLabel>
+                        <InputGroup>
+                          <Input type={leftPasswordType} placeholder="Enter Password" />
+                          <InputRightAddon children={leftButtonText} onClick={toggleLeftPassword} />
+                        </InputGroup>
+                      </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={1}>
+                      <FormControl>
+                        <FormLabel>New Password</FormLabel>
+                        <InputGroup>
+                          <Input type={rightPasswordType} placeholder="Enter Password" />
+                          <InputRightAddon
+                            children={rightButtonText}
+                            onClick={toggleRightPassword}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </GridItem>
+                  </SimpleGrid>
+                  <HStack pl="80%" alignSelf="flex-end">
+                    <Input
+                      disabled={!changesMade}
+                      color="#F7FAFC"
+                      bg="#2D3748"
+                      type="submit"
+                      w="30"
+                      onClick={handleSubmit}
+                      value="Save Changes"
+                    />
+                  </HStack>
                 </FormControl>
-              </GridItem>
-              <GridItem colSpan={1}>
-                <FormControl>
-                  <FormLabel pb={5}>Preferred Name (Optional)</FormLabel>
-                  <Input
-                    placeholder={user.preferredName}
-                    name="prefName"
-                    type="text"
-                    value={prefName}
-                    onChange={e => {
-                      setPrefName(e.target.value);
-                      setChangesMade(true);
-                    }}
-                  />
-                </FormControl>
-              </GridItem>
-              <GridItem colSpan={1}>
-                <FormControl>
-                  <FormLabel pb={5}>Last Name</FormLabel>
-                  <Input
-                    placeholder={user.lastName}
-                    name="lastName"
-                    type="text"
-                    value={lastName}
-                    onChange={e => {
-                      setLastName(e.target.value);
-                      setChangesMade(true);
-                    }}
-                  />
-                </FormControl>
-              </GridItem>
-              <GridItem colSpan={1} gridRowStart={2}>
-                <FormControl>
-                  <FormLabel pb={5}>Email</FormLabel>
-                  <Input
-                    placeholder={user.email}
-                    name="email"
-                    type="email"
-                    value={email}
-                    onChange={e => {
-                      setEmail(e.target.value);
-                      setChangesMade(true);
-                    }}
-                  />
-                </FormControl>
-              </GridItem>
-              <GridItem colSpan={1} gridRowStart={2}>
-                <FormControl>
-                  <FormLabel pb={5}>Training Status</FormLabel>
-                  <Text pl="5" color="#4A5568">
-                    {user.trainingStatus}
-                  </Text>
-                </FormControl>
-              </GridItem>
-              <GridItem colSpan={1} gridRowStart={2}>
-                <FormControl>
-                  <FormLabel pb={5}>Active Status</FormLabel>
-                  <Text pl="5" color="#4A5568">
-                    {user.activeStatus}
-                  </Text>
-                </FormControl>
-              </GridItem>
-            </SimpleGrid>
-            <Heading size="lg" alignSelf="flex-start" pl={50} py={50}>
-              Change Password
-            </Heading>
-            <SimpleGrid columns={3} rows={2} spacing={10} w="70vw" pl={50} h={100} pb={30}>
-              <GridItem colSpan={1}>
-                <FormControl>
-                  <FormLabel>Current Password</FormLabel>
-                  <InputGroup>
-                    <Input type={leftPasswordType} placeholder="Enter Password" />
-                    <InputRightAddon children={leftButtonText} onClick={toggleLeftPassword} />
-                  </InputGroup>
-                </FormControl>
-              </GridItem>
-              <GridItem colSpan={1}>
-                <FormControl>
-                  <FormLabel>New Password</FormLabel>
-                  <InputGroup>
-                    <Input type={rightPasswordType} placeholder="Enter Password" />
-                    <InputRightAddon children={rightButtonText} onClick={toggleRightPassword} />
-                  </InputGroup>
-                </FormControl>
-              </GridItem>
-            </SimpleGrid>
-            <HStack pl="80%" alignSelf="flex-end">
-              <Input
-                disabled={!changesMade}
-                color="#F7FAFC"
-                bg="#2D3748"
-                type="submit"
-                w="30"
-                onClick={handleSubmit}
-                value="Save Changes"
-              />
-            </HStack>
-          </FormControl>
+              </VStack>
+            </GridItem>
+          </Grid>
         </VStack>
       </Container>
     </div>
