@@ -5,9 +5,9 @@ import './App.css';
 import HomePage from './pages/HomePage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
-import EndangeredSpecies from './pages/EndangeredSpecies';
 import AccountPage from './pages/AccountPage';
 import AdminPage from './pages/AdminPage'; // monitor-log table
+import EndangeredSpeciesPopup from './pages/EndangeredSpeciesPopup';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import Navbar from './components/Navbar/Navbar';
@@ -30,7 +30,7 @@ function App() {
               <Route
                 exact
                 path="/endangered"
-                element={<EndangeredSpecies adultName="Snowy Plovers" />}
+                element={<EndangeredSpeciesPopup adultName="Snowy Plovers" />}
               />
               <Route exact path="/species" element={<Species />} />
               {/* Admin only routes (TO DO, make admin only) */}
