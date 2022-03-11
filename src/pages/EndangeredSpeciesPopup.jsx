@@ -14,16 +14,17 @@ import {
 
 import GeneralListedInformation from '../components/EndangeredSpecies/GeneralListedInformation';
 import Location from '../components/EndangeredSpecies/Location';
-import BandsSex from '../components/EndangeredSpecies/BandsSex';
-import BehaviorsList from '../components/EndangeredSpecies/BehaviorsList';
-import footNotes from '../components/EndangeredSpecies/FootNotes';
 import options from '../components/EndangeredSpecies/DropdownOptions';
-import BandsSexBehaviors from '../components/EndangeredSpecies/BandsSexBehaviors';
+import BandingSection from '../components/EndangeredSpecies/BandingSection';
+import BehaviorsSection from '../components/EndangeredSpecies/BehaviorsSection';
 
 const EndangeredSpeciesPopup = ({ closeModal, adultName, addRow }) => {
   const [totalAdults, setTotalAdults] = useState(1);
   const [totalFledges, setTotalFledges] = useState(0);
   const [totalChicks, setTotalChicks] = useState(0);
+
+  const [behaviors, setBehaviors] = useState([]);
+  const [nesting, setNesting] = useState([]);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -32,8 +33,6 @@ const EndangeredSpeciesPopup = ({ closeModal, adultName, addRow }) => {
     const gps = [];
     const adultBands = [];
     const fledgeBands = [];
-    const nests = [];
-    const behaviors = [];
     const time = { value: '', meridiem: '' };
 
     for (let i = 0; i < length; i += 1) {
@@ -73,14 +72,6 @@ const EndangeredSpeciesPopup = ({ closeModal, adultName, addRow }) => {
             fledgeBands[index].note = {};
             fledgeBands[index].note = currentValue;
           }
-        } else if (currentID.includes('Nesting & Eggs')) {
-          if (currentValue !== 'None') {
-            nests.push(currentValue);
-          }
-        } else if (currentID.includes('Behaviors')) {
-          if (currentValue !== 'None') {
-            behaviors.push(currentValue);
-          }
         } else {
           formData[currentID] = {};
           formData[currentID] = currentValue;
@@ -93,7 +84,7 @@ const EndangeredSpeciesPopup = ({ closeModal, adultName, addRow }) => {
     formData.totalChicks = totalChicks;
     formData.time = time;
     formData.gps = gps;
-    formData.nests = nests;
+    formData.nesting = nesting;
     formData.behaviors = behaviors;
     formData.bands = bands;
 
@@ -128,18 +119,15 @@ const EndangeredSpeciesPopup = ({ closeModal, adultName, addRow }) => {
               setTotalChicks={setTotalChicks}
             />
             <Location totalBirds={totalAdults + totalFledges} />
-            <BandsSexBehaviors />
-            <BandsSex totalAdults={totalAdults} totalFledges={totalFledges} />
-            <BehaviorsList
-              title="Nesting & Eggs"
-              description={footNotes.nest}
-              options={options.nesting}
+            <BehaviorsSection
+              behaviorOptions={options.behavior}
+              nestingOptions={options.nesting}
+              behaviors={behaviors}
+              setBehaviors={setBehaviors}
+              nesting={nesting}
+              setNesting={setNesting}
             />
-            <BehaviorsList
-              title="Behaviors Observed"
-              description={footNotes.behavior}
-              options={options.behavior}
-            />
+            <BandingSection />
             <VStack align="start" w="100%">
               <Heading as="h3" size="md">
                 Additional Notes (Optional)

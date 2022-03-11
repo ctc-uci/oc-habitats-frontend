@@ -53,13 +53,7 @@ const Location = ({ totalBirds }) => {
       <Heading as="h3" size="md">
         Location
       </Heading>
-      <Grid
-        w="100%"
-        h="20vh"
-        templateColumns="repeat(4, 25%)"
-        templateRows="repeat(1, 1fr)"
-        rowGap={6}
-      >
+      <Grid w="100%" templateColumns="repeat(4, 25%)" templateRows="repeat(1, 1fr)" rowGap={6}>
         {createGPS()}
         <GridItem rowStart={2}>
           <FormControl>

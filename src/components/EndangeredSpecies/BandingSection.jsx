@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import {
   VStack,
   Heading,
@@ -9,8 +9,6 @@ import {
   Button,
   TabPanels,
   TabPanel,
-  Grid,
-  GridItem,
   Box,
   FormControl,
   FormLabel,
@@ -69,8 +67,8 @@ const generateCode = bands => {
   return `${leftCode || 'X'}:${rightCode || 'X'}`;
 };
 
-const BandsSexBehaviors = () => {
-  const title = 'Bands & Sex & Behavior';
+const BandingSection = () => {
+  const title = 'Banding';
 
   // tabs can be added for each bird that they want to report bands for
   const [birdBandTabs, setBirdBandTabs] = useState([]);
@@ -121,8 +119,6 @@ const BandsSexBehaviors = () => {
       }),
     );
   };
-
-  console.log(birdBandTabs);
 
   const customComponents = {
     // eslint-disable-next-line react/prop-types
@@ -296,6 +292,6 @@ const BandsSexBehaviors = () => {
   );
 };
 
-BandsSexBehaviors.propTypes = {};
+BandingSection.propTypes = {};
 
-export default BandsSexBehaviors;
+export default BandingSection;
