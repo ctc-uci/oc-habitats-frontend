@@ -1,122 +1,119 @@
 import React, { useState } from 'react';
-import { BsPersonFill, BsArrowDown } from 'react-icons/bs';
 import {
   Text,
   VStack,
   SimpleGrid,
   GridItem,
-  Button,
   Table,
   Thead,
   Tbody,
   Tr,
   Th,
   Td,
-  Input,
-  NumberInput,
-  NumberInputField,
-  Checkbox,
-  FormLabel,
   FormControl,
-  IconButton,
   Container,
-  Icon,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Flex,
 } from '@chakra-ui/react';
-import { DeleteIcon } from '@chakra-ui/icons';
-import Select from 'react-select';
-import PropTypes from 'prop-types';
+
+import AddSpeciesModal from './AddSpeciesModal';
+import EditSpeciesModal from './EditSpeciesModal';
 
 const rows = [
-  { id: 1, name: 'Beach Cast', total: 0, isChecked: false, isVisible: 'hidden', isDisabled: true },
+  { name: 'Sandpiper: Long-billed Curlew (LBCU)', total: 2, notes: 'testing' },
+  { name: 'Test', total: 1, notes: null },
 ];
 
-let uniqueID = 2;
-
-const AdditionalSpecies = ({ options }) => {
+const AdditionalSpecies = () => {
   const [species, setSpecies] = useState(rows);
-  const [allChecked, setAllChecked] = useState(false);
-  const [disabled, setDisabled] = useState(true);
-  const [option, setOption] = useState('');
 
-  const findChecked = value => {
-    return value.isChecked;
+  const handleAddRow = newSpecie => {
+    setSpecies(prevSpecies => {
+      return [...prevSpecies, newSpecie];
+    });
   };
 
-  const handleAddTotalChange = (value, id) => {
-    const newTotalData = [...species];
-    newTotalData[id].total = value;
+  const handleEditRow = updatedSpecie => {
+    const oldSpecieIndex = species.findIndex(specie => {
+      return updatedSpecie.oldName === specie.name;
+    });
+    const newRows = [...species];
+    const updated = updatedSpecie;
+    delete updated.oldName;
+    newRows[oldSpecieIndex] = updated;
 
-    setSpecies(newTotalData);
+    setSpecies(newRows);
   };
 
-  const handleAllChecked = () => {
-    const newCheckedData = [...species];
-    if (allChecked) {
-      for (let i = 1; i < newCheckedData.length; i += 1) {
-        newCheckedData[i].isChecked = false;
-      }
-    } else {
-      for (let i = 1; i < newCheckedData.length; i += 1) {
-        newCheckedData[i].isChecked = true;
-      }
-    }
-    setDisabled(!newCheckedData.some(findChecked));
-    setAllChecked(!allChecked);
-    setSpecies(newCheckedData);
+  const handleDeleteRows = specieName => {
+    const newRows = species.filter(specie => specie.name !== specieName);
+    setSpecies(newRows);
   };
 
-  const handleRowCheckedItems = id => {
-    const newCheckedData = [...species];
-    newCheckedData[id].isChecked = !newCheckedData[id].isChecked;
-    setDisabled(!newCheckedData.some(findChecked));
-    setSpecies(newCheckedData);
+  const getSpecie = name => {
+    const specie = species.filter(currSpecie => {
+      return currSpecie.name === name;
+    });
+    return specie[0];
   };
 
-  const handleAddRow = () => {
-    if (option !== '') {
-      const newData = {
-        id: uniqueID,
-        name: option.label,
-        total: 0,
-        isChecked: false,
-        isVisible: 'visible',
-        isDisabled: false,
-      };
-      uniqueID += 1;
-      const newSpecies = [...species, newData];
-
-      setOption('');
-      setSpecies(newSpecies);
-    }
-  };
-
-  const handleDeleteRows = () => {
-    const newSpecies = species.filter(row => !row.isChecked);
-    setDisabled(!newSpecies.some(findChecked));
-    setSpecies(newSpecies);
-  };
-
-  const createTable = m => {
-    return m.map((row, index) => (
-      <Tr height="72px" key={row.id}>
-        <Td paddingRight="8px">
-          <Checkbox
-            size="md"
-            isChecked={row.isChecked}
-            onChange={() => handleRowCheckedItems(index)}
-            visibility={row.isVisible}
-            isDisabled={row.isDisabled}
-          />
-        </Td>
-        <Td>
-          <Input size="lg" backgroundColor="#EDF2F7" value={row.name} isReadOnly />
-        </Td>
-        <Td>
-          <NumberInput size="lg" value={row.total} onChange={v => handleAddTotalChange(v, index)}>
-            <NumberInputField />
-          </NumberInput>
-        </Td>
-      </Tr>
+  const createTable = data => {
+    return data.map((row, n) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <AccordionItem key={n} as={Tbody}>
+        {({ isExpanded }) => (
+          <>
+            <Tr>
+              <Td border="none">
+                <EditSpeciesModal
+                  specie={getSpecie(row.name)}
+                  editRow={handleEditRow}
+                  deleteRow={handleDeleteRows}
+                />
+              </Td>
+              <Td border="none">
+                <Text fontSize="1.05em" color="#2D3748" fontWeight={450}>
+                  {row.name}
+                </Text>
+              </Td>
+              <Td border="none" color="#2D3748" fontWeight={450}>
+                {row.total}
+              </Td>
+              <Td border="none">
+                <Flex justifyContent="flex-end">
+                  <AccordionButton w="2em" h="2em">
+                    <AccordionIcon w="inherit" h="inherit" />
+                  </AccordionButton>
+                </Flex>
+              </Td>
+            </Tr>
+            <Tr w="100%">
+              {isExpanded && (
+                <>
+                  <Td colSpan={4}>
+                    <AccordionPanel>
+                      <VStack w="97.5%" spacing="1.5em" mb=".5em">
+                        <Flex justifyContent="space-between" w="100%">
+                          <Text fontSize=".95em" color="#2D3748" fontWeight={500}>
+                            Notes (Optional)
+                          </Text>
+                          <Text color="#2D3748" fontSize=".95em">
+                            {row.notes ? row.notes : '--'}
+                          </Text>
+                        </Flex>
+                      </VStack>
+                    </AccordionPanel>
+                  </Td>
+                </>
+              )}
+            </Tr>
+          </>
+        )}
+      </AccordionItem>
     ));
   };
 
@@ -127,73 +124,44 @@ const AdditionalSpecies = ({ options }) => {
           Additional Species
         </Text>
         <FormControl>
-          <FormLabel fontWeight="600">Search for a Species:</FormLabel>
           <SimpleGrid columns={2} h="166px" columnGap="26px">
             <GridItem colSpan={1}>
-              <SimpleGrid columns={6} h="100%" columnGap="9px">
-                <GridItem colSpan={5}>
-                  <VStack w="full" h="100%" position="relative" alignItems>
-                    <Select value={option} options={options} onChange={v => setOption(v)} />
-                    <Button
-                      w="full"
-                      position="absolute"
-                      bottom={0}
-                      fontWeight="700"
-                      isDisabled={disabled}
-                      onClick={handleDeleteRows}
-                      rightIcon={<DeleteIcon />}
-                    >
-                      Delete Selected
-                    </Button>
-                  </VStack>
-                </GridItem>
-                <GridItem colSpan={1}>
-                  <IconButton
-                    w="full"
-                    onClick={handleAddRow}
-                    aria-label="Enter"
-                    icon={<BsArrowDown />}
-                  />
-                </GridItem>
-              </SimpleGrid>
-            </GridItem>
-            <GridItem colSpan={1}>
-              <Table id="speciesTable" variant="simple" borderRadius="10px" overflow="hidden">
-                <Thead>
+              <Accordion as={Table} allowToggle width="50em" reduceMotion>
+                <Thead w="100%" bg="#4E4E4E" borderColor="gray.200">
                   <Tr>
-                    <Th w="48px" h="40px" paddingRight="8px" backgroundColor="#F7FAFC">
-                      <Checkbox
-                        backgroundColor="#ffffff"
-                        isChecked={allChecked}
-                        onChange={handleAllChecked}
-                      />
+                    <Th w="8%" bgColor="none" />
+                    <Th
+                      w="65%"
+                      fontWeight={600}
+                      color="#FFFFFF"
+                      textTransform="capitalize"
+                      fontSize=".8em"
+                    >
+                      Species
                     </Th>
-                    <Th fontWeight="700" backgroundColor="#F7FAFC">
-                      <Icon as={BsPersonFill} w={7} h={3.5} /> Species
-                    </Th>
-                    <Th fontWeight="700" w="200px" h="40px" backgroundColor="#F7FAFC">
-                      <Icon as={BsPersonFill} w={7} h={3.5} />
+                    <Th
+                      bgColor="none"
+                      fontWeight={600}
+                      color="#FFFFFF"
+                      textTransform="capitalize"
+                      fontSize=".8em"
+                    >
                       Total
                     </Th>
+                    <Th />
                   </Tr>
                 </Thead>
-                <Tbody>{createTable(species)}</Tbody>
-              </Table>
+                {createTable(species)}
+              </Accordion>
+            </GridItem>
+            <GridItem colSpan={2} mt="2em">
+              <AddSpeciesModal addNewRow={handleAddRow} />
             </GridItem>
           </SimpleGrid>
         </FormControl>
       </VStack>
     </Container>
   );
-};
-
-AdditionalSpecies.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
 };
 
 export default AdditionalSpecies;

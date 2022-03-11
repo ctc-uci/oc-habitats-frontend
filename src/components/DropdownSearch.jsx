@@ -1,18 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 
-const DropdownSearch = ({ options, highlightSearch }) => (
-  <Select
-    placeholder="Enter species name..."
-    options={options}
-    onChange={highlightSearch}
-    isClearable
-  />
-);
+const DropdownSearch = ({ options, value, handleSelectedValue }) => {
+  const [selected, setSelected] = useState(value);
+
+  const getSelected = e => {
+    if (e) {
+      setSelected(e.value);
+      handleSelectedValue(e.value);
+    } else {
+      setSelected(null);
+      handleSelectedValue(null);
+    }
+  };
+
+  return (
+    <Select
+      placeholder="Enter species name..."
+      options={options}
+      onChange={getSelected}
+      value={{ value: selected, label: selected }}
+      isClearable
+    />
+  );
+};
 
 DropdownSearch.defaultProps = {
-  highlightSearch: PropTypes.func,
+  handleSelectedValue: PropTypes.func,
+  value: PropTypes.string,
 };
 
 DropdownSearch.propTypes = {
@@ -22,7 +38,8 @@ DropdownSearch.propTypes = {
       label: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  highlightSearch: PropTypes.func,
+  handleSelectedValue: PropTypes.func,
+  value: PropTypes.string,
 };
 
 export default DropdownSearch;
