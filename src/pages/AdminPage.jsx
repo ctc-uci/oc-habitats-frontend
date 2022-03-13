@@ -270,7 +270,11 @@ function checkStatusBoolean(status) {
   if (status === 'TRAINED') {
     return true;
   }
-  return false;
+  if (status === 'IN-TRAINING') {
+    return false;
+  }
+
+  return null;
 }
 
 const AdminPage = () => {
@@ -293,8 +297,8 @@ const AdminPage = () => {
   const [isDateAscend, setDateAscend] = useState(false);
   const [isVolunteerAscend, setVolunteerAscend] = useState(false);
   const [isApprovalAscend, setApprovalAscend] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const currentPage = 1;
   let totalData;
 
   const countChecked = () => {
@@ -311,7 +315,7 @@ const AdminPage = () => {
     return (
       (!segmentFilter || row.segment === segmentFilter) &&
       (!approvalFilter || row.approved === approvalFilter) &&
-      (!statusFilter || row.status === statusFilter) &&
+      (statusFilter == null || row.status === statusFilter) &&
       (!nameFilter || row.volunteer.toLowerCase().includes(nameFilter.toLowerCase())) &&
       (dateFilter === null || row.date.getMonth() === dateFilter.getMonth()) &&
       (dateFilter === null || row.date.getFullYear() === dateFilter.getFullYear())
@@ -321,14 +325,20 @@ const AdminPage = () => {
   const perPage = () => {
     const data = dummy.filter(row => isFiltered(row));
     totalData = data.length;
-    return data.slice((currentPage - 1) * pageSize, (currentPage - 1) * pageSize + pageSize - 1);
+    if (Math.ceil(totalData / pageSize) !== currentPage) {
+      return data.slice((currentPage - 1) * pageSize, (currentPage - 1) * pageSize + pageSize);
+    }
+    return data.slice(
+      (currentPage - 1) * pageSize,
+      (currentPage - 1) * pageSize + (totalData % pageSize),
+    );
   };
 
   const [dataDisplay, setDataDisplay] = useState(perPage());
 
   useEffect(() => {
     setDataDisplay(perPage());
-  }, [segmentFilter, dateFilter, approvalFilter, statusFilter, nameFilter, checked]);
+  }, [segmentFilter, dateFilter, approvalFilter, statusFilter, nameFilter, checked, currentPage]);
 
   const handleAllChecked = () => {
     const newCheckedData = new Map(checked);
@@ -582,8 +592,24 @@ const AdminPage = () => {
           <Text color="white">
             {currentPage} - {Math.ceil(totalData / pageSize)} of {totalData}
           </Text>
-          <IconButton icon={<ChevronLeftIcon />} />
-          <IconButton icon={<ChevronRightIcon />} />
+          <IconButton
+            icon={<ChevronLeftIcon />}
+            onClick={() => {
+              if (currentPage !== 1) {
+                let temp = currentPage;
+                setCurrentPage((temp -= 1));
+              }
+            }}
+          />
+          <IconButton
+            icon={<ChevronRightIcon />}
+            onClick={() => {
+              if (currentPage !== Math.ceil(totalData / pageSize)) {
+                let temp = currentPage;
+                setCurrentPage((temp += 1));
+              }
+            }}
+          />
         </Flex>
       </div>
     </Container>
