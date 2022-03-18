@@ -1,4 +1,4 @@
-import { useState, React } from 'react';
+import React from 'react';
 import { VStack, Container, Heading, Button, Flex, Spacer } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { BsThreeDotsVertical } from 'react-icons/bs';
@@ -7,7 +7,6 @@ import App from '../components/Table/Table';
 import AddAccountPopup from '../components/Table/AddAccountPopup';
 
 const PeoplePage = () => {
-  const [buttonPopup, setButtonPopup] = useState(false);
   return (
     <>
       <Container maxW="container.xl">
@@ -18,8 +17,8 @@ const PeoplePage = () => {
           <AddAccountPopup />
           <Flex>
             <Spacer />
-            <Link to={'/account'} style={{ textDecoration: 'none' }}>
-              <Button rightIcon={<FiEdit2 />} bg="#2BC0E3" color="#F7FAFC" variant="solid">
+            <Link to="/account" style={{ textDecoration: 'none' }}>
+              <Button rightIcon={<FiEdit2 />} bg="ochOrange" color="#F7FAFC" variant="solid">
                 Edit Segment Assignments
               </Button>
             </Link>
@@ -34,7 +33,7 @@ const PeoplePage = () => {
         </Heading>
 
         <VStack spacing="20px" align="left">
-          <header></header>
+          <header />
           <App />
           <Heading fontWeight="600" fontSize="20px" mb="20px" mt="40px" align="left">
             Admins

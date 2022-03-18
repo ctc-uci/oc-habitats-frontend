@@ -18,7 +18,7 @@ import HomePage from './pages/HomePage';
 import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
-import EndangeredSpecies from './pages/EndangeredSpecies';
+import EndangeredSpecies from './pages/EndangeredSpeciesPopup';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 

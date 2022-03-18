@@ -135,7 +135,7 @@ const Species = () => {
           <VStack spacing={2} align="stretch">
             <strong>Search for a Species:</strong>
             <Box w="32.5%">
-              <DropdownSearch options={options} highlightSearch={highlightSearch} />
+              <DropdownSearch options={options} handleSelectedValue={highlightSearch} />
             </Box>
             <Flex align="end">
               <Flex align="center">

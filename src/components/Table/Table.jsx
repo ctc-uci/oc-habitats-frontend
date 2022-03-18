@@ -1,4 +1,7 @@
-import React from 'react';
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/prop-types */
+import { React } from 'react';
+import { PropTypes } from 'prop-types';
 import {
   useTable,
   usePagination,
@@ -21,12 +24,9 @@ import {
   Text,
   Tooltip,
   Select,
-  Icon,
   Badge,
   Avatar,
   VStack,
-  Box,
-  Button,
   HStack,
   Spacer,
 } from '@chakra-ui/react';
@@ -40,15 +40,14 @@ import {
 import { BsFillClockFill, BsFillPersonFill, BsThreeDotsVertical } from 'react-icons/bs';
 import { AiFillTag } from 'react-icons/ai';
 
-//import makeData from "./makeData";
+// import makeData from "./makeData";
 import './Table.css';
 
 // Define a default UI for filtering
-function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) {
-  const count = preGlobalFilteredRows.length;
+function GlobalFilter({ globalFilter, setGlobalFilter }) {
   const [value, setValue] = React.useState(globalFilter);
-  const onChange = useAsyncDebounce(value => {
-    setGlobalFilter(value || undefined);
+  const onChange = useAsyncDebounce(val => {
+    setGlobalFilter(val || undefined);
   }, 200);
 
   return (
@@ -61,11 +60,11 @@ function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
           setValue(e.target.value);
           onChange(e.target.value);
         }}
-        placeholder={`Search...`}
+        placeholder="Search..."
         style={{
           fontSize: '1.1rem',
           border: '1px #E2E8F0 solid',
-          color: 'black',
+          color: 'ochBlack',
         }}
       />
     </span>
@@ -149,22 +148,6 @@ const makeRows = [
   ),
 ];
 
-// remove this
-const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
-  const defaultRef = React.useRef();
-  const resolvedRef = ref || defaultRef;
-
-  React.useEffect(() => {
-    resolvedRef.current.indeterminate = indeterminate;
-  }, [resolvedRef, indeterminate]);
-
-  return (
-    <>
-      <input type="checkbox" ref={resolvedRef} {...rest} />
-    </>
-  );
-});
-
 function getTrainingStatus(status) {
   return (
     <Badge className="training-badge" variant="solid" colorScheme="orange" fontSize="12px">
@@ -180,22 +163,22 @@ function getLastUpdated(status) {
 function getAssignedSegments(status) {
   if (status != null) {
     const options = [];
-    for (let i = 0; i < status.length; i++) {
+    for (let i = 0; i < status.length; i += 1) {
       options.push(
         <HStack>
           <div className="segment-id" align-self="left">
             {status[i].split(' ')[0]}
           </div>
-          <div className="segment-location" font-style="regular">
+          <div className="segment-location" fontStyle="regular">
             {status[i].substring(status[i].indexOf(' ') + 1)}
           </div>
         </HStack>,
       );
     }
     return <VStack align="normal">{options}</VStack>;
-  } else {
-    return null;
   }
+
+  return null;
 }
 /*
 <VStack>
@@ -249,9 +232,9 @@ const Name = ({ value }) => {
       <div className="user-container">
         <Avatar size="md" position="static" name={value} src="something" />
         <VStack className="user-info-container">
-          <div className="name-container">{`${
-            value.split(' ')[0] + ' ' + value.split(' ')[1]
-          }`}</div>
+          <div className="name-container">{`${`${value.split(' ')[0]} ${
+            value.split(' ')[1]
+          }`}`}</div>
           <div className="email-container">{`${value.split(' ')[2]}`}</div>
 
           {value.split(' ')[3] === 'In-Training' ? (
@@ -261,6 +244,10 @@ const Name = ({ value }) => {
       </div>
     </>
   );
+};
+
+Name.propTypes = {
+  value: PropTypes.string.isRequired,
 };
 
 function PeopleTable({ columns, data }) {
@@ -282,7 +269,6 @@ function PeopleTable({ columns, data }) {
     preGlobalFilteredRows,
     setGlobalFilter,
     state,
-    visibleColumns,
     // selectedFlatRows,
     state: { pageIndex, pageSize },
   } = useTable(
@@ -298,29 +284,6 @@ function PeopleTable({ columns, data }) {
     useSortBy,
     usePagination,
     useRowSelect,
-    /*(hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        // Let's make a column for selection
-        {
-          id: 'selection',
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
-          Header: ({ getToggleAllPageRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
-            </div>
-          ),
-          // The cell can use the individual row's getToggleRowSelectedProps method
-          // to the render a checkbox
-          Cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            </div>
-          ),
-        },
-        ...columns,
-      ]);
-    }*/
   );
 
   // Render the UI for your table
@@ -348,18 +311,12 @@ function PeopleTable({ columns, data }) {
       <div className="table-container">
         <Table {...getTableProps()}>
           <Thead>
-            <tr>
-              <th
-                colSpan={visibleColumns.length}
-                style={{
-                  textAlign: 'left',
-                }}
-              ></th>
-            </tr>
             {headerGroups.map(headerGroup => (
-              <Tr {...headerGroup.getHeaderGroupProps()}>
+              <Tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map(column => (
                   <Th
+                    className="table-head"
+                    key={column.id}
                     userSelect="none"
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     color="white"
@@ -386,9 +343,14 @@ function PeopleTable({ columns, data }) {
             {page.map((row, i) => {
               prepareRow(row);
               return (
-                <Tr {...row.getRowProps()}>
+                // eslint-disable-next-line react/no-array-index-key
+                <Tr key={i} {...row.getRowProps()}>
                   {row.cells.map(cell => {
-                    return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>;
+                    return (
+                      <Td key={row.id} {...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </Td>
+                    );
                   })}
                 </Tr>
               );
@@ -411,9 +373,9 @@ function PeopleTable({ columns, data }) {
                 setPageSize(Number(e.target.value));
               }}
             >
-              {[10, 20, 30, 40, 50].map(pageSize => (
-                <option key={pageSize} value={pageSize}>
-                  {pageSize}
+              {[10, 20, 30, 40, 50].map(size => (
+                <option key={size} value={size}>
+                  {size}
                 </option>
               ))}
             </Select>
@@ -456,19 +418,19 @@ function App() {
       {
         Header: 'Name',
         accessor: d => `${d.name} ${d.email} ${d.trainingStatus}`,
-        //icon: <Icon as={BsFillPersonFill} mr={1} />,
+        // icon: <Icon as={BsFillPersonFill} mr={1} />,
         Cell: ({ cell: { value } }) => <Name value={value} />,
       },
       {
         Header: 'Last Updated',
         accessor: 'lastUpdated',
-        //icon: <Icon as={AiFillTag} mr={1} />,
+        // icon: <Icon as={AiFillTag} mr={1} />,
         Cell: ({ cell: { value } }) => <LastUpdated value={value} />,
       },
       {
         Header: 'Assigned Segment(s)',
         accessor: 'assignedSegments',
-        //icon: <Icon as={AiFillTag} mr={1} />,
+        // icon: <Icon as={AiFillTag} mr={1} />,
         Cell: ({ cell: { value } }) => <AssignedSegments value={value} />,
       },
       {

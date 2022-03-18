@@ -15,6 +15,8 @@ import { instanceOf } from 'prop-types';
 import { Cookies, withCookies } from '../../utils/cookie_utils';
 import { logInWithEmailAndPassword, useNavigate } from '../../utils/auth_utils';
 
+import OCHLogo from '../../assets/OCHlogo.png';
+
 const Login = ({ cookies }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState();
@@ -43,11 +45,11 @@ const Login = ({ cookies }) => {
       h="60%"
       bg="rgba(43, 192, 227, .10)"
       mx="auto"
-      my="auto"
+      mt="10%"
       direction="column"
       p="90px 20px"
     >
-      <Image boxSize="200px" src="https://bit.ly/dan-abramov" alt="OCH Logo" mb="10" />
+      <Image boxSize="200px" src={OCHLogo} alt="OCH Logo" w="379px" h="115px" ml="50px" mb="10" />
       <FormControl>
         <FormLabel htmlFor="email">OC Habitats Email</FormLabel>
         <Input id="email" bg="white" onChange={({ target }) => setEmail(target.value)} mb="30px" />

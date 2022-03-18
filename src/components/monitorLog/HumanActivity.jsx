@@ -34,6 +34,7 @@ function HumanActivity(props) {
     setOutreachNotes,
     setOtherNotes,
   } = props;
+
   return (
     <Container maxW="100vw">
       <VStack spacing="23px" align="left">
