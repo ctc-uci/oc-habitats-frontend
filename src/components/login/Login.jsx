@@ -39,18 +39,18 @@ const Login = ({ cookies }) => {
   return (
     <Flex
       w="60%"
-      maxWidth="650px"
+      maxWidth="50vw"
       h="60%"
       bg="rgba(43, 192, 227, .10)"
       mx="auto"
       my="auto"
       direction="column"
-      p="90px 50px"
+      p="90px 20px"
     >
-      <Image boxSize="200px" src="https://bit.ly/dan-abramov" alt="OCH Logo" />
+      <Image boxSize="200px" src="https://bit.ly/dan-abramov" alt="OCH Logo" mb="10" />
       <FormControl>
         <FormLabel htmlFor="email">OC Habitats Email</FormLabel>
-        <Input id="email" bg="white" onChange={({ target }) => setEmail(target.value)} />
+        <Input id="email" bg="white" onChange={({ target }) => setEmail(target.value)} mb="30px" />
       </FormControl>
       <FormControl>
         <FormLabel htmlFor="password">Password</FormLabel>
@@ -74,7 +74,7 @@ const Login = ({ cookies }) => {
         color="white"
         onClick={handleSubmit}
         // w="50px"
-        mt="30px"
+        mt="10px"
         alignSelf="flex-end"
         px="10px"
       >
