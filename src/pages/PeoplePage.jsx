@@ -56,7 +56,7 @@ const PeoplePage = () => {
           <Heading fontWeight="600" fontSize="20px" mb="20px" mt="40px" align="left">
             Refactored
           </Heading>
-          <PeopleTable variant="Volunteers" />
+          <PeopleTable variant="Volunteer" />
         </VStack>
       </Container>
     </>
