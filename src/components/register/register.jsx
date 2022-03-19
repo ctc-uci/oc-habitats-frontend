@@ -1,17 +1,30 @@
 import React, { useState } from 'react';
 import { instanceOf } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import {
+  FormControl,
+  Image,
+  FormLabel,
+  InputGroup,
+  Input,
+  InputRightElement,
+  Button,
+  Flex,
+  Link,
+} from '@chakra-ui/react';
 import { Cookies, withCookies } from '../../utils/cookie_utils';
 import { registerWithEmailAndPassword, signInWithGoogle } from '../../utils/auth_utils';
 
 const Register = ({ cookies }) => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [role, setRole] = useState();
-  const [checkPassword, setCheckPassword] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [checkPassword, setCheckPassword] = useState();
+  const [showPassword, setShowPassword] = useState();
+  const [showCheckPassword, setShowCheckPassword] = useState();
+  const [role, setRole] = useState();
   const navigate = useNavigate();
 
   const handleSubmit = async e => {
@@ -50,15 +63,90 @@ const Register = ({ cookies }) => {
   // -
 
   return (
+    // <Flex
+    //   w="60%"
+    //   maxWidth="50vw"
+    //   h="60%"
+    //   bg="rgba(43, 192, 227, .10)"
+    //   mx="auto"
+    //   mt="10%"
+    //   direction="column"
+    //   p="90px 20px"
+    // >
+    //   <h2>Register</h2>
+    //   <FormControl>
+    //     <FormLabel htmlFor="firstName">First Name</FormLabel>
+    //     <Input
+    //       id="text"
+    //       bg="white"
+    //       onChange={({ target }) => setFirstName(target.value)}
+    //       mb="30px"
+    //     />
+    //   </FormControl>
+    //   <FormControl>
+    //     <FormLabel htmlFor="password">Password</FormLabel>
+    //     <InputGroup size="md" bg="white">
+    //       <Input type="password" onChange={({ target }) => setPassword(target.value)} />
+    //       <InputRightElement>
+    //         <Button size="lg" p="10px" onClick={() => setShowPassword(!showPassword)}>
+    //           {showPassword ? 'Hide' : 'Show'}
+    //         </Button>
+    //       </InputRightElement>
+    //     </InputGroup>
+    //   </FormControl>
+    //   <FormControl>
+    //     <FormLabel htmlFor="password">Password</FormLabel>
+    //     <InputGroup size="md" bg="white">
+    //       <Input type="password" onChange={({ target }) => setCheckPassword(target.value)} />
+    //       <InputRightElement>
+    //         <Button size="lg" p="10px" onClick={() => setShowCheckPassword(!showCheckPassword)}>
+    //           {showPassword ? 'Hide' : 'Show'}
+    //         </Button>
+    //       </InputRightElement>
+    //     </InputGroup>
+    //   </FormControl>
+    //   <Link mt="10px" as={ReachLink} to="/forgotpassword">
+    //     Forgot Your Password?
+    //   </Link>
+    //   <Button
+    //     bg="#2BC0E3"
+    //     color="white"
+    //     onClick={handleSubmit}
+    //     // w="50px"
+    //     mt="10px"
+    //     alignSelf="flex-end"
+    //     px="10px"
+    //   >
+    //     Register
+    //   </Button>
+    //   <br />
+    //   {errorMessage && <p>{errorMessage}</p>}
+    // </Flex>
     <div>
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
-        <input type="text" onChange={({ target }) => setEmail(target.value)} placeholder="Email" />
-        <br />
-        <input onChange={({ target }) => setFirstName(target.value)} placeholder="First Name" />
-        <br />
-        <input onChange={({ target }) => setLastName(target.value)} placeholder="Last Name" />
-        <br />
+        <FormControl>
+          <FormLabel htmlFor="firstName">First Name</FormLabel>
+          <Input
+            id="firstName"
+            bg="white"
+            onChange={({ target }) => setFirstName(target.value)}
+            mb="30px"
+            size="md"
+            placeholder="First Name"
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="lastName">Last Name</FormLabel>
+          <Input
+            id="lastName"
+            bg="white"
+            onChange={({ target }) => setLastName(target.value)}
+            mb="30px"
+            size="md"
+            placeholder="Last Name"
+          />
+        </FormControl>
         <p>Role: </p>
         <select onChange={e => setRole(e.target.value)} value={role}>
           <option value="admin" selected>
@@ -67,20 +155,38 @@ const Register = ({ cookies }) => {
           <option value="super-admin">Super Admin</option>
           <option value="volunteer">Volunteer</option>
         </select>
+        <FormControl>
+          <FormLabel htmlFor="password">Password</FormLabel>
+          <InputGroup size="md" bg="white">
+            <Input
+              type={showPassword ? 'text' : 'password'}
+              onChange={({ target }) => setCheckPassword(target.value)}
+            />
+            <InputRightElement>
+              <Button size="lg" p="10px" onClick={() => setShowCheckPassword(!showCheckPassword)}>
+                {showPassword ? 'Hide' : 'Show'}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="password">Password</FormLabel>
+          <InputGroup size="md" bg="white">
+            <Input
+              type={showCheckPassword ? 'text' : 'password'}
+              onChange={({ target }) => setCheckPassword(target.value)}
+            />
+            <InputRightElement>
+              <Button size="lg" p="10px" onClick={() => setShowCheckPassword(!showCheckPassword)}>
+                {showCheckPassword ? 'Hide' : 'Show'}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </FormControl>
         <br />
-        <input
-          onChange={({ target }) => setPassword(target.value)}
-          placeholder="Password"
-          type="password"
-        />
-        <br />
-        <input
-          onChange={({ target }) => setCheckPassword(target.value)}
-          placeholder="Re-enter Password"
-          type="password"
-        />
-        <br />
-        <button type="submit">Register</button>
+        <button type="submit" onClick={handleSubmit}>
+          Register
+        </button>
         <div className="login-buttons">
           <button type="button" onClick={handleGoogleSignIn}>
             <span>Sign Up With Google</span>
