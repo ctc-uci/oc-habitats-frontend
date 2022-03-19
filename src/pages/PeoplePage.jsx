@@ -5,6 +5,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FiEdit2 } from 'react-icons/fi';
 import App from '../components/Table/Table';
 import AddAccountPopup from '../components/Table/AddAccountPopup';
+import PeopleTable from '../components/PeopleTable';
 
 const PeoplePage = () => {
   return (
@@ -50,6 +51,12 @@ const PeoplePage = () => {
             table to view or edit an Admin profile.
           </Heading>
           <App />
+        </VStack>
+        <VStack>
+          <Heading fontWeight="600" fontSize="20px" mb="20px" mt="40px" align="left">
+            Refactored
+          </Heading>
+          <PeopleTable variant="Volunteers" />
         </VStack>
       </Container>
     </>
