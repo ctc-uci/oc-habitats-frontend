@@ -8,6 +8,7 @@ import {
   Th,
   Td,
   Flex,
+  Input,
   Select,
   Text,
   Tooltip,
@@ -29,6 +30,36 @@ const tableData = [
   { name: 'Person B', lastUpdated: '01-02-2022', assignedSegments: 'OC02' },
   { name: 'Person C', lastUpdated: '01-03-2022', assignedSegments: 'OC03' },
 ];
+
+const FilterTable = ({ variant }) => {
+  return (
+    <Flex justifyContent="space-between" m="20px 0">
+      <Input placeholder={`Search ${variant}s...`} htmlSize={30} width="auto" />
+      <Flex flexDir="row" justifyContent="right" w="50%">
+        {variant === 'volunteer' ? (
+          <>
+            <Text m="auto 10px auto 0" casing="uppercase" w="50%">
+              Filter by segment
+            </Text>
+            <Select className="sort-options" width="30%" mr="30px">
+              <option value="option1">Name: A-Z</option>
+              <option value="option2">Name: Z-A</option>
+            </Select>
+          </>
+        ) : (
+          <></>
+        )}
+        <Text m="auto 10px auto 0" casing="uppercase" w="50%">
+          Sort by
+        </Text>
+        <Select className="sort-options" width="30%">
+          <option value="option1">Name: A-Z</option>
+          <option value="option2">Name: Z-A</option>
+        </Select>
+      </Flex>
+    </Flex>
+  );
+};
 
 const StyledHeader = () => {
   return (
@@ -96,6 +127,7 @@ const PeopleTable = ({ variant }) => {
   return (
     <>
       <PeopleTableDescription variant={variant} />
+      <FilterTable variant={variant} />
       <Table variant="striped">
         <Thead>
           <StyledHeader />
@@ -113,6 +145,10 @@ const PeopleTable = ({ variant }) => {
       <StyledFooter />
     </>
   );
+};
+
+FilterTable.propTypes = {
+  variant: PropTypes.string.isRequired,
 };
 
 PeopleTable.propTypes = {

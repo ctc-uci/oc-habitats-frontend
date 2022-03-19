@@ -53,6 +53,7 @@ const PeoplePage = () => {
           <App />
         </VStack>
         <PeopleTable variant="volunteer" />
+        <PeopleTable variant="admin" />
       </Container>
     </>
   );
