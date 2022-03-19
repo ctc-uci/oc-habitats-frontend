@@ -2,19 +2,27 @@ import {
   Box,
   Text,
   HStack,
+  VStack,
   Heading,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
+  Table,
   Tabs,
+  Tbody,
+  Th,
+  Tr,
+  Td,
   Accordion,
   AccordionItem,
   AccordionButton,
   AccordionIcon,
   AccordionPanel,
+  Stack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
+import dayjs from 'dayjs';
 import AdditionalSpecies from '../components/monitorLog/AdditionalSpecies';
 import Predators from '../components/monitorLog/Predators';
 import HumanActivity from '../components/monitorLog/HumanActivity';
@@ -38,16 +46,19 @@ const options = [
 ];
 
 const MonitorLogPage = () => {
-  const [surveySegment, setSurveySegment] = useState();
-  const [surveyDate, setDate] = useState();
-  const [startTime, setStartTime] = useState();
-  const [endTime, setEndTime] = useState();
+  const [surveySegment, setSegment] = useState();
+  const [surveyDate, setSurveyDate] = useState(new Date());
+  const [startTime, setSurveyStart] = useState('7:00');
+  const [startTimeAM, toggleStartTimeAM] = useReducer(am => !am, true);
+  const [endTime, setSurveyEnd] = useState('7:00');
+  const [endTimeAM, toggleEndTimeAM] = useReducer(am => !am, true);
   const [temperature, setTemperature] = useState();
   const [cloudCover, setCloudCover] = useState();
   const [precipitation, setPrecipitation] = useState();
-  const [windSpeedDirection, setWindSpeedDirection] = useState();
+  const [windSpeed, setWindSpeed] = useState();
+  const [windDirection, setWindDirection] = useState();
   const [tides, setTides] = useState();
-  const [habitatType, setOverallHabitatType] = useState();
+  const [habitatType, setHabitatType] = useState();
   const [habitatWidth, setHabitatWidth] = useState();
   const [totalCrows, setTotalCrows] = useState(0);
   const [totalRavens, setTotalRavens] = useState(0);
@@ -70,15 +81,18 @@ const MonitorLogPage = () => {
   const [totalDogsOffLeash, setTotalDogsOffLeash] = useState(0);
   const [outreachNotes, setOutreachNotes] = useState();
   const [otherNotes, setOtherNotes] = useState();
+  const [partners, setPartners] = useState([]);
+  const [popup, setPopup] = useState([]);
+
   const GeneralInformationItems = [
     { sectionTitle: 'Survey Segment', value: surveySegment },
-    { sectionTitle: 'Date (MM/DD/YYY)', value: surveyDate },
-    { sectionTitle: 'Survey Start Time', value: startTime },
-    { sectionTitle: 'Survey End Time', value: endTime },
+    { sectionTitle: 'Date (MM/DD/YYY)', value: dayjs(surveyDate).format('MM/DD/YYYY') },
+    { sectionTitle: 'Survey Start Time', value: startTime + (startTimeAM ? ' AM' : ' PM') },
+    { sectionTitle: 'Survey End Time', value: endTime + (endTimeAM ? ' AM' : ' PM') },
     { sectionTitle: 'Temperature (F)', value: temperature },
     { sectionTitle: 'Cloud Cover (%)', value: cloudCover },
     { sectionTitle: 'Precipitation', value: precipitation },
-    { sectionTitle: 'Wind (Speed/Direction)', value: windSpeedDirection, splitField: 'true' },
+    { sectionTitle: 'Wind (Speed/Direction)', value: `${windSpeed}/${windDirection}` },
     { sectionTitle: 'Tides (ft)', value: tides },
     { sectionTitle: 'Overall Habitat Type', value: habitatType, toolTip: 'hi' },
     { sectionTitle: 'Habitat Width', value: habitatWidth },
@@ -105,6 +119,22 @@ const MonitorLogPage = () => {
     { sectionTitle: 'Dogs ON Leash', value: totalDogsOnLeash },
     { sectionTitle: 'Dogs OFF Leash', value: totalDogsOffLeash },
   ];
+
+  const createTable = m => {
+    return m.map(row => (
+      <Tr height="72px" key={row.id}>
+        <Td>
+          <HStack spacing="26px">
+            <VStack alignItems="flex.start">
+              <Text>{row.name}</Text>
+              <Text color="gray.500">{row.email}</Text>
+            </VStack>
+          </HStack>
+        </Td>
+      </Tr>
+    ));
+  };
+
   return (
     <Box ml="171px" mr="171px">
       <Heading align="center" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
@@ -140,17 +170,28 @@ const MonitorLogPage = () => {
           <TabPanel>
             <GeneralInfo
               options={options}
-              setSurveySegment={setSurveySegment}
-              setDate={setDate}
-              setStartTime={setStartTime}
-              setEndTime={setEndTime}
+              setSegment={setSegment}
+              surveyDate={surveyDate}
+              setSurveyDate={setSurveyDate}
+              setSurveyStart={setSurveyStart}
+              startTime={startTime}
+              startTimeAM={startTimeAM}
+              toggleStartTimeAM={toggleStartTimeAM}
+              setSurveyEnd={setSurveyEnd}
+              toggleEndTimeAM={toggleEndTimeAM}
+              endTimeAM={endTimeAM}
               setTemperature={setTemperature}
               setCloudCover={setCloudCover}
               setPrecipitation={setPrecipitation}
-              setWindSpeedDirection={setWindSpeedDirection}
+              setWindSpeed={setWindSpeed}
+              setWindDirection={setWindDirection}
               setTides={setTides}
-              setOverallHabitatType={setOverallHabitatType}
+              setHabitatType={setHabitatType}
               setHabitatWidth={setHabitatWidth}
+              partners={partners}
+              setPartners={setPartners}
+              popup={popup}
+              setPopup={setPopup}
             />
           </TabPanel>
           <TabPanel>
@@ -192,33 +233,63 @@ const MonitorLogPage = () => {
             />
           </TabPanel>
           <TabPanel>
-            <Box>
+            <Stack spacing={8}>
               <Accordion allowMultiple="true" defaultIndex={[0]}>
-                <AccordionItem borderColor="white">
+                <AccordionItem borderColor="white" spacing={10}>
                   <HStack>
-                    <Text fontSize="24px" fontWeight={550} width="30%">
-                      General Information
-                    </Text>
-                    <AccordionButton _hover="white">
+                    <AccordionButton
+                      padding="0"
+                      _focus={{ boxShadow: 'none' }}
+                      _hover={{ backgroundColor: 'none' }}
+                    >
+                      <Text mr="10px" fontSize="24px" fontWeight={550}>
+                        General Information
+                      </Text>
                       <AccordionIcon />
                     </AccordionButton>
                   </HStack>
-                  <AccordionPanel>
+                  <AccordionPanel padding="0">
                     <MonitorLogSection reviewElements={GeneralInformationItems} />
+                    <VStack align="left" pt={8}>
+                      <Text fontSize="21px" fontWeight={550} width="30%">
+                        Monitoring Session Partners
+                      </Text>
+                      <Box
+                        overflow="hidden"
+                        w="50%"
+                        borderWidth="1px"
+                        borderColor="gray.200"
+                        rounded="md"
+                      >
+                        <Table id="partnertable">
+                          {/* TODO: make ochGrey */}
+                          <Th h="32px" bgColor="#4E4E4E" color="white" textTransform="none">
+                            Partner Information
+                          </Th>
+                          <Tbody h="72px" bg="#FFFFFF" align="left">
+                            {createTable(popup)}
+                          </Tbody>
+                        </Table>
+                      </Box>
+                    </VStack>
                   </AccordionPanel>
                 </AccordionItem>
               </Accordion>
               <Accordion allowMultiple="true" defaultIndex={[0]}>
                 <AccordionItem borderColor="white">
                   <HStack>
-                    <Text fontSize="24px" fontWeight={550}>
-                      Predators
-                    </Text>
-                    <AccordionButton _hover="white">
+                    <AccordionButton
+                      padding="0"
+                      _focus={{ boxShadow: 'none' }}
+                      _hover={{ backgroundColor: 'none' }}
+                    >
+                      <Text mr="10px" fontSize="24px" fontWeight={550}>
+                        Predators
+                      </Text>
                       <AccordionIcon />
                     </AccordionButton>
                   </HStack>
-                  <AccordionPanel>
+                  <AccordionPanel padding="0">
                     <MonitorLogSection reviewElements={predatorItems} />
                     <ReviewElementTooltip
                       sectionTitle="Other Predator(s)"
@@ -232,14 +303,18 @@ const MonitorLogPage = () => {
               <Accordion allowMultiple="true" defaultIndex={[0]}>
                 <AccordionItem borderColor="white">
                   <HStack>
-                    <Text fontSize="24px" fontWeight={550} width="30%">
-                      Human Activity
-                    </Text>
-                    <AccordionButton _hover="white">
+                    <AccordionButton
+                      padding="0"
+                      _focus={{ boxShadow: 'none' }}
+                      _hover={{ backgroundColor: 'none' }}
+                    >
+                      <Text mr="10px" fontSize="24px" fontWeight={550}>
+                        Human Activity
+                      </Text>
                       <AccordionIcon />
                     </AccordionButton>
                   </HStack>
-                  <AccordionPanel>
+                  <AccordionPanel padding="0">
                     <MonitorLogSection reviewElements={humanActivityItems} />
                     <ReviewElementTooltip
                       sectionTitle="Outreach"
@@ -247,16 +322,16 @@ const MonitorLogPage = () => {
                       label="Any potential human activities not listed above"
                       toggle="true"
                     />
+                    <ReviewElementTooltip
+                      sectionTitle="Other Notes"
+                      value={otherNotes}
+                      label="Additional notes that have not been listed above"
+                      toggle="false"
+                    />
                   </AccordionPanel>
                 </AccordionItem>
               </Accordion>
-              <ReviewElementTooltip
-                sectionTitle="Other Notes"
-                value={otherNotes}
-                label="Additional notes that have not been listed above"
-                toggle="false"
-              />
-            </Box>
+            </Stack>
           </TabPanel>
         </TabPanels>
       </Tabs>

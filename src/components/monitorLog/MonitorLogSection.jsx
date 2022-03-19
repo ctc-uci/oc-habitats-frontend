@@ -19,7 +19,7 @@ const MonitorLogSection = ({ reviewElements }) => {
 
 const Item = ({ sectionTitle, value, splitField }) => {
   return (
-    <GridItem colSpan={1} rowSpan={1} width="200px">
+    <GridItem colSpan={1} rowSpan={1}>
       <ReviewElement sectionTitle={sectionTitle} value={value} splitField={splitField} />
     </GridItem>
   );

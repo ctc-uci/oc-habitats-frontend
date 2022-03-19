@@ -1,11 +1,11 @@
 import { React } from 'react';
 import PropTypes from 'prop-types';
 import { InfoIcon } from '@chakra-ui/icons';
-import { Text, Box, Input, HStack, Tooltip } from '@chakra-ui/react';
+import { Text, Box, HStack, Tooltip, Textarea } from '@chakra-ui/react';
 
 const ReviewElementTooltip = ({ sectionTitle, value, label, toggle }) => {
   return (
-    <Box width="108%">
+    <Box maxW="100%">
       <HStack justifyContent="space-between">
         <Text>{sectionTitle}</Text>
         {toggle ? (
@@ -16,7 +16,7 @@ const ReviewElementTooltip = ({ sectionTitle, value, label, toggle }) => {
           <div />
         )}
       </HStack>
-      <Input isReadOnly="true" bgColor="#EDF2F7" value={value} />
+      <Textarea isReadOnly="true" bgColor="#EDF2F7" value={value} />
     </Box>
   );
 };
