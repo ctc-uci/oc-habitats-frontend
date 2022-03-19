@@ -17,13 +17,15 @@ import footNotes from './FootNotes';
 
 const Location = ({ totalBirds }) => {
   const createGPS = () => {
+    const options = ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'];
+
     if (totalBirds > 4) {
       return [...Array(4)].map((element, i) => {
         return (
           // eslint-disable-next-line react/no-array-index-key
-          <GridItem rowStart={1} key={`GPS${i}`}>
+          <GridItem key={`GPS${i}`}>
             <FormControl>
-              <FormLabel htmlFor={`latitude ${i}`}>{i ? `GPS ${i + 1}` : 'GPS'}</FormLabel>
+              <FormLabel htmlFor={`latitude ${i}`}>GPS ({options[i]})</FormLabel>
               <HStack w="90%">
                 <Input id={`latitude ${i}`} placeholder="000.00000" />
                 <Input id={`longitude ${i}`} placeholder="000.00000" />
@@ -53,15 +55,15 @@ const Location = ({ totalBirds }) => {
       <Heading as="h3" size="md">
         Location
       </Heading>
-      <Grid w="100%" templateColumns="repeat(4, 25%)" templateRows="repeat(1, 1fr)" rowGap={6}>
+      <Grid w="70%" templateColumns="repeat(2, 1fr)" rowGap={6}>
         {createGPS()}
-        <GridItem rowStart={2}>
+        <GridItem w="120%" rowStart={totalBirds > 4 ? 3 : 2}>
           <FormControl>
             <FormLabel htmlFor="cross-street">
-              <Flex justify="space-between" aling="center">
+              <Flex justify="space-between" align="center">
                 Cross Street/Towers
                 <Tooltip label={footNotes.streets} fontSize="md">
-                  <InfoIcon />
+                  <InfoIcon fill="#ochBluePress" />
                 </Tooltip>
               </Flex>
             </FormLabel>
