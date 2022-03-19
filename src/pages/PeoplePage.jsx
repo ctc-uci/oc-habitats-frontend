@@ -52,12 +52,7 @@ const PeoplePage = () => {
           </Heading>
           <App />
         </VStack>
-        <VStack>
-          <Heading fontWeight="600" fontSize="20px" mb="20px" mt="40px" align="left">
-            Refactored
-          </Heading>
-          <PeopleTable variant="Volunteer" />
-        </VStack>
+        <PeopleTable variant="volunteer" />
       </Container>
     </>
   );

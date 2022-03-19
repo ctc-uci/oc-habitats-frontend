@@ -15,6 +15,7 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import PeopleTableDescription from './PeopleTableDescription';
 import styles from './PeopleTable.module.css';
 
 const headerData = [
@@ -94,7 +95,7 @@ const StyledFooter = () => {
 const PeopleTable = ({ variant }) => {
   return (
     <>
-      <p>Variant: {variant}</p>
+      <PeopleTableDescription variant={variant} />
       <Table variant="striped">
         <Thead>
           <StyledHeader />
