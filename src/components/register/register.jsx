@@ -170,7 +170,7 @@ const Register = ({ cookies }) => {
           </InputGroup>
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="password">Password</FormLabel>
+          <FormLabel htmlFor="password"> Re-enter Password</FormLabel>
           <InputGroup size="md" bg="white">
             <Input
               type={showCheckPassword ? 'text' : 'password'}
