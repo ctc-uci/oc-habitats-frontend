@@ -34,20 +34,37 @@ import {
   AlertIcon,
   AlertTitle,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React from 'react';
 import DatePicker from 'react-datepicker';
 import Search from 'react-select';
 import PropTypes from 'prop-types';
 import 'react-datepicker/dist/react-datepicker.css';
 import './GeneralInfo.css';
 
-function GeneralInfo({ options }) {
-  const [startDate, setDate] = useState(new Date());
-  const [startPeriod, setStartPeriod] = useState(true);
-  const [endPeriod, setEndPeriod] = useState(true);
-  const handleStartTimeClick = () => setStartPeriod(!startPeriod);
-  const handleEndTimeClick = () => setEndPeriod(!endPeriod);
-
+function GeneralInfo({
+  options,
+  setSegment,
+  setSurveyDate,
+  setSurveyStart,
+  setSurveyEnd,
+  setTemperature,
+  setCloudCover,
+  setPrecipitation,
+  setWindSpeed,
+  setWindDirection,
+  setTides,
+  setHabitatType,
+  setHabitatWidth,
+  surveyDate,
+  startTimeAM,
+  toggleStartTimeAM,
+  endTimeAM,
+  toggleEndTimeAM,
+  partners,
+  setPartners,
+  popup,
+  setPopup,
+}) {
   const user = {
     segments: [
       { id: '0', name: 'segment0' },
@@ -57,8 +74,8 @@ function GeneralInfo({ options }) {
 
   let uniqueID = 1;
 
-  const [partners, setPartners] = useState([]);
-  const [popup, setPopup] = useState([]);
+  // const [partners, setPartners] = useState([]);
+  // const [popup, setPopup] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleDeleteRow = (table, index) => {
@@ -183,19 +200,23 @@ function GeneralInfo({ options }) {
   return (
     <div>
       <Container maxW="100vw">
+        <Text fontWeight="600" fontSize="2xl">
+          General Information
+        </Text>
         <VStack spacing="23px" align="left">
-          <Text fontWeight="600" fontSize="2xl">
-            General Information
-          </Text>
           <SimpleGrid columns={4} rows={3} spacingX="64px" spacingY="68px">
             <GridItem colSpan={1} rowSpan={1} width="200px">
               <VStack spacing="8px" align="left">
                 <Text fontWeight="500" fontSize="md">
                   Survey Segment
                 </Text>
-                <Select>
+                <Select
+                  onChange={e => {
+                    setSegment(e.target.value);
+                  }}
+                >
                   {user.segments.map(segment => (
-                    <option value="" key="">
+                    <option value={segment.name} key={segment.id}>
                       {segment.name}
                     </option>
                   ))}
@@ -206,7 +227,7 @@ function GeneralInfo({ options }) {
               <Text fontWeight="500" fontSize="md">
                 Date (MM/DD/YYYY)
               </Text>
-              <DatePicker selected={startDate} onChange={e => setDate(e)} />
+              <DatePicker selected={surveyDate} onChange={e => setSurveyDate(e)} />
             </GridItem>
             <GridItem colSpan={1} rowSpan={1} width="200px">
               <VStack spacing="8px" align="left">
@@ -214,10 +235,17 @@ function GeneralInfo({ options }) {
                   Survey Start Time
                 </Text>
                 <InputGroup>
-                  <Input className="without-meridiem" defaultValue="07:00" type="time" />
+                  <Input
+                    className="without-meridiem"
+                    defaultValue="07:00"
+                    type="time"
+                    onChange={e => {
+                      setSurveyStart(e.target.value);
+                    }}
+                  />
                   <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handleStartTimeClick}>
-                      {startPeriod ? 'AM' : 'PM'}
+                    <Button h="1.75rem" size="sm" onClick={toggleStartTimeAM}>
+                      {startTimeAM ? 'AM' : 'PM'}
                     </Button>
                   </InputRightElement>
                 </InputGroup>
@@ -229,10 +257,17 @@ function GeneralInfo({ options }) {
                   Survey End Time
                 </Text>
                 <InputGroup>
-                  <Input className="without-meridiem" defaultValue="07:00" type="time" />
+                  <Input
+                    className="without-meridiem"
+                    defaultValue="07:00"
+                    type="time"
+                    onChange={e => {
+                      setSurveyEnd(e.target.value);
+                    }}
+                  />
                   <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handleEndTimeClick}>
-                      {endPeriod ? 'AM' : 'PM'}
+                    <Button h="1.75rem" size="sm" onClick={toggleEndTimeAM}>
+                      {endTimeAM ? 'AM' : 'PM'}
                     </Button>
                   </InputRightElement>
                 </InputGroup>
@@ -243,7 +278,12 @@ function GeneralInfo({ options }) {
                 <Text fontWeight="500" fontSize="md">
                   Temperature (F)
                 </Text>
-                <Input placeholder="0" />
+                <Input
+                  onChange={e => {
+                    setTemperature(e.target.value);
+                  }}
+                  placeholder="0"
+                />
               </VStack>
             </GridItem>
             <GridItem colSpan={1} rowSpan={1} width="200px">
@@ -251,7 +291,11 @@ function GeneralInfo({ options }) {
                 <Text fontWeight="500" fontSize="md">
                   Cloud Cover (%)
                 </Text>
-                <Select>
+                <Select
+                  onChange={e => {
+                    setCloudCover(e.target.value);
+                  }}
+                >
                   <option value="0">0</option>
                   <option value="33">33</option>
                   <option value="66">66</option>
@@ -264,7 +308,11 @@ function GeneralInfo({ options }) {
                 <Text fontWeight="500" fontSize="md">
                   Precipitation
                 </Text>
-                <Select>
+                <Select
+                  onChange={e => {
+                    setPrecipitation(e.target.value);
+                  }}
+                >
                   <option value="none">None</option>
                   <option value="fog">Fog</option>
                   <option value="drizzle">Drizzle</option>
@@ -279,10 +327,19 @@ function GeneralInfo({ options }) {
                 </Text>
                 <SimpleGrid columns={2} spacing="12px">
                   <GridItem>
-                    <Input placeholder="0" />
+                    <Input
+                      onChange={e => {
+                        setWindSpeed(e.target.value);
+                      }}
+                      placeholder="0"
+                    />
                   </GridItem>
                   <GridItem>
-                    <Select>
+                    <Select
+                      onChange={e => {
+                        setWindDirection(e.target.value);
+                      }}
+                    >
                       <option value="N">N</option>
                       <option value="NE">NE</option>
                       <option value="NW">NW</option>
@@ -301,7 +358,12 @@ function GeneralInfo({ options }) {
                 <Text fontWeight="500" fontSize="md">
                   Tides (ft)
                 </Text>
-                <Input placeholder="00.00" />
+                <Input
+                  onChange={e => {
+                    setTides(e.target.value);
+                  }}
+                  placeholder="00.00"
+                />
               </VStack>
             </GridItem>
             <GridItem colSpan={1} rowSpan={1} width="200px">
@@ -318,7 +380,11 @@ function GeneralInfo({ options }) {
                     <InfoIcon />
                   </Tooltip>
                 </Flex>
-                <Select>
+                <Select
+                  onChange={e => {
+                    setHabitatType(e.target.value);
+                  }}
+                >
                   <option value="sandy beach">Sandy beach</option>
                   <option value="dunes">Dunes</option>
                   <option value="vegetation-native">Vegetation-Native</option>
@@ -334,7 +400,11 @@ function GeneralInfo({ options }) {
                 <Text fontWeight="500" fontSize="md">
                   Habitat Width (ft)
                 </Text>
-                <Select>
+                <Select
+                  onChange={e => {
+                    setHabitatWidth(e.target.value);
+                  }}
+                >
                   <option value="0=10">0-10</option>
                   <option value="10-50">10-50</option>
                   <option value="50-100">50-100</option>
@@ -344,7 +414,7 @@ function GeneralInfo({ options }) {
               </VStack>
             </GridItem>
           </SimpleGrid>
-          <Table id="partnertable" w="50%">
+          <Table id="partnertable" w="50%" textTransform="none">
             <Th h="32px" bg="#F7FAFC">
               Partner Information
             </Th>
@@ -359,7 +429,6 @@ function GeneralInfo({ options }) {
   );
 }
 
-// const tupple = ()
 GeneralInfo.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
@@ -369,6 +438,27 @@ GeneralInfo.propTypes = {
       email: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  setSegment: PropTypes.func.isRequired,
+  setSurveyDate: PropTypes.func.isRequired,
+  setSurveyStart: PropTypes.func.isRequired,
+  setSurveyEnd: PropTypes.func.isRequired,
+  setTemperature: PropTypes.func.isRequired,
+  setCloudCover: PropTypes.func.isRequired,
+  setPrecipitation: PropTypes.func.isRequired,
+  setWindSpeed: PropTypes.func.isRequired,
+  setWindDirection: PropTypes.func.isRequired,
+  setTides: PropTypes.func.isRequired,
+  setHabitatType: PropTypes.func.isRequired,
+  setHabitatWidth: PropTypes.func.isRequired,
+  surveyDate: PropTypes.instanceOf(Date).isRequired,
+  toggleStartTimeAM: PropTypes.func.isRequired,
+  toggleEndTimeAM: PropTypes.func.isRequired,
+  startTimeAM: PropTypes.bool.isRequired,
+  endTimeAM: PropTypes.bool.isRequired,
+  partners: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setPartners: PropTypes.func.isRequired,
+  popup: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setPopup: PropTypes.func.isRequired,
 };
 
 export default GeneralInfo;
