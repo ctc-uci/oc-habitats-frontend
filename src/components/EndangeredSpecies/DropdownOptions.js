@@ -1,16 +1,15 @@
 module.exports = {
   nesting: [
-    'None',
-    'Copulation & Nest Construction',
+    'Copulation/Mating',
+    'Nest Construction',
     'Incubation',
     'Hatchling',
     'Brooding',
-    'Other',
+    'Other (Specify in Notes)',
   ],
   behavior: [
-    'None',
     'Roosting',
-    'Foraging (Feeding)',
+    'Foraging',
     'Sitting',
     'Courting',
     'Fishing',
@@ -18,7 +17,7 @@ module.exports = {
     'Flushing',
     'Distraction Behavior',
     'Feeding',
-    'Other',
+    'Other (Specify in Notes)',
   ],
   habitat: [
     'Sandy beach',

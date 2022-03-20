@@ -12,16 +12,21 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 
-import SectionName from '../components/EndangeredSpecies/SectionName';
+import GeneralListedInformation from '../components/EndangeredSpecies/GeneralListedInformation';
 import Location from '../components/EndangeredSpecies/Location';
-import BandsSex from '../components/EndangeredSpecies/BandsSex';
-import BehaviorsList from '../components/EndangeredSpecies/BehaviorsList';
-import footNotes from '../components/EndangeredSpecies/FootNotes';
 import options from '../components/EndangeredSpecies/DropdownOptions';
+import BandingSection from '../components/EndangeredSpecies/BandingSection';
+import BehaviorsSection from '../components/EndangeredSpecies/BehaviorsSection';
+import SexSection from '../components/EndangeredSpecies/SexSection';
 
-const EndangeredSpecies = ({ adultName }) => {
+const EndangeredSpeciesPopup = ({ closeModal, adultName, addRow }) => {
   const [totalAdults, setTotalAdults] = useState(1);
   const [totalFledges, setTotalFledges] = useState(0);
+  const [totalChicks, setTotalChicks] = useState(0);
+
+  const [sexValues, setSexValues] = useState([0, 0, 0, 0, 0, 0]);
+  const [behaviors, setBehaviors] = useState([]);
+  const [nesting, setNesting] = useState([]);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -30,8 +35,6 @@ const EndangeredSpecies = ({ adultName }) => {
     const gps = [];
     const adultBands = [];
     const fledgeBands = [];
-    const nests = [];
-    const behaviors = [];
     const time = { value: '', meridiem: '' };
 
     for (let i = 0; i < length; i += 1) {
@@ -71,14 +74,6 @@ const EndangeredSpecies = ({ adultName }) => {
             fledgeBands[index].note = {};
             fledgeBands[index].note = currentValue;
           }
-        } else if (currentID.includes('Nesting & Eggs')) {
-          if (currentValue !== 'None') {
-            nests.push(currentValue);
-          }
-        } else if (currentID.includes('Behaviors')) {
-          if (currentValue !== 'None') {
-            behaviors.push(currentValue);
-          }
         } else {
           formData[currentID] = {};
           formData[currentID] = currentValue;
@@ -86,14 +81,19 @@ const EndangeredSpecies = ({ adultName }) => {
       }
     }
     const bands = [...adultBands, ...fledgeBands];
+    formData.totalAdults = totalAdults;
+    formData.totalFledges = totalFledges;
+    formData.totalChicks = totalChicks;
     formData.time = time;
     formData.gps = gps;
-    formData.nests = nests;
+    formData.nesting = nesting;
     formData.behaviors = behaviors;
     formData.bands = bands;
 
     // eslint-disable-next-line no-console
     console.log('formData', formData);
+    addRow(formData);
+    closeModal();
   };
 
   return (
@@ -102,29 +102,35 @@ const EndangeredSpecies = ({ adultName }) => {
         <IconButton
           icon={<ArrowBackIcon boxSize={10} />}
           bgColor="transparent"
-          left="1%"
-          mt="1em"
+          position="fixed"
+          top="16px"
+          left="16px"
+          onClick={closeModal}
         />
       </HStack>
-      <Container maxW="container.xl">
+      <Container maxW="container.xl" paddingTop="40px" paddingBottom="40px">
         <Stack align="center" mb="3em">
-          <Heading as="h1">Add Adult {adultName}</Heading>
+          <Heading as="h1">Add {adultName}</Heading>
         </Stack>
         <form onSubmit={handleSubmit}>
           <VStack align="start" spacing="4em">
-            <SectionName setTotalAdults={setTotalAdults} setTotalFledges={setTotalFledges} />
+            <GeneralListedInformation
+              speciesName={adultName}
+              setTotalAdults={setTotalAdults}
+              setTotalFledges={setTotalFledges}
+              setTotalChicks={setTotalChicks}
+            />
             <Location totalBirds={totalAdults + totalFledges} />
-            <BandsSex totalAdults={totalAdults} totalFledges={totalFledges} />
-            <BehaviorsList
-              title="Nesting & Eggs"
-              description={footNotes.nest}
-              options={options.nesting}
+            <SexSection values={sexValues} setValues={setSexValues} />
+            <BehaviorsSection
+              behaviorOptions={options.behavior}
+              nestingOptions={options.nesting}
+              behaviors={behaviors}
+              setBehaviors={setBehaviors}
+              nesting={nesting}
+              setNesting={setNesting}
             />
-            <BehaviorsList
-              title="Behaviors Observed"
-              description={footNotes.behavior}
-              options={options.behavior}
-            />
+            <BandingSection />
             <VStack align="start" w="100%">
               <Heading as="h3" size="md">
                 Additional Notes (Optional)
@@ -141,12 +147,10 @@ const EndangeredSpecies = ({ adultName }) => {
   );
 };
 
-EndangeredSpecies.defaultProps = {
-  adultName: PropTypes.string,
+EndangeredSpeciesPopup.propTypes = {
+  adultName: PropTypes.string.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  addRow: PropTypes.func.isRequired,
 };
 
-EndangeredSpecies.propTypes = {
-  adultName: PropTypes.string,
-};
-
-export default EndangeredSpecies;
+export default EndangeredSpeciesPopup;

@@ -17,10 +17,10 @@ const MonitorLogSection = ({ reviewElements }) => {
   );
 };
 
-const Item = ({ sectionTitle, value, splitField }) => {
+const Item = ({ sectionTitle, value }) => {
   return (
-    <GridItem colSpan={1} rowSpan={1}>
-      <ReviewElement sectionTitle={sectionTitle} value={value} splitField={splitField} />
+    <GridItem colSpan={1} rowSpan={1} width="200px">
+      <ReviewElement sectionTitle={sectionTitle} value={value} />
     </GridItem>
   );
 };
@@ -37,7 +37,6 @@ MonitorLogSection.propTypes = {
 Item.propTypes = {
   sectionTitle: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
-  splitField: PropTypes.bool.isRequired,
 };
 
 export default MonitorLogSection;

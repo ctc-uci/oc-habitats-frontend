@@ -23,10 +23,15 @@ import {
 } from '@chakra-ui/react';
 import footNotes from './FootNotes';
 import options from './DropdownOptions';
-import './SectionName.css';
+import './GeneralListedInformation.css';
 
 // component/section name not final
-const SectionName = ({ setTotalAdults, setTotalFledges }) => {
+const GeneralListedInformation = ({
+  speciesName,
+  setTotalAdults,
+  setTotalFledges,
+  setTotalChicks,
+}) => {
   const [meridiem, setMeridiem] = useState('AM');
 
   const toggleTime = () => {
@@ -51,7 +56,7 @@ const SectionName = ({ setTotalAdults, setTotalFledges }) => {
     <VStack w="70%" align="start">
       <HStack>
         <Heading as="h3" size="md">
-          Section Name
+          General {speciesName} Information
         </Heading>
       </HStack>
       <br />
@@ -102,7 +107,14 @@ const SectionName = ({ setTotalAdults, setTotalFledges }) => {
 
         <FormControl>
           <FormLabel htmlFor="chicks"># of Chicks</FormLabel>
-          <NumberInput id="chicks" defaultValue={0} min={0}>
+          <NumberInput
+            id="chicks"
+            onChange={e => {
+              setTotalChicks(parseInt(e, 10));
+            }}
+            defaultValue={0}
+            min={0}
+          >
             <NumberInputField />
             <NumberInputStepper>
               <NumberIncrementStepper />
@@ -136,7 +148,7 @@ const SectionName = ({ setTotalAdults, setTotalFledges }) => {
 
         <FormControl>
           <FormLabel htmlFor="map">Map #</FormLabel>
-          <Input id="map" defaultValue="None" />
+          <Input id="map" placeholder="None" />
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="habitat">
@@ -156,14 +168,11 @@ const SectionName = ({ setTotalAdults, setTotalFledges }) => {
   );
 };
 
-SectionName.defaultProps = {
-  setTotalAdults: PropTypes.func,
-  setTotalFledges: PropTypes.func,
+GeneralListedInformation.propTypes = {
+  speciesName: PropTypes.string.isRequired,
+  setTotalAdults: PropTypes.func.isRequired,
+  setTotalFledges: PropTypes.func.isRequired,
+  setTotalChicks: PropTypes.func.isRequired,
 };
 
-SectionName.propTypes = {
-  setTotalAdults: PropTypes.func,
-  setTotalFledges: PropTypes.func,
-};
-
-export default SectionName;
+export default GeneralListedInformation;

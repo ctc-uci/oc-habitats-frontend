@@ -1,0 +1,12 @@
+#table-body {
+  color: black;
+}
+
+#table-head{
+  background-color: #4E4E4E;
+  width: 100%;
+}
+
+#table-head th{
+  color: white;
+}

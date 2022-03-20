@@ -2,24 +2,24 @@ import {
   Box,
   Text,
   HStack,
-  VStack,
   Heading,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
-  Table,
   Tabs,
-  Tbody,
-  Th,
-  Tr,
-  Td,
   Accordion,
   AccordionItem,
   AccordionButton,
   AccordionIcon,
   AccordionPanel,
   Stack,
+  VStack,
+  Tr,
+  Td,
+  Th,
+  Table,
+  Tbody,
 } from '@chakra-ui/react';
 import React, { useState, useReducer } from 'react';
 import dayjs from 'dayjs';
@@ -29,6 +29,7 @@ import HumanActivity from '../components/monitorLog/HumanActivity';
 import GeneralInfo from '../components/monitorLog/GeneralInfo';
 import ReviewElementTooltip from '../components/monitorLog/ReviewElementTooltip';
 import MonitorLogSection from '../components/monitorLog/MonitorLogSection';
+import ListedSpeciesTab from '../components/monitorLog/ListedSpeciesTab';
 
 const options = [
   {
@@ -143,25 +144,25 @@ const MonitorLogPage = () => {
       <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange">
         <TabList p="32px" alignItems="center">
           <HStack spacing="24px">
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               General Info
             </Tab>
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               Least Tern
             </Tab>
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
-              Snow Plover
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
+              Snowy Plover
             </Tab>
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               Additional Species
             </Tab>
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               Predators
             </Tab>
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               Human Activity
             </Tab>
-            <Tab style={{ height: '40px' }} _selected={{ color: 'black', bg: '#F49923' }}>
+            <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
               Review and Submit
             </Tab>
           </HStack>
@@ -195,10 +196,10 @@ const MonitorLogPage = () => {
             />
           </TabPanel>
           <TabPanel>
-            <p>Least Terns</p>
+            <ListedSpeciesTab speciesName="Least Tern" speciesCode="LETE" />
           </TabPanel>
           <TabPanel>
-            <p>Snowy Plovers</p>
+            <ListedSpeciesTab speciesName="Snowy Plover" speciesCode="WSPL" />
           </TabPanel>
           <TabPanel>
             <AdditionalSpecies />
