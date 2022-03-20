@@ -123,7 +123,7 @@ const Register = ({ cookies }) => {
     //   {errorMessage && <p>{errorMessage}</p>}
     // </Flex>
     <div>
-      <h2>Register</h2>
+      <h2>Complete Account Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <FormControl>
           <FormLabel htmlFor="firstName">First Name</FormLabel>
@@ -133,6 +133,7 @@ const Register = ({ cookies }) => {
             onChange={({ target }) => setFirstName(target.value)}
             mb="30px"
             size="md"
+            w="200px"
             placeholder="First Name"
           />
         </FormControl>
@@ -144,6 +145,7 @@ const Register = ({ cookies }) => {
             onChange={({ target }) => setLastName(target.value)}
             mb="30px"
             size="md"
+            w="200px"
             placeholder="Last Name"
           />
         </FormControl>
@@ -160,7 +162,8 @@ const Register = ({ cookies }) => {
           <InputGroup size="md" bg="white">
             <Input
               type={showPassword ? 'text' : 'password'}
-              onChange={({ target }) => setCheckPassword(target.value)}
+              onChange={({ target }) => setPassword(target.value)}
+              w="200px"
             />
             <InputRightElement>
               <Button size="lg" p="10px" onClick={() => setShowCheckPassword(!showCheckPassword)}>
@@ -175,6 +178,7 @@ const Register = ({ cookies }) => {
             <Input
               type={showCheckPassword ? 'text' : 'password'}
               onChange={({ target }) => setCheckPassword(target.value)}
+              w="200px"
             />
             <InputRightElement>
               <Button size="lg" p="10px" onClick={() => setShowCheckPassword(!showCheckPassword)}>
