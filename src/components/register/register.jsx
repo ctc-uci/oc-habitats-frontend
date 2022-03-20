@@ -1,13 +1,14 @@
+/* eslint-disable react/no-children-prop */
 import React, { useState } from 'react';
 import { instanceOf } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import {
   FormControl,
-  Image,
   FormLabel,
   InputGroup,
   Input,
   InputRightElement,
+  InputRightAddon,
   Button,
   Flex,
   Link,
@@ -134,7 +135,6 @@ const Register = ({ cookies }) => {
             mb="30px"
             size="md"
             w="200px"
-            placeholder="First Name"
           />
         </FormControl>
         <FormControl>
@@ -146,7 +146,17 @@ const Register = ({ cookies }) => {
             mb="30px"
             size="md"
             w="200px"
-            placeholder="Last Name"
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="email">OC Habitats Email</FormLabel>
+          <Input
+            id="email"
+            bg="white"
+            onChange={({ target }) => setEmail(target.value)}
+            mb="30px"
+            size="md"
+            w="200px"
           />
         </FormControl>
         <p>Role: </p>
@@ -159,32 +169,30 @@ const Register = ({ cookies }) => {
         </select>
         <FormControl>
           <FormLabel htmlFor="password">Password</FormLabel>
-          <InputGroup size="md" bg="white">
+          <InputGroup>
             <Input
               type={showPassword ? 'text' : 'password'}
               onChange={({ target }) => setPassword(target.value)}
               w="200px"
             />
-            <InputRightElement>
-              <Button size="lg" p="10px" onClick={() => setShowCheckPassword(!showCheckPassword)}>
-                {showPassword ? 'Hide' : 'Show'}
-              </Button>
-            </InputRightElement>
+            <InputRightAddon
+              children={`${showPassword ? 'Hide' : 'Show'}`}
+              onClick={() => setShowPassword(!showPassword)}
+            />
           </InputGroup>
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="password"> Re-enter Password</FormLabel>
-          <InputGroup size="md" bg="white">
+          <InputGroup>
             <Input
-              type={showCheckPassword ? 'text' : 'password'}
+              type={showPassword ? 'text' : 'password'}
               onChange={({ target }) => setCheckPassword(target.value)}
               w="200px"
             />
-            <InputRightElement>
-              <Button size="lg" p="10px" onClick={() => setShowCheckPassword(!showCheckPassword)}>
-                {showCheckPassword ? 'Hide' : 'Show'}
-              </Button>
-            </InputRightElement>
+            <InputRightAddon
+              children={`${showPassword ? 'Hide' : 'Show'}`}
+              onClick={() => setShowCheckPassword(!showCheckPassword)}
+            />
           </InputGroup>
         </FormControl>
         <br />
