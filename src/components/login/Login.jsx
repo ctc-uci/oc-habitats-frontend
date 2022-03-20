@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import React, { useState } from 'react';
 import { Link as ReachLink } from 'react-router-dom';
 import {
@@ -7,9 +8,11 @@ import {
   InputGroup,
   Input,
   InputRightElement,
+  InputRightAddon,
   Button,
   Flex,
   Link,
+  Center,
 } from '@chakra-ui/react';
 import { instanceOf } from 'prop-types';
 import { Cookies, withCookies } from '../../utils/cookie_utils';
@@ -49,23 +52,26 @@ const Login = ({ cookies }) => {
       direction="column"
       p="90px 20px"
     >
-      <Image boxSize="200px" src={OCHLogo} alt="OCH Logo" w="379px" h="115px" ml="50px" mb="10" />
+      <Center width="100%" mb="20">
+        <Image src={OCHLogo} alt="OCH Logo" w="379px" h="115px" />
+      </Center>
       <FormControl>
         <FormLabel htmlFor="email">OC Habitats Email</FormLabel>
         <Input id="email" bg="white" onChange={({ target }) => setEmail(target.value)} mb="30px" />
       </FormControl>
       <FormControl>
         <FormLabel htmlFor="password">Password</FormLabel>
-        <InputGroup size="md" bg="white">
+        <InputGroup>
           <Input
             type={showPassword ? 'text' : 'password'}
             onChange={({ target }) => setPassword(target.value)}
+            w="630px"
+            bg="white"
           />
-          <InputRightElement>
-            <Button size="lg" p="10px" onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? 'Hide' : 'Show'}
-            </Button>
-          </InputRightElement>
+          <InputRightAddon
+            children={`${showPassword ? 'Hide' : 'Show'}`}
+            onClick={() => setShowPassword(!showPassword)}
+          />
         </InputGroup>
       </FormControl>
       <Link mt="10px" as={ReachLink} to="/forgotpassword">

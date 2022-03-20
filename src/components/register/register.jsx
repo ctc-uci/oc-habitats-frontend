@@ -8,10 +8,16 @@ import {
   InputGroup,
   Input,
   InputRightElement,
+  Heading,
   InputRightAddon,
   Button,
   Flex,
   Link,
+  Spacer,
+  VStack,
+  Center,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react';
 import { Cookies, withCookies } from '../../utils/cookie_utils';
 import { registerWithEmailAndPassword, signInWithGoogle } from '../../utils/auth_utils';
@@ -124,93 +130,116 @@ const Register = ({ cookies }) => {
     //   {errorMessage && <p>{errorMessage}</p>}
     // </Flex>
     <div>
-      <h2>Complete Account Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <FormControl>
-          <FormLabel htmlFor="firstName">First Name</FormLabel>
-          <Input
-            id="firstName"
-            bg="white"
-            onChange={({ target }) => setFirstName(target.value)}
-            mb="30px"
-            size="md"
-            w="200px"
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="lastName">Last Name</FormLabel>
-          <Input
-            id="lastName"
-            bg="white"
-            onChange={({ target }) => setLastName(target.value)}
-            mb="30px"
-            size="md"
-            w="200px"
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="email">OC Habitats Email</FormLabel>
-          <Input
-            id="email"
-            bg="white"
-            onChange={({ target }) => setEmail(target.value)}
-            mb="30px"
-            size="md"
-            w="200px"
-          />
-        </FormControl>
-        <p>Role: </p>
-        <select onChange={e => setRole(e.target.value)} value={role}>
-          <option value="admin" selected>
-            Admin
-          </option>
-          <option value="super-admin">Super Admin</option>
-          <option value="volunteer">Volunteer</option>
-        </select>
-        <FormControl>
-          <FormLabel htmlFor="password" mt="30px">
-            Password
-          </FormLabel>
-          <InputGroup>
+      <VStack>
+        <Center w="100%" mt="200px" mb="50px">
+          <Heading size="lg">Complete Account Sign Up</Heading>
+        </Center>
+        <Flex
+          w="60%"
+          maxWidth="50vw"
+          h="60%"
+          bg="rgba(43, 192, 227, .10)"
+          mx="auto"
+          mt="10%"
+          direction="column"
+          p="90px 20px"
+        >
+          <FormControl>
+            <FormLabel htmlFor="firstName">First Name</FormLabel>
             <Input
-              type={showPassword ? 'text' : 'password'}
-              onChange={({ target }) => setPassword(target.value)}
-              w="200px"
+              id="firstName"
+              bg="white"
+              onChange={({ target }) => setFirstName(target.value)}
+              mb="30px"
+              size="md"
+              w="700px"
             />
-            <InputRightAddon
-              children={`${showPassword ? 'Hide' : 'Show'}`}
-              onClick={() => setShowPassword(!showPassword)}
-            />
-          </InputGroup>
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="password" mt="30px">
-            {' '}
-            Re-enter Password
-          </FormLabel>
-          <InputGroup>
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="lastName">Last Name</FormLabel>
             <Input
-              type={showPassword ? 'text' : 'password'}
-              onChange={({ target }) => setCheckPassword(target.value)}
-              w="200px"
+              id="lastName"
+              bg="white"
+              onChange={({ target }) => setLastName(target.value)}
+              mb="30px"
+              size="md"
+              w="700px"
             />
-            <InputRightAddon
-              children={`${showPassword ? 'Hide' : 'Show'}`}
-              onClick={() => setShowCheckPassword(!showCheckPassword)}
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="email">OC Habitats Email</FormLabel>
+            <Input
+              id="email"
+              bg="white"
+              onChange={({ target }) => setEmail(target.value)}
+              mb="30px"
+              size="md"
+              w="700px"
             />
-          </InputGroup>
-        </FormControl>
-        <br />
-        <button type="submit" onClick={handleSubmit}>
-          Register
-        </button>
-        <div className="login-buttons">
-          <button type="button" onClick={handleGoogleSignIn}>
-            <span>Sign Up With Google</span>
-          </button>
-        </div>
-      </form>
-      <p>{errorMessage}</p>
+          </FormControl>
+          <FormLabel htmlFor="role">Role</FormLabel>
+          <select id="role" onChange={e => setRole(e.target.value)} value={role} maxW="700px">
+            <option value="admin" selected>
+              Admin
+            </option>
+            <option value="super-admin">Super Admin</option>
+            <option value="volunteer">Volunteer</option>
+          </select>
+          <FormControl>
+            <FormLabel htmlFor="password" mt="30px">
+              Password
+            </FormLabel>
+            <InputGroup w="700px">
+              <Input
+                type={showPassword ? 'text' : 'password'}
+                onChange={({ target }) => setPassword(target.value)}
+                w="630px"
+                bg="white"
+              />
+              <InputRightAddon
+                children={`${showPassword ? 'Hide' : 'Show'}`}
+                onClick={() => setShowPassword(!showPassword)}
+              />
+            </InputGroup>
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="password" mt="30px">
+              {' '}
+              Re-enter Password
+            </FormLabel>
+            <InputGroup>
+              <Input
+                type={showPassword ? 'text' : 'password'}
+                onChange={({ target }) => setCheckPassword(target.value)}
+                w="630px"
+                bg="white"
+              />
+              <InputRightAddon
+                children={`${showPassword ? 'Hide' : 'Show'}`}
+                onClick={() => setShowCheckPassword(!showCheckPassword)}
+              />
+            </InputGroup>
+          </FormControl>
+          <br />
+          {errorMessage && (
+            <Center width="100%">
+              <Alert status="error">
+                <AlertIcon />
+                {errorMessage}
+              </Alert>
+            </Center>
+          )}
+          <Flex className="login-buttons" direction="row" w="300px" mx="auto" mt="50px">
+            <Button onClick={handleSubmit} className="register-button" bg="blue" color="white">
+              Register
+            </Button>
+            <Spacer />
+            <Button onClick={handleGoogleSignIn} bg="white">
+              Sign Up With Google
+            </Button>
+          </Flex>
+        </Flex>
+      </VStack>
     </div>
   );
 };
