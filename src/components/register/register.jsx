@@ -168,7 +168,9 @@ const Register = ({ cookies }) => {
           <option value="volunteer">Volunteer</option>
         </select>
         <FormControl>
-          <FormLabel htmlFor="password">Password</FormLabel>
+          <FormLabel htmlFor="password" mt="30px">
+            Password
+          </FormLabel>
           <InputGroup>
             <Input
               type={showPassword ? 'text' : 'password'}
@@ -182,7 +184,10 @@ const Register = ({ cookies }) => {
           </InputGroup>
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="password"> Re-enter Password</FormLabel>
+          <FormLabel htmlFor="password" mt="30px">
+            {' '}
+            Re-enter Password
+          </FormLabel>
           <InputGroup>
             <Input
               type={showPassword ? 'text' : 'password'}
