@@ -231,6 +231,7 @@ const Register = ({ cookies }) => {
             w="200px"
             alignSelf="flex-end"
             px="10px"
+            disabled={!firstName && !lastName && !email && !password && !checkPassword}
           >
             Sign Up
           </Button>

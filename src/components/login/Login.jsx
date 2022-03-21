@@ -84,6 +84,7 @@ const Login = ({ cookies }) => {
         w="200px"
         alignSelf="flex-end"
         px="10px"
+        disabled={!email && !password}
       >
         Sign In
       </Button>
