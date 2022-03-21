@@ -73,15 +73,15 @@ const Login = ({ cookies }) => {
           />
         </InputGroup>
       </FormControl>
-      <Link mt="10px" as={ReachLink} to="/forgotpassword">
+      <Link mt="30px" as={ReachLink} to="/forgotpassword" textDecoration="underline">
         Forgot Your Password?
       </Link>
       <Button
         bg="#2BC0E3"
         color="white"
         onClick={handleSubmit}
-        // w="50px"
         mt="10px"
+        w="200px"
         alignSelf="flex-end"
         px="10px"
       >

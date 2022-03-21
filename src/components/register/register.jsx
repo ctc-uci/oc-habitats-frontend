@@ -223,15 +223,17 @@ const Register = ({ cookies }) => {
               <Text color="red">{errorMessage}</Text>
             </Center>
           )}
-          <Flex className="login-buttons" direction="row" w="300px" mx="auto" mt="50px">
-            <Button onClick={handleSubmit} className="register-button" bg="blue" color="white">
-              Register
-            </Button>
-            <Spacer />
-            <Button onClick={handleGoogleSignIn} bg="white">
-              Sign Up With Google
-            </Button>
-          </Flex>
+          <Button
+            bg="#2BC0E3"
+            color="white"
+            onClick={handleSubmit}
+            mt="10px"
+            w="200px"
+            alignSelf="flex-end"
+            px="10px"
+          >
+            Sign Up
+          </Button>
         </Flex>
       </VStack>
     </div>
