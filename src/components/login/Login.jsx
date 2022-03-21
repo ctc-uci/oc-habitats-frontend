@@ -84,7 +84,8 @@ const Login = ({ cookies }) => {
         w="200px"
         alignSelf="flex-end"
         px="10px"
-        disabled={!email && !password}
+        isDisabled={!(email && password)}
+        _hover={{ _disabled: { opacity: 0.38, cursor: 'not-allowed' } }}
       >
         Sign In
       </Button>

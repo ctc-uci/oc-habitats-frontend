@@ -231,7 +231,8 @@ const Register = ({ cookies }) => {
             w="200px"
             alignSelf="flex-end"
             px="10px"
-            disabled={!firstName && !lastName && !email && !password && !checkPassword}
+            isDisabled={!(firstName && lastName && email && password && checkPassword)}
+            _hover={{ _disabled: { opacity: 0.38, cursor: 'not-allowed' } }}
           >
             Sign Up
           </Button>
