@@ -7,7 +7,6 @@ import {
   FormLabel,
   InputGroup,
   Input,
-  InputRightElement,
   InputRightAddon,
   Button,
   Flex,

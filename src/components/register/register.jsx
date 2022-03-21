@@ -11,12 +11,9 @@ import {
   InputRightAddon,
   Button,
   Flex,
-  Link,
   Spacer,
   VStack,
   Center,
-  Alert,
-  AlertIcon,
   Text,
 } from '@chakra-ui/react';
 import { Cookies, withCookies } from '../../utils/cookie_utils';
