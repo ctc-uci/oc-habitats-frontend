@@ -7,7 +7,6 @@ import {
   FormLabel,
   InputGroup,
   Input,
-  InputRightElement,
   Heading,
   InputRightAddon,
   Button,
@@ -18,6 +17,7 @@ import {
   Center,
   Alert,
   AlertIcon,
+  Text,
 } from '@chakra-ui/react';
 import { Cookies, withCookies } from '../../utils/cookie_utils';
 import { registerWithEmailAndPassword, signInWithGoogle } from '../../utils/auth_utils';
@@ -131,7 +131,7 @@ const Register = ({ cookies }) => {
     // </Flex>
     <div>
       <VStack>
-        <Center w="100%" mt="200px" mb="50px">
+        <Center w="100%" mt="50px" mb="20px">
           <Heading size="lg">Complete Account Sign Up</Heading>
         </Center>
         <Flex
@@ -179,11 +179,11 @@ const Register = ({ cookies }) => {
           </FormControl>
           <FormLabel htmlFor="role">Role</FormLabel>
           <select id="role" onChange={e => setRole(e.target.value)} value={role} maxW="700px">
-            <option value="admin" selected>
-              Admin
-            </option>
+            <option value="admin">Admin</option>
             <option value="super-admin">Super Admin</option>
-            <option value="volunteer">Volunteer</option>
+            <option value="volunteer" selected>
+              Volunteer
+            </option>
           </select>
           <FormControl>
             <FormLabel htmlFor="password" mt="30px">
@@ -209,13 +209,13 @@ const Register = ({ cookies }) => {
             </FormLabel>
             <InputGroup>
               <Input
-                type={showPassword ? 'text' : 'password'}
+                type={showCheckPassword ? 'text' : 'password'}
                 onChange={({ target }) => setCheckPassword(target.value)}
                 w="630px"
                 bg="white"
               />
               <InputRightAddon
-                children={`${showPassword ? 'Hide' : 'Show'}`}
+                children={`${showCheckPassword ? 'Hide' : 'Show'}`}
                 onClick={() => setShowCheckPassword(!showCheckPassword)}
               />
             </InputGroup>
@@ -223,10 +223,7 @@ const Register = ({ cookies }) => {
           <br />
           {errorMessage && (
             <Center width="100%">
-              <Alert status="error">
-                <AlertIcon />
-                {errorMessage}
-              </Alert>
+              <Text color="red">{errorMessage}</Text>
             </Center>
           )}
           <Flex className="login-buttons" direction="row" w="300px" mx="auto" mt="50px">
