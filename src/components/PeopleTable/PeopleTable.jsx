@@ -86,6 +86,14 @@ const tableData = [
     active: false,
     training: false,
   },
+  {
+    name: 'Edward Elrich',
+    email: 'edward@chakra-ui.com',
+    lastUpdated: '01-03-2022',
+    assignedSegments: [],
+    active: false,
+    training: false,
+  },
 ];
 
 const FilterTable = ({ variant }) => {
