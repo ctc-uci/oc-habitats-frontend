@@ -6,7 +6,6 @@ import {
   Tbody,
   Tr,
   Th,
-  Td,
   Flex,
   Input,
   Select,
@@ -17,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import PeopleTableDescription from './PeopleTableDescription';
+import PeopleTableRow from './PeopleTableRow';
 import styles from './PeopleTable.module.css';
 
 const headerData = [
@@ -26,9 +26,66 @@ const headerData = [
 ];
 
 const tableData = [
-  { name: 'Person A', lastUpdated: '01-01-2022', assignedSegments: 'OC01' },
-  { name: 'Person B', lastUpdated: '01-02-2022', assignedSegments: 'OC02' },
-  { name: 'Person C', lastUpdated: '01-03-2022', assignedSegments: 'OC03' },
+  {
+    name: 'Alexander Adebayo',
+    email: 'alexander@chakra-ui.com',
+    lastUpdated: '01-01-2022',
+    assignedSegments: [
+      {
+        name: 'OC03',
+        description: 'Sunset Beach (19th Street to Warner Ave)',
+      },
+      {
+        name: 'OC19',
+        description: 'Seal Beach (1st Street)',
+      },
+    ],
+    active: true,
+    training: true,
+  },
+  {
+    name: 'Ophelia Santiago',
+    email: 'ophelia@chakra-ui.com',
+    lastUpdated: '01-02-2022',
+    assignedSegments: [
+      {
+        name: 'OC17',
+        description: 'Laguna Beach',
+      },
+    ],
+    active: true,
+    training: false,
+  },
+  {
+    name: 'Emily Sue',
+    email: 'emily@chakra-ui.com',
+    lastUpdated: '01-03-2022',
+    assignedSegments: [
+      {
+        name: 'OC03',
+        description: 'Sunset Beach (19th Street to Warner Ave)',
+      },
+      {
+        name: 'OC19',
+        description: 'Seal Beach (1st Street)',
+      },
+    ],
+    active: true,
+    training: true,
+  },
+  {
+    name: 'Diana D',
+    email: 'd@och.org',
+    lastUpdated: '01-03-2022',
+    assignedSegments: [
+      {
+        name: 'OC19',
+        description: 'Seal Beach (1st Street)',
+      },
+    ],
+    active: false,
+    training: false,
+  },
 ];
 
 const FilterTable = ({ variant }) => {
@@ -46,9 +103,7 @@ const FilterTable = ({ variant }) => {
               <option value="option2">Name: Z-A</option>
             </Select>
           </>
-        ) : (
-          <></>
-        )}
+        ) : null}
         <Text m="auto 10px auto 0" casing="uppercase" w="50%">
           Sort by
         </Text>
@@ -134,11 +189,7 @@ const PeopleTable = ({ variant }) => {
         </Thead>
         <Tbody>
           {tableData.map(row => (
-            <Tr key={row.name}>
-              <Td>{row.name}</Td>
-              <Td>{row.lastUpdated}</Td>
-              <Td>{row.assignedSegments}</Td>
-            </Tr>
+            <PeopleTableRow key={row.name} data={row} />
           ))}
         </Tbody>
       </Table>

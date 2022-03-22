@@ -11,6 +11,17 @@ const theme = extendTheme({
     ochOrange: '#F49923',
     ochBlack: '#231F20',
   },
+  components: {
+    Badge: {
+      variants: {
+        capitalize: props => ({
+          ...theme.components.Badge.variants.solid(props),
+          textTransform: 'capitalize',
+          width: 'min-content',
+        }),
+      },
+    },
+  },
 });
 
 export default theme;
