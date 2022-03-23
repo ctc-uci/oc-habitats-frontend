@@ -151,9 +151,9 @@ const StyledFooter = () => {
         <Flex alignItems="center">
           <Text flexShrink="0">Show rows per page: </Text>{' '}
           <Select backgroundColor="white" color="ochGrey" ml={2} w={32}>
-            {[10, 20, 30, 40, 50].map(size => (
-              <option key={size} value={size}>
-                {size}
+            {[6, 10, 20, 30].map(rowCount => (
+              <option key={rowCount} value={rowCount}>
+                {rowCount}
               </option>
             ))}
           </Select>
@@ -167,14 +167,14 @@ const StyledFooter = () => {
           </Text>
           <Tooltip label="Previous Page">
             <IconButton
-              backgroundColor="ochGrey"
+              background="transparent"
               color="white"
               icon={<ChevronLeftIcon h={6} w={6} />}
             />
           </Tooltip>
           <Tooltip label="Next Page">
             <IconButton
-              backgroundColor="ochGrey"
+              background="transparent"
               color="white"
               icon={<ChevronRightIcon h={6} w={6} />}
               ml={4}
