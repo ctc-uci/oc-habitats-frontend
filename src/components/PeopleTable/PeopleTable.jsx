@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -15,6 +15,7 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { useTable } from 'react-table';
 import PeopleTableDescription from './PeopleTableDescription';
 import PeopleTableRow from './PeopleTableRow';
 import styles from './PeopleTable.module.css';
@@ -124,20 +125,22 @@ const FilterTable = ({ variant }) => {
   );
 };
 
-const StyledHeader = () => {
-  return (
-    <Tr className={styles['table-head']}>
-      {headerData.map(header => (
-        <Th key={header.headerText} userSelect="none" color="white" bgColor="ochGrey">
+/* eslint-disable react/jsx-key */
+const StyledHeader = ({ headerGroups }) => {
+  return headerGroups.map(headerGroup => (
+    <Tr {...headerGroup.getHeaderGroupProps()} className={styles['table-head']}>
+      {headerGroup.headers.map(column => (
+        <Th {...column.getHeaderProps()} userSelect="none" color="white" bgColor="ochGrey">
           <Flex alignItems="center">
-            <p>{header.headerText}</p>
+            {column.render('Header')}
             <ChevronDownIcon ml={1} w={4} h={4} />
           </Flex>
         </Th>
       ))}
     </Tr>
-  );
+  ));
 };
+/* eslint-enable react/jsx-key */
 
 const StyledFooter = () => {
   return (
@@ -186,14 +189,34 @@ const StyledFooter = () => {
   );
 };
 
-const PeopleTable = ({ variant }) => {
+const PeopleTable = ({ variant, data }) => {
+  const columns = useMemo(() => [
+    {
+      Header: 'Name',
+      accessor: row => `${row.firstName} ${row.lastName}`,
+    },
+    {
+      Header: 'Last Updated',
+      accessor: 'temp-date',
+    },
+    {
+      Header: 'Assigned Segment(s)',
+      accessor: 'temp-value',
+    },
+  ]);
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+    columns,
+    data,
+  });
+
   return (
     <>
       <PeopleTableDescription variant={variant} />
       <FilterTable variant={variant} />
-      <Table variant="striped">
+      <Table variant="striped" {...getTableProps()}>
         <Thead>
-          <StyledHeader />
+          <StyledHeader headerGroups={headerGroups} />
         </Thead>
         <Tbody>
           {tableData.map(row => (
@@ -212,6 +235,8 @@ FilterTable.propTypes = {
 
 PeopleTable.propTypes = {
   variant: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  data: PropTypes.object.isRequired,
 };
 
 export default PeopleTable;

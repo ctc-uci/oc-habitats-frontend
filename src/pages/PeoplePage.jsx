@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { VStack, Container, Heading, Button, Flex, Spacer } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FiEdit2 } from 'react-icons/fi';
+import { OCHBackend } from '../common/utils';
 import App from '../components/Table/Table';
 import AddAccountPopup from '../components/Table/AddAccountPopup';
 import PeopleTable from '../components/PeopleTable';
 
 const PeoplePage = () => {
+  const [volunteerData, setVolunteerData] = useState([]);
+  const [adminData, setAdminData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(async () => {
+    const res = await OCHBackend.get('users/');
+
+    // Temporarily remove new schema users
+    // TODO - remove
+    const oldSchema = res?.data.filter(user => !('firebaseId' in user));
+
+    // Split admins and volunteers
+    setVolunteerData(oldSchema.filter(user => user.isAdmin === false));
+    setAdminData(oldSchema.filter(user => user.isAdmin === true));
+    setIsLoading(false);
+  }, []);
+
   return (
     <>
       <Container maxW="container.xl">
@@ -52,8 +70,9 @@ const PeoplePage = () => {
           </Heading>
           <App />
         </VStack>
-        <PeopleTable variant="volunteer" />
-        <PeopleTable variant="admin" />
+        <pre>{JSON.stringify(volunteerData, null, 2)}</pre>
+        {!isLoading && <PeopleTable variant="volunteer" data={volunteerData} />}
+        {!isLoading && <PeopleTable variant="admin" data={adminData} />}
       </Container>
     </>
   );
