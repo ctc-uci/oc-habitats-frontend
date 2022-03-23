@@ -108,6 +108,14 @@ const refreshToken = async () => {
   return null;
 };
 
+const sendInviteLink = async email => {
+  // deleted line where invite id was generated w/ nanoid()
+  // deleted line posting to NPOBackend (/adminInvite)
+  const inviteId = '';
+  const url = `http://localhost:3000/auth-email?mode=inviteUser&inviteID=${inviteId}`;
+  // deleted sendEmail() call & AdminInviteEmail render
+};
+
 /**
  * Makes requests to add user to NPO DB. Deletes user if Firebase error
  * @param {string} email
@@ -136,12 +144,15 @@ const createUserInDB = async (
       });
     } else {
       await NPOBackend.post('/users/', {
-        email,
-        userId,
+        id: userId,
         firstName,
         lastName,
+        email,
         role,
+        isActive: true,
+        isTrainee: false,
         registered: true,
+        profileImage: null,
       });
     }
   } catch (err) {
@@ -279,13 +290,13 @@ const sendPasswordReset = async email => {
  * Sends password reset to new account created with stated email
  * @param {string} email The email to create an account with
  */
-const sendInviteLink = async (email, role) => {
-  // generate a random password (not going to be used as new account will reset password)
-  const randomPassword = Math.random().toString(36).slice(-8);
-  const user = await createUserInFirebase(email, randomPassword);
-  createUserInDB(email, user.uid, role, false, null, null, randomPassword);
-  sendPasswordReset(email);
-};
+// const sendInviteLink = async (email, role) => {
+//   // generate a random password (not going to be used as new account will reset password)
+//   const randomPassword = Math.random().toString(36).slice(-8);
+//   const user = await createUserInFirebase(email, randomPassword);
+//   createUserInDB(email, user.uid, role, false, null, null, randomPassword);
+//   sendPasswordReset(email);
+// };
 
 /**
  * Completes the password reset process, given a confirmation code and new password

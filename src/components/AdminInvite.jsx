@@ -1,4 +1,16 @@
 import React, { useState } from 'react';
+import {
+  FormControl,
+  Image,
+  FormLabel,
+  InputGroup,
+  Input,
+  InputRightAddon,
+  Button,
+  Flex,
+  Link,
+  Center,
+} from '@chakra-ui/react';
 import { sendInviteLink } from '../utils/auth_utils';
 
 const AdminInvite = () => {
@@ -32,14 +44,20 @@ const AdminInvite = () => {
           placeholder="Email"
         />
         <br />
-        <input
-          type="text"
-          value={role}
-          onChange={({ target }) => setRole(target.value)}
-          placeholder="Role"
-        />
+        <FormControl>
+          <FormLabel htmlFor="role">Role</FormLabel>
+          <select id="role" onChange={e => setRole(e.target.value)} value={role} maxW="700px">
+            <option value="admin">Admin</option>
+            <option value="super-admin">Super Admin</option>
+            <option value="volunteer" selected>
+              Volunteer
+            </option>
+          </select>
+        </FormControl>
         <br />
-        <button type="submit">Send Email</button>
+        <button type="submit" onClick={handleSubmit}>
+          Send Email
+        </button>
       </form>
       {confirmationMessage && <p>{confirmationMessage}</p>}
     </div>
