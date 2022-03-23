@@ -12,22 +12,33 @@ import {
   Flex,
   Grid,
   GridItem,
+  Box,
 } from '@chakra-ui/react';
+import { useFormContext } from 'react-hook-form';
 import footNotes from './FootNotes';
 
-const Location = ({ totalBirds }) => {
+const Location = () => {
+  const { register, watch } = useFormContext();
+
+  const totalAdults = watch('totalAdults') || 0;
+  const totalFledges = watch('totalFledges') || 0;
+  const totalBirds = totalAdults + totalFledges;
+  console.log(totalBirds);
+
   const createGPS = () => {
     if (totalBirds > 4) {
-      return [...Array(4)].map((element, i) => {
+      return ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'].map((position, i) => {
         return (
           // eslint-disable-next-line react/no-array-index-key
-          <GridItem rowStart={1} key={`GPS${i}`}>
+          <GridItem key={`GPS${i}`}>
             <FormControl>
-              <FormLabel htmlFor={`latitude ${i}`}>{i ? `GPS ${i + 1}` : 'GPS'}</FormLabel>
-              <HStack w="90%">
-                <Input id={`latitude ${i}`} placeholder="000.00000" />
-                <Input id={`longitude ${i}`} placeholder="000.00000" />
-              </HStack>
+              <FormLabel>
+                {`GPS (${position})`}
+                <HStack w="100%">
+                  <Input placeholder="000.00000 N" {...register(`gps[${i}].latitude`)} />
+                  <Input placeholder="000.00000 W" {...register(`gps[${i}].longitude`)} />
+                </HStack>
+              </FormLabel>
             </FormControl>
           </GridItem>
         );
@@ -35,13 +46,13 @@ const Location = ({ totalBirds }) => {
     }
 
     return (
-      <GridItem rowStart={1} key="gps">
+      <GridItem key="gps">
         <FormControl>
           <FormLabel htmlFor="latitude">GPS</FormLabel>
           <FormLabel htmlFor="longitude" />
-          <HStack w="90%">
-            <Input id="latitude 0" placeholder="000.00000" />
-            <Input id="longitude 0" placeholder="000.00000" />
+          <HStack w="100%">
+            <Input id="latitude 0" placeholder="000.00000" {...register('gps[0].latitude')} />
+            <Input id="longitude 0" placeholder="000.00000" {...register('gps[0].longitude')} />
           </HStack>
         </FormControl>
       </GridItem>
@@ -49,23 +60,24 @@ const Location = ({ totalBirds }) => {
   };
 
   return (
-    <VStack w="100%" align="start" spacing="2em">
+    <VStack w="100%" align="start" spacing="2em" maxW="900px">
       <Heading as="h3" size="md">
         Location
       </Heading>
-      <Grid w="100%" templateColumns="repeat(4, 25%)" templateRows="repeat(1, 1fr)" rowGap={6}>
+
+      <Grid templateColumns="repeat(2, 1fr)" w="100%" gap="4">
         {createGPS()}
-        <GridItem rowStart={2}>
+        <GridItem colSpan="2">
           <FormControl>
-            <FormLabel htmlFor="cross-street">
+            <FormLabel>
               <Flex justify="space-between" aling="center">
                 Cross Street/Towers
                 <Tooltip label={footNotes.streets} fontSize="md">
                   <InfoIcon />
                 </Tooltip>
               </Flex>
+              <Input placeholder="Cross Street Names" {...register('crossStreet')} />
             </FormLabel>
-            <Input id="cross-street" placeholder="Cross Street Names" />
           </FormControl>
         </GridItem>
       </Grid>

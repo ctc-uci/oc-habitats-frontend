@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { InfoIcon } from '@chakra-ui/icons';
 import {
@@ -21,18 +21,22 @@ import {
   InputRightElement,
   Button,
 } from '@chakra-ui/react';
+import { useFormContext } from 'react-hook-form';
 import footNotes from './FootNotes';
 import options from './DropdownOptions';
 import './GeneralListedInformation.css';
 
 // component/section name not final
-const GeneralListedInformation = ({
-  speciesName,
-  setTotalAdults,
-  setTotalFledges,
-  setTotalChicks,
-}) => {
-  const [meridiem, setMeridiem] = useState('AM');
+const GeneralListedInformation = ({ speciesName }) => {
+  const { register, setValue, getValues } = useFormContext();
+  const [meridiem, setMeridiem] = useState(getValues().meridiem || 'AM');
+
+  useEffect(() => {
+    setValue('meridiem', meridiem);
+  }, [meridiem]);
+
+  console.log('values', getValues());
+  console.log(register('totalAdults'));
 
   const toggleTime = () => {
     if (meridiem === 'AM') {
@@ -53,7 +57,7 @@ const GeneralListedInformation = ({
   };
 
   return (
-    <VStack w="70%" align="start">
+    <VStack w="100%" maxW="900px" align="start">
       <HStack>
         <Heading as="h3" size="md">
           General {speciesName} Information
@@ -61,107 +65,111 @@ const GeneralListedInformation = ({
       </HStack>
       <br />
 
-      <Stack direction={['column', 'row']} w="100%" spacing="5em">
+      <Stack direction={['column', 'row']} w="100%" spacing="2em">
         <FormControl>
-          <FormLabel htmlFor="adult"># of Adults</FormLabel>
-          <NumberInput
-            id="adult"
-            onChange={e => {
-              setTotalAdults(parseInt(e, 10));
-            }}
-            defaultValue={1}
-            min={1}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
+          <FormLabel>
+            # of Adults
+            <NumberInput
+              min={1}
+              defaultValue={getValues().totalAdults}
+              onChange={val => setValue('totalAdults', parseInt(val, 10))}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </FormLabel>
         </FormControl>
 
         <FormControl>
-          <FormLabel htmlFor="children">
+          <FormLabel>
             <Flex justify="space-between" align="center">
               # of Fledges
               <Tooltip label={footNotes.fledge} fontSize="md">
                 <InfoIcon />
               </Tooltip>
             </Flex>
+            <NumberInput
+              min={0}
+              onChange={val => setValue('totalFledges', parseInt(val, 10))}
+              defaultValue={getValues().totalFledges}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
           </FormLabel>
-          <NumberInput
-            id="fledges"
-            onChange={e => {
-              setTotalFledges(parseInt(e, 10));
-            }}
-            defaultValue={0}
-            min={0}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
         </FormControl>
 
         <FormControl>
-          <FormLabel htmlFor="chicks"># of Chicks</FormLabel>
-          <NumberInput
-            id="chicks"
-            onChange={e => {
-              setTotalChicks(parseInt(e, 10));
-            }}
-            defaultValue={0}
-            min={0}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
+          <FormLabel>
+            # of Chicks
+            <NumberInput
+              min={0}
+              onChange={val => setValue('totalChicks', parseInt(val, 10))}
+              defaultValue={getValues().totalChicks}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </FormLabel>
         </FormControl>
       </Stack>
 
       <br />
 
-      <Stack direction={['column', 'row']} w="100%" spacing="5em">
+      <Stack direction={['column', 'row']} w="100%" spacing="2em">
         <FormControl>
-          <FormLabel htmlFor="time">Time</FormLabel>
-          <InputGroup>
-            <Input className="without-meridiem" id="time" defaultValue="07:00" type="time" />
-            <InputRightElement w="4.5rem">
-              <Button
-                h="2rem"
-                w="3.9rem"
-                size="sm"
-                id="meridiem"
-                value={meridiem}
-                onClick={toggleTime}
-              >
-                {meridiem}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
+          <FormLabel>
+            Time
+            <InputGroup>
+              <Input
+                className="without-meridiem"
+                defaultValue="07:00"
+                type="time"
+                {...register('time')}
+              />
+              <InputRightElement w="4.5rem">
+                <Button
+                  h="2rem"
+                  w="3.9rem"
+                  size="sm"
+                  id="meridiem"
+                  value={meridiem}
+                  onClick={toggleTime}
+                >
+                  {meridiem}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormLabel>
         </FormControl>
 
         <FormControl>
-          <FormLabel htmlFor="map">Map #</FormLabel>
-          <Input id="map" placeholder="None" />
+          <FormLabel>
+            Map #
+            <Input disabled placeholder="None" {...register('map')} />
+          </FormLabel>
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="habitat">
+          <FormLabel>
             <Flex justify="space-between" align="center">
               Habitat Decription
               <Tooltip label={footNotes.habitat} fontSize="md">
                 <InfoIcon />
               </Tooltip>
             </Flex>
+            <Select placeholder="None" {...register('habitat')}>
+              {createOptions()}
+            </Select>
           </FormLabel>
-          <Select id="habitat" placeholder="None">
-            {createOptions()}
-          </Select>
         </FormControl>
       </Stack>
     </VStack>
@@ -170,9 +178,6 @@ const GeneralListedInformation = ({
 
 GeneralListedInformation.propTypes = {
   speciesName: PropTypes.string.isRequired,
-  setTotalAdults: PropTypes.func.isRequired,
-  setTotalFledges: PropTypes.func.isRequired,
-  setTotalChicks: PropTypes.func.isRequired,
 };
 
 export default GeneralListedInformation;

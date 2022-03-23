@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { VStack, Heading, Grid, GridItem, Box, FormControl, FormLabel } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
-
 import { PropTypes } from 'prop-types';
+import { Controller, useFormContext } from 'react-hook-form';
 
 const BehaviorsSection = ({
   behaviorOptions,
@@ -13,6 +13,8 @@ const BehaviorsSection = ({
   setNesting,
 }) => {
   const title = 'Behaviors';
+
+  const { control, setValue } = useFormContext();
 
   const behaviorDropdown = behaviorOptions.map(behavior => ({
     label: behavior,
@@ -25,7 +27,7 @@ const BehaviorsSection = ({
   }));
 
   return (
-    <Box width="container.lg">
+    <Box width="100%" maxW="900px">
       <VStack spacing="2em" justify="start" align="start">
         <Heading as="h3" size="md">
           {title}
@@ -35,13 +37,17 @@ const BehaviorsSection = ({
             <FormControl>
               <FormLabel>
                 Nesting
-                <Select
-                  isMulti
-                  name="colors"
-                  options={nestingDropdown}
-                  closeMenuOnSelect={false}
-                  value={nesting}
-                  onChange={n => setNesting(n)}
+                <Controller
+                  name="nesting"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isMulti
+                      options={nestingDropdown}
+                      closeMenuOnSelect={false}
+                    />
+                  )}
                 />
               </FormLabel>
             </FormControl>
@@ -50,13 +56,17 @@ const BehaviorsSection = ({
             <FormControl>
               <FormLabel>
                 Behaviors
-                <Select
-                  isMulti
-                  name="colors"
-                  options={behaviorDropdown}
-                  closeMenuOnSelect={false}
-                  value={behaviors}
-                  onChange={b => setBehaviors(b)}
+                <Controller
+                  name="behaviors"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isMulti
+                      options={behaviorDropdown}
+                      closeMenuOnSelect={false}
+                    />
+                  )}
                 />
               </FormLabel>
             </FormControl>

@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import update from 'immutability-helper';
 import { PropTypes } from 'prop-types';
+import { useFormContext } from 'react-hook-form';
 
 const inputs = [
   '# of Male Adults',
@@ -21,30 +22,23 @@ const inputs = [
   '# of Female Chicks',
 ];
 
-const SexSection = ({ values, setValues }) => {
+const SexSection = () => {
   const title = 'Sex';
-
-  const updateValue = (value, idx) => {
-    setValues(update(values, { [idx]: { $set: parseInt(value, 10) } }));
-  };
+  const { register } = useFormContext();
 
   return (
-    <Box width="container.lg">
+    <Box width="100%" maxW="900px">
       <VStack spacing="2em" justify="start" align="start">
         <Heading as="h3" size="md">
           {title}
         </Heading>
-        <Grid templateColumns="repeat(3, 1fr)" gap={4} width="100%">
+        <Grid templateColumns="repeat(3, 1fr)" gap="2em">
           {inputs.map((input, idx) => (
             <GridItem key={input}>
               <FormControl>
                 <FormLabel>
                   {input}
-                  <Input
-                    type="number"
-                    value={values[idx]}
-                    onChange={e => updateValue(e.target.value, idx)}
-                  />
+                  <Input type="number" {...register(`sex[${idx}]`)} />
                 </FormLabel>
               </FormControl>
             </GridItem>
@@ -53,11 +47,6 @@ const SexSection = ({ values, setValues }) => {
       </VStack>
     </Box>
   );
-};
-
-SexSection.propTypes = {
-  values: PropTypes.arrayOf(PropTypes.number).isRequired,
-  setValues: PropTypes.func.isRequired,
 };
 
 export default SexSection;

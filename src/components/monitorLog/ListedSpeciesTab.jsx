@@ -1,12 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { BsPencil } from 'react-icons/bs';
 import {
   Text,
   Grid,
   GridItem,
   Container,
-  Tooltip,
-  HStack,
   Table,
   Thead,
   Tr,
@@ -25,15 +22,27 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
+  Tfoot,
+  FormControl,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  VStack,
+  Icon,
 } from '@chakra-ui/react';
+import { FiEdit2 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
-import { InfoIcon } from '@chakra-ui/icons';
+import { useFormContext, useFieldArray } from 'react-hook-form';
 import EndangeredSpeciesPopup from '../../pages/EndangeredSpeciesPopup';
 
-const ListedSpeciesTab = ({ speciesName, speciesCode }) => {
+const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data, setData] = useState([]);
   const [totals, setTotals] = useState([0, 0, 0]);
+  const { register, setValue, watch } = useFormContext();
+  const formPrefix = `listedSpecies.${tab}.`;
 
   useEffect(() => {
     setTotals(
@@ -43,83 +52,57 @@ const ListedSpeciesTab = ({ speciesName, speciesCode }) => {
     );
   }, [data]);
 
-  const addRow = useCallback(
-    formData => {
-      setData([...data, formData]);
-    },
-    [data, setData],
-  );
+  // const addRow = useCallback(
+  //   formData => {
+  //     setData([...data, formData]);
+  //   },
+  //   [data, setData],
+  // );
+
+  const openModal = () => {
+    // append({
+    //   totalAdults: 0,
+    //   totalFledges: 0,
+    //   totalChicks: 0,
+    //   timeValue: 'a',
+    //   timeMeridiem: 'PM',
+    // });
+    onOpen();
+  };
+
+  const addRow = formData => {
+    // append(formData);
+  };
 
   return (
     <Container maxW="100vw">
       <Text fontWeight="600" fontSize="2xl">
         {speciesName}s
       </Text>
-      <Grid marginTop="20px" minH="200px" templateColumns="repeat(3, 1fr)" gap="200">
-        <GridItem>
-          <HStack marginBottom="5px">
-            <Text fontWeight="600" fontSize="xl">
-              Total {speciesName}s
-            </Text>
-            <Tooltip label="Test" fontSize="md">
-              <InfoIcon boxSize={5} />
-            </Tooltip>
-          </HStack>
-          <Box overflow="hidden" border="1px solid darkgray" rounded="md">
-            <Table>
-              <Thead bg="#F7FAFC">
-                <Tr>
-                  <Th>Adults</Th>
-                  <Th>Fledges</Th>
-                  <Th>Chicks</Th>
-                </Tr>
-              </Thead>
-              <Tbody size="xs">
-                <Tr>
-                  <Td>{totals[0]}</Td>
-                  <Td>{totals[1]}</Td>
-                  <Td>{totals[2]}</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </Box>
-          <Box marginTop="10px">
-            <Text as="em">
-              Note: This table is not meant to be edited. It shows the total from the “{speciesName}{' '}
-              Tracker” table.
-            </Text>
-          </Box>
-        </GridItem>
-        <GridItem colSpan={2}>
-          <HStack marginBottom="5px">
-            <Text fontWeight="600" fontSize="xl">
-              {speciesName} Tracker
-            </Text>
-          </HStack>
+      <Grid marginTop="20px" minH="200px" templateColumns="repeat(6, 1fr)" gap="150">
+        <GridItem colSpan="3">
           <Box overflow="hidden" border="1px solid darkgray" rounded="md">
             <Accordion as={Table} allowToggle width="100%" reduceMotion>
-              <Thead bg="#F7FAFC">
+              <Thead bg="ochGrey">
                 <tr>
                   <Th width="0" />
-                  <Th>Group</Th>
-                  <Th>Adults</Th>
-                  <Th>Fledges</Th>
-                  <Th>Chicks</Th>
+                  <Th color="#FDFDFD">Map #</Th>
+                  <Th color="#FDFDFD">Adults</Th>
+                  <Th color="#FDFDFD">Fledges</Th>
+                  <Th color="#FDFDFD">Chicks</Th>
                   <Th width="0" />
                 </tr>
               </Thead>
               {data.map((row, n) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <AccordionItem key={n} as={Tbody}>
+                <AccordionItem key={row.id} as={Tbody}>
                   {({ isExpanded }) => (
                     <>
                       <Tr>
                         <Td width="0" borderBottomWidth="0">
-                          <IconButton icon={<BsPencil />} />
+                          <IconButton icon={<Icon as={FiEdit2} w="1.5em" h="1.5em" />} />
                         </Td>
-                        <Td borderBottomWidth="0">
-                          {speciesCode} {n + 1}
-                        </Td>
+                        <Td borderBottomWidth="0">{n + 1}</Td>
                         <Td borderBottomWidth="0">{row.totalAdults}</Td>
                         <Td borderBottomWidth="0">{row.totalFledges}</Td>
                         <Td borderBottomWidth="0">{row.totalChicks}</Td>
@@ -139,7 +122,7 @@ const ListedSpeciesTab = ({ speciesName, speciesCode }) => {
                                     <Text fontWeight="500">Time</Text>
                                   </Td>
                                   <Td border="0" isNumeric>
-                                    {row.time.value} {row.time.meridiem}
+                                    {row.timeValue} {row.timeMeridiem}
                                   </Td>
                                 </Tr>
                                 <Tr>
@@ -155,7 +138,7 @@ const ListedSpeciesTab = ({ speciesName, speciesCode }) => {
                                     <Text fontWeight="500">GPS</Text>
                                   </Td>
                                   <Td border="0" isNumeric>
-                                    {row.gps[0].latitude}, {row.gps[0].longitude}
+                                    {/* {row.gps[0].latitude}, {row.gps[0].longitude} */}
                                   </Td>
                                 </Tr>
                                 <Tr>
@@ -163,7 +146,7 @@ const ListedSpeciesTab = ({ speciesName, speciesCode }) => {
                                     <Text fontWeight="500">Cross Street/Towers</Text>
                                   </Td>
                                   <Td border="0" isNumeric>
-                                    {row['cross-street']}
+                                    {/* {row['cross-street']} */}
                                   </Td>
                                 </Tr>
                                 <Tr>
@@ -171,7 +154,7 @@ const ListedSpeciesTab = ({ speciesName, speciesCode }) => {
                                     <Text fontWeight="500">Habitat Description</Text>
                                   </Td>
                                   <Td border="0" isNumeric>
-                                    {row.habitat}
+                                    {/* {row.habitat} */}
                                   </Td>
                                 </Tr>
                               </Tbody>
@@ -183,10 +166,28 @@ const ListedSpeciesTab = ({ speciesName, speciesCode }) => {
                   )}
                 </AccordionItem>
               ))}
+              <Tfoot bg="ochGrey">
+                <tr>
+                  <Th borderBottom="0" color="#FDFDFD">
+                    Total
+                  </Th>
+                  <Th borderBottom="0" />
+                  <Th borderBottom="0" color="#FDFDFD">
+                    {totals[0]}
+                  </Th>
+                  <Th borderBottom="0" color="#FDFDFD">
+                    {totals[1]}
+                  </Th>
+                  <Th borderBottom="0" color="#FDFDFD">
+                    {totals[2]}
+                  </Th>
+                  <Th width="0" />
+                </tr>
+              </Tfoot>
             </Accordion>
           </Box>
-          <Button onClick={onOpen} width="100%" marginTop="10px" colorScheme="cyan">
-            Add New Row +
+          <Button onClick={openModal} width="100%" marginTop="10px" colorScheme="cyan">
+            Add Sighted {speciesCode} +
           </Button>
           <Modal size="full" isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
@@ -199,12 +200,42 @@ const ListedSpeciesTab = ({ speciesName, speciesCode }) => {
             </ModalContent>
           </Modal>
         </GridItem>
+        <GridItem colSpan="2">
+          <VStack alignItems="start">
+            <Text fontWeight="600" fontSize="xl">
+              Injured {speciesName}s
+            </Text>
+            <Text>To report a sick or injured bird, contact the WWCC at 714.374.5587</Text>
+            <FormControl>
+              <NumberInput
+                ref={register(`${formPrefix}injuredCount`)}
+                onChange={val => setValue(`${formPrefix}injuredCount`, val)}
+                defaultValue={0}
+                min={0}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </FormControl>
+            <Text fontWeight="600" fontSize="xl">
+              Marked Map (PNG or JPEG Only)
+            </Text>
+            <Text>
+              Provide a map with the locations of sighted Western Snowy Plovers marked with Map #
+              according to the Tracker table.
+            </Text>
+          </VStack>
+        </GridItem>
       </Grid>
     </Container>
   );
 };
 
 ListedSpeciesTab.propTypes = {
+  tab: PropTypes.number.isRequired,
   speciesName: PropTypes.string.isRequired,
   speciesCode: PropTypes.string.isRequired,
 };
