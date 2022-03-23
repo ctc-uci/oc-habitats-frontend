@@ -74,7 +74,7 @@ const AccountPage = props => {
   const toggleRightPassword = () => {
     if (rightPasswordType === 'password') {
       setRightPasswordType('text');
-      setRightButtonText('hide');
+      setRightButtonText('Hide');
     } else {
       setRightPasswordType('password');
       setRightButtonText('Show');
