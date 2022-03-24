@@ -1,5 +1,11 @@
+/* eslint-disable no-console */
+/* eslint-disable react/react-in-jsx-scope */
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+import moment from 'moment';
+
 import { initializeApp } from 'firebase/app';
+
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -13,8 +19,13 @@ import {
   confirmPasswordReset,
   applyActionCode,
 } from 'firebase/auth';
+
 import { useNavigate } from 'react-router-dom';
+import { renderEmail } from 'react-html-email';
+
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
+
+import AdminInviteEmail from '../components/Email/EmailTemplates/AdminInviteEmail';
 
 import AUTH_ROLES from './auth_config';
 
@@ -106,14 +117,6 @@ const refreshToken = async () => {
     return idToken;
   }
   return null;
-};
-
-const sendInviteLink = async email => {
-  // deleted line where invite id was generated w/ nanoid()
-  // deleted line posting to NPOBackend (/adminInvite)
-  const inviteId = '';
-  const url = `http://localhost:3000/auth-email?mode=inviteUser&inviteID=${inviteId}`;
-  // deleted sendEmail() call & AdminInviteEmail render
 };
 
 /**
@@ -265,17 +268,14 @@ const createUser = async (email, password, firstName, lastName, role) => {
  * @param {hook} navigate An instance of the useNavigate hook from react-router-dom
  * @param {string} redirectPath path to redirect users once logged in
  */
-const registerWithEmailAndPassword = async (
-  email,
-  password,
-  firstName,
-  lastName,
-  role,
-  navigate,
-  redirectPath,
-) => {
-  await createUser(email, password, firstName, lastName, role);
-  navigate(redirectPath);
+const registerWithEmailAndPassword = async (firstName, lastName, email, password) => {
+  await NPOBackend.post('/users/create', {
+    firstName,
+    lastName,
+    email,
+    password,
+  });
+  await NPOBackend.delete(`/adminInvite/${email}`);
 };
 
 /**
@@ -290,18 +290,11 @@ const sendPasswordReset = async email => {
  * Sends password reset to new account created with stated email
  * @param {string} email The email to create an account with
  */
-// const sendInviteLink = async (email, role) => {
-//   // generate a random password (not going to be used as new account will reset password)
-//   const randomPassword = Math.random().toString(36).slice(-8);
-//   const user = await createUserInFirebase(email, randomPassword);
-//   createUserInDB(email, user.uid, role, false, null, null, randomPassword);
-//   sendPasswordReset(email);
-// };
 
 /**
  * Completes the password reset process, given a confirmation code and new password
  * @param {string} code The confirmation code sent via email to the user
- * @param {string} newPassowrd The new password
+ * @param {string} newPassword The new password
  */
 const confirmNewPassword = async (code, newPassword) => {
   await confirmPasswordReset(auth, code, newPassword);
@@ -380,6 +373,31 @@ const addAuthInterceptor = axiosInstance => {
   );
 };
 
+// -------- ADMIN INVITE ROUTES START HERE ------------------------------------------
+
+const sendEmail = (email, emailTemplate) => {
+  NPOBackend.post('/nodemailer/send', {
+    email,
+    messageHtml: renderEmail(emailTemplate),
+  });
+};
+
+const initiateInviteProcess = (firstName, lastName, email, role) => {
+  const id = uuidv4();
+  const url = `localhost:3000/adminInvite/${id}`;
+  const expireDate = moment().add(1, 'days');
+  NPOBackend.post('/adminInvite/', {
+    id,
+    firstName,
+    lastName,
+    email,
+    role,
+    expireDate,
+  });
+
+  sendEmail(email, <AdminInviteEmail name={`${firstName} ${lastName}`} url={url} />);
+};
+
 // to be moved where NPOBackend is declared
 addAuthInterceptor(NPOBackend);
 
@@ -395,8 +413,8 @@ export {
   logout,
   refreshToken,
   getCurrentUser,
-  sendInviteLink,
   confirmNewPassword,
   confirmVerifyEmail,
   finishGoogleLoginRegistration,
+  initiateInviteProcess,
 };
