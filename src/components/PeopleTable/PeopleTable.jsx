@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -20,10 +20,20 @@ import PeopleTableDescription from './PeopleTableDescription';
 import PeopleTableRow from './PeopleTableRow';
 import styles from './PeopleTable.module.css';
 
+const rowsPerPageSelect = [6, 10, 20, 30];
 const headerData = [
-  { headerText: 'Name' },
-  { headerText: 'Last Updated' },
-  { headerText: 'Assigned Segment(s)' },
+  {
+    Header: 'Name',
+    accessor: row => `${row.firstName} ${row.lastName}`,
+  },
+  {
+    Header: 'Last Updated',
+    accessor: 'temp-date',
+  },
+  {
+    Header: 'Assigned Segment(s)',
+    accessor: 'temp-value',
+  },
 ];
 
 const tableData = [
@@ -142,7 +152,12 @@ const StyledHeader = ({ headerGroups }) => {
 };
 /* eslint-enable react/jsx-key */
 
-const StyledFooter = () => {
+const StyledFooter = ({ rowCount, pageIndex, rowsPerPage, setRowsPerPage }) => {
+  const rowText = () => {
+    const left = pageIndex === 0 ? 1 : (pageIndex + 1) * rowsPerPage;
+    const right = Math.min(rowCount, rowsPerPage * (pageIndex + 1));
+    return `${left}-${right}`;
+  };
   return (
     <Box
       className={styles['footer-container']}
@@ -153,10 +168,19 @@ const StyledFooter = () => {
       <Flex justifyContent="space-between" m={4} alignItems="center">
         <Flex alignItems="center">
           <Text flexShrink="0">Show rows per page: </Text>{' '}
-          <Select backgroundColor="white" color="ochGrey" ml={2} w={32}>
-            {[6, 10, 20, 30].map(rowCount => (
-              <option key={rowCount} value={rowCount}>
-                {rowCount}
+          <Select
+            backgroundColor="white"
+            color="ochGrey"
+            ml={2}
+            w={32}
+            value={rowsPerPage}
+            onChange={e => {
+              setRowsPerPage(Number(e.target.value));
+            }}
+          >
+            {rowsPerPageSelect.map(rowVal => (
+              <option key={rowVal} value={rowVal}>
+                {rowVal}
               </option>
             ))}
           </Select>
@@ -164,8 +188,10 @@ const StyledFooter = () => {
 
         <Flex alignItems="center">
           <Text flexShrink="0" mr={8}>
-            <Text fontWeight="bold" as="span">
-              X of X
+            <Text as="span">{rowText()}</Text>
+            <Text as="span" color="#cbd5e0">
+              {' '}
+              of {rowCount}
             </Text>
           </Text>
           <Tooltip label="Previous Page">
@@ -190,24 +216,22 @@ const StyledFooter = () => {
 };
 
 const PeopleTable = ({ variant, data }) => {
-  const columns = useMemo(() => [
-    {
-      Header: 'Name',
-      accessor: row => `${row.firstName} ${row.lastName}`,
-    },
-    {
-      Header: 'Last Updated',
-      accessor: 'temp-date',
-    },
-    {
-      Header: 'Assigned Segment(s)',
-      accessor: 'temp-value',
-    },
-  ]);
+  const columns = useMemo(() => headerData);
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageSelect[0]);
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    state: { pageIndex, pageSize },
+  } = useTable({
     columns,
     data,
+    initialState: {
+      pageIndex: 0,
+    },
   });
 
   return (
@@ -224,13 +248,25 @@ const PeopleTable = ({ variant, data }) => {
           ))}
         </Tbody>
       </Table>
-      <StyledFooter />
+      <StyledFooter
+        rowCount={rows.length}
+        pageIndex={pageIndex}
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
+      />
     </>
   );
 };
 
 FilterTable.propTypes = {
   variant: PropTypes.string.isRequired,
+};
+
+StyledFooter.propTypes = {
+  rowCount: PropTypes.number.isRequired,
+  pageIndex: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+  setRowsPerPage: PropTypes.func.isRequired,
 };
 
 PeopleTable.propTypes = {

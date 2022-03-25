@@ -21,7 +21,7 @@ const PeoplePage = () => {
     const oldSchema = res?.data.filter(user => !('firebaseId' in user));
 
     // Split admins and volunteers
-    setVolunteerData(oldSchema.filter(user => user.isAdmin === false));
+    setVolunteerData(oldSchema.filter(user => user.isAdmin === false || user.isAdmin === true));
     setAdminData(oldSchema.filter(user => user.isAdmin === true));
     setIsLoading(false);
   }, []);
@@ -70,7 +70,7 @@ const PeoplePage = () => {
           </Heading>
           <App />
         </VStack>
-        <pre>{JSON.stringify(volunteerData, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(volunteerData, null, 2)}</pre> */}
         {!isLoading && <PeopleTable variant="volunteer" data={volunteerData} />}
         {!isLoading && <PeopleTable variant="admin" data={adminData} />}
       </Container>
