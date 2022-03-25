@@ -16,7 +16,6 @@ import {
   MenuItem,
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import styles from './PeopleTable.module.css';
 
 const NameColumn = ({ data }) => {
   return (
@@ -47,11 +46,12 @@ const SegmentColumn = ({ data }) => {
   return (
     <HStack w="100%" justifyContent="space-between">
       <VStack align="normal">
-        {data?.assignedSegments.map((segment, i) => (
+        {data?.segments.map((segment, i) => (
           // eslint-disable-next-line react/no-array-index-key
           <HStack key={i} alignItems="baseline">
-            <Text>{segment.name}</Text>
-            <Text color="#718096">{segment.description}</Text>
+            <Text>{segment}</Text>
+            {/* <Text>{segment.name}</Text>
+            <Text color="#718096">{segment.description}</Text> */}
           </HStack>
         ))}
       </VStack>
@@ -64,17 +64,17 @@ const SegmentColumn = ({ data }) => {
 
 const editAccountInfo = ({ data }) => {
   // eslint-disable-next-line no-console
-  console.log('Editing account info');
+  console.log(`Editing account info ${data}`);
 };
 
 const editSegmentAssignment = ({ data }) => {
   // eslint-disable-next-line no-console
-  console.log('Editing segment assignment');
+  console.log(`Editing segment assignment ${data}`);
 };
 
 const clearSegmentAssignment = ({ data }) => {
   // eslint-disable-next-line no-console
-  console.log('Clear segment assignment');
+  console.log(`Clear segment assignment ${data}`);
 };
 
 const RowButton = ({ data }) => {
@@ -94,19 +94,17 @@ const RowButton = ({ data }) => {
   );
 };
 
-const PeopleTableRow = ({ data }) => {
+const PeopleTableRow = ({ row }) => {
   return (
-    <>
-      <Tr key={data.name} fontSize="14px">
-        <Td>
-          <NameColumn data={data} />
-        </Td>
-        <Td fontStyle="italic">{data.lastUpdated}</Td>
-        <Td>
-          <SegmentColumn data={data} />
-        </Td>
-      </Tr>
-    </>
+    <Tr {...row.getRowProps()}>
+      {row.cells.map(cell => {
+        return (
+          <Td fontSize="14px" key={row.id} {...cell.getCellProps()}>
+            {cell.render('Cell')}
+          </Td>
+        );
+      })}
+    </Tr>
   );
 };
 
@@ -123,7 +121,7 @@ RowButton.propTypes = {
 };
 
 PeopleTableRow.propTypes = {
-  data: PropTypes.string.isRequired,
+  row: PropTypes.string.isRequired,
 };
 
-export default PeopleTableRow;
+export { PeopleTableRow, NameColumn, SegmentColumn };

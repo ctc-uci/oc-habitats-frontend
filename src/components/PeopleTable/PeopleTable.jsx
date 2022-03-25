@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -15,97 +15,45 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
-import { useTable } from 'react-table';
+import {
+  useTable,
+  usePagination,
+  useFilters,
+  useSortBy,
+  useRowSelect,
+  useGlobalFilter,
+} from 'react-table';
 import PeopleTableDescription from './PeopleTableDescription';
-import PeopleTableRow from './PeopleTableRow';
+import { PeopleTableRow, NameColumn, SegmentColumn } from './PeopleTableRow';
 import styles from './PeopleTable.module.css';
 
 const rowsPerPageSelect = [6, 10, 20, 30];
-const headerData = [
+/* eslint-disable react/destructuring-assignment, react/prop-types */
+const cellStructure = [
   {
     Header: 'Name',
-    accessor: row => `${row.firstName} ${row.lastName}`,
+    accessor: d => ({
+      name: `${d.firstName} ${d.lastName}`,
+      email: d.email,
+      training: d.isTrainee,
+    }),
+    Cell: props => <NameColumn data={props.value} />,
   },
   {
     Header: 'Last Updated',
     accessor: 'temp-date',
+    Cell: <p>XX-XX-20XX</p>,
   },
   {
     Header: 'Assigned Segment(s)',
-    accessor: 'temp-value',
+    accessor: d => ({
+      segments: d.segments,
+      id: 0,
+    }),
+    Cell: props => <SegmentColumn data={props.value} />,
   },
 ];
-
-const tableData = [
-  {
-    name: 'Alexander Adebayo',
-    email: 'alexander@chakra-ui.com',
-    lastUpdated: '01-01-2022',
-    assignedSegments: [
-      {
-        name: 'OC03',
-        description: 'Sunset Beach (19th Street to Warner Ave)',
-      },
-      {
-        name: 'OC19',
-        description: 'Seal Beach (1st Street)',
-      },
-    ],
-    active: true,
-    training: true,
-  },
-  {
-    name: 'Ophelia Santiago',
-    email: 'ophelia@chakra-ui.com',
-    lastUpdated: '01-02-2022',
-    assignedSegments: [
-      {
-        name: 'OC17',
-        description: 'Laguna Beach',
-      },
-    ],
-    active: true,
-    training: false,
-  },
-  {
-    name: 'Emily Sue',
-    email: 'emily@chakra-ui.com',
-    lastUpdated: '01-03-2022',
-    assignedSegments: [
-      {
-        name: 'OC03',
-        description: 'Sunset Beach (19th Street to Warner Ave)',
-      },
-      {
-        name: 'OC19',
-        description: 'Seal Beach (1st Street)',
-      },
-    ],
-    active: true,
-    training: true,
-  },
-  {
-    name: 'Diana D',
-    email: 'd@och.org',
-    lastUpdated: '01-03-2022',
-    assignedSegments: [
-      {
-        name: 'OC19',
-        description: 'Seal Beach (1st Street)',
-      },
-    ],
-    active: false,
-    training: false,
-  },
-  {
-    name: 'Edward Elrich',
-    email: 'edward@chakra-ui.com',
-    lastUpdated: '01-03-2022',
-    assignedSegments: [],
-    active: false,
-    training: false,
-  },
-];
+/* eslint-enable react/destructuring-assignment, react/prop-types */
 
 const FilterTable = ({ variant }) => {
   return (
@@ -138,7 +86,7 @@ const FilterTable = ({ variant }) => {
 /* eslint-disable react/jsx-key */
 const StyledHeader = ({ headerGroups }) => {
   return headerGroups.map(headerGroup => (
-    <Tr {...headerGroup.getHeaderGroupProps()} className={styles['table-head']}>
+    <Tr className={styles['table-head']} {...headerGroup.getHeaderGroupProps()}>
       {headerGroup.headers.map(column => (
         <Th {...column.getHeaderProps()} userSelect="none" color="white" bgColor="ochGrey">
           <Flex alignItems="center">
@@ -152,10 +100,10 @@ const StyledHeader = ({ headerGroups }) => {
 };
 /* eslint-enable react/jsx-key */
 
-const StyledFooter = ({ rowCount, pageIndex, rowsPerPage, setRowsPerPage }) => {
+const StyledFooter = ({ rowCount, pageIndex, pageSize, setPageSize }) => {
   const rowText = () => {
-    const left = pageIndex === 0 ? 1 : (pageIndex + 1) * rowsPerPage;
-    const right = Math.min(rowCount, rowsPerPage * (pageIndex + 1));
+    const left = pageIndex === 0 ? 1 : (pageIndex + 1) * pageSize;
+    const right = Math.min(rowCount, pageSize * (pageIndex + 1));
     return `${left}-${right}`;
   };
   return (
@@ -173,9 +121,9 @@ const StyledFooter = ({ rowCount, pageIndex, rowsPerPage, setRowsPerPage }) => {
             color="ochGrey"
             ml={2}
             w={32}
-            value={rowsPerPage}
+            value={pageSize}
             onChange={e => {
-              setRowsPerPage(Number(e.target.value));
+              setPageSize(Number(e.target.value));
             }}
           >
             {rowsPerPageSelect.map(rowVal => (
@@ -215,14 +163,17 @@ const StyledFooter = ({ rowCount, pageIndex, rowsPerPage, setRowsPerPage }) => {
   );
 };
 
-const PeopleTable = ({ variant, data }) => {
-  const columns = useMemo(() => headerData);
-  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageSelect[0]);
+const PeopleTable = ({ variant, peopleData }) => {
+  const columns = useMemo(() => cellStructure, []);
+  // Memoizing data
+  const data = useMemo(() => peopleData, []);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
+    page,
+    setPageSize,
     rows,
     prepareRow,
     state: { pageIndex, pageSize },
@@ -231,7 +182,13 @@ const PeopleTable = ({ variant, data }) => {
     data,
     initialState: {
       pageIndex: 0,
+      pageSize: 6,
     },
+    useFilters,
+    useGlobalFilter,
+    useSortBy,
+    usePagination,
+    useRowSelect,
   });
 
   return (
@@ -242,17 +199,18 @@ const PeopleTable = ({ variant, data }) => {
         <Thead>
           <StyledHeader headerGroups={headerGroups} />
         </Thead>
-        <Tbody>
-          {tableData.map(row => (
-            <PeopleTableRow key={row.name} data={row} />
-          ))}
+        <Tbody {...getTableBodyProps()}>
+          {rows?.map(row => {
+            prepareRow(row);
+            return <PeopleTableRow key={row.name} row={row} />;
+          })}
         </Tbody>
       </Table>
       <StyledFooter
         rowCount={rows.length}
         pageIndex={pageIndex}
-        rowsPerPage={rowsPerPage}
-        setRowsPerPage={setRowsPerPage}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
       />
     </>
   );
@@ -265,14 +223,14 @@ FilterTable.propTypes = {
 StyledFooter.propTypes = {
   rowCount: PropTypes.number.isRequired,
   pageIndex: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired,
-  setRowsPerPage: PropTypes.func.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  setPageSize: PropTypes.func.isRequired,
 };
 
 PeopleTable.propTypes = {
   variant: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  data: PropTypes.object.isRequired,
+  peopleData: PropTypes.object.isRequired,
 };
 
 export default PeopleTable;
