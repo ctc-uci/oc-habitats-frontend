@@ -115,9 +115,9 @@ const StyledHeader = ({ headerGroups, loading }) => {
 };
 /* eslint-enable react/jsx-key */
 
-const StyledFooter = ({ rowCount, pageIndex, pageSize, setPageSize }) => {
+const StyledFooter = ({ rowCount, pageIndex, pageSize, setPageSize, pageControl }) => {
   const rowText = () => {
-    const left = pageIndex === 0 ? 1 : (pageIndex + 1) * pageSize;
+    const left = pageIndex === 0 ? 1 : pageIndex * pageSize + 1;
     const right = Math.min(rowCount, pageSize * (pageIndex + 1));
     return `${left}-${right}`;
   };
@@ -162,6 +162,8 @@ const StyledFooter = ({ rowCount, pageIndex, pageSize, setPageSize }) => {
               background="transparent"
               color="white"
               icon={<ChevronLeftIcon h={6} w={6} />}
+              isDisabled={!pageControl.canPreviousPage}
+              onClick={() => pageControl.previousPage()}
             />
           </Tooltip>
           <Tooltip label="Next Page">
@@ -171,6 +173,8 @@ const StyledFooter = ({ rowCount, pageIndex, pageSize, setPageSize }) => {
               color="white"
               icon={<ChevronRightIcon h={6} w={6} />}
               ml={4}
+              isDisabled={!pageControl.canNextPage}
+              onClick={() => pageControl.nextPage()}
             />
           </Tooltip>
         </Flex>
@@ -199,24 +203,29 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
+    prepareRow,
     page,
+    canPreviousPage,
+    canNextPage,
+    nextPage,
+    previousPage,
     setPageSize,
     rows,
-    prepareRow,
     state: { pageIndex, pageSize },
-  } = useTable({
-    columns,
-    data,
-    initialState: {
-      pageIndex: 0,
-      pageSize: 6,
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        pageSize: rowsPerPageSelect[0],
+      },
     },
     useFilters,
     useGlobalFilter,
     useSortBy,
     usePagination,
     useRowSelect,
-  });
+  );
 
   return (
     <>
@@ -230,7 +239,7 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
           {loading ? (
             <LoadingRow />
           ) : (
-            rows?.map(row => {
+            page?.map(row => {
               prepareRow(row);
               return <PeopleTableRow key={row.name} row={row} />;
             })
@@ -242,6 +251,7 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
         pageIndex={pageIndex}
         pageSize={pageSize}
         setPageSize={setPageSize}
+        pageControl={{ nextPage, previousPage, canNextPage, canPreviousPage }}
       />
     </>
   );
@@ -264,6 +274,8 @@ StyledFooter.propTypes = {
   pageIndex: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   setPageSize: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  pageControl: PropTypes.object.isRequired,
 };
 
 PeopleTable.propTypes = {
