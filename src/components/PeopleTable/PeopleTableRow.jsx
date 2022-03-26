@@ -17,26 +17,42 @@ import {
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
+const StyledBadge = ({ bgColor, textColor, text }) => (
+  <Badge
+    variant="capitalize"
+    bgColor={bgColor}
+    textColor={textColor}
+    fontWeight="normal"
+    fontSize="12px"
+    alignSelf="stretch"
+    borderRadius="6px"
+    padding="2px 8px"
+  >
+    {text}
+  </Badge>
+);
+
 const NameColumn = ({ data }) => {
+  const badgeContent = () => {
+    // if (!data.registered) {
+    //   return <StyledBadge color="ochBlue" text="Account Pending" />;
+    // }
+    if (!data.isActive) {
+      return <StyledBadge bgColor="gray.300" textColor="black" text="Inactive" />;
+    }
+    if (data.isTrainee) {
+      return <StyledBadge bgColor="orange.500" textColor="white" text="In-Training" />;
+    }
+    return null;
+  };
+
   return (
     <Flex w="284px" h="72px" gap="12px" alignItems="center">
       <Avatar size="md" name={data.name} src="something" />
       <VStack alignItems="flex-start">
         <Text>{data.name}</Text>
         <Text color="gray.500">{data.email}</Text>
-        {data.isTrainee ? (
-          <Badge
-            className="training-badge"
-            variant="capitalize"
-            bgColor="ochOrange"
-            fontSize="12px"
-            alignSelf="stretch"
-            borderRadius="6px"
-            padding="2px 8px"
-          >
-            In-Training
-          </Badge>
-        ) : null}
+        {badgeContent()}
       </VStack>
     </Flex>
   );
@@ -105,6 +121,12 @@ const PeopleTableRow = ({ row }) => {
       })}
     </Tr>
   );
+};
+
+StyledBadge.propTypes = {
+  bgColor: PropTypes.string.isRequired,
+  textColor: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
 };
 
 NameColumn.propTypes = {

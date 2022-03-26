@@ -6,6 +6,12 @@ import { OCHBackend } from '../common/utils';
 import AddAccountPopup from '../components/Table/AddAccountPopup';
 import PeopleTable from '../components/PeopleTable';
 
+// TODO:
+// - Update to new schema:
+//  - Fetching/filtering users
+//  - Registered badge
+//  - Last updated column
+
 const PeoplePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [volunteerData, setVolunteerData] = useState([]);

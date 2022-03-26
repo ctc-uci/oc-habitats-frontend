@@ -39,7 +39,9 @@ const cellStructure = [
     accessor: d => ({
       name: `${d.firstName} ${d.lastName}`,
       email: d.email,
+      registered: d.registered,
       isTrainee: d.isTrainee,
+      isActive: d.isActive,
     }),
     Cell: props => <NameColumn data={props.value} />,
   },
