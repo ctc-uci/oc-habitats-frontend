@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Table,
   Thead,
   Tbody,
-  Tr,
   Th,
+  Tr,
   Flex,
   Input,
   Select,
@@ -13,6 +13,8 @@ import {
   Tooltip,
   IconButton,
   Box,
+  Spinner,
+  VStack,
 } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import {
@@ -165,10 +167,21 @@ const StyledFooter = ({ rowCount, pageIndex, pageSize, setPageSize }) => {
   );
 };
 
-const PeopleTable = ({ variant, peopleData, segments }) => {
+const LoadingRow = () => (
+  <Tr>
+    <td colSpan={3}>
+      <VStack justifyContent="center" alignContent="center" margin="50px">
+        <Text fontWeight="bold">Loading</Text>
+        <Spinner size="sm" />
+      </VStack>
+    </td>
+  </Tr>
+);
+
+const PeopleTable = ({ variant, peopleData, segments, loading }) => {
   const columns = useMemo(() => cellStructure, []);
   // Memoizing data
-  const data = useMemo(() => peopleData, []);
+  const data = useMemo(() => peopleData, [loading]);
 
   const {
     getTableProps,
@@ -202,10 +215,14 @@ const PeopleTable = ({ variant, peopleData, segments }) => {
           <StyledHeader headerGroups={headerGroups} />
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          {rows?.map(row => {
-            prepareRow(row);
-            return <PeopleTableRow key={row.name} row={row} />;
-          })}
+          {loading ? (
+            <LoadingRow />
+          ) : (
+            rows?.map(row => {
+              prepareRow(row);
+              return <PeopleTableRow key={row.name} row={row} />;
+            })
+          )}
         </Tbody>
       </Table>
       <StyledFooter
@@ -233,6 +250,7 @@ StyledFooter.propTypes = {
 
 PeopleTable.propTypes = {
   variant: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   peopleData: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types

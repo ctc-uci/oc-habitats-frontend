@@ -8,7 +8,6 @@
 .table-head th:last-child {
   border-radius:0 10px 0 0;
 }
-
 .footer-container {
   overflow-y: auto;
   min-width: 900px;

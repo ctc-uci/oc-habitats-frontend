@@ -52,10 +52,13 @@ const PeoplePage = () => {
         </Flex>
       </Flex>
       {/* <pre>{JSON.stringify(volunteerData, null, 2)}</pre> */}
-      {!isLoading && (
-        <PeopleTable variant="volunteer" peopleData={volunteerData} segments={segments} />
-      )}
-      {!isLoading && <PeopleTable variant="admin" peopleData={adminData} segments={segments} />}
+      <PeopleTable
+        variant="volunteer"
+        peopleData={volunteerData}
+        segments={segments}
+        loading={isLoading}
+      />
+      <PeopleTable variant="admin" peopleData={adminData} segments={segments} loading={isLoading} />
     </Container>
   );
 };
