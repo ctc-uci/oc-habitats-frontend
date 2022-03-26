@@ -23,7 +23,7 @@ const NameColumn = ({ data }) => {
       <Avatar size="md" name={data.name} src="something" />
       <VStack alignItems="flex-start">
         <Text>{data.name}</Text>
-        <Text color="#718096">{data.email}</Text>
+        <Text color="gray.500">{data.email}</Text>
         {data.isTrainee ? (
           <Badge
             className="training-badge"
@@ -50,7 +50,7 @@ const SegmentColumn = ({ data }) => {
           // eslint-disable-next-line react/no-array-index-key
           <HStack key={i} alignItems="baseline">
             <Text>{segment.name}</Text>
-            <Text color="#718096">{segment.description}</Text>
+            <Text color="gray.500">{segment.description}</Text>
           </HStack>
         ))}
       </VStack>
@@ -85,7 +85,7 @@ const RowButton = ({ data }) => {
       <MenuList>
         <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>
         <MenuItem onClick={() => editSegmentAssignment(data)}>Edit Segment Assignment(s)</MenuItem>
-        <MenuItem color="#C53030" onClick={() => clearSegmentAssignment(data)}>
+        <MenuItem color="red.600" onClick={() => clearSegmentAssignment(data)}>
           Clear Segment Assignment(s)
         </MenuItem>
       </MenuList>

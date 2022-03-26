@@ -152,7 +152,7 @@ const StyledFooter = ({ rowCount, pageIndex, pageSize, setPageSize }) => {
         <Flex alignItems="center">
           <Text flexShrink="0" mr={8}>
             <Text as="span">{rowText()}</Text>
-            <Text as="span" color="#cbd5e0">
+            <Text as="span" color="gray.300">
               {' '}
               of {rowCount}
             </Text>
@@ -167,6 +167,7 @@ const StyledFooter = ({ rowCount, pageIndex, pageSize, setPageSize }) => {
           <Tooltip label="Next Page">
             <IconButton
               background="transparent"
+              _hover={null}
               color="white"
               icon={<ChevronRightIcon h={6} w={6} />}
               ml={4}
