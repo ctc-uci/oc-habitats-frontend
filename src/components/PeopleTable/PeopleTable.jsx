@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -15,8 +15,10 @@ import {
   Box,
   Spinner,
   VStack,
+  InputGroup,
+  InputLeftElement,
 } from '@chakra-ui/react';
-import { ChevronDownIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { Search2Icon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import {
   useTable,
   usePagination,
@@ -56,15 +58,22 @@ const cellStructure = [
 
 const FilterTable = ({ variant, segments }) => {
   return (
-    <Flex justifyContent="space-between" m="20px 0">
-      <Input placeholder={`Search ${variant}s...`} htmlSize={30} width="auto" />
-      <Flex flexDir="row" justifyContent="right" w="50%">
+    <Flex direction="row" justifyContent="space-between" m="20px 0 30px">
+      <Box>
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <Search2Icon color="ochGrey" />
+          </InputLeftElement>
+          <Input placeholder={`Search ${variant}s...`} htmlSize={30} width="auto" />
+        </InputGroup>
+      </Box>
+      <Flex direction="row">
         {variant === 'volunteer' ? (
-          <>
-            <Text fontWeight="bold" color="ochGrey" w="50%" m="auto 10px auto 0">
+          <Flex flexDir="row" justifyItems="center" mr="30px">
+            <Text fontWeight="bold" color="ochGrey" mr="15px" alignSelf="center">
               FILTER BY SEGMENT
             </Text>
-            <Select width="30%" mr="30px">
+            <Select placeholder=" " w={40}>
               {segments.map(segment => {
                 return (
                   <option key={segment.id} value={segment.id}>
@@ -73,15 +82,18 @@ const FilterTable = ({ variant, segments }) => {
                 );
               })}
             </Select>
-          </>
+          </Flex>
         ) : null}
-        <Text fontWeight="bold" color="ochGrey" w="50%" m="auto 10px auto 0">
-          SORT BY
-        </Text>
-        <Select className="sort-options" width="30%">
-          <option value="option1">Name: A-Z</option>
-          <option value="option2">Name: Z-A</option>
-        </Select>
+        <Flex flexDir="row" justifyItems="center">
+          <Text fontWeight="bold" color="ochGrey" mr="15px" alignSelf="center">
+            SORT BY
+          </Text>
+          <Select placeholder=" " w={40}>
+            <option value="option1">Name: A - Z</option>
+            <option value="option2">Name: Z - A</option>
+            <option value="option3">Last Updated</option>
+          </Select>
+        </Flex>
       </Flex>
     </Flex>
   );

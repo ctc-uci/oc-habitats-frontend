@@ -27,11 +27,11 @@ const descriptions = {
 const PeopleTableDescription = ({ variant }) => {
   return (
     <>
-      <Heading fontWeight="600" fontSize="20px" mb="20px" mt="40px" align="left">
-        {descriptions[variant]?.header}
+      <Heading fontWeight="600" fontSize="20px" mb="4px" mt="40px" align="left">
+        {descriptions[variant].header}
       </Heading>
-      <Text fontWeight="400" fontSize="18px" mb="40px" mt="20px" align="left" display="inline">
-        {descriptions[variant]?.description}
+      <Text fontWeight="400" fontSize="18px" align="left" display="inline">
+        {descriptions[variant].description}
       </Text>
     </>
   );

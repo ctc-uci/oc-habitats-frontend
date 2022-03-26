@@ -3,7 +3,6 @@ import { Container, Heading, Button, Flex, Spacer } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { FiEdit2 } from 'react-icons/fi';
 import { OCHBackend } from '../common/utils';
-import App from '../components/Table/Table';
 import AddAccountPopup from '../components/Table/AddAccountPopup';
 import PeopleTable from '../components/PeopleTable';
 
