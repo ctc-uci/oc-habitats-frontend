@@ -37,7 +37,7 @@ const cellStructure = [
     accessor: d => ({
       name: `${d.firstName} ${d.lastName}`,
       email: d.email,
-      training: d.isTrainee,
+      isTrainee: d.isTrainee,
     }),
     Cell: props => <NameColumn data={props.value} />,
   },
@@ -88,14 +88,13 @@ const FilterTable = ({ variant, segments }) => {
 };
 
 /* eslint-disable react/jsx-key */
-const StyledHeader = ({ headerGroups }) => {
+const StyledHeader = ({ headerGroups, loading }) => {
   return headerGroups.map(headerGroup => (
     <Tr className={styles['table-head']} {...headerGroup.getHeaderGroupProps()}>
       {headerGroup.headers.map(column => (
-        <Th {...column.getHeaderProps()} userSelect="none" color="white" bgColor="ochGrey">
-          <Flex alignItems="center">
-            {column.render('Header')}
-            <ChevronDownIcon ml={1} w={4} h={4} />
+        <Th {...column.getHeaderProps()} color="white" bgColor="ochGrey">
+          <Flex alignItems="center" textTransform="none">
+            {loading ? <>&nbsp;</> : column.render('Header')}
           </Flex>
         </Th>
       ))}
@@ -212,7 +211,7 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
       <FilterTable variant={variant} segments={segments} />
       <Table variant="striped" {...getTableProps()}>
         <Thead>
-          <StyledHeader headerGroups={headerGroups} />
+          <StyledHeader headerGroups={headerGroups} loading={loading} />
         </Thead>
         <Tbody {...getTableBodyProps()}>
           {loading ? (
@@ -239,6 +238,12 @@ FilterTable.propTypes = {
   variant: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   segments: PropTypes.object.isRequired,
+};
+
+StyledHeader.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  headerGroups: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 StyledFooter.propTypes = {

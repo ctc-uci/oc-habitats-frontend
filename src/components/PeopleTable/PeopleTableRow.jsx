@@ -24,7 +24,7 @@ const NameColumn = ({ data }) => {
       <VStack alignItems="flex-start">
         <Text>{data.name}</Text>
         <Text color="#718096">{data.email}</Text>
-        {data.training ? (
+        {data.isTrainee ? (
           <Badge
             className="training-badge"
             variant="capitalize"
