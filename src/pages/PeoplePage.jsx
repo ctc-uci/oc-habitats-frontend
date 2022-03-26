@@ -9,20 +9,30 @@ import AddAccountPopup from '../components/Table/AddAccountPopup';
 import PeopleTable from '../components/PeopleTable';
 
 const PeoplePage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [volunteerData, setVolunteerData] = useState([]);
   const [adminData, setAdminData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [segments, setSegments] = useState([]);
 
   useEffect(async () => {
-    const res = await OCHBackend.get('users/');
+    const [users, segmentsData] = await Promise.all([
+      OCHBackend.get('users/'),
+      OCHBackend.get('segments/'),
+    ]).catch(err => {
+      // eslint-disable-next-line no-console
+      console.error(err.message);
+    });
+
+    setSegments(segmentsData.data);
 
     // Temporarily remove new schema users
     // TODO - remove
-    const oldSchema = res?.data.filter(user => !('firebaseId' in user));
+    // const oldSchema = users?.data.filter(user => !('registered' in user));
+    const oldSchema = users.data;
 
     // Split admins and volunteers
-    setVolunteerData(oldSchema.filter(user => user.isAdmin === false));
-    setAdminData(oldSchema.filter(user => user.isAdmin === true));
+    setVolunteerData(oldSchema.filter(user => user?.isAdmin === false));
+    setAdminData(oldSchema.filter(user => user?.isAdmin === true));
     setIsLoading(false);
   }, []);
 
@@ -71,8 +81,10 @@ const PeoplePage = () => {
           <App />
         </VStack>
         {/* <pre>{JSON.stringify(volunteerData, null, 2)}</pre> */}
-        {!isLoading && <PeopleTable variant="volunteer" peopleData={volunteerData} />}
-        {!isLoading && <PeopleTable variant="admin" peopleData={adminData} />}
+        {!isLoading && (
+          <PeopleTable variant="volunteer" peopleData={volunteerData} segments={segments} />
+        )}
+        {!isLoading && <PeopleTable variant="admin" peopleData={adminData} segments={segments} />}
       </Container>
     </>
   );

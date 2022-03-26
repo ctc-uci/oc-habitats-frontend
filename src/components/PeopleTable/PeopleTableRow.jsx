@@ -46,12 +46,11 @@ const SegmentColumn = ({ data }) => {
   return (
     <HStack w="100%" justifyContent="space-between">
       <VStack align="normal">
-        {data?.segments.map((segment, i) => (
+        {data?.map((segment, i) => (
           // eslint-disable-next-line react/no-array-index-key
           <HStack key={i} alignItems="baseline">
-            <Text>{segment}</Text>
-            {/* <Text>{segment.name}</Text>
-            <Text color="#718096">{segment.description}</Text> */}
+            <Text>{segment.name}</Text>
+            <Text color="#718096">{segment.description}</Text>
           </HStack>
         ))}
       </VStack>

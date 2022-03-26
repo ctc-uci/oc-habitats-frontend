@@ -46,33 +46,35 @@ const cellStructure = [
   },
   {
     Header: 'Assigned Segment(s)',
-    accessor: d => ({
-      segments: d.segments,
-      id: 0,
-    }),
+    accessor: 'segments',
     Cell: props => <SegmentColumn data={props.value} />,
   },
 ];
 /* eslint-enable react/destructuring-assignment, react/prop-types */
 
-const FilterTable = ({ variant }) => {
+const FilterTable = ({ variant, segments }) => {
   return (
     <Flex justifyContent="space-between" m="20px 0">
       <Input placeholder={`Search ${variant}s...`} htmlSize={30} width="auto" />
       <Flex flexDir="row" justifyContent="right" w="50%">
         {variant === 'volunteer' ? (
           <>
-            <Text m="auto 10px auto 0" casing="uppercase" w="50%">
-              Filter by segment
+            <Text fontWeight="bold" color="ochGrey" w="50%" m="auto 10px auto 0">
+              FILTER BY SEGMENT
             </Text>
-            <Select className="sort-options" width="30%" mr="30px">
-              <option value="option1">Name: A-Z</option>
-              <option value="option2">Name: Z-A</option>
+            <Select width="30%" mr="30px">
+              {segments.map(segment => {
+                return (
+                  <option key={segment.id} value={segment.id}>
+                    {segment.name}
+                  </option>
+                );
+              })}
             </Select>
           </>
         ) : null}
-        <Text m="auto 10px auto 0" casing="uppercase" w="50%">
-          Sort by
+        <Text fontWeight="bold" color="ochGrey" w="50%" m="auto 10px auto 0">
+          SORT BY
         </Text>
         <Select className="sort-options" width="30%">
           <option value="option1">Name: A-Z</option>
@@ -163,7 +165,7 @@ const StyledFooter = ({ rowCount, pageIndex, pageSize, setPageSize }) => {
   );
 };
 
-const PeopleTable = ({ variant, peopleData }) => {
+const PeopleTable = ({ variant, peopleData, segments }) => {
   const columns = useMemo(() => cellStructure, []);
   // Memoizing data
   const data = useMemo(() => peopleData, []);
@@ -194,7 +196,7 @@ const PeopleTable = ({ variant, peopleData }) => {
   return (
     <>
       <PeopleTableDescription variant={variant} />
-      <FilterTable variant={variant} />
+      <FilterTable variant={variant} segments={segments} />
       <Table variant="striped" {...getTableProps()}>
         <Thead>
           <StyledHeader headerGroups={headerGroups} />
@@ -218,6 +220,8 @@ const PeopleTable = ({ variant, peopleData }) => {
 
 FilterTable.propTypes = {
   variant: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  segments: PropTypes.object.isRequired,
 };
 
 StyledFooter.propTypes = {
@@ -231,6 +235,8 @@ PeopleTable.propTypes = {
   variant: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   peopleData: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  segments: PropTypes.object.isRequired,
 };
 
 export default PeopleTable;
