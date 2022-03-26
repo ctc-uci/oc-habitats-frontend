@@ -115,7 +115,7 @@ const StyledHeader = ({ headerGroups, loading }) => {
 };
 /* eslint-enable react/jsx-key */
 
-const StyledFooter = ({ rowCount, pageIndex, pageSize, setPageSize, pageControl }) => {
+const StyledFooter = ({ rowCount, pageIndex, pageSize, pageControl }) => {
   const rowText = () => {
     const left = pageIndex === 0 ? 1 : pageIndex * pageSize + 1;
     const right = Math.min(rowCount, pageSize * (pageIndex + 1));
@@ -138,7 +138,7 @@ const StyledFooter = ({ rowCount, pageIndex, pageSize, setPageSize, pageControl 
             w={32}
             value={pageSize}
             onChange={e => {
-              setPageSize(Number(e.target.value));
+              pageControl.setPageSize(Number(e.target.value));
             }}
           >
             {rowsPerPageSelect.map(rowVal => (
@@ -250,8 +250,7 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
         rowCount={rows.length}
         pageIndex={pageIndex}
         pageSize={pageSize}
-        setPageSize={setPageSize}
-        pageControl={{ nextPage, previousPage, canNextPage, canPreviousPage }}
+        pageControl={{ setPageSize, nextPage, previousPage, canNextPage, canPreviousPage }}
       />
     </>
   );
@@ -273,7 +272,6 @@ StyledFooter.propTypes = {
   rowCount: PropTypes.number.isRequired,
   pageIndex: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
-  setPageSize: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   pageControl: PropTypes.object.isRequired,
 };
