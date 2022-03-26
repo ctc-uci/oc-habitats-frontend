@@ -11,9 +11,11 @@ import {
   Link,
   Center,
 } from '@chakra-ui/react';
-import { sendInviteLink } from '../utils/auth_utils';
+import { initiateInviteProcess } from '../utils/auth_utils';
 
 const AdminInvite = () => {
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [confirmationMessage, setConfirmationMessage] = useState();
@@ -22,8 +24,8 @@ const AdminInvite = () => {
   const handleSubmit = async e => {
     try {
       e.preventDefault();
-      await sendInviteLink(email, role);
-      setConfirmationMessage(`A reset password email has been sent to ${email}`);
+      await initiateInviteProcess(firstName, lastName, email, role);
+      setConfirmationMessage(`An invite email has been sent to ${email}`);
       setErrorMessage('');
       setEmail('');
       setRole('');
@@ -37,6 +39,20 @@ const AdminInvite = () => {
       <h2>Invite New User</h2>
       {errorMessage && <p>{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={firstName}
+          onChange={({ target }) => setFirstName(target.value)}
+          placeholder="First Name"
+        />
+        <br />
+        <input
+          type="text"
+          value={lastName}
+          onChange={({ target }) => setLastName(target.value)}
+          placeholder="Last Name"
+        />
+        <br />
         <input
           type="text"
           value={email}

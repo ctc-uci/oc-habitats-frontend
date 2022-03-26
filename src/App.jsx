@@ -5,6 +5,7 @@ import { CookiesProvider } from 'react-cookie';
 import './App.css';
 
 // NEW AUTH IMPORTS
+import InviteLandingPage from './components/InviteLandingPage';
 import AdminInvite from './components/AdminInvite';
 import ForgotPassword from './components/ForgotPassword';
 import Login from './components/login/Login';
@@ -60,6 +61,16 @@ function App() {
               element={
                 <ProtectedRoute
                   Component={AdminInvite}
+                  redirectPath="/"
+                  roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
+                />
+              }
+            />
+            <Route
+              path="/invite-user/:inviteID"
+              element={
+                <ProtectedRoute
+                  Component={InviteLandingPage}
                   redirectPath="/"
                   roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
                 />

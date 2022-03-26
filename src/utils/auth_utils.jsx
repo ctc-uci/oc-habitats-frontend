@@ -384,7 +384,7 @@ const sendEmail = (email, emailTemplate) => {
 
 const initiateInviteProcess = (firstName, lastName, email, role) => {
   const id = uuidv4();
-  const url = `localhost:3000/adminInvite/${id}`;
+  const url = `localhost:3000/invite-user/${id}`;
   const expireDate = moment().add(1, 'days');
   NPOBackend.post('/adminInvite/', {
     id,

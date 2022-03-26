@@ -1,6 +1,6 @@
 /* eslint-disable react/no-children-prop */
 import React, { useState } from 'react';
-import { instanceOf } from 'prop-types';
+import { instanceOf, string } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import {
   FormControl,
@@ -19,16 +19,16 @@ import {
 import { Cookies, withCookies } from '../../utils/cookie_utils';
 import { registerWithEmailAndPassword, signInWithGoogle } from '../../utils/auth_utils';
 
-const Register = ({ cookies }) => {
+const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, inviteRole }) => {
   const [errorMessage, setErrorMessage] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [email, setEmail] = useState();
+  const [firstName, setFirstName] = useState(inviteFirstName);
+  const [lastName, setLastName] = useState(inviteLastName);
+  const [email, setEmail] = useState(inviteEmail);
   const [password, setPassword] = useState();
   const [checkPassword, setCheckPassword] = useState();
   const [showPassword, setShowPassword] = useState();
   const [showCheckPassword, setShowCheckPassword] = useState();
-  const [role, setRole] = useState();
+  const [role, setRole] = useState(inviteRole);
   const navigate = useNavigate();
 
   const handleSubmit = async e => {
@@ -58,74 +58,7 @@ const Register = ({ cookies }) => {
     }
   };
 
-  // Required Fields:
-  // - firstName
-  // - lastName
-  // - email
-  // - password
-  //
-  // -
-
   return (
-    // <Flex
-    //   w="60%"
-    //   maxWidth="50vw"
-    //   h="60%"
-    //   bg="rgba(43, 192, 227, .10)"
-    //   mx="auto"
-    //   mt="10%"
-    //   direction="column"
-    //   p="90px 20px"
-    // >
-    //   <h2>Register</h2>
-    //   <FormControl>
-    //     <FormLabel htmlFor="firstName">First Name</FormLabel>
-    //     <Input
-    //       id="text"
-    //       bg="white"
-    //       onChange={({ target }) => setFirstName(target.value)}
-    //       mb="30px"
-    //     />
-    //   </FormControl>
-    //   <FormControl>
-    //     <FormLabel htmlFor="password">Password</FormLabel>
-    //     <InputGroup size="md" bg="white">
-    //       <Input type="password" onChange={({ target }) => setPassword(target.value)} />
-    //       <InputRightElement>
-    //         <Button size="lg" p="10px" onClick={() => setShowPassword(!showPassword)}>
-    //           {showPassword ? 'Hide' : 'Show'}
-    //         </Button>
-    //       </InputRightElement>
-    //     </InputGroup>
-    //   </FormControl>
-    //   <FormControl>
-    //     <FormLabel htmlFor="password">Password</FormLabel>
-    //     <InputGroup size="md" bg="white">
-    //       <Input type="password" onChange={({ target }) => setCheckPassword(target.value)} />
-    //       <InputRightElement>
-    //         <Button size="lg" p="10px" onClick={() => setShowCheckPassword(!showCheckPassword)}>
-    //           {showPassword ? 'Hide' : 'Show'}
-    //         </Button>
-    //       </InputRightElement>
-    //     </InputGroup>
-    //   </FormControl>
-    //   <Link mt="10px" as={ReachLink} to="/forgotpassword">
-    //     Forgot Your Password?
-    //   </Link>
-    //   <Button
-    //     bg="#2BC0E3"
-    //     color="white"
-    //     onClick={handleSubmit}
-    //     // w="50px"
-    //     mt="10px"
-    //     alignSelf="flex-end"
-    //     px="10px"
-    //   >
-    //     Register
-    //   </Button>
-    //   <br />
-    //   {errorMessage && <p>{errorMessage}</p>}
-    // </Flex>
     <div>
       <VStack>
         <Center w="100%" mt="50px" mb="20px">
@@ -175,12 +108,16 @@ const Register = ({ cookies }) => {
             />
           </FormControl>
           <FormLabel htmlFor="role">Role</FormLabel>
-          <select id="role" onChange={e => setRole(e.target.value)} value={role} maxW="700px">
+          <select
+            id="role"
+            onChange={e => setRole(e.target.value)}
+            value={role}
+            maxW="700px"
+            defaultValue={inviteRole}
+          >
             <option value="admin">Admin</option>
             <option value="super-admin">Super Admin</option>
-            <option value="volunteer" selected>
-              Volunteer
-            </option>
+            <option value="volunteer">Volunteer</option>
           </select>
           <FormControl>
             <FormLabel htmlFor="password" mt="30px">
@@ -244,6 +181,10 @@ const Register = ({ cookies }) => {
 
 Register.propTypes = {
   cookies: instanceOf(Cookies).isRequired,
+  inviteFirstName: string.isRequired,
+  inviteLastName: string.isRequired,
+  inviteEmail: string.isRequired,
+  inviteRole: string.isRequired,
 };
 
 export default withCookies(Register);
