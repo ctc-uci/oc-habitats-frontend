@@ -1,0 +1,72 @@
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useAsyncDebounce } from 'react-table';
+import { Flex, Input, Select, Text, Box, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { Search2Icon } from '@chakra-ui/icons';
+
+const PeopleTableFilters = ({ variant, segments, globalFilter, setGlobalFilter }) => {
+  const [filterValue, setFilterValue] = useState(globalFilter);
+  const debounceSetFilter = useAsyncDebounce(value => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  return (
+    <Flex direction="row" justifyContent="space-between" m="20px 0 30px">
+      <Box>
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <Search2Icon color="ochGrey" />
+          </InputLeftElement>
+          <Input
+            placeholder={`Search ${variant}s...`}
+            htmlSize={30}
+            width="auto"
+            value={filterValue || ''}
+            onChange={e => {
+              setFilterValue(e.target.value);
+              debounceSetFilter(e.target.value);
+            }}
+          />
+        </InputGroup>
+      </Box>
+      <Flex direction="row">
+        {variant === 'volunteer' ? (
+          <Flex flexDir="row" justifyItems="center" mr="30px">
+            <Text fontWeight="bold" color="ochGrey" mr="15px" alignSelf="center">
+              FILTER BY SEGMENT
+            </Text>
+            <Select placeholder=" " w={40}>
+              {segments.map(segment => {
+                return (
+                  <option key={segment.id} value={segment.id}>
+                    {segment.name}
+                  </option>
+                );
+              })}
+            </Select>
+          </Flex>
+        ) : null}
+        <Flex flexDir="row" justifyItems="center">
+          <Text fontWeight="bold" color="ochGrey" mr="15px" alignSelf="center">
+            SORT BY
+          </Text>
+          <Select placeholder=" " w={40}>
+            <option value="option1">Name: A - Z</option>
+            <option value="option2">Name: Z - A</option>
+            <option value="option3">Last Updated</option>
+          </Select>
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+};
+
+PeopleTableFilters.propTypes = {
+  variant: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  segments: PropTypes.object.isRequired,
+  globalFilter: PropTypes.string.isRequired,
+  setGlobalFilter: PropTypes.func.isRequired,
+};
+
+export default PeopleTableFilters;
