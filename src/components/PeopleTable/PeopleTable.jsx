@@ -16,7 +16,7 @@ const sortOptions = {
   lastUpdated: [{ id: 'lastUpdated', desc: false }],
 };
 
-// Custom filter for searching name column
+// Custom filter functions
 const nameFilterFn = (rows, id, filterValue) => {
   return rows.filter(row => {
     const rowValue = row.values[id];
@@ -30,7 +30,15 @@ const nameFilterFn = (rows, id, filterValue) => {
 };
 nameFilterFn.autoRemove = val => !val;
 
-// Custom filter for sorting name column
+const segmentFilterFn = (rows, id, filterValue) => {
+  return rows.filter(row => {
+    const { segments } = row.values[id];
+    return segments !== undefined ? segments.some(segment => segment.id === filterValue) : true;
+  });
+};
+segmentFilterFn.autoRemove = val => !val;
+
+// Custom sorting functions
 const nameSortFn = (rowA, rowB, id, desc) => {
   const activeSort = desc
     ? +rowA.values[id].isActive - +rowB.values[id].isActive
@@ -69,6 +77,7 @@ const cellStructure = [
       registered: d.registered,
       isActive: d.isActive,
     }),
+    filter: 'segmentFilter',
     Cell: props => <SegmentColumn data={props.value} />,
   },
 ];
@@ -132,6 +141,7 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
   const filterTypes = useMemo(
     () => ({
       nameFilter: nameFilterFn,
+      segmentFilter: segmentFilterFn,
     }),
     [],
   );
@@ -174,6 +184,7 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
         variant={variant}
         segments={segments}
         setNameFilter={value => setFilter('name', value)}
+        setSegmentFilter={value => setFilter('assignedSegments', value)}
         sortOptions={sortOptions}
         setSortBy={setSortBy}
       />

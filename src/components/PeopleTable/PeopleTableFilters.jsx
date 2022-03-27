@@ -4,7 +4,14 @@ import { useAsyncDebounce } from 'react-table';
 import { Flex, Input, Select, Text, Box, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { Search2Icon } from '@chakra-ui/icons';
 
-const PeopleTableFilters = ({ variant, segments, setNameFilter, sortOptions, setSortBy }) => {
+const PeopleTableFilters = ({
+  variant,
+  segments,
+  setNameFilter,
+  setSegmentFilter,
+  sortOptions,
+  setSortBy,
+}) => {
   const [filterValue, setFilterValue] = useState('');
 
   const debounceSetFilter = useAsyncDebounce(value => {
@@ -36,7 +43,7 @@ const PeopleTableFilters = ({ variant, segments, setNameFilter, sortOptions, set
             <Text fontWeight="bold" color="ochGrey" mr="15px" alignSelf="center">
               FILTER BY SEGMENT
             </Text>
-            <Select placeholder="All" w={40}>
+            <Select placeholder="All" w={40} onChange={e => setSegmentFilter(e.target.value)}>
               {segments.map(segment => {
                 return (
                   <option key={segment.id} value={segment.id}>
@@ -67,6 +74,7 @@ PeopleTableFilters.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   segments: PropTypes.object.isRequired,
   setNameFilter: PropTypes.func.isRequired,
+  setSegmentFilter: PropTypes.func.isRequired,
   sortOptions: PropTypes.objectOf(PropTypes.array).isRequired,
   setSortBy: PropTypes.func.isRequired,
 };
