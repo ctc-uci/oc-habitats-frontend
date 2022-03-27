@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -24,8 +24,8 @@ import {
   usePagination,
   useFilters,
   useSortBy,
-  useRowSelect,
   useGlobalFilter,
+  useAsyncDebounce,
 } from 'react-table';
 import PeopleTableDescription from './PeopleTableDescription';
 import { PeopleTableRow, NameColumn, SegmentColumn } from './PeopleTableRow';
@@ -43,6 +43,7 @@ const cellStructure = [
       isTrainee: d.isTrainee,
       isActive: d.isActive,
     }),
+    filter: 'nameFilter',
     Cell: props => <NameColumn data={props.value} />,
   },
   {
@@ -62,6 +63,30 @@ const cellStructure = [
   },
 ];
 /* eslint-enable react/destructuring-assignment, react/prop-types */
+
+/*
+const rowValue = row.values[id]
+          return rowValue !== undefined
+            ? String(rowValue)
+                .toLowerCase()
+                .startsWith(String(filterValue).toLowerCase())
+            : true
+*/
+
+// Custom filter for searching name column
+// TODO: fix
+const nameFilterFn = (rows, id, filterValue) => {
+  return rows.filter(row => {
+    const rowValue = row.values[id];
+    const searchKeys = ['firstName', 'lastName', 'email'];
+    return rowValue !== undefined
+      ? searchKeys.some(key =>
+          String(rowValue[key]).toLowerCase().includes(String(filterValue).toLowerCase()),
+        )
+      : true;
+  });
+};
+nameFilterFn.autoRemove = val => !val;
 
 const FilterTable = ({ variant, segments }) => {
   return (
@@ -126,7 +151,7 @@ const StyledFooter = ({ rowCount, pageIndex, pageSize, pageControl }) => {
   const rowText = () => {
     const left = pageIndex === 0 ? 1 : pageIndex * pageSize + 1;
     const right = Math.min(rowCount, pageSize * (pageIndex + 1));
-    return `${left}-${right}`;
+    return rowCount === 0 ? `0` : `${left}-${right}`;
   };
   return (
     <Box
@@ -190,6 +215,25 @@ const StyledFooter = ({ rowCount, pageIndex, pageSize, pageControl }) => {
   );
 };
 
+const TestSearchBar = ({ globalFilter, setGlobalFilter }) => {
+  const [filterValue, setFilterValue] = useState(globalFilter);
+  const debounceSetFilter = useAsyncDebounce(value => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  return (
+    <Input
+      value={filterValue || ''}
+      onChange={e => {
+        setFilterValue(e.target.value);
+        debounceSetFilter(e.target.value);
+        console.log(`global filter: ${globalFilter}`);
+      }}
+      placeholder="temp search"
+    />
+  );
+};
+
 const LoadingRow = () => (
   <Tr>
     <td colSpan={3}>
@@ -201,28 +245,77 @@ const LoadingRow = () => (
   </Tr>
 );
 
+const EmptyRow = () => (
+  <Tr>
+    <td colSpan={3}>
+      <VStack justifyContent="center" alignContent="center" margin="50px">
+        <Text fontWeight="bold">No users found</Text>
+      </VStack>
+    </td>
+  </Tr>
+);
+
+const tableContent = (loading, page, prepareRow) => {
+  console.log(`page length: ${page.length}`);
+  if (loading) {
+    return <LoadingRow />;
+  }
+  if (page?.length) {
+    return page.map(row => {
+      prepareRow(row);
+      return <PeopleTableRow key={row.name} row={row} />;
+    });
+  }
+  return <EmptyRow />;
+};
+
+JSON.safeStringify = (obj, indent = 2) => {
+  let cache = [];
+  const retVal = JSON.stringify(
+    obj,
+    (key, value) =>
+      // eslint-disable-next-line no-nested-ternary
+      typeof value === 'object' && value !== null
+        ? cache.includes(value)
+          ? undefined // Duplicate reference found, discard key
+          : cache.push(value) && value // Store value in our collection
+        : value,
+    indent,
+  );
+  cache = null;
+  return retVal;
+};
+
 const PeopleTable = ({ variant, peopleData, segments, loading }) => {
   const columns = useMemo(() => cellStructure, []);
-  // Memoizing data
   const data = useMemo(() => peopleData, [loading]);
+  const filterTypes = useMemo(
+    () => ({
+      nameFilter: nameFilterFn,
+    }),
+    [],
+  );
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
+    rows,
     prepareRow,
     page,
-    canPreviousPage,
-    canNextPage,
+    setPageSize,
     nextPage,
     previousPage,
-    setPageSize,
-    rows,
+    canNextPage,
+    canPreviousPage,
+    setGlobalFilter,
+    state,
     state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
       data,
+      filterTypes,
       initialState: {
         pageSize: rowsPerPageSelect[0],
       },
@@ -231,27 +324,19 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
     useGlobalFilter,
     useSortBy,
     usePagination,
-    useRowSelect,
   );
 
   return (
     <>
+      <TestSearchBar globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} />
+      {/* <pre>{JSON.safeStringify(rows)}</pre> */}
       <PeopleTableDescription variant={variant} />
       <FilterTable variant={variant} segments={segments} />
       <Table variant="striped" {...getTableProps()}>
         <Thead>
           <StyledHeader headerGroups={headerGroups} loading={loading} />
         </Thead>
-        <Tbody {...getTableBodyProps()}>
-          {loading ? (
-            <LoadingRow />
-          ) : (
-            page?.map(row => {
-              prepareRow(row);
-              return <PeopleTableRow key={row.name} row={row} />;
-            })
-          )}
-        </Tbody>
+        <Tbody {...getTableBodyProps()}>{tableContent(loading, page, prepareRow)}</Tbody>
       </Table>
       <StyledFooter
         rowCount={rows.length}
@@ -261,6 +346,11 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
       />
     </>
   );
+};
+
+TestSearchBar.propTypes = {
+  globalFilter: PropTypes.string.isRequired,
+  setGlobalFilter: PropTypes.func.isRequired,
 };
 
 FilterTable.propTypes = {
