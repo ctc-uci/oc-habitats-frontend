@@ -50,6 +50,7 @@ const cellStructure = [
     Header: 'Last Updated',
     accessor: 'temp-date',
     Cell: <p>XX-XX-20XX</p>,
+    disableGlobalFilter: true,
   },
   {
     Header: 'Assigned Segment(s)',
@@ -60,25 +61,16 @@ const cellStructure = [
       isActive: d.isActive,
     }),
     Cell: props => <SegmentColumn data={props.value} />,
+    disableGlobalFilter: true,
   },
 ];
 /* eslint-enable react/destructuring-assignment, react/prop-types */
 
-/*
-const rowValue = row.values[id]
-          return rowValue !== undefined
-            ? String(rowValue)
-                .toLowerCase()
-                .startsWith(String(filterValue).toLowerCase())
-            : true
-*/
-
 // Custom filter for searching name column
-// TODO: fix
 const nameFilterFn = (rows, id, filterValue) => {
   return rows.filter(row => {
     const rowValue = row.values[id];
-    const searchKeys = ['firstName', 'lastName', 'email'];
+    const searchKeys = ['name', 'email'];
     return rowValue !== undefined
       ? searchKeys.some(key =>
           String(rowValue[key]).toLowerCase().includes(String(filterValue).toLowerCase()),
@@ -319,6 +311,7 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
       initialState: {
         pageSize: rowsPerPageSelect[0],
       },
+      globalFilter: 'nameFilter',
     },
     useFilters,
     useGlobalFilter,
