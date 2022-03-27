@@ -17,6 +17,74 @@ import {
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
+const editAccountInfo = data => {
+  // eslint-disable-next-line no-console
+  console.log(`Editing account info ${data}`);
+};
+
+const editSegmentAssignment = data => {
+  // eslint-disable-next-line no-console
+  console.log(`Editing segment assignment ${data}`);
+};
+
+const clearSegmentAssignment = data => {
+  // eslint-disable-next-line no-console
+  console.log(`Clearing segment assignment ${data}`);
+};
+
+const deletePendingAccount = data => {
+  // eslint-disable-next-line no-console
+  console.log(`Deleting pending account ${data}`);
+};
+
+const menuContent = data => {
+  if (!data.isActive) {
+    return <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>;
+  }
+  // if (!data.registered) {
+  //   return (
+  //     <MenuItem color="red.600" onClick={() => deletePendingAccount(data)}>
+  //       Delete Pending Account
+  //     </MenuItem>
+  //   );
+  // }
+  return (
+    <>
+      <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>
+      <MenuItem onClick={() => editSegmentAssignment(data)}>Edit Segment Assignment(s)</MenuItem>
+      <MenuItem color="red.600" onClick={() => clearSegmentAssignment(data)}>
+        Clear Segment Assignment(s)
+      </MenuItem>
+    </>
+  );
+};
+
+const badgeContent = data => {
+  // if (!data.registered) {
+  //   return <StyledBadge color="ochBlue" text="Account Pending" />;
+  // }
+  if (!data.isActive) {
+    return <StyledBadge bgColor="gray.300" textColor="black" text="Inactive" />;
+  }
+  if (data.isTrainee) {
+    return <StyledBadge bgColor="orange.500" textColor="white" text="In-Training" />;
+  }
+  return null;
+};
+
+const NameColumn = ({ data }) => {
+  return (
+    <Flex w="284px" h="72px" gap="12px" alignItems="center">
+      <Avatar size="md" name={data.name} src="something" />
+      <VStack alignItems="flex-start">
+        <Text>{data.name}</Text>
+        <Text color="gray.500">{data.email}</Text>
+        {badgeContent(data)}
+      </VStack>
+    </Flex>
+  );
+};
+
 const StyledBadge = ({ bgColor, textColor, text }) => (
   <Badge
     variant="capitalize"
@@ -32,37 +100,11 @@ const StyledBadge = ({ bgColor, textColor, text }) => (
   </Badge>
 );
 
-const NameColumn = ({ data }) => {
-  const badgeContent = () => {
-    // if (!data.registered) {
-    //   return <StyledBadge color="ochBlue" text="Account Pending" />;
-    // }
-    if (!data.isActive) {
-      return <StyledBadge bgColor="gray.300" textColor="black" text="Inactive" />;
-    }
-    if (data.isTrainee) {
-      return <StyledBadge bgColor="orange.500" textColor="white" text="In-Training" />;
-    }
-    return null;
-  };
-
-  return (
-    <Flex w="284px" h="72px" gap="12px" alignItems="center">
-      <Avatar size="md" name={data.name} src="something" />
-      <VStack alignItems="flex-start">
-        <Text>{data.name}</Text>
-        <Text color="gray.500">{data.email}</Text>
-        {badgeContent()}
-      </VStack>
-    </Flex>
-  );
-};
-
 const SegmentColumn = ({ data }) => {
   return (
     <HStack w="100%" justifyContent="space-between">
       <VStack align="normal">
-        {data?.map((segment, i) => (
+        {data?.segments.map((segment, i) => (
           // eslint-disable-next-line react/no-array-index-key
           <HStack key={i} alignItems="baseline">
             <Text>{segment.name}</Text>
@@ -77,34 +119,13 @@ const SegmentColumn = ({ data }) => {
   );
 };
 
-const editAccountInfo = ({ data }) => {
-  // eslint-disable-next-line no-console
-  console.log(`Editing account info ${data}`);
-};
-
-const editSegmentAssignment = ({ data }) => {
-  // eslint-disable-next-line no-console
-  console.log(`Editing segment assignment ${data}`);
-};
-
-const clearSegmentAssignment = ({ data }) => {
-  // eslint-disable-next-line no-console
-  console.log(`Clear segment assignment ${data}`);
-};
-
 const RowButton = ({ data }) => {
   return (
     <Menu isLazy autoSelect={false}>
       <MenuButton>
         <IconButton icon={<BsThreeDotsVertical />} bg="transparent" />
       </MenuButton>
-      <MenuList>
-        <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>
-        <MenuItem onClick={() => editSegmentAssignment(data)}>Edit Segment Assignment(s)</MenuItem>
-        <MenuItem color="red.600" onClick={() => clearSegmentAssignment(data)}>
-          Clear Segment Assignment(s)
-        </MenuItem>
-      </MenuList>
+      <MenuList>{menuContent(data)}</MenuList>
     </Menu>
   );
 };

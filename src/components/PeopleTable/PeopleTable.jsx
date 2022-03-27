@@ -52,7 +52,12 @@ const cellStructure = [
   },
   {
     Header: 'Assigned Segment(s)',
-    accessor: 'segments',
+    accessor: d => ({
+      segments: d.segments,
+      userId: d.id,
+      registered: d.registered,
+      isActive: d.isActive,
+    }),
     Cell: props => <SegmentColumn data={props.value} />,
   },
 ];

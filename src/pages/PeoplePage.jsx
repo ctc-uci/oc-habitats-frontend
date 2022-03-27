@@ -10,6 +10,7 @@ import PeopleTable from '../components/PeopleTable';
 // - Update to new schema:
 //  - Fetching/filtering users
 //  - Registered badge
+//  - Three dot menu
 //  - Last updated column
 
 const PeoplePage = () => {
