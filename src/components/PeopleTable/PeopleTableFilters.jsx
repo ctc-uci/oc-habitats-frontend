@@ -4,17 +4,11 @@ import { useAsyncDebounce } from 'react-table';
 import { Flex, Input, Select, Text, Box, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { Search2Icon } from '@chakra-ui/icons';
 
-const PeopleTableFilters = ({
-  variant,
-  segments,
-  globalFilter,
-  setGlobalFilter,
-  sortOptions,
-  setSortBy,
-}) => {
-  const [filterValue, setFilterValue] = useState(globalFilter);
+const PeopleTableFilters = ({ variant, segments, setNameFilter, sortOptions, setSortBy }) => {
+  const [filterValue, setFilterValue] = useState('');
+
   const debounceSetFilter = useAsyncDebounce(value => {
-    setGlobalFilter(value || undefined);
+    setNameFilter(value || undefined);
   }, 200);
 
   return (
@@ -28,7 +22,7 @@ const PeopleTableFilters = ({
             placeholder={`Search ${variant}s...`}
             htmlSize={30}
             width="auto"
-            value={filterValue || ''}
+            value={filterValue}
             onChange={e => {
               setFilterValue(e.target.value);
               debounceSetFilter(e.target.value);
@@ -42,7 +36,7 @@ const PeopleTableFilters = ({
             <Text fontWeight="bold" color="ochGrey" mr="15px" alignSelf="center">
               FILTER BY SEGMENT
             </Text>
-            <Select placeholder=" " w={40}>
+            <Select placeholder="All" w={40}>
               {segments.map(segment => {
                 return (
                   <option key={segment.id} value={segment.id}>
@@ -72,8 +66,7 @@ PeopleTableFilters.propTypes = {
   variant: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   segments: PropTypes.object.isRequired,
-  globalFilter: PropTypes.string.isRequired,
-  setGlobalFilter: PropTypes.func.isRequired,
+  setNameFilter: PropTypes.func.isRequired,
   sortOptions: PropTypes.objectOf(PropTypes.array).isRequired,
   setSortBy: PropTypes.func.isRequired,
 };

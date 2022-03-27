@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Thead, Tbody, Tr, Text, Spinner, VStack } from '@chakra-ui/react';
 
-import { useTable, usePagination, useFilters, useSortBy, useGlobalFilter } from 'react-table';
+import { useTable, usePagination, useFilters, useSortBy } from 'react-table';
 import PeopleTableDescription from './PeopleTableDescription';
 import PeopleTableFilters from './PeopleTableFilters';
 import PeopleTableHeader from './PeopleTableHeader';
@@ -11,9 +11,9 @@ import { PeopleTableRow, NameColumn, SegmentColumn } from './PeopleTableRow';
 
 const rowsPerPageSelect = [6, 10, 20, 30];
 const sortOptions = {
-  nameDesc: [{ id: 'Name', desc: true }],
-  nameAsc: [{ id: 'Name', desc: false }],
-  lastUpdated: [{ id: 'Last Updated', desc: false }],
+  nameDesc: [{ id: 'name', desc: true }],
+  nameAsc: [{ id: 'name', desc: false }],
+  lastUpdated: [{ id: 'lastUpdated', desc: false }],
 };
 
 // Custom filter for searching name column
@@ -31,16 +31,17 @@ const nameFilterFn = (rows, id, filterValue) => {
 nameFilterFn.autoRemove = val => !val;
 
 // Custom filter for sorting name column
-// eslint-disable-next-line no-unused-vars
 const nameSortFn = (rowA, rowB, id, desc) => {
-  if (rowA.values[id].name > rowB.values[id].name) return -1;
-  if (rowB.values[id].name > rowA.values[id].name) return 1;
-  return 0;
+  const activeSort = desc
+    ? +rowA.values[id].isActive - +rowB.values[id].isActive
+    : +rowB.values[id].isActive - +rowA.values[id].isActive;
+  return activeSort || rowB.values[id].name.localeCompare(rowA.values[id].name);
 };
 
 /* eslint-disable react/destructuring-assignment, react/prop-types */
 const cellStructure = [
   {
+    id: 'name',
     Header: 'Name',
     accessor: d => ({
       name: `${d.firstName} ${d.lastName}`,
@@ -54,12 +55,13 @@ const cellStructure = [
     Cell: props => <NameColumn data={props.value} />,
   },
   {
+    id: 'lastUpdated',
     Header: 'Last Updated',
     accessor: 'temp-date',
     Cell: <p>XX-XX-20XX</p>,
-    disableGlobalFilter: true,
   },
   {
+    id: 'assignedSegments',
     Header: 'Assigned Segment(s)',
     accessor: d => ({
       segments: d.segments,
@@ -68,7 +70,6 @@ const cellStructure = [
       isActive: d.isActive,
     }),
     Cell: props => <SegmentColumn data={props.value} />,
-    disableGlobalFilter: true,
   },
 ];
 /* eslint-enable react/destructuring-assignment, react/prop-types */
@@ -125,9 +126,9 @@ JSON.safeStringify = (obj, indent = 2) => {
   return retVal;
 };
 
-const PeopleTable = ({ variant, peopleData, segments, loading }) => {
+const PeopleTable = ({ variant, userData, segments, loading }) => {
   const columns = useMemo(() => cellStructure, []);
-  const data = useMemo(() => peopleData, [loading]);
+  const data = useMemo(() => userData, [loading]);
   const filterTypes = useMemo(
     () => ({
       nameFilter: nameFilterFn,
@@ -147,9 +148,8 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
     previousPage,
     canNextPage,
     canPreviousPage,
-    setGlobalFilter,
+    setFilter,
     setSortBy,
-    state,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -160,10 +160,8 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
         pageSize: rowsPerPageSelect[0],
         sortBy: sortOptions.nameDesc,
       },
-      globalFilter: 'nameFilter',
     },
     useFilters,
-    useGlobalFilter,
     useSortBy,
     usePagination,
   );
@@ -175,8 +173,7 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
       <PeopleTableFilters
         variant={variant}
         segments={segments}
-        globalFilter={state.globalFilter || ''}
-        setGlobalFilter={setGlobalFilter}
+        setNameFilter={value => setFilter('name', value)}
         sortOptions={sortOptions}
         setSortBy={setSortBy}
       />
@@ -201,7 +198,7 @@ PeopleTable.propTypes = {
   variant: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  peopleData: PropTypes.object.isRequired,
+  userData: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   segments: PropTypes.object.isRequired,
 };

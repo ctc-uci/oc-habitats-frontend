@@ -60,11 +60,11 @@ const PeoplePage = () => {
       {/* <pre>{JSON.stringify(volunteerData, null, 2)}</pre> */}
       <PeopleTable
         variant="volunteer"
-        peopleData={volunteerData}
+        userData={volunteerData}
         segments={segments}
         loading={isLoading}
       />
-      <PeopleTable variant="admin" peopleData={adminData} segments={segments} loading={isLoading} />
+      <PeopleTable variant="admin" userData={adminData} segments={segments} loading={isLoading} />
     </Container>
   );
 };
