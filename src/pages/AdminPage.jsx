@@ -615,12 +615,9 @@ const AdminPage = () => {
       return;
     }
     const cutoff = (currentPage - 1) * oldSize;
-    console.log(cutoff);
     let newPage = 1;
     let flag = true;
     while (flag) {
-      console.log((newPage - 1) * newSize);
-      console.log(newPage * newSize - 1);
       if (Math.ceil(totalData / newSize) === newPage) {
         flag = false;
       } else if ((newPage - 1) * newSize <= cutoff && newPage * newSize - 1 >= cutoff) {
