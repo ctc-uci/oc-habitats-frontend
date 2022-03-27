@@ -11,7 +11,7 @@ import PeopleTable from '../components/PeopleTable';
 //  - Fetching/filtering users
 //  - Registered badge
 //  - Three dot menu
-//  - Last updated column
+//  - Last updated column (sorting)
 
 const PeoplePage = () => {
   const [isLoading, setIsLoading] = useState(true);

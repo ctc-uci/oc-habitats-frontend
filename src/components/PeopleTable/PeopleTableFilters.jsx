@@ -4,7 +4,14 @@ import { useAsyncDebounce } from 'react-table';
 import { Flex, Input, Select, Text, Box, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { Search2Icon } from '@chakra-ui/icons';
 
-const PeopleTableFilters = ({ variant, segments, globalFilter, setGlobalFilter }) => {
+const PeopleTableFilters = ({
+  variant,
+  segments,
+  globalFilter,
+  setGlobalFilter,
+  sortOptions,
+  setSortBy,
+}) => {
   const [filterValue, setFilterValue] = useState(globalFilter);
   const debounceSetFilter = useAsyncDebounce(value => {
     setGlobalFilter(value || undefined);
@@ -50,10 +57,10 @@ const PeopleTableFilters = ({ variant, segments, globalFilter, setGlobalFilter }
           <Text fontWeight="bold" color="ochGrey" mr="15px" alignSelf="center">
             SORT BY
           </Text>
-          <Select placeholder=" " w={40}>
-            <option value="option1">Name: A - Z</option>
-            <option value="option2">Name: Z - A</option>
-            <option value="option3">Last Updated</option>
+          <Select w={40} onChange={e => setSortBy(sortOptions[e.target.value])}>
+            <option value="nameDesc">Name: A - Z</option>
+            <option value="nameAsc">Name: Z - A</option>
+            <option value="lastUpdated">Last Updated</option>
           </Select>
         </Flex>
       </Flex>
@@ -67,6 +74,8 @@ PeopleTableFilters.propTypes = {
   segments: PropTypes.object.isRequired,
   globalFilter: PropTypes.string.isRequired,
   setGlobalFilter: PropTypes.func.isRequired,
+  sortOptions: PropTypes.objectOf(PropTypes.array).isRequired,
+  setSortBy: PropTypes.func.isRequired,
 };
 
 export default PeopleTableFilters;

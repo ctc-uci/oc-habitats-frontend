@@ -8,7 +8,11 @@ const PeopleTableHeader = ({ headerGroups, loading }) => {
   return headerGroups.map(headerGroup => (
     <Tr className={styles['table-head']} {...headerGroup.getHeaderGroupProps()}>
       {headerGroup.headers.map(column => (
-        <Th {...column.getHeaderProps()} color="white" bgColor="ochGrey">
+        <Th
+          {...column.getHeaderProps(column.getSortByToggleProps())}
+          color="white"
+          bgColor="ochGrey"
+        >
           <Flex alignItems="center" textTransform="none">
             {loading ? <>&nbsp;</> : column.render('Header')}
           </Flex>
@@ -20,7 +24,7 @@ const PeopleTableHeader = ({ headerGroups, loading }) => {
 
 PeopleTableHeader.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  headerGroups: PropTypes.object.isRequired,
+  headerGroups: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 

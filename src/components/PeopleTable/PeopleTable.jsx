@@ -10,6 +10,34 @@ import PeopleTableFooter from './PeopleTableFooter';
 import { PeopleTableRow, NameColumn, SegmentColumn } from './PeopleTableRow';
 
 const rowsPerPageSelect = [6, 10, 20, 30];
+const sortOptions = {
+  nameDesc: [{ id: 'Name', desc: true }],
+  nameAsc: [{ id: 'Name', desc: false }],
+  lastUpdated: [{ id: 'Last Updated', desc: false }],
+};
+
+// Custom filter for searching name column
+const nameFilterFn = (rows, id, filterValue) => {
+  return rows.filter(row => {
+    const rowValue = row.values[id];
+    const searchKeys = ['name', 'email'];
+    return rowValue !== undefined
+      ? searchKeys.some(key =>
+          String(rowValue[key]).toLowerCase().includes(String(filterValue).toLowerCase()),
+        )
+      : true;
+  });
+};
+nameFilterFn.autoRemove = val => !val;
+
+// Custom filter for sorting name column
+// eslint-disable-next-line no-unused-vars
+const nameSortFn = (rowA, rowB, id, desc) => {
+  if (rowA.values[id].name > rowB.values[id].name) return -1;
+  if (rowB.values[id].name > rowA.values[id].name) return 1;
+  return 0;
+};
+
 /* eslint-disable react/destructuring-assignment, react/prop-types */
 const cellStructure = [
   {
@@ -22,6 +50,7 @@ const cellStructure = [
       isActive: d.isActive,
     }),
     filter: 'nameFilter',
+    sortType: nameSortFn,
     Cell: props => <NameColumn data={props.value} />,
   },
   {
@@ -43,20 +72,6 @@ const cellStructure = [
   },
 ];
 /* eslint-enable react/destructuring-assignment, react/prop-types */
-
-// Custom filter for searching name column
-const nameFilterFn = (rows, id, filterValue) => {
-  return rows.filter(row => {
-    const rowValue = row.values[id];
-    const searchKeys = ['name', 'email'];
-    return rowValue !== undefined
-      ? searchKeys.some(key =>
-          String(rowValue[key]).toLowerCase().includes(String(filterValue).toLowerCase()),
-        )
-      : true;
-  });
-};
-nameFilterFn.autoRemove = val => !val;
 
 const LoadingRow = () => (
   <Tr>
@@ -133,6 +148,7 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
     canNextPage,
     canPreviousPage,
     setGlobalFilter,
+    setSortBy,
     state,
     state: { pageIndex, pageSize },
   } = useTable(
@@ -142,6 +158,7 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
       filterTypes,
       initialState: {
         pageSize: rowsPerPageSelect[0],
+        sortBy: sortOptions.nameDesc,
       },
       globalFilter: 'nameFilter',
     },
@@ -158,8 +175,10 @@ const PeopleTable = ({ variant, peopleData, segments, loading }) => {
       <PeopleTableFilters
         variant={variant}
         segments={segments}
-        globalFilter={state.globalFilter}
+        globalFilter={state.globalFilter || ''}
         setGlobalFilter={setGlobalFilter}
+        sortOptions={sortOptions}
+        setSortBy={setSortBy}
       />
       <Table variant="striped" {...getTableProps()}>
         <Thead>
