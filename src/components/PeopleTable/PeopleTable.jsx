@@ -8,6 +8,7 @@ import PeopleTableFilters from './PeopleTableFilters';
 import PeopleTableHeader from './PeopleTableHeader';
 import PeopleTableFooter from './PeopleTableFooter';
 import { PeopleTableRow, NameColumn, SegmentColumn } from './PeopleTableRow';
+import { RowModalContextProvider } from './RowModalContext';
 
 const rowsPerPageSelect = [6, 10, 20, 30];
 const sortOptions = {
@@ -192,7 +193,11 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
         <Thead>
           <PeopleTableHeader headerGroups={headerGroups} loading={loading} />
         </Thead>
-        <Tbody {...getTableBodyProps()}>{tableContent(loading, page, prepareRow)}</Tbody>
+        <Tbody {...getTableBodyProps()}>
+          <RowModalContextProvider>
+            {tableContent(loading, page, prepareRow)}
+          </RowModalContextProvider>
+        </Tbody>
       </Table>
       <PeopleTableFooter
         rowCount={rows.length}

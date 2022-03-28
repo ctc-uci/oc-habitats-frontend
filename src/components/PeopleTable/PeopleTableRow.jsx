@@ -16,6 +16,7 @@ import {
   MenuItem,
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { useRowModalContext } from './RowModalContext';
 
 const editAccountInfo = data => {
   // eslint-disable-next-line no-console
@@ -32,26 +33,25 @@ const clearSegmentAssignment = data => {
   console.log(`Clearing segment assignment ${data}`);
 };
 
-const deletePendingAccount = data => {
-  // eslint-disable-next-line no-console
-  console.log(`Deleting pending account ${data}`);
-};
-
 const menuContent = data => {
+  const { openDeletePendingModal, openConvertAccountModal } = useRowModalContext();
   if (!data.isActive) {
     return <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>;
   }
-  // if (!data.registered) {
-  //   return (
-  //     <MenuItem color="red.600" onClick={() => deletePendingAccount(data)}>
-  //       Delete Pending Account
-  //     </MenuItem>
-  //   );
-  // }
+  if (data.registered && !data.registered) {
+    return (
+      <MenuItem color="red.600" onClick={() => openDeletePendingModal(data)}>
+        Delete Pending Account
+      </MenuItem>
+    );
+  }
   return (
     <>
       <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>
       <MenuItem onClick={() => editSegmentAssignment(data)}>Edit Segment Assignment(s)</MenuItem>
+      <MenuItem onClick={() => openConvertAccountModal(data)}>
+        Convert Account to Admin/Volunteer
+      </MenuItem>
       <MenuItem color="red.600" onClick={() => clearSegmentAssignment(data)}>
         Clear Segment Assignment(s)
       </MenuItem>
