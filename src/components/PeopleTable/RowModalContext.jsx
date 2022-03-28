@@ -16,7 +16,7 @@ function useRowModalContext() {
 }
 
 // Allows any row in the PeopleTable to open DeletePendingAccountModal
-// and ConvertAccountTypeModal with the data from that use
+// and ConvertAccountTypeModal with the data from that row
 const RowModalContextProvider = ({ children }) => {
   // Data state variables for each modal
   const [deletePendingData, setDeletePendingData] = useState({});
