@@ -21,6 +21,23 @@ const theme = extendTheme({
         }),
       },
     },
+    Button: {
+      variants: {
+        solidNoHover: props => ({
+          ...theme.components.Button.variants.solid(props),
+          _hover: {},
+          _active: {},
+        }),
+      },
+    },
+    IconButton: {
+      variants: {
+        noHover: {
+          _hover: {},
+          _active: {},
+        },
+      },
+    },
   },
 });
 

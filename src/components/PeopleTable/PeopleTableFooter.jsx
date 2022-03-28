@@ -52,14 +52,15 @@ const PeopleTableFooter = ({ rowCount, pageIndex, rowsPerPageSelect, pageSize, p
               color="white"
               icon={<ChevronLeftIcon h={6} w={6} />}
               isDisabled={!pageControl.canPreviousPage}
+              variant="noHover"
               onClick={() => pageControl.previousPage()}
             />
           </Tooltip>
           <Tooltip label="Next Page">
             <IconButton
               background="transparent"
-              _hover={null}
               color="white"
+              variant="noHover"
               icon={<ChevronRightIcon h={6} w={6} />}
               ml={4}
               isDisabled={!pageControl.canNextPage}

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Heading, Button, Flex, Spacer } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { FiEdit2 } from 'react-icons/fi';
+import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { OCHBackend } from '../common/utils';
-import AddAccountPopup from '../components/Table/AddAccountPopup';
-import PeopleTable from '../components/PeopleTable';
+import { PeopleTable, AddAccountPopup } from '../components/PeopleTable';
 
 // TODO:
 // - Update to new schema:
@@ -46,13 +45,18 @@ const PeoplePage = () => {
       <Heading fontWeight="600" fontSize="36px" mb="40px" mt="40px" align="left">
         People
       </Heading>
-      <Flex justifyContent="space-between">
+      <Flex justifyContent="flex-start" gap="40px">
         <AddAccountPopup />
         <Flex>
           <Spacer />
-          <Link to="/account" style={{ textDecoration: 'none' }}>
-            <Button rightIcon={<FiEdit2 />} bg="ochOrange" color="#F7FAFC" variant="solid">
-              Edit Segment Assignments
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <Button
+              rightIcon={<AiOutlineUnorderedList />}
+              bg="ochOrange"
+              color="ochBlack"
+              variant="solidNoHover"
+            >
+              View Segment Assignments
             </Button>
           </Link>
         </Flex>
