@@ -20,6 +20,7 @@ import {
   Text,
   FormErrorMessage,
   FormControl,
+  useToast,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
@@ -28,8 +29,16 @@ const schema = yup.object({
   email: yup.string().email('Invalid email').required('Email is required'),
 });
 
+const userTypes = {
+  volunteer: 'Volunteer',
+  admin: 'Admin',
+  superAdmin: 'Super Admin',
+};
+
 const AddAccountPopup = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+
   const {
     register,
     control,
@@ -50,6 +59,17 @@ const AddAccountPopup = () => {
     alert(JSON.stringify(data, null, 2));
 
     // TODO: send user request
+
+    toast({
+      title: 'Sign Up Link Sent!',
+      description: `
+        A one-time use ${userTypes[data.userType]} sign up link
+        was successfully sent to ${data.email}!
+      `,
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    });
 
     // Close modal
     onClose();
@@ -83,9 +103,13 @@ const AddAccountPopup = () => {
                   render={({ field: { onChange, value, ref } }) => (
                     <RadioGroup selected={value} onChange={onChange}>
                       <Stack column="vertical">
-                        <Radio value="volunteer">Volunteer</Radio>
-                        <Radio value="admin">Admin</Radio>
-                        <Radio value="superAdmin">Super Admin</Radio>
+                        {Object.keys(userTypes).map(key => {
+                          return (
+                            <Radio value={key} key={key}>
+                              {userTypes[key]}
+                            </Radio>
+                          );
+                        })}
                       </Stack>
                     </RadioGroup>
                   )}

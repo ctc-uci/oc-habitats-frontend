@@ -11,6 +11,7 @@ TODO:
   - Long names + badge looks bad
   - Segments column needs to be fixed width
   - More than 2 assigned segments
+  - Wide toast variant
 - Update to new schema:
   - Fetching/filtering users
   - Registered badge
