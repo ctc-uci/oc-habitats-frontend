@@ -6,21 +6,27 @@ import { OCHBackend } from '../common/utils';
 import { PeopleTable, AddAccountPopup } from '../components/PeopleTable';
 
 /*
+Using backend branch 32-add-user-router
+
 TODO:
 - Styling:
   - Long names + badge looks bad
   - Segments column needs to be fixed width
   - More than 2 assigned segments
-  - Wide toast variant
+  - Wide toast variant that can be used elsewhere
+  - Mobile
 - Update to new schema:
   - Fetching/filtering users
   - Registered badge
-  - Three dot menu
+  - Three dot menu conditional render
   - Last updated column (sorting)
 - Functionality:
   - View segment assignment page (design pending)
+  - Backend connection for admin invites
+  - Convert account type modal
+  - Delete pending account modal
 - Refactoring:
-  - One common file for all backend request functions (edit/delete)
+  - One common util file for all backend request functions
 */
 
 const PeoplePage = () => {
