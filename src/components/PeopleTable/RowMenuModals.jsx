@@ -19,20 +19,20 @@ const DeletePendingAccountModal = ({ userData, isOpen, onClose }) => {
       <ModalContent>
         <ModalHeader>Delete Pending Account</ModalHeader>
         <ModalCloseButton />
+        <ModalBody>
+          <br />
+          <Text>delete pending account</Text>
+          <pre>{JSON.stringify(userData, null, 2)}</pre>
+        </ModalBody>
+        <ModalFooter>
+          <Button colorScheme="gray" mr="12px" onClick={onClose}>
+            No
+          </Button>
+          <Button variant="solid" bg="red.600" color="white">
+            Yes, Convert Account
+          </Button>
+        </ModalFooter>
       </ModalContent>
-      <ModalBody>
-        <br />
-        <Text>delete pending account</Text>
-        <pre>{JSON.stringify(userData, null, 2)}</pre>
-      </ModalBody>
-      <ModalFooter>
-        <Button colorScheme="gray" mr="12px" onClick={onClose}>
-          No
-        </Button>
-        <Button variant="solid" bg="red.600" color="white">
-          Yes, Convert Account
-        </Button>
-      </ModalFooter>
     </Modal>
   );
 };
@@ -49,15 +49,15 @@ const ConvertAccountTypeModal = ({ userData, isOpen, onClose }) => {
           <Text>convert account</Text>
           <pre>{JSON.stringify(userData, null, 2)}</pre>
         </ModalBody>
+        <ModalFooter>
+          <Button colorScheme="gray" mr="12px" onClick={onClose}>
+            No
+          </Button>
+          <Button variant="solid" bg="green.500" color="white">
+            Yes, Convert Account
+          </Button>
+        </ModalFooter>
       </ModalContent>
-      <ModalFooter>
-        <Button colorScheme="gray" mr="12px" onClick={onClose}>
-          No
-        </Button>
-        <Button variant="solid" bg="red.600" color="white">
-          Yes, Convert Account
-        </Button>
-      </ModalFooter>
     </Modal>
   );
 };
