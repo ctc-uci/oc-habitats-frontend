@@ -19,6 +19,8 @@ TODO:
   - Last updated column (sorting)
 - Functionality:
   - View segment assignment page (design pending)
+- Refactoring:
+  - One common file for all backend request functions (edit/delete)
 */
 
 const PeoplePage = () => {

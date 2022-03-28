@@ -87,7 +87,7 @@ const AddAccountPopup = () => {
         Create New Account
       </Button>
 
-      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create New User</ModalHeader>
@@ -130,7 +130,7 @@ const AddAccountPopup = () => {
               <Button colorScheme="gray" mr={3} onClick={onClose}>
                 Close
               </Button>
-              <Button type="submit" colorScheme="blue" bg="ochBlue" color="#F7FAFC" variant="solid">
+              <Button type="submit" colorScheme="blue" bg="ochBlue" color="white" variant="solid">
                 Create New User
               </Button>
             </ModalFooter>
