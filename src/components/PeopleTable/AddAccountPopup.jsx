@@ -1,4 +1,8 @@
-import { useState, React } from 'react';
+import React, { useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
 import {
   Button,
   useDisclosure,
@@ -13,18 +17,44 @@ import {
   Radio,
   Stack,
   Input,
+  Text,
+  FormErrorMessage,
+  FormControl,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
-function AddAccountPopup() {
+const schema = yup.object({
+  userType: yup.string('User type is required').required('User type is required'),
+  email: yup.string().email('Invalid email').required('Email is required'),
+});
+
+const AddAccountPopup = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [value, setValue] = useState('0');
-  const [volInput, setVolInput] = useState('');
-  const [adminName, setAdminName] = useState('');
-  const [adminEmail, setAdminEmail] = useState('');
-  const volHandleChange = event => setVolInput(event.target.value);
-  const adminNameHandleChange = event => setAdminName(event.target.value);
-  const adminEmailHandleChange = event => setAdminEmail(event.target.value);
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    delayError: 750,
+  });
+
+  useEffect(() => {
+    reset();
+  }, [isOpen]);
+
+  const onSubmit = async data => {
+    // eslint-disable-next-line no-alert
+    alert(JSON.stringify(data, null, 2));
+
+    // TODO: send user request
+
+    // Close modal
+    onClose();
+  };
+
   return (
     <>
       <Button
@@ -37,60 +67,54 @@ function AddAccountPopup() {
         Create New Account
       </Button>
 
-      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create New User</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <RadioGroup onChange={setValue} value={value}>
-              <Stack column="vertical">
-                <Radio value="1">Volunteer</Radio>
-                <Radio value="2">Admin</Radio>
-              </Stack>
-            </RadioGroup>
-            {value === '1' && (
-              <Stack columnt="vertical">
-                <br />
-                <p>Enter volunteer&apos;s email:</p>
-                <Input variant="filled" value={volInput} onChange={volHandleChange} />
-              </Stack>
-            )}
-            {value === '2' && (
-              <Stack column="vertical">
-                <br />
-                <p>Enter admin&apos;s name:</p>
-                <Input variant="filled" value={adminName} onChange={adminNameHandleChange} />
-                <p>
-                  Enter admin&apos;s OCH email:
-                  <Input variant="filled" value={adminEmail} onChange={adminEmailHandleChange} />
-                </p>
-              </Stack>
-            )}
-          </ModalBody>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <ModalBody>
+              <FormControl isInvalid={errors?.userType}>
+                <Text mb="10px">User Type</Text>
+                <Controller
+                  control={control}
+                  name="userType"
+                  // eslint-disable-next-line no-unused-vars
+                  render={({ field: { onChange, value, ref } }) => (
+                    <RadioGroup selected={value} onChange={onChange}>
+                      <Stack column="vertical">
+                        <Radio value="volunteer">Volunteer</Radio>
+                        <Radio value="admin">Admin</Radio>
+                        <Radio value="superAdmin">Super Admin</Radio>
+                      </Stack>
+                    </RadioGroup>
+                  )}
+                />
+                <FormErrorMessage>{errors.userType?.message}</FormErrorMessage>
+              </FormControl>
+              <FormControl isInvalid={errors?.email}>
+                <Stack column="vertical">
+                  <br />
+                  <p>User Email:</p>
+                  <Input id="email" name="email" {...register('email')} />
+                  <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+                </Stack>
+              </FormControl>
+            </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme="gray" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button
-              colorScheme="blue"
-              disabled={
-                value === '0' ||
-                (value === '1' && volInput === '') ||
-                (value === '2' && (adminEmail === '' || adminName === ''))
-              }
-              bg="ochBlue"
-              color="#F7FAFC"
-              variant="solid"
-            >
-              Create New User
-            </Button>
-          </ModalFooter>
+            <ModalFooter>
+              <Button colorScheme="gray" mr={3} onClick={onClose}>
+                Close
+              </Button>
+              <Button type="submit" colorScheme="blue" bg="ochBlue" color="#F7FAFC" variant="solid">
+                Create New User
+              </Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
     </>
   );
-}
+};
 
 export default AddAccountPopup;

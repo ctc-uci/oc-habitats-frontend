@@ -5,12 +5,20 @@ import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { OCHBackend } from '../common/utils';
 import { PeopleTable, AddAccountPopup } from '../components/PeopleTable';
 
-// TODO:
-// - Update to new schema:
-//  - Fetching/filtering users
-//  - Registered badge
-//  - Three dot menu
-//  - Last updated column (sorting)
+/*
+TODO:
+- Styling:
+  - Long names + badge looks bad
+  - Segments column needs to be fixed width
+  - More than 2 assigned segments
+- Update to new schema:
+  - Fetching/filtering users
+  - Registered badge
+  - Three dot menu
+  - Last updated column (sorting)
+- Functionality:
+  - View segment assignment page (design pending)
+*/
 
 const PeoplePage = () => {
   const [isLoading, setIsLoading] = useState(true);
