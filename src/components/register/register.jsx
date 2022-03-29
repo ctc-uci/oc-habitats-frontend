@@ -83,6 +83,7 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
               mb="30px"
               size="md"
               w="700px"
+              value={inviteFirstName}
             />
           </FormControl>
           <FormControl>
@@ -94,6 +95,7 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
               mb="30px"
               size="md"
               w="700px"
+              value={inviteLastName}
             />
           </FormControl>
           <FormControl>
@@ -105,16 +107,11 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
               mb="30px"
               size="md"
               w="700px"
+              value={inviteEmail}
             />
           </FormControl>
           <FormLabel htmlFor="role">Role</FormLabel>
-          <select
-            id="role"
-            onChange={e => setRole(e.target.value)}
-            value={role}
-            maxW="700px"
-            defaultValue={inviteRole}
-          >
+          <select id="role" onChange={e => setRole(e.target.value)} maxW="700px" value={inviteRole}>
             <option value="admin">Admin</option>
             <option value="super-admin">Super Admin</option>
             <option value="volunteer">Volunteer</option>

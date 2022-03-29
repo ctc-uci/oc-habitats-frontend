@@ -19,7 +19,7 @@ const AdminInvite = () => {
   const [email, setEmail] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [confirmationMessage, setConfirmationMessage] = useState();
-  const [role, setRole] = useState();
+  const [role, setRole] = useState('volunteer');
 
   const handleSubmit = async e => {
     try {
@@ -62,12 +62,16 @@ const AdminInvite = () => {
         <br />
         <FormControl>
           <FormLabel htmlFor="role">Role</FormLabel>
-          <select id="role" onChange={e => setRole(e.target.value)} value={role} maxW="700px">
+          <select
+            id="role"
+            onChange={e => setRole(e.target.value)}
+            value={role}
+            maxW="700px"
+            defaultValue="volunteer"
+          >
             <option value="admin">Admin</option>
             <option value="super-admin">Super Admin</option>
-            <option value="volunteer" selected>
-              Volunteer
-            </option>
+            <option value="volunteer">Volunteer</option>
           </select>
         </FormControl>
         <br />
