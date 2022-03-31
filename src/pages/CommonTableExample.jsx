@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Text, Tbody, Th, Tr, Td, Button } from '@chakra-ui/react';
-import CommonTable from './CommonTable';
-import CommonTableHeader from './CommonTableHeader';
-import { CommonLoadingRow } from './CommonTableFiller';
+import CommonTable from '../common/CommonTable/CommonTable';
+import CommonTableHeader from '../common/CommonTable/CommonTableHeader';
+import { CommonLoadingRow } from '../common/CommonTable/CommonTableFiller';
 
 const CommonTableExample = () => {
   const [loading, setLoading] = useState(false);

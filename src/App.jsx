@@ -14,7 +14,7 @@ import Navbar from './components/Navbar/Navbar';
 import theme from './theme/theme';
 import Footer from './components/Footer/Footer';
 
-import CommonTableExample from './components/CommonTable/CommonTableExample';
+import CommonTableExample from './pages/CommonTableExample';
 
 function App() {
   return (
