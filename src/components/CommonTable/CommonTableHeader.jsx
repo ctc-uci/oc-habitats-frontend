@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Thead, Tr, Flex } from '@chakra-ui/react';
+import { Thead, Th, Tr } from '@chakra-ui/react';
 import styles from './CommonTable.module.css';
 
 const CommonTableHeader = ({ children, loading, headerStyle }) => {
@@ -10,15 +10,18 @@ const CommonTableHeader = ({ children, loading, headerStyle }) => {
 
   return (
     <Thead>
-      <Tr className={styles['table-head']}>
-        {loading ? (
-          <Flex alignItems="center" textTransform="none">
+      {loading ? (
+        <Tr className={styles['table-head']}>
+          <Th {...headerStyle}>
             <>&nbsp;</>
-          </Flex>
-        ) : (
-          styledHeaders
-        )}
-      </Tr>
+          </Th>
+          <Th {...headerStyle}>
+            <>&nbsp;</>
+          </Th>
+        </Tr>
+      ) : (
+        <Tr className={styles['table-head']}>{styledHeaders}</Tr>
+      )}
     </Thead>
   );
 };
