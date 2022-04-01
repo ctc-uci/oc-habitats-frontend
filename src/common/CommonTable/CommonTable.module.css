@@ -8,10 +8,14 @@
 .table-head th:last-child {
   border-radius: 0 10px 0 0;
 }
-.footer-container {
-  overflow-y: auto;
-  min-width: 900px;
-  width: 100%;
-  max-height: 400px;
-  border-radius: 0 0 10px 10px;
+
+.table-foot {
+  position: sticky;
+  top: 0;
+}
+.table-foot th:first-child {
+  border-radius: 0 0 0 10px;
+}
+.table-foot th:last-child {
+  border-radius: 0 0 10px 0;
 }

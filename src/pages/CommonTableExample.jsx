@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { Box, Text, Tbody, Th, Tr, Td, Button } from '@chakra-ui/react';
 import CommonTable from '../common/CommonTable/CommonTable';
-import CommonTableHeader from '../common/CommonTable/CommonTableHeader';
+import { CommonTableHeader, CommonTableFooter } from '../common/CommonTable/CommonTableHeader';
 import { CommonLoadingRow } from '../common/CommonTable/CommonTableFiller';
 
 const CommonTableExample = () => {
   const [loading, setLoading] = useState(false);
   return (
     <Box w="900px">
-      <Text fontSize="3xl" m="20px 0">
-        Default Common Tables
+      <Text fontSize="2xl" m="20px 0">
+        Default Common Table w/ Header and Footer
       </Text>
       <DefaultTable />
-      <Text fontSize="3xl" m="20px 0">
-        Common Table with Custom Header Styles
+      <Text fontSize="2xl" m="20px 0">
+        Common Table with Custom Styles
       </Text>
-      <TableWithCustomHeader />
-      <Text fontSize="3xl" m="20px 0">
+      <TableWithCustomStyle />
+      <Text fontSize="2xl" m="20px 0">
         Loading Table
         <Button onClick={() => setLoading(!loading)}>Change Loading State</Button>
       </Text>
@@ -85,18 +85,26 @@ const DefaultTable = () => (
         <Td>153.3</Td>
       </Tr>
     </Tbody>
+    <CommonTableFooter>
+      <Th>Planet</Th>
+      <Th>Mass (10^24kg)</Th>
+      <Th>Diameter (km)</Th>
+      <Th>Density (kg/m^3)</Th>
+      <Th>Gravity (m/s^2)</Th>
+      <Th>Length of day (hours)</Th>
+    </CommonTableFooter>
   </CommonTable>
 );
 
-const TableWithCustomHeader = () => {
+const TableWithCustomStyle = () => {
+  // Object with header style props
   const headerStyle = {
     textTransform: 'uppercase',
     bgColor: 'ochOrange',
     color: 'white',
   };
-
   return (
-    <CommonTable>
+    <CommonTable variant="simple">
       <CommonTableHeader headerStyle={headerStyle}>
         <Th>Planet</Th>
         <Th>Mass (10^24kg)</Th>
@@ -167,6 +175,11 @@ const LoadingTable = ({ loading }) => {
           </>
         )}
       </Tbody>
+      <CommonTableFooter loading={loading}>
+        <Th>Example A</Th>
+        <Th>Example B</Th>
+        <Th>Example C</Th>
+      </CommonTableFooter>
     </CommonTable>
   );
 };
