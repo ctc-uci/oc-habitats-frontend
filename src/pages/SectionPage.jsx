@@ -22,6 +22,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { React, useState } from 'react';
 import Section from '../components/Section';
+import NewSectionSegmentPopup from '../components/NewSectionSegmentPopup';
 
 const sectionsData = [
   {
@@ -71,9 +72,12 @@ const sectionsData = [
 function CreateNewSectionSegment(onAddSegment, addSection) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Button size="md" bg="#2BC0E3" variant="solid" rightIcon={<AddIcon />} onClick={onOpen}>
-      Create New Section or Segment
-    </Button>
+    <>
+      {/* <Button size="md" bg="#2BC0E3" variant="solid" rightIcon={<AddIcon />} onClick={onOpen}>
+        Create New Section or Segment
+      </Button> */}
+      <NewSectionSegmentPopup />
+    </>
   );
 }
 
