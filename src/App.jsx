@@ -18,7 +18,7 @@ import AdminPage from './pages/AdminPage';
 import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
-import EndangeredSpecies from './pages/EndangeredSpeciesPopup';
+import EndangeredSpeciesPopup from './pages/EndangeredSpeciesPopup';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import Navbar from './components/Navbar/Navbar';
@@ -26,6 +26,7 @@ import Footer from './components/Footer/Footer';
 
 import theme from './theme/theme';
 import AUTH_ROLES from './common/auth_config';
+import CommonTableExample from './pages/CommonTableExample';
 
 const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
@@ -39,20 +40,22 @@ function App() {
               <Navbar isAdmin />
               <Routes>
                 {/* Add routes as needed; route names subject to change */}
-                <Route path="/" element={<HomePage />} />
-                <Route path="/account" element={<AccountPage />} />
-                <Route path="/create-log" element={<MonitorLogPage />} />
-                <Route path="/sections" element={<SectionPage />} />
+                <Route exact path="/" element={<HomePage />} />
+                <Route exact path="/account" element={<AccountPage />} />
+                <Route exact path="/create-log" element={<MonitorLogPage />} />
+                <Route exact path="/sections" element={<SectionPage />} />
                 <Route
+                  exact
                   path="/endangered"
-                  element={<EndangeredSpecies adultName="Snowy Plovers" />}
+                  element={<EndangeredSpeciesPopup adultName="Snowy Plovers" />}
                 />
-                <Route path="/species" element={<Species />} />
+                <Route exact path="/species" element={<Species />} />
                 {/* Admin only routes (TO DO, make admin only) */}
-                <Route path="/people" element={<PeoplePage />} />
+                <Route exact path="/people" element={<PeoplePage />} />
                 <Route exact path="/contacts" />
                 <Route exact path="/map" />
                 <Route exact path="/logs" element={<AdminPage />} />
+                <Route exact path="/common-table-example" element={<CommonTableExample />} />
 
                 {/* NEW AUTH ROUTES */}
                 <Route path="/login" element={<Login />} />
