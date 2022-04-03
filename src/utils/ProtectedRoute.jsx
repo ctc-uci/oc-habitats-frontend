@@ -7,15 +7,15 @@ import { NPOBackend, refreshToken } from './auth_utils';
 const userIsAuthenticated = async (roles, cookies) => {
   try {
     const accessToken = await refreshToken(cookies);
-    console.log(accessToken);
+    // console.log(accessToken);
     if (!accessToken) {
       return false;
     }
     const loggedIn = await NPOBackend.get(`/auth/verifyToken/${accessToken}`);
-    console.log(accessToken, loggedIn);
+    // console.log(accessToken, loggedIn);
     return roles.includes(cookies.get(cookieKeys.ROLE)) && loggedIn.status === 200;
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     clearCookies(cookies);
     return false;
   }

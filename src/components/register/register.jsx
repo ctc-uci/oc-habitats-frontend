@@ -18,6 +18,7 @@ import {
 import { Cookies, withCookies } from '../../utils/cookie_utils';
 import { registerWithEmailAndPassword } from '../../utils/auth_utils';
 
+// eslint-disable-next-line no-unused-vars
 const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, inviteRole }) => {
   const [errorMessage, setErrorMessage] = useState();
   const [firstName, setFirstName] = useState(inviteFirstName);
@@ -32,7 +33,7 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
 
   const handleSubmit = async e => {
     e.preventDefault();
-    console.log(`handleSubmit called with ${firstName}, ${lastName}, ${email}, ${password}`);
+    // console.log(`handleSubmit called with ${firstName}, ${lastName}, ${email}, ${password}`);
     try {
       if (password !== checkPassword) {
         throw new Error("Passwords don't match");
