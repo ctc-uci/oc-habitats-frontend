@@ -127,45 +127,28 @@ const refreshToken = async () => {
  * @param {bool} signUpWithGoogle true if user used Google provider to sign in
  * @param {string} password
  */
-const createUserInDB = async (
-  email,
-  userId,
-  role,
-  signUpWithGoogle,
-  firstName = 'temporary first name',
-  lastName = 'temporary last name',
-  password = null,
-) => {
+const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
   try {
-    if (signUpWithGoogle) {
-      await NPOBackend.post('/users/', {
-        email,
-        userId,
-        firstName,
-        lastName,
-        registered: false,
-      });
-    } else {
-      await NPOBackend.post('/users/', {
-        id: userId,
-        firstName,
-        lastName,
-        email,
-        role,
-        isActive: true,
-        isTrainee: false,
-        registered: true,
-        profileImage: null,
-      });
-    }
+    console.log(`firebaseId param received as ${firebaseId} and passing it into POST`);
+    await NPOBackend.post('/users/', {
+      firebaseId,
+      firstName,
+      lastName,
+      email,
+      role,
+      isActive: true,
+      isTrainee: false,
+      registered: true,
+      segments: null,
+    });
   } catch (err) {
     // Since this route is called after user is created in firebase, if this
     // route errors out, that means we have to discard the created firebase object
-    if (!signUpWithGoogle) {
-      await signInWithEmailAndPassword(auth, email, password);
-    }
-    const userToBeTerminated = await auth.currentUser;
-    userToBeTerminated.delete();
+    // if (!signUpWithGoogle) {
+    //   await signInWithEmailAndPassword(auth, email, password);
+    // }
+    // const userToBeTerminated = await auth.currentUser;
+    // userToBeTerminated.delete();
     throw new Error(err.message);
   }
 };
@@ -243,8 +226,12 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
  * @returns A UserCredential object from firebase
  */
 const createUserInFirebase = async (email, password) => {
-  const user = await createUserWithEmailAndPassword(auth, email, password);
-  return user.user;
+  // const user = await createUserWithEmailAndPassword(auth, email, password);
+  const user = await NPOBackend.post('/users/firebase', {
+    email,
+    password,
+  });
+  return user;
 };
 
 /**
@@ -256,8 +243,9 @@ const createUserInFirebase = async (email, password) => {
  */
 const createUser = async (email, password, firstName, lastName, role) => {
   const user = await createUserInFirebase(email, password);
-  await createUserInDB(email, user.uid, role, false, firstName, lastName, password);
-  sendEmailVerification(user);
+  console.log('in createUser on line 246, user looks like: ');
+  console.log(user);
+  await createUserInDB(email, user.data.uid, role, firstName, lastName);
 };
 
 /**
@@ -268,14 +256,19 @@ const createUser = async (email, password, firstName, lastName, role) => {
  * @param {hook} navigate An instance of the useNavigate hook from react-router-dom
  * @param {string} redirectPath path to redirect users once logged in
  */
-const registerWithEmailAndPassword = async (firstName, lastName, email, password) => {
-  await NPOBackend.post('/users/create', {
-    firstName,
-    lastName,
-    email,
-    password,
-  });
+
+const registerWithEmailAndPassword = async (
+  email,
+  password,
+  firstName,
+  lastName,
+  role,
+  navigate,
+  redirectPath,
+) => {
+  createUser(email, password, firstName, lastName, role);
   await NPOBackend.delete(`/adminInvite/${email}`);
+  navigate(redirectPath);
 };
 
 /**

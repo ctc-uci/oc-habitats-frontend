@@ -28,11 +28,12 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
   const [checkPassword, setCheckPassword] = useState();
   const [showPassword, setShowPassword] = useState();
   const [showCheckPassword, setShowCheckPassword] = useState();
-  const [role, setRole] = useState(inviteRole);
+  const [role, setRole] = useState('admin');
   const navigate = useNavigate();
 
   const handleSubmit = async e => {
     e.preventDefault();
+    console.log(`handleSubmit called with ${firstName}, ${lastName}, ${email}, ${password}`);
     try {
       if (password !== checkPassword) {
         throw new Error("Passwords don't match");
