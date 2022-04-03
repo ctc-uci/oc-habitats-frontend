@@ -5,13 +5,13 @@ import { CookiesProvider } from 'react-cookie';
 import './App.css';
 
 // NEW AUTH IMPORTS
-import InviteLandingPage from './components/InviteLandingPage';
-import AdminInvite from './components/AdminInvite';
-import ForgotPassword from './components/ForgotPassword';
+import InviteLandingPage from './components/Authentication/InviteLandingPage';
+import AdminInvite from './components/Authentication/AdminInvite';
+import ForgotPassword from './components/Authentication/ForgotPassword';
 import Login from './components/Login/Login';
 import Logout from './components/Login/Logout';
 import ProtectedRoute from './utils/ProtectedRoute';
-import EmailAction from './components/EmailAction';
+import EmailAction from './components/Authentication/EmailAction';
 
 import HomePage from './pages/HomePage';
 import AdminPage from './pages/AdminPage';

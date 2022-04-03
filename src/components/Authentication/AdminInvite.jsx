@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormControl, FormLabel } from '@chakra-ui/react';
-import { initiateInviteProcess } from '../utils/auth_utils';
+import { initiateInviteProcess } from '../../utils/auth_utils';
 
 const AdminInvite = () => {
   const [firstName, setFirstName] = useState();
