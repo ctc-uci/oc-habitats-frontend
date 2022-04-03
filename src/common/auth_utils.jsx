@@ -20,6 +20,7 @@ import { renderEmail } from 'react-html-email';
 
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
 
+import { OCHBackend } from './utils';
 import AdminInviteEmail from '../components/Email/EmailTemplates/AdminInviteEmail';
 
 // Using Firebase Web version 9
@@ -34,12 +35,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
-// TEMP: Make sure to remove
-const NPOBackend = axios.create({
-  baseURL: 'http://localhost:3001',
-  withCredentials: true,
-});
 
 const refreshUrl = `https://securetoken.googleapis.com/v1/token?key=${process.env.REACT_APP_FIREBASE_APIKEY}`;
 
@@ -91,7 +86,7 @@ const refreshToken = async () => {
     });
     // Sets the appropriate cookies after refreshing access token
     setCookie(cookieKeys.ACCESS_TOKEN, idToken, cookieConfig);
-    const user = await NPOBackend.get(`/users/${auth.currentUser.uid}`);
+    const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`);
     console.log(user.data.user);
     setCookie(cookieKeys.ROLE, user.data.role, cookieConfig);
     return idToken;
@@ -109,7 +104,7 @@ const refreshToken = async () => {
 const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
   try {
     console.log(`firebaseId param received as ${firebaseId} and passing it into POST`);
-    await NPOBackend.post('/users/', {
+    await OCHBackend.post('/users/', {
       firebaseId,
       firstName,
       lastName,
@@ -141,7 +136,7 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
     throw new Error('Please verify your email before logging in.');
   }
   cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
-  const user = await NPOBackend.get(`/users/${auth.currentUser.uid}`);
+  const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`);
   console.log('Current user: ');
   console.table(user.data);
   cookies.set(cookieKeys.ROLE, user.data.role, cookieConfig);
@@ -156,7 +151,7 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
  */
 const createUserInFirebase = async (email, password) => {
   // const user = await createUserWithEmailAndPassword(auth, email, password);
-  const user = await NPOBackend.post('/users/firebase', {
+  const user = await OCHBackend.post('/users/firebase', {
     email,
     password,
   });
@@ -199,7 +194,7 @@ const registerWithEmailAndPassword = async (
 ) => {
   try {
     createUser(email, password, firstName, lastName, role);
-    await NPOBackend.delete(`/adminInvite/${email}`);
+    await OCHBackend.delete(`/adminInvite/${email}`);
     navigate(redirectPath);
   } catch (err) {
     throw new Error(err.message);
@@ -301,10 +296,12 @@ const addAuthInterceptor = axiosInstance => {
   );
 };
 
+addAuthInterceptor(OCHBackend);
+
 // -------- ADMIN INVITE ROUTES START HERE ------------------------------------------
 
 const sendEmail = (email, emailTemplate) => {
-  NPOBackend.post('/nodemailer/send', {
+  OCHBackend.post('/nodemailer/send', {
     email,
     messageHtml: renderEmail(emailTemplate),
   });
@@ -315,7 +312,7 @@ const initiateInviteProcess = (firstName, lastName, email, role) => {
     const id = uuidv4();
     const url = `localhost:3000/invite-user/${id}`;
     const expireDate = moment().add(1, 'days');
-    NPOBackend.post('/adminInvite/', {
+    OCHBackend.post('/adminInvite/', {
       id,
       firstName,
       lastName,
@@ -330,11 +327,7 @@ const initiateInviteProcess = (firstName, lastName, email, role) => {
   }
 };
 
-// to be moved where NPOBackend is declared
-addAuthInterceptor(NPOBackend);
-
 export {
-  NPOBackend,
   auth,
   useNavigate,
   logInWithEmailAndPassword,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Register from './Register';
-import { NPOBackend } from '../../common/auth_utils';
+import { OCHBackend } from '../../common/utils';
 
 const InviteLandingPage = () => {
   const [invite, setInvite] = useState();
@@ -11,7 +11,7 @@ const InviteLandingPage = () => {
   const { inviteID } = useParams();
 
   const checkInviteValidity = async id => {
-    const foundInvite = await NPOBackend.get(`/adminInvite/${id}`);
+    const foundInvite = await OCHBackend.get(`/adminInvite/${id}`);
     setInvite(foundInvite.data);
     if (!inviteID || !foundInvite || !foundInvite.data) {
       setError('nonexistent invite');
