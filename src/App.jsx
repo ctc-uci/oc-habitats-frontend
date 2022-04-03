@@ -11,7 +11,6 @@ import ForgotPassword from './components/ForgotPassword';
 import Login from './components/login/Login';
 import Logout from './components/Logout';
 import ProtectedRoute from './utils/ProtectedRoute';
-import Register from './components/register/register';
 import EmailAction from './components/EmailAction';
 
 import HomePage from './pages/HomePage';
@@ -77,16 +76,7 @@ function App() {
                     />
                   }
                 />
-                <Route
-                  path="/invite-user/:inviteID"
-                  element={
-                    <ProtectedRoute
-                      Component={InviteLandingPage}
-                      redirectPath="/"
-                      roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
-                    />
-                  }
-                />
+                <Route path="/invite-user/:inviteID" element={<InviteLandingPage />} />
                 <Route path="/emailAction" element={<EmailAction redirectPath="/" />} />
                 <Route path="/forgotPassword" element={<ForgotPassword />} />
                 <Route
@@ -99,7 +89,6 @@ function App() {
                     />
                   }
                 />
-                <Route path="/register" element={<Register />} />
               </Routes>
             </Box>
           </Box>
