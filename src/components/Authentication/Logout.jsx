@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { instanceOf } from 'prop-types';
-import { logout, useNavigate, NPOBackend } from '../../utils/auth_utils';
-import { Cookies, withCookies } from '../../utils/cookie_utils';
+import { logout, useNavigate, NPOBackend } from '../../common/auth_utils';
+import { Cookies, withCookies } from '../../common/cookie_utils';
 
 const Logout = ({ cookies }) => {
   const navigate = useNavigate();

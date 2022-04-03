@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Register from './Register';
-import { NPOBackend } from '../../utils/auth_utils';
+import { NPOBackend } from '../../common/auth_utils';
 
 const InviteLandingPage = () => {
   const [invite, setInvite] = useState();

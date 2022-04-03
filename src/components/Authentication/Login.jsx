@@ -14,8 +14,8 @@ import {
   Center,
 } from '@chakra-ui/react';
 import { instanceOf } from 'prop-types';
-import { Cookies, withCookies } from '../../utils/cookie_utils';
-import { logInWithEmailAndPassword, useNavigate } from '../../utils/auth_utils';
+import { Cookies, withCookies } from '../../common/cookie_utils';
+import { logInWithEmailAndPassword, useNavigate } from '../../common/auth_utils';
 
 import OCHLogo from '../../assets/OCHlogo.png';
 

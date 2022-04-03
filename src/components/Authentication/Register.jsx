@@ -16,8 +16,8 @@ import {
   Center,
   Text,
 } from '@chakra-ui/react';
-import { Cookies, withCookies } from '../../utils/cookie_utils';
-import { registerWithEmailAndPassword } from '../../utils/auth_utils';
+import { Cookies, withCookies } from '../../common/cookie_utils';
+import { registerWithEmailAndPassword } from '../../common/auth_utils';
 
 // eslint-disable-next-line no-unused-vars
 const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, inviteRole }) => {

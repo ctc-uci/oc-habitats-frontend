@@ -10,7 +10,7 @@ import AdminInvite from './components/Authentication/AdminInvite';
 import ForgotPassword from './components/Authentication/ForgotPassword';
 import Login from './components/Authentication/Login';
 import Logout from './components/Authentication/Logout';
-import ProtectedRoute from './utils/ProtectedRoute';
+import ProtectedRoute from './common/ProtectedRoute';
 import EmailAction from './components/Authentication/EmailAction';
 
 import HomePage from './pages/HomePage';
@@ -25,7 +25,7 @@ import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 
 import theme from './theme/theme';
-import AUTH_ROLES from './utils/auth_config';
+import AUTH_ROLES from './common/auth_config';
 
 const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
