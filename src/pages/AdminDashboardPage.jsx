@@ -34,21 +34,51 @@ const emergentIssuesData = [
     id: 1,
     title: 'Injured California Least Terns',
     numIssues: 0,
+    issuesData: [],
   },
   {
     id: 2,
     title: 'Injured Western Snowy Plovers',
     numIssues: 0,
+    issuesData: [],
   },
   {
     id: 3,
     title: 'Injured Terrestrial Wildlife',
     numIssues: 2,
+    data: [
+      {
+        id: 1,
+        segment: 'OCXX',
+        date: 'MM-DD-YYYY',
+        monitorLogLink: '/logs',
+      },
+      {
+        id: 1,
+        segment: 'OCXX',
+        date: 'MM-DD-YYYY',
+        monitorLogLink: '/logs',
+      },
+    ],
   },
   {
     id: 4,
     title: 'Speeding Vehicles',
     numIssues: 2,
+    data: [
+      {
+        id: 1,
+        segment: 'OCXX',
+        date: 'MM-DD-YYYY',
+        monitorLogLink: '/logs',
+      },
+      {
+        id: 1,
+        segment: 'OCXX',
+        date: 'MM-DD-YYYY',
+        monitorLogLink: '/logs',
+      },
+    ],
   },
 ];
 

@@ -14,7 +14,11 @@ const EmergentIssues = ({ month, year, emergentIssuesData }) => {
         {emergentIssuesData.map(issuesData => {
           return (
             <GridItem key={issuesData.id}>
-              <EmergentIssuesCard title={issuesData.title} numIssues={issuesData.numIssues} />
+              <EmergentIssuesCard
+                title={issuesData.title}
+                numIssues={issuesData.numIssues}
+                issueData={issuesData.data}
+              />
             </GridItem>
           );
         })}
@@ -31,6 +35,14 @@ EmergentIssues.propTypes = {
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
       numIssues: PropTypes.number.isRequired,
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          segment: PropTypes.string.isRequired,
+          date: PropTypes.string.isRequired,
+          monitorLogLink: PropTypes.string.isRequired,
+        }),
+      ).isRequired,
     }),
   ).isRequired,
 };
