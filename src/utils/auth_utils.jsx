@@ -171,10 +171,12 @@ const createUserInFirebase = async (email, password) => {
  * @returns A UserCredential object from firebase
  */
 const createUser = async (email, password, firstName, lastName, role) => {
-  const user = await createUserInFirebase(email, password);
-  console.log('in createUser on line 246, user looks like: ');
-  console.log(user);
-  await createUserInDB(email, user.data.uid, role, firstName, lastName);
+  try {
+    const user = await createUserInFirebase(email, password);
+    await createUserInDB(email, user.data.uid, role, firstName, lastName);
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
 /**
@@ -195,9 +197,13 @@ const registerWithEmailAndPassword = async (
   navigate,
   redirectPath,
 ) => {
-  createUser(email, password, firstName, lastName, role);
-  await NPOBackend.delete(`/adminInvite/${email}`);
-  navigate(redirectPath);
+  try {
+    createUser(email, password, firstName, lastName, role);
+    await NPOBackend.delete(`/adminInvite/${email}`);
+    navigate(redirectPath);
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
 /**
