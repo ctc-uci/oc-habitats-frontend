@@ -1,9 +1,64 @@
 import { React } from 'react';
-import { Text, Box, Flex, HStack } from '@chakra-ui/react';
+import {
+  Text,
+  Box,
+  Flex,
+  HStack,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  IconButton,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
 
-const MonitorLogSubmissionStats = ({ month, year, numLogsCompleted, numLogsNotSubmitted }) => {
+function StatsPopUp(title, numLogs, statsData) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <>
+      <IconButton icon={<ExternalLinkIcon boxSize="2em" />} onClick={onOpen} />
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader fontSize="20px" fontWeight="medium">
+            {title}
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text fontSize="36px" fontWeight="bold">
+              {numLogs}
+            </Text>
+            {statsData.map(data => {
+              const name = `${data.firstName} ${data.lastName}`;
+              return (
+                <Flex key={data.id} justify="space-between">
+                  <Text>{name.substring(0, 25) + (name.length > 25 ? '...' : '')}</Text>
+                  <a href={data.accountInfoLink}>
+                    <Text textDecoration="underline">Details</Text>
+                  </a>
+                </Flex>
+              );
+            })}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+
+const MonitorLogSubmissionStats = ({
+  month,
+  year,
+  numLogsCompleted,
+  numLogsNotSubmitted,
+  statsDataCompleted,
+  statsDataNotSubmitted,
+}) => {
   return (
     <>
       <Text fontSize="24px" fontWeight="600" ml="110px" mt="64px">
@@ -21,7 +76,13 @@ const MonitorLogSubmissionStats = ({ month, year, numLogsCompleted, numLogsNotSu
                 {numLogsCompleted}
               </Text>
             </Box>
-            <Box mr="24px">{numLogsCompleted ? <ExternalLinkIcon boxSize="2em" /> : <></>}</Box>
+            <Box mr="24px">
+              {numLogsCompleted ? (
+                StatsPopUp('Completed', numLogsCompleted, statsDataCompleted)
+              ) : (
+                <></>
+              )}
+            </Box>
           </Flex>
           <Text ml="24px" mr="41px" mt="30px" mb="24px" fontSize="20px">
             Monitors that have submitted logs for their assigned segments
@@ -38,7 +99,13 @@ const MonitorLogSubmissionStats = ({ month, year, numLogsCompleted, numLogsNotSu
                 {numLogsNotSubmitted}
               </Text>
             </Box>
-            <Box mr="24px">{numLogsNotSubmitted ? <ExternalLinkIcon boxSize="2em" /> : <></>}</Box>
+            <Box mr="24px">
+              {numLogsNotSubmitted ? (
+                StatsPopUp('Not Submitted', numLogsNotSubmitted, statsDataNotSubmitted)
+              ) : (
+                <></>
+              )}
+            </Box>
           </Flex>
           <Text ml="24px" mr="41px" mt="30px" mb="24px" fontSize="20px">
             Monitors that have not submitted logs for their assigned segments
@@ -54,6 +121,22 @@ MonitorLogSubmissionStats.propTypes = {
   year: PropTypes.number.isRequired,
   numLogsCompleted: PropTypes.number.isRequired,
   numLogsNotSubmitted: PropTypes.number.isRequired,
+  statsDataCompleted: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+      accountInfoLink: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  statsDataNotSubmitted: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+      accountInfoLink: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default MonitorLogSubmissionStats;

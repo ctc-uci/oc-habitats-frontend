@@ -103,6 +103,84 @@ const speciesData = [
   },
 ];
 
+const statsDataCompleted = [
+  {
+    id: 1,
+    firstName: 'firstName',
+    lastName: 'lastName',
+    accountInfoLink: '/account',
+  },
+  {
+    id: 2,
+    firstName: 'NamesLongerThan25Characters',
+    lastName: 'lastName',
+    accountInfoLink: '/account',
+  },
+  {
+    id: 3,
+    firstName: 'firstName',
+    lastName: 'lastName',
+    accountInfoLink: '/account',
+  },
+  {
+    id: 4,
+    firstName: 'firstName',
+    lastName: 'lastName',
+    accountInfoLink: '/account',
+  },
+  {
+    id: 5,
+    firstName: 'firstName',
+    lastName: 'lastName',
+    accountInfoLink: '/account',
+  },
+  {
+    id: 6,
+    firstName: 'firstName',
+    lastName: 'lastName',
+    accountInfoLink: '/account',
+  },
+];
+
+const statsDataNotSubmitted = [
+  {
+    id: 1,
+    firstName: 'firstName',
+    lastName: 'lastName',
+    accountInfoLink: '/account',
+  },
+  {
+    id: 2,
+    firstName: 'NamesLongerThan25Characters',
+    lastName: 'lastName',
+    accountInfoLink: '/account',
+  },
+  {
+    id: 3,
+    firstName: 'firstName',
+    lastName: 'lastName',
+    accountInfoLink: '/account',
+  },
+  {
+    id: 4,
+    firstName: 'firstName',
+    lastName: 'lastName',
+    accountInfoLink: '/account',
+  },
+  {
+    id: 5,
+    firstName: 'firstName',
+    lastName: 'lastName',
+    accountInfoLink: '/account',
+  },
+  {
+    id: 6,
+    firstName: 'firstName',
+    lastName: 'noSubmission',
+    accountInfoLink: '/account',
+  },
+];
+
 const AdminDashboardPage = () => {
   return (
     <>
@@ -121,6 +199,8 @@ const AdminDashboardPage = () => {
         year={year}
         numLogsCompleted={numLogsCompleted}
         numLogsNotSubmitted={numLogsNotSubmitted}
+        statsDataCompleted={statsDataCompleted}
+        statsDataNotSubmitted={statsDataNotSubmitted}
       />
       <EmergentIssues month={month} year={year} emergentIssuesData={emergentIssuesData} />
       <SightedListedSpecies month={month} year={year} speciesData={speciesData} />
