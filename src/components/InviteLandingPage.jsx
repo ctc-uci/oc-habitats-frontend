@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, Navigate, useParams } from 'react-router-dom';
-import { PropTypes, instanceOf } from 'prop-types';
+import { useParams } from 'react-router-dom';
 import Register from './register/register';
 import { NPOBackend } from '../utils/auth_utils';
-import { Cookies, withCookies } from '../utils/cookie_utils';
 
 const InviteLandingPage = () => {
   const [invite, setInvite] = useState();
   const [error, setError] = useState();
   const [validInvite, setValidInvite] = useState(true);
-  // const [lastName, setLastName] = useState();
-  // const [email, setEmail] = useState();
-  // const [role, setRole] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const { search } = useLocation();
   const { inviteID } = useParams();
 
   const checkInviteValidity = async id => {
     const foundInvite = await NPOBackend.get(`/adminInvite/${id}`);
     setInvite(foundInvite.data);
-    console.log(`foundInvite: ${JSON.stringify(foundInvite, null, 2)}`);
     if (!inviteID || !foundInvite || !foundInvite.data) {
       setError('nonexistent invite');
       setValidInvite(false);
@@ -33,10 +26,6 @@ const InviteLandingPage = () => {
   useEffect(async () => {
     checkInviteValidity(inviteID);
   }, []);
-
-  if (isLoading) {
-    return <p>LOADING...</p>;
-  }
 
   if (validInvite) {
     return (
