@@ -8,8 +8,8 @@ import './App.css';
 import InviteLandingPage from './components/Authentication/InviteLandingPage';
 import AdminInvite from './components/Authentication/AdminInvite';
 import ForgotPassword from './components/Authentication/ForgotPassword';
-import Login from './components/Login/Login';
-import Logout from './components/Login/Logout';
+import Login from './components/Authentication/Login';
+import Logout from './components/Authentication/Logout';
 import ProtectedRoute from './utils/ProtectedRoute';
 import EmailAction from './components/Authentication/EmailAction';
 
@@ -66,7 +66,8 @@ function App() {
                     />
                   }
                 />
-                <Route
+                {/* TODO: Make admin-invite a protected route */}
+                {/* <Route
                   path="/admin-invite"
                   element={
                     <ProtectedRoute
@@ -75,7 +76,8 @@ function App() {
                       roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
                     />
                   }
-                />
+                /> */}
+                <Route path="/admin-invite" element={<AdminInvite />} />
                 <Route path="/invite-user/:inviteID" element={<InviteLandingPage />} />
                 <Route path="/email-action" element={<EmailAction redirectPath="/" />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
