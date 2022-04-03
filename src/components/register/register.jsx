@@ -11,13 +11,12 @@ import {
   InputRightAddon,
   Button,
   Flex,
-  Spacer,
   VStack,
   Center,
   Text,
 } from '@chakra-ui/react';
 import { Cookies, withCookies } from '../../utils/cookie_utils';
-import { registerWithEmailAndPassword, signInWithGoogle } from '../../utils/auth_utils';
+import { registerWithEmailAndPassword } from '../../utils/auth_utils';
 
 const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, inviteRole }) => {
   const [errorMessage, setErrorMessage] = useState();
@@ -41,21 +40,6 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
       await registerWithEmailAndPassword(email, password, firstName, lastName, role, navigate, '/');
     } catch (error) {
       setErrorMessage(error.message);
-    }
-  };
-
-  /**
-   * This function handles signing up with Google
-   * If the user logs in and is new, they are directed to a new-user path
-   * If the user logs in and isn't new, they are directed to the dashboard.
-   * If the user fails to log in, they are directed back to the login screen
-   */
-  const handleGoogleSignIn = async e => {
-    try {
-      e.preventDefault();
-      await signInWithGoogle('/new-user', '/logout', navigate, cookies);
-    } catch (err) {
-      setErrorMessage(err.message);
     }
   };
 
