@@ -1,5 +1,5 @@
 import { React } from 'react';
-import { Text, Box, Flex, Spacer, HStack } from '@chakra-ui/react';
+import { Text, Box, Flex } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
 

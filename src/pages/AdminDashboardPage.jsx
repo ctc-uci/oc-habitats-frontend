@@ -1,10 +1,15 @@
 import { React } from 'react';
-import { Text, Grid, GridItem } from '@chakra-ui/react';
-
+import { Text } from '@chakra-ui/react';
 import MonitorLogSubmissionStats from '../components/AdminDashboard/MonitorLogSubmissionStats';
-import EmergentIssuesCard from '../components/AdminDashboard/EmergentIssuesCard';
+import SightedListedSpecies from '../components/AdminDashboard/SightedListedSpecies';
+import EmergentIssues from '../components/AdminDashboard/EmergentIssues';
+import LogNotification from '../components/AdminDashboard/LogNotification';
 
+// Data to be received from Database
 const name = 'Peter';
+
+const numNotifications = 2;
+
 const monthNames = [
   'January',
   'February',
@@ -24,15 +29,92 @@ const year = new Date().getUTCFullYear();
 const numLogsCompleted = 13;
 const numLogsNotSubmitted = 20;
 
+const emergentIssuesData = [
+  {
+    id: 1,
+    title: 'Injured California Least Terns',
+    numIssues: 0,
+  },
+  {
+    id: 2,
+    title: 'Injured Western Snowy Plovers',
+    numIssues: 0,
+  },
+  {
+    id: 3,
+    title: 'Injured Terrestrial Wildlife',
+    numIssues: 2,
+  },
+  {
+    id: 4,
+    title: 'Speeding Vehicles',
+    numIssues: 2,
+  },
+];
+
+const speciesData = [
+  {
+    id: 1,
+    speciesName: 'California Least Terns',
+    data: [
+      {
+        segment: 'OC01',
+        adults: 6,
+        fledges: 3,
+        chicks: 1,
+      },
+      {
+        segment: 'OC09a',
+        adults: 4,
+        fledges: 2,
+        chicks: 0,
+      },
+      {
+        segment: 'OC09b',
+        adults: 2,
+        fledges: 1,
+        chicks: 0,
+      },
+    ],
+  },
+  {
+    id: 2,
+    speciesName: 'Western Snowy Plovers',
+    data: [
+      {
+        segment: 'OC01',
+        adults: 6,
+        fledges: 3,
+        chicks: 1,
+      },
+      {
+        segment: 'OC09a',
+        adults: 4,
+        fledges: 2,
+        chicks: 0,
+      },
+      {
+        segment: 'OC09b',
+        adults: 2,
+        fledges: 1,
+        chicks: 0,
+      },
+    ],
+  },
+];
+
 const AdminDashboardPage = () => {
   return (
     <>
       <Text fontSize="36px" fontWeight="600" ml="110px" mt="40px">
         Welcome back, {name}!
       </Text>
+
       <Text fontSize="24px" fontWeight="600" ml="110px" mt="50px">
         Notifications
       </Text>
+
+      {numNotifications ? <LogNotification numNotifications={numNotifications} /> : <></>}
 
       <MonitorLogSubmissionStats
         month={month}
@@ -40,28 +122,8 @@ const AdminDashboardPage = () => {
         numLogsCompleted={numLogsCompleted}
         numLogsNotSubmitted={numLogsNotSubmitted}
       />
-
-      <Text fontSize="24px" fontWeight="600" ml="110px" mt="64px">
-        {month} {year} Emergent Issues
-      </Text>
-      <Grid ml="110px" templateColumns="repeat(4, 0.1fr)" gap="24px">
-        <GridItem>
-          <EmergentIssuesCard title="Injured California Least Terns" numIssues={0} />
-        </GridItem>
-        <GridItem>
-          <EmergentIssuesCard title="Injured Western Snowy Plovers" numIssues={0} />
-        </GridItem>
-        <GridItem>
-          <EmergentIssuesCard title="Injured Terrestrial Wildlife" numIssues={2} />
-        </GridItem>
-        <GridItem>
-          <EmergentIssuesCard title="Speeding Vehicles" numIssues={2} />
-        </GridItem>
-      </Grid>
-
-      <Text fontSize="24px" fontWeight="600" ml="110px" mt="64px">
-        {month} {year} Sighted Listed Species
-      </Text>
+      <EmergentIssues month={month} year={year} emergentIssuesData={emergentIssuesData} />
+      <SightedListedSpecies month={month} year={year} speciesData={speciesData} />
     </>
   );
 };
