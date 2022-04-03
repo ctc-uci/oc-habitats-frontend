@@ -7,6 +7,7 @@ import {
   FormLabel,
   InputGroup,
   Input,
+  Select,
   Heading,
   InputRightAddon,
   Button,
@@ -23,12 +24,12 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
   const [errorMessage, setErrorMessage] = useState();
   const [firstName, setFirstName] = useState(inviteFirstName);
   const [lastName, setLastName] = useState(inviteLastName);
+  const [role, setRole] = useState(inviteRole);
   const [email, setEmail] = useState(inviteEmail);
   const [password, setPassword] = useState();
   const [checkPassword, setCheckPassword] = useState();
   const [showPassword, setShowPassword] = useState();
   const [showCheckPassword, setShowCheckPassword] = useState();
-  const [role, setRole] = useState('admin');
   const navigate = useNavigate();
 
   const handleSubmit = async e => {
@@ -51,14 +52,14 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
           <Heading size="lg">Complete Account Sign Up</Heading>
         </Center>
         <Flex
-          w="60%"
+          w="680px"
           maxWidth="50vw"
-          h="60%"
-          bg="rgba(43, 192, 227, .10)"
-          mx="auto"
-          mt="10%"
           direction="column"
-          p="90px 20px"
+          bg="rgba(43, 192, 227, 0.1)"
+          boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+          borderRadius="6px"
+          gap="24px"
+          padding="40px 55px"
         >
           <FormControl>
             <FormLabel htmlFor="firstName">First Name</FormLabel>
@@ -66,9 +67,7 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
               id="firstName"
               bg="white"
               onChange={({ target }) => setFirstName(target.value)}
-              mb="30px"
               size="md"
-              w="700px"
               value={inviteFirstName}
             />
           </FormControl>
@@ -78,9 +77,7 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
               id="lastName"
               bg="white"
               onChange={({ target }) => setLastName(target.value)}
-              mb="30px"
               size="md"
-              w="700px"
               value={inviteLastName}
             />
           </FormControl>
@@ -90,27 +87,30 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
               id="email"
               bg="white"
               onChange={({ target }) => setEmail(target.value)}
-              mb="30px"
               size="md"
-              w="700px"
               value={inviteEmail}
             />
           </FormControl>
-          <FormLabel htmlFor="role">Role</FormLabel>
-          <select id="role" onChange={e => setRole(e.target.value)} maxW="700px" value={inviteRole}>
-            <option value="admin">Admin</option>
-            <option value="super-admin">Super Admin</option>
-            <option value="volunteer">Volunteer</option>
-          </select>
           <FormControl>
-            <FormLabel htmlFor="password" mt="30px">
-              Password
-            </FormLabel>
-            <InputGroup w="700px">
+            <FormLabel htmlFor="role">Account Type</FormLabel>
+            <Select
+              id="role"
+              onChange={e => setRole(e.target.value)}
+              value={inviteRole}
+              bg="white"
+              disabled
+            >
+              <option value="admin">Admin</option>
+              <option value="super-admin">Super Admin</option>
+              <option value="volunteer">Volunteer</option>
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <InputGroup>
               <Input
                 type={showPassword ? 'text' : 'password'}
                 onChange={({ target }) => setPassword(target.value)}
-                w="630px"
                 bg="white"
               />
               <InputRightAddon
@@ -120,15 +120,11 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
             </InputGroup>
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="password" mt="30px">
-              {' '}
-              Re-enter Password
-            </FormLabel>
+            <FormLabel htmlFor="password">Re-enter Password</FormLabel>
             <InputGroup>
               <Input
                 type={showCheckPassword ? 'text' : 'password'}
                 onChange={({ target }) => setCheckPassword(target.value)}
-                w="630px"
                 bg="white"
               />
               <InputRightAddon
@@ -137,17 +133,18 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
               />
             </InputGroup>
           </FormControl>
-          <br />
           {errorMessage && (
             <Center width="100%">
               <Text color="red">{errorMessage}</Text>
             </Center>
           )}
+          <Text>
+            By continuing, you agree to OC Habitat&apos;s Terms & Conditions and Privacy Notice.
+          </Text>
           <Button
             bg="#2BC0E3"
             color="white"
             onClick={handleSubmit}
-            mt="10px"
             w="200px"
             alignSelf="flex-end"
             px="10px"
