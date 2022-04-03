@@ -10,11 +10,6 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   signOut,
-  GoogleAuthProvider,
-  signInWithPopup,
-  getAdditionalUserInfo,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
   sendPasswordResetEmail,
   confirmPasswordReset,
   applyActionCode,
@@ -26,21 +21,6 @@ import { renderEmail } from 'react-html-email';
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
 
 import AdminInviteEmail from '../components/Email/EmailTemplates/AdminInviteEmail';
-
-import AUTH_ROLES from './auth_config';
-
-const { VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
-
-/*
-  TODO:
-  X Login:
-    X Fix refresh token bug
-  X Get roles working:
-    X Switch from 2 booleans to string value for role
-    X Make sure correct cookies are being set
-  - Admin Invite / Forgot password page
-  X Test all CRUD routes for users
-*/
 
 // Using Firebase Web version 9
 const firebaseConfig = {
@@ -124,7 +104,6 @@ const refreshToken = async () => {
  * @param {string} email
  * @param {string} userId
  * @param {string} role
- * @param {bool} signUpWithGoogle true if user used Google provider to sign in
  * @param {string} password
  */
 const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
@@ -142,58 +121,8 @@ const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
       segments: null,
     });
   } catch (err) {
-    // Since this route is called after user is created in firebase, if this
-    // route errors out, that means we have to discard the created firebase object
-    // if (!signUpWithGoogle) {
-    //   await signInWithEmailAndPassword(auth, email, password);
-    // }
-    // const userToBeTerminated = await auth.currentUser;
-    // userToBeTerminated.delete();
     throw new Error(err.message);
   }
-};
-
-/**
- * Signs a user in with Google using Firebase. Users are given VOLUNTEER_ROLE by default
- * @param {string} newUserRedirectPath path to redirect new users to after signing in with Google Provider for the first time
- * @param {string} defaultRedirectPath path to redirect users to after signing in with Google Provider
- * @param {hook} navigate An instance of the useNavigate hook from react-router-dom
- * @param {Cookies} cookies The user's cookies to populate
- * @returns A boolean indicating whether or not the user is new
- */
-const signInWithGoogle = async (newUserRedirectPath, defaultRedirectPath, navigate, cookies) => {
-  const provider = new GoogleAuthProvider();
-  const userCredential = await signInWithPopup(auth, provider);
-  const newUser = getAdditionalUserInfo(userCredential).isNewUser;
-  cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
-  if (newUser) {
-    await createUserInDB(auth.currentUser.email, userCredential.user.uid, VOLUNTEER_ROLE, true);
-    cookies.set(cookieKeys.ROLE, VOLUNTEER_ROLE, cookieConfig);
-    navigate(newUserRedirectPath);
-  } else {
-    const user = await NPOBackend.get(`/users/${auth.currentUser.uid}`);
-    cookies.set(cookieKeys.ROLE, user.data.user.role, cookieConfig);
-    if (!user.data.user.registered) {
-      navigate(newUserRedirectPath);
-    } else {
-      navigate(defaultRedirectPath);
-    }
-  }
-};
-
-/**
- * When a user signs in with Google for the first time, they will need to add additional info
- * This is called when the user submits the additional information which will lead to the flag
- * in the backend changed so that user is not new anymore
- * @param {string} redirectPath path to redirect user
- * @param {hook} navigate used to redirect the user after submitted
- */
-const finishGoogleLoginRegistration = async (redirectPath, navigate) => {
-  // TODO: Switch to correct update route
-  await NPOBackend.put(`/users/update/${auth.currentUser.uid}`, {
-    registered: true,
-  });
-  navigate(redirectPath);
 };
 
 /**
@@ -398,7 +327,6 @@ export {
   NPOBackend,
   auth,
   useNavigate,
-  signInWithGoogle,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   addAuthInterceptor,
@@ -408,6 +336,5 @@ export {
   getCurrentUser,
   confirmNewPassword,
   confirmVerifyEmail,
-  finishGoogleLoginRegistration,
   initiateInviteProcess,
 };

@@ -13,7 +13,6 @@ import Logout from './components/Logout';
 import ProtectedRoute from './utils/ProtectedRoute';
 import Register from './components/register/register';
 import EmailAction from './components/EmailAction';
-import NewUser from './components/NewUser';
 
 import HomePage from './pages/HomePage';
 import AdminPage from './pages/AdminPage';
@@ -101,7 +100,6 @@ function App() {
                   }
                 />
                 <Route path="/register" element={<Register />} />
-                <Route path="/new-user" element={<NewUser />} />
               </Routes>
             </Box>
           </Box>
