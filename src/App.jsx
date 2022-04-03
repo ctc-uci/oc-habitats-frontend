@@ -8,8 +8,8 @@ import './App.css';
 import InviteLandingPage from './components/InviteLandingPage';
 import AdminInvite from './components/AdminInvite';
 import ForgotPassword from './components/ForgotPassword';
-import Login from './components/login/Login';
-import Logout from './components/Logout';
+import Login from './components/Login/Login';
+import Logout from './components/Login/Logout';
 import ProtectedRoute from './utils/ProtectedRoute';
 import EmailAction from './components/EmailAction';
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Register from './register/register';
+import Register from './Register/register';
 import { NPOBackend } from '../utils/auth_utils';
 
 const InviteLandingPage = () => {
