@@ -11,12 +11,14 @@
     "@colisweb/rescript-react-icons-fa": "1.0.0",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@hookform/resolvers": "^2.8.8",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.26.0",
     "babel-loader": "8.1.0",
     "chakra-react-select": "^3.0.5",
+    "dayjs": "^1.11.0",
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-airbnb-base": "14.2.1",
@@ -40,6 +42,7 @@
     "react-datepicker": "^4.5.0",
     "react-dom": "^17.0.2",
     "react-html-email": "^3.0.0",
+    "react-hook-form": "^7.28.1",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
@@ -49,7 +52,8 @@
     "testing-library": "0.0.2",
     "uuid": "^8.3.2",
     "web-vitals": "^1.0.1",
-    "webpack": "4.44.2"
+    "webpack": "4.44.2",
+    "yup": "^0.32.11"
   },
   "optionalDependencies": {
     "babel-loader": "8.1.0"
