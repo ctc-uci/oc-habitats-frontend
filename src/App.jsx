@@ -67,7 +67,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/adminInvite"
+                  path="/admin-invite"
                   element={
                     <ProtectedRoute
                       Component={AdminInvite}
@@ -77,8 +77,8 @@ function App() {
                   }
                 />
                 <Route path="/invite-user/:inviteID" element={<InviteLandingPage />} />
-                <Route path="/emailAction" element={<EmailAction redirectPath="/" />} />
-                <Route path="/forgotPassword" element={<ForgotPassword />} />
+                <Route path="/email-action" element={<EmailAction redirectPath="/" />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route
                   path="/logout"
                   element={
