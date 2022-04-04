@@ -15,6 +15,8 @@ import theme from './theme/theme';
 import Footer from './components/Footer/Footer';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 
+import CommonTableExample from './pages/CommonTableExample';
+
 function App() {
   return (
     <ChakraProvider theme={theme}>
@@ -40,6 +42,7 @@ function App() {
               <Route exact path="/map" />
               <Route exact path="/logs" element={<AdminPage />} />
               <Route exact path="/admin-dashboard" element={<AdminDashboardPage />} />
+              <Route exact path="/common-table-example" element={<CommonTableExample />} />
             </Routes>
           </Box>
         </Box>
