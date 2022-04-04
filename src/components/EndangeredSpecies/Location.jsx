@@ -7,54 +7,59 @@ import {
   GridItem,
   HStack,
   Input,
+  Text,
   Tooltip,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
+import { IMaskInput, useIMask } from 'react-imask';
 import { React } from 'react';
 import { useFormContext } from 'react-hook-form';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import footNotes from './FootNotes';
 
 const Location = () => {
-  const { register, watch } = useFormContext();
+  const { register, watch, setValue, getValues } = useFormContext();
 
   const totalAdults = watch('totalAdults') || 0;
   const totalFledges = watch('totalFledges') || 0;
   const totalBirds = totalAdults + totalFledges;
-  console.log(totalBirds);
 
   const createGPS = () => {
+    let inputs;
     if (totalBirds > 4) {
-      return ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'].map((position, i) => {
-        return (
-          // eslint-disable-next-line react/no-array-index-key
-          <GridItem key={`GPS${i}`}>
-            <FormControl>
-              <FormLabel>
-                {`GPS (${position})`}
-                <HStack w="100%">
-                  <Input placeholder="000.00000 N" {...register(`gps[${i}].latitude`)} />
-                  <Input placeholder="000.00000 W" {...register(`gps[${i}].longitude`)} />
-                </HStack>
-              </FormLabel>
-            </FormControl>
-          </GridItem>
-        );
-      });
+      inputs = ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'];
+    } else {
+      inputs = [''];
     }
-
-    return (
-      <GridItem key="gps">
-        <FormControl>
-          <FormLabel htmlFor="latitude">GPS</FormLabel>
-          <FormLabel htmlFor="longitude" />
-          <HStack w="100%">
-            <Input id="latitude 0" placeholder="000.00000" {...register('gps[0].latitude')} />
-            <Input id="longitude 0" placeholder="000.00000" {...register('gps[0].longitude')} />
-          </HStack>
-        </FormControl>
-      </GridItem>
-    );
+    return inputs.map((position, i) => {
+      return (
+        // eslint-disable-next-line react/no-array-index-key
+        <GridItem key={`GPS${i}`}>
+          <FormControl>
+            <FormLabel>
+              {`GPS${position === '' ? '' : ` (${position})`}`}
+              <HStack w="100%">
+                {[
+                  ['latitude', 'N'],
+                  ['longitude', 'W'],
+                ].map(([type, char]) => (
+                  <Input
+                    key={type + char}
+                    as={IMaskInput}
+                    mask={`${char} 00[0] 00[0].0[0]`}
+                    lazy={false}
+                    onAccept={value => setValue(`gps[${i}].${type}`, value)}
+                    defaultValue={getValues()[`gps[${i}].${type}`]}
+                    placeholderChar="-"
+                  />
+                ))}
+              </HStack>
+              <Text color="gray.500">DMS Format Example: N33 42.239 / W118 03.395</Text>
+            </FormLabel>
+          </FormControl>
+        </GridItem>
+      );
+    });
   };
 
   return (

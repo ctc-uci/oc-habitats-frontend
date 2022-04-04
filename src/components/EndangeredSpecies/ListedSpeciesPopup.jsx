@@ -86,7 +86,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow }) => {
 
               <ModalFooter>
                 <Button mr="3" onClick={confirmCloseModal.onClose}>
-                  Cancel
+                  Keep editing
                 </Button>
                 <Button colorScheme="red" onClick={closeModal}>
                   Discard changes

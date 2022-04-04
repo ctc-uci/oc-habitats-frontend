@@ -25,6 +25,7 @@ const inputs = [
 
 const SexSection = () => {
   const { register, setValue, getValues } = useFormContext();
+  console.log('sex', getValues());
 
   return (
     <CollapsibleSection title="Sex">
