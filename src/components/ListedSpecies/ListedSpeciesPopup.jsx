@@ -46,6 +46,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow }) => {
       sex: [0, 0, 0, 0, 0, 0],
       nesting: [],
       behaviors: [],
+      gps: [{ longitude: '', latitude: '' }],
     },
   });
 
@@ -152,7 +153,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow }) => {
             Return to Top <FiArrowUp style={{ marginLeft: '4px' }} />
           </Button>
           <Spacer />
-          <Button colorScheme="cyan" type="submit">
+          <Button colorScheme="cyan" type="submit" onClick={handleSubmit}>
             Add to Tracker
           </Button>
         </Flex>

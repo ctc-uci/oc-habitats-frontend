@@ -2,7 +2,7 @@ import { Box, ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import ListedSpeciesPopup from './components/EndangeredSpecies/ListedSpeciesPopup';
+import ListedSpeciesPopup from './components/ListedSpecies/ListedSpeciesPopup';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import AccountPage from './pages/AccountPage';

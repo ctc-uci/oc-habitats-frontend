@@ -35,7 +35,7 @@ import {
 import { FiEdit2 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import { useFormContext, useFieldArray } from 'react-hook-form';
-import ListedSpeciesPopup from '../EndangeredSpecies/ListedSpeciesPopup';
+import ListedSpeciesPopup from '../ListedSpecies/ListedSpeciesPopup';
 
 const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -71,7 +71,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
   };
 
   const addRow = formData => {
-    // append(formData);
+    setData([...data, formData]);
   };
 
   return (
@@ -93,6 +93,15 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                   <Th width="0" />
                 </tr>
               </Thead>
+              {data.length === 0 && (
+                <Tbody>
+                  <Tr>
+                    <Td colSpan={6} textAlign="center">
+                      No birds added yet
+                    </Td>
+                  </Tr>
+                </Tbody>
+              )}
               {data.map((row, n) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <AccordionItem key={row.id} as={Tbody}>
@@ -122,7 +131,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                                     <Text fontWeight="500">Time</Text>
                                   </Td>
                                   <Td border="0" isNumeric>
-                                    {row.timeValue} {row.timeMeridiem}
+                                    {row.time} {row.meridiem}
                                   </Td>
                                 </Tr>
                                 <Tr>
@@ -130,7 +139,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                                     <Text fontWeight="500">Map #</Text>
                                   </Td>
                                   <Td border="0" isNumeric>
-                                    1
+                                    {row.map}
                                   </Td>
                                 </Tr>
                                 <Tr>
@@ -138,7 +147,11 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                                     <Text fontWeight="500">GPS</Text>
                                   </Td>
                                   <Td border="0" isNumeric>
-                                    {/* {row.gps[0].latitude}, {row.gps[0].longitude} */}
+                                    {row.gps.map(gps => (
+                                      <div key={gps.latitude + gps.longitude}>
+                                        {gps.latitude}, {gps.longitude}
+                                      </div>
+                                    ))}
                                   </Td>
                                 </Tr>
                                 <Tr>
@@ -146,7 +159,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                                     <Text fontWeight="500">Cross Street/Towers</Text>
                                   </Td>
                                   <Td border="0" isNumeric>
-                                    {/* {row['cross-street']} */}
+                                    {row.crossStreet}
                                   </Td>
                                 </Tr>
                                 <Tr>
@@ -154,7 +167,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                                     <Text fontWeight="500">Habitat Description</Text>
                                   </Td>
                                   <Td border="0" isNumeric>
-                                    {/* {row.habitat} */}
+                                    {row.habitat}
                                   </Td>
                                 </Tr>
                               </Tbody>
@@ -216,13 +229,13 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                 </NumberInputStepper>
               </NumberInput>
             </FormControl>
-            <Text fontWeight="600" fontSize="xl">
+            {/* <Text fontWeight="600" fontSize="xl">
               Marked Map (PNG or JPEG Only)
             </Text>
             <Text>
               Provide a map with the locations of sighted Western Snowy Plovers marked with Map #
               according to the Tracker table.
-            </Text>
+            </Text> */}
           </VStack>
         </GridItem>
       </Grid>
