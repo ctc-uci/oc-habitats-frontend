@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React, { useState, useCallback, useEffect } from 'react';
 import {
   Text,
@@ -32,7 +33,7 @@ import {
   VStack,
   Icon,
 } from '@chakra-ui/react';
-import { FiEdit2 } from 'react-icons/fi';
+import { FiEdit3 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import ListedSpeciesPopup from '../ListedSpecies/ListedSpeciesPopup';
@@ -74,6 +75,59 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
     setData([...data, formData]);
   };
 
+  const createBirdInfo = row => {
+    const birdInfo = [
+      ['Time', row.time + row.meridiem],
+      ['Map #', row.map],
+      [
+        'GPS',
+        row.gps.map(gps => (
+          <div key={gps.latitude + gps.longitude}>
+            {gps.latitude || 'n/a'}, {gps.longitude || 'n/a'}
+          </div>
+        )),
+      ],
+      ['Cross Street/Towers', row.crossStreet || 'None'],
+      ['Habitat Description', row.habitat || 'None'],
+      [
+        <div>
+          <div># of Male Adults</div>
+          <div># of Male Fledges</div>
+          <div># of Male Chicks</div>
+        </div>,
+        <div>
+          {row.sex.slice(0, 3).map(sex => (
+            <div>{sex}</div>
+          ))}
+        </div>,
+      ],
+      [
+        <div>
+          <div># of Female Adults</div>
+          <div># of Female Fledges</div>
+          <div># of Female Chicks</div>
+        </div>,
+        <div>
+          {row.sex.slice(3, 6).map(sex => (
+            <div>{sex}</div>
+          ))}
+        </div>,
+      ],
+      ['Nest & Eggs', row.nesting.map(nest => nest.value).join(', ') || 'None'],
+      ['Behaviors Observed', row.behaviors.map(nest => nest.value).join(', ') || 'None'],
+    ];
+    return birdInfo.map(([title, content]) => (
+      <Tr key={title + content}>
+        <Td border="0" paddingBottom="0" paddingTop="0">
+          <Text fontWeight="500">{title}</Text>
+        </Td>
+        <Td border="0" isNumeric>
+          {content}
+        </Td>
+      </Tr>
+    ));
+  };
+
   return (
     <Container maxW="100vw">
       <Text fontWeight="600" fontSize="2xl">
@@ -109,7 +163,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                     <>
                       <Tr>
                         <Td width="0" borderBottomWidth="0">
-                          <IconButton icon={<Icon as={FiEdit2} w="1.5em" h="1.5em" />} />
+                          <IconButton icon={<Icon as={FiEdit3} w="1.5em" h="1.5em" />} />
                         </Td>
                         <Td borderBottomWidth="0">{n + 1}</Td>
                         <Td borderBottomWidth="0">{row.totalAdults}</Td>
@@ -125,52 +179,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                         <Td colSpan="6" padding="0">
                           <Collapse in={isExpanded} as="td" colSpan="6">
                             <Table>
-                              <Tbody>
-                                <Tr>
-                                  <Td border="0">
-                                    <Text fontWeight="500">Time</Text>
-                                  </Td>
-                                  <Td border="0" isNumeric>
-                                    {row.time} {row.meridiem}
-                                  </Td>
-                                </Tr>
-                                <Tr>
-                                  <Td border="0">
-                                    <Text fontWeight="500">Map #</Text>
-                                  </Td>
-                                  <Td border="0" isNumeric>
-                                    {row.map}
-                                  </Td>
-                                </Tr>
-                                <Tr>
-                                  <Td border="0">
-                                    <Text fontWeight="500">GPS</Text>
-                                  </Td>
-                                  <Td border="0" isNumeric>
-                                    {row.gps.map(gps => (
-                                      <div key={gps.latitude + gps.longitude}>
-                                        {gps.latitude}, {gps.longitude}
-                                      </div>
-                                    ))}
-                                  </Td>
-                                </Tr>
-                                <Tr>
-                                  <Td border="0">
-                                    <Text fontWeight="500">Cross Street/Towers</Text>
-                                  </Td>
-                                  <Td border="0" isNumeric>
-                                    {row.crossStreet}
-                                  </Td>
-                                </Tr>
-                                <Tr>
-                                  <Td border="0">
-                                    <Text fontWeight="500">Habitat Description</Text>
-                                  </Td>
-                                  <Td border="0" isNumeric>
-                                    {row.habitat}
-                                  </Td>
-                                </Tr>
-                              </Tbody>
+                              <Tbody>{createBirdInfo(row)}</Tbody>
                             </Table>
                           </Collapse>
                         </Td>
