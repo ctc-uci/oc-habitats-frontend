@@ -35,7 +35,7 @@ import {
 import { FiEdit2 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import { useFormContext, useFieldArray } from 'react-hook-form';
-import EndangeredSpeciesPopup from '../../pages/EndangeredSpeciesPopup';
+import ListedSpeciesPopup from '../EndangeredSpecies/ListedSpeciesPopup';
 
 const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -192,11 +192,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
           <Modal size="full" isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent margin={0} rounded="none">
-              <EndangeredSpeciesPopup
-                closeModal={onClose}
-                adultName={speciesName}
-                addRow={addRow}
-              />
+              <ListedSpeciesPopup closeModal={onClose} adultName={speciesName} addRow={addRow} />
             </ModalContent>
           </Modal>
         </GridItem>

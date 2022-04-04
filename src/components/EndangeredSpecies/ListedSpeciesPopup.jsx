@@ -1,40 +1,39 @@
-import { React, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { ArrowBackIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
-  Container,
-  Heading,
-  Textarea,
-  VStack,
-  Stack,
-  Button,
-  HStack,
-  IconButton,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  Box,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Flex,
-  Spacer,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  HStack,
+  IconButton,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Spacer,
+  Stack,
+  Textarea,
+  useDisclosure,
+  VStack,
 } from '@chakra-ui/react';
-
-import { useForm, FormProvider } from 'react-hook-form';
+import PropTypes from 'prop-types';
+import { React, useRef } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp } from 'react-icons/fi';
-import GeneralListedInformation from '../components/EndangeredSpecies/GeneralListedInformation';
-import Location from '../components/EndangeredSpecies/Location';
-import options from '../components/EndangeredSpecies/DropdownOptions';
-import BandingSection from '../components/EndangeredSpecies/BandingSection';
-import BehaviorsSection from '../components/EndangeredSpecies/BehaviorsSection';
-import SexSection from '../components/EndangeredSpecies/SexSection';
+import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
+import BandingSection from './BandingSection';
+import BehaviorsSection from './BehaviorsSection';
+import options from './DropdownOptions';
+import GeneralListedInformation from './GeneralListedInformation';
+import Location from './Location';
+import SexSection from './SexSection';
 
-const EndangeredSpeciesPopup = ({ closeModal, adultName, addRow }) => {
+const ListedSpeciesPopup = ({ closeModal, adultName, addRow }) => {
   const formMethods = useForm({
     defaultValues: {
       totalAdults: 1,
@@ -123,16 +122,13 @@ const EndangeredSpeciesPopup = ({ closeModal, adultName, addRow }) => {
             <SexSection />
             <BehaviorsSection behaviorOptions={options.behavior} nestingOptions={options.nesting} />
             <BandingSection />
-            <VStack align="start" w="100%">
-              <Heading as="h3" size="md">
-                Additional Notes (Optional)
-              </Heading>
+            <CollapsibleSection title="Additional Notes (Optional)">
               <Textarea
                 h="10em"
                 placeholder="Type Here..."
                 {...formMethods.register('additionalNotes')}
               />
-            </VStack>
+            </CollapsibleSection>
           </VStack>
         </form>
       </Container>
@@ -165,10 +161,10 @@ const EndangeredSpeciesPopup = ({ closeModal, adultName, addRow }) => {
   );
 };
 
-EndangeredSpeciesPopup.propTypes = {
+ListedSpeciesPopup.propTypes = {
   adultName: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
   addRow: PropTypes.func.isRequired,
 };
 
-export default EndangeredSpeciesPopup;
+export default ListedSpeciesPopup;
