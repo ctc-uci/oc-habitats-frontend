@@ -38,9 +38,9 @@ function AddSegmentPopup(onAddSegment) {
 
   return (
     <>
-      <Button color="#2D3748" colorScheme="white" variant="ghost" fontSize="16px" onClick={onOpen}>
+      {/* <Button color="#2D3748" colorScheme="white" variant="ghost" fontSize="16px" onClick={onOpen}>
         + Add a segment
-      </Button>
+      </Button> */}
 
       <Modal size="xl" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -177,7 +177,7 @@ const Section = ({
   onUpdateSectionTitle,
 }) => {
   return (
-    <Box ml="27px" mr="15px">
+    <Box mr="15px">
       <Box align="left">
         {/* was center */}
         <Flex align="left" justify="space-between" pb="7px">
@@ -194,14 +194,17 @@ const Section = ({
         <Table color="#2D3748" colorScheme="gray" variant="striped">
           <Thead>
             <Tr>
-              <Th fontWeight="bold" style={{ width: '33%' }}>
-                SEGMENT
+              <Th fontWeight="bold" style={{ width: '40%' }}>
+                Segment Name
               </Th>
-              <Th fontWeight="bold" style={{ width: '33%' }}>
-                SEGMENT NAME(LOCATION)
+              <Th fontWeight="bold" style={{ width: '5%' }}>
+                Map
               </Th>
-              <Th fontWeight="bold" style={{ width: '34%' }}>
-                DISTANCE
+              <Th fontWeight="bold" style={{ width: '10%' }}>
+                Map Image
+              </Th>
+              <Th fontWeight="bold" style={{ width: '45%' }}>
+                Parking
               </Th>
             </Tr>
           </Thead>

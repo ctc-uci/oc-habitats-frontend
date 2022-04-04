@@ -86,9 +86,9 @@ function AddSectionPopup(addSection) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Button color="#2D3748" colorScheme="white" variant="ghost" fontSize="16px" onClick={onOpen}>
+      {/* <Button color="#2D3748" colorScheme="white" variant="ghost" fontSize="16px" onClick={onOpen}>
         + Add a section
-      </Button>
+      </Button> */}
 
       <Modal size="xl" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -238,7 +238,7 @@ const SectionPage = () => {
           <TabPanels>
             {sections.map(sectionObj => {
               return (
-                <TabPanel key={sectionObj.id}>
+                <TabPanel key={sectionObj.id} padding="0px">
                   <Box h="25px" />
                   <Section
                     key={sectionObj.id}
