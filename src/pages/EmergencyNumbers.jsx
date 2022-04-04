@@ -1,58 +1,8 @@
-import axios from 'axios';
 import { PhoneIcon } from '@chakra-ui/icons';
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Box,
-  ButtonGroup,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  RadioGroup,
-  Radio,
-  Stack,
-  HStack,
-  InputGroup,
-  Input,
-  Text,
-  VStack,
-  Spacer,
-  Center,
-  IconButton,
-  Tbody,
-  Th,
-  Tr,
-  Td,
-} from '@chakra-ui/react';
+import { Button, Box, Stack, Text, VStack, Center, Tbody, Th, Tr, Td } from '@chakra-ui/react';
 import CommonTable from '../common/CommonTable/CommonTable';
 import { CommonTableHeader, CommonTableFooter } from '../common/CommonTable/CommonTableHeader';
-import { CommonLoadingRow } from '../common/CommonTable/CommonTableFiller';
-
-/*
-const [isToggled, setIsToggled] = useState(false);
-const [isValid, setIsValid] = useState(true);
-
-const checkInput = () => {
-  setIsValid(true);
-  setIsToggled(true);
-  /*
-    if (speciesName && speciesCode && speciesGroup) {
-      addNewSpecies({ name: speciesName, code: speciesCode, group: speciesGroup });
-      setIsValid(true);
-      setIsToggled(!isToggled);
-    } else setIsValid(false);
-    
-//
-            <Button color="#2BC0E3" variant="solid" onClick={checkInput}>
-              Add Contact
-            </Button>
-
-
-}; */
 
 const DefaultTable = () => (
   <CommonTable>
