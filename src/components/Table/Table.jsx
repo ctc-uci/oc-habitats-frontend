@@ -28,17 +28,15 @@ import {
   Avatar,
   VStack,
   HStack,
-  Spacer,
 } from '@chakra-ui/react';
 import {
   ChevronRightIcon,
   ChevronLeftIcon,
   ChevronUpIcon,
   ChevronDownIcon,
-  Search2Icon,
 } from '@chakra-ui/icons';
-import { BsFillClockFill, BsFillPersonFill, BsThreeDotsVertical } from 'react-icons/bs';
-import { AiFillTag } from 'react-icons/ai';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+// import { AiFillTag } from 'react-icons/ai';
 
 // import makeData from "./makeData";
 import './Table.css';

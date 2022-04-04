@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 /* eslint-disable react/no-children-prop */
 import React, { useState } from 'react';
-import { instanceOf, string } from 'prop-types';
+import { string } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import {
   FormControl,
@@ -11,15 +12,14 @@ import {
   InputRightAddon,
   Button,
   Flex,
-  Spacer,
   VStack,
   Center,
   Text,
 } from '@chakra-ui/react';
-import { Cookies, withCookies } from '../../utils/cookie_utils';
-import { registerWithEmailAndPassword, signInWithGoogle } from '../../utils/auth_utils';
+import { withCookies } from '../../utils/cookie_utils';
+import { registerWithEmailAndPassword } from '../../utils/auth_utils';
 
-const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, inviteRole }) => {
+const Register = ({ inviteFirstName, inviteLastName, inviteEmail, inviteRole }) => {
   const [errorMessage, setErrorMessage] = useState();
   const [firstName, setFirstName] = useState(inviteFirstName);
   const [lastName, setLastName] = useState(inviteLastName);
@@ -28,7 +28,7 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
   const [checkPassword, setCheckPassword] = useState();
   const [showPassword, setShowPassword] = useState();
   const [showCheckPassword, setShowCheckPassword] = useState();
-  const [role, setRole] = useState('admin');
+  const [role, setRole] = useState(inviteRole);
   const navigate = useNavigate();
 
   const handleSubmit = async e => {
@@ -50,14 +50,15 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
    * If the user logs in and isn't new, they are directed to the dashboard.
    * If the user fails to log in, they are directed back to the login screen
    */
-  const handleGoogleSignIn = async e => {
-    try {
-      e.preventDefault();
-      await signInWithGoogle('/new-user', '/logout', navigate, cookies);
-    } catch (err) {
-      setErrorMessage(err.message);
-    }
-  };
+
+  // const handleGoogleSignIn = async e => {
+  //   try {
+  //     e.preventDefault();
+  //     await signInWithGoogle('/new-user', '/logout', navigate, cookies);
+  //   } catch (err) {
+  //     setErrorMessage(err.message);
+  //   }
+  // };
 
   return (
     <div>
@@ -178,7 +179,6 @@ const Register = ({ cookies, inviteFirstName, inviteLastName, inviteEmail, invit
 };
 
 Register.propTypes = {
-  cookies: instanceOf(Cookies).isRequired,
   inviteFirstName: string.isRequired,
   inviteLastName: string.isRequired,
   inviteEmail: string.isRequired,
