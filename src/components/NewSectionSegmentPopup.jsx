@@ -1,5 +1,6 @@
 import { useState, React } from 'react';
 import {
+  Box,
   Button,
   useDisclosure,
   Modal,
@@ -16,6 +17,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
+import { PropTypes } from 'prop-types';
 import Section from './Section';
 
 function NewSectionSegmentPopup(onAddSegment) {
@@ -24,9 +26,9 @@ function NewSectionSegmentPopup(onAddSegment) {
   const [volInput, setVolInput] = useState('');
   const [adminName, setAdminName] = useState('');
   const [adminEmail, setAdminEmail] = useState('');
-  const volHandleChange = event => setVolInput(event.target.value);
-  const adminNameHandleChange = event => setAdminName(event.target.value);
-  const adminEmailHandleChange = event => setAdminEmail(event.target.value);
+  // const volHandleChange = event => setVolInput(event.target.value);
+  // const adminNameHandleChange = event => setAdminName(event.target.value);
+  // const adminEmailHandleChange = event => setAdminEmail(event.target.value);
   let newSegId = '';
   let newSegName = '';
   let newSegDist = '';
@@ -87,11 +89,6 @@ function NewSectionSegmentPopup(onAddSegment) {
             </Button>
             <Button
               colorScheme="blue"
-              disabled={
-                value === '0' ||
-                (value === '1' && volInput === '') ||
-                (value === '2' && (adminEmail === '' || adminName === ''))
-              }
               bg="ochBlue"
               color="#F7FAFC"
               variant="solid"
@@ -109,4 +106,11 @@ function NewSectionSegmentPopup(onAddSegment) {
   );
 }
 
-export default NewSectionSegmentPopup;
+const CreateNew = ({ onAddSegment }) => {
+  return <Box align="left">{NewSectionSegmentPopup(onAddSegment)}</Box>;
+};
+
+CreateNew.propTypes = {
+  onAddSegment: PropTypes.func.isRequired,
+};
+export default CreateNew;

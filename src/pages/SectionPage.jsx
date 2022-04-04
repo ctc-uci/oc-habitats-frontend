@@ -22,7 +22,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { React, useState } from 'react';
 import Section from '../components/Section';
-import NewSectionSegmentPopup from '../components/NewSectionSegmentPopup';
+import CreateNew from '../components/NewSectionSegmentPopup';
 
 const sectionsData = [
   {
@@ -76,7 +76,6 @@ function CreateNewSectionSegment(onAddSegment, addSection) {
       {/* <Button size="md" bg="#2BC0E3" variant="solid" rightIcon={<AddIcon />} onClick={onOpen}>
         Create New Section or Segment
       </Button> */}
-      <NewSectionSegmentPopup />
     </>
   );
 }
@@ -218,8 +217,22 @@ const SectionPage = () => {
         <Heading align="left" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
           Sections & Segments
         </Heading>
-        {CreateNewSectionSegment(addSegment, addSection)}
+
         <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange">
+          <TabPanels>
+            {sections.map(sectionObj => {
+              return (
+                <TabPanel key={sectionObj.id} padding="0px">
+                  <CreateNew
+                    key={sectionObj.id}
+                    onAddSegment={(newSeg, newSegName, newSegDist) =>
+                      addSegment(sectionObj.id, newSeg, newSegName, newSegDist)
+                    }
+                  />
+                </TabPanel>
+              );
+            })}
+          </TabPanels>
           <TabList paddingTop="32px" alignItems="center">
             <HStack spacing="24px">
               {sections.map(sectionObj => {
