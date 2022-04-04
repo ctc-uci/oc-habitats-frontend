@@ -1,20 +1,18 @@
-import { React } from 'react';
-import PropTypes from 'prop-types';
 import { InfoIcon } from '@chakra-ui/icons';
 import {
-  VStack,
+  Flex,
+  FormControl,
+  FormLabel,
+  Grid,
+  GridItem,
   HStack,
   Input,
   Tooltip,
-  Heading,
-  FormControl,
-  FormLabel,
-  Flex,
-  Grid,
-  GridItem,
-  Box,
 } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
+import { React } from 'react';
 import { useFormContext } from 'react-hook-form';
+import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import footNotes from './FootNotes';
 
 const Location = () => {
@@ -60,11 +58,7 @@ const Location = () => {
   };
 
   return (
-    <VStack w="100%" align="start" spacing="2em" maxW="900px">
-      <Heading as="h3" size="md">
-        Location
-      </Heading>
-
+    <CollapsibleSection title="Location">
       <Grid templateColumns="repeat(2, 1fr)" w="100%" gap="4">
         {createGPS()}
         <GridItem colSpan="2">
@@ -81,15 +75,11 @@ const Location = () => {
           </FormControl>
         </GridItem>
       </Grid>
-    </VStack>
+    </CollapsibleSection>
   );
 };
 
-Location.defaultProps = {
-  totalBirds: PropTypes.number,
-};
-
 Location.propTypes = {
-  totalBirds: PropTypes.number,
+  totalBirds: PropTypes.number.isRequired,
 };
 export default Location;

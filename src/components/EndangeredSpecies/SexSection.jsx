@@ -1,17 +1,18 @@
-import React from 'react';
 import {
-  VStack,
-  Heading,
-  Grid,
-  GridItem,
-  Box,
   FormControl,
   FormLabel,
+  Grid,
+  GridItem,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
 } from '@chakra-ui/react';
-import update from 'immutability-helper';
-import { PropTypes } from 'prop-types';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 
 const inputs = [
   '# of Male Adults',
@@ -23,29 +24,33 @@ const inputs = [
 ];
 
 const SexSection = () => {
-  const title = 'Sex';
-  const { register } = useFormContext();
+  const { register, setValue, getValues } = useFormContext();
 
   return (
-    <Box width="100%" maxW="900px">
-      <VStack spacing="2em" justify="start" align="start">
-        <Heading as="h3" size="md">
-          {title}
-        </Heading>
-        <Grid templateColumns="repeat(3, 1fr)" gap="2em">
-          {inputs.map((input, idx) => (
-            <GridItem key={input}>
-              <FormControl>
-                <FormLabel>
-                  {input}
-                  <Input type="number" {...register(`sex[${idx}]`)} />
-                </FormLabel>
-              </FormControl>
-            </GridItem>
-          ))}
-        </Grid>
-      </VStack>
-    </Box>
+    <CollapsibleSection title="Sex">
+      <Grid templateColumns="repeat(3, 1fr)" gap="2em">
+        {inputs.map((input, idx) => (
+          <GridItem key={input}>
+            <FormControl>
+              <FormLabel>
+                {input}
+                <NumberInput
+                  min={0}
+                  onChange={val => setValue(`sex[${idx}]`, parseInt(val, 10))}
+                  defaultValue={getValues()[`sex[${idx}]`]}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormLabel>
+            </FormControl>
+          </GridItem>
+        ))}
+      </Grid>
+    </CollapsibleSection>
   );
 };
 

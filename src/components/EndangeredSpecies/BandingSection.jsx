@@ -1,34 +1,33 @@
-import React, { useState } from 'react';
 import {
-  VStack,
-  Heading,
-  Tabs,
-  TabList,
-  HStack,
-  Button,
-  TabPanels,
-  TabPanel,
   Box,
-  FormLabel,
+  Button,
+  chakra,
+  Checkbox,
   Code,
-  Table,
-  Tr,
-  Td,
-  Thead,
-  Input,
-  Select as ChakraSelect,
+  FormLabel,
   Grid,
   GridItem,
-  Text,
-  Checkbox,
+  HStack,
+  Input,
+  Select as ChakraSelect,
+  Table,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Tbody,
-  chakra,
+  Td,
+  Text,
+  Thead,
+  Tr,
 } from '@chakra-ui/react';
-import { Select, chakraComponents } from 'chakra-react-select';
+import { chakraComponents, Select } from 'chakra-react-select';
+import React, { useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import { BsFillCircleFill } from 'react-icons/bs';
 import { IconContext } from 'react-icons';
+import { BsFillCircleFill } from 'react-icons/bs';
 import BandColors from '../../common/BandColors';
+import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import CloseableTab from './CloseableTab';
 
 const BAND_POSITIONS = ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'];
@@ -67,8 +66,6 @@ const generateCode = bands => {
 };
 
 const BandingSection = () => {
-  const title = 'Banding';
-
   const { register, watch, control } = useFormContext();
 
   // tabs can be added for each bird that they want to report bands for
@@ -150,148 +147,137 @@ const BandingSection = () => {
   };
 
   return (
-    <Box width="100%">
-      <VStack spacing="4" justify="start" align="start">
-        <Heading as="h3" size="md">
-          {title}
-        </Heading>
-        <HStack align="start">
-          <Text fontWeight="semibold">Note:</Text>
-          <Box>
-            <Text>
-              If there is an alphanumeric band, select the color(s) of the band and input the
-              alphanumeric code in the text field “Alphanumeric”.
-            </Text>
-            <Text>
-              If there is an alphanumeric flag on the bird’s leg, check the “Is an Alphanumeric
-              Flag” box.
-            </Text>
-          </Box>
-        </HStack>
-        <HStack marginTop="18px" />
-        <Tabs
-          variant="solid-rounded"
-          size="md"
-          colorScheme="orange"
-          width="100%"
-          onChange={index => setActiveTabIndex(index)}
+    <CollapsibleSection title="Banding" limitWidth={false}>
+      <HStack align="start">
+        <Text fontWeight="semibold">Note:</Text>
+        <Box>
+          <Text>
+            If there is an alphanumeric band, select the color(s) of the band and input the
+            alphanumeric code in the text field “Alphanumeric”.
+          </Text>
+          <Text>
+            If there is an alphanumeric flag on the bird’s leg, check the “Is an Alphanumeric Flag”
+            box.
+          </Text>
+        </Box>
+      </HStack>
+      <HStack marginTop="18px" />
+      <Tabs
+        variant="solid-rounded"
+        size="md"
+        colorScheme="orange"
+        width="100%"
+        onChange={index => setActiveTabIndex(index)}
+      >
+        <TabList
+          overflowY="hidden"
+          sx={{
+            scrollbarWidth: 'none',
+            '::-webkit-scrollbar': {
+              display: 'none',
+            },
+          }}
         >
-          <TabList
-            overflowY="hidden"
-            sx={{
-              scrollbarWidth: 'none',
-              '::-webkit-scrollbar': {
-                display: 'none',
-              },
-            }}
-          >
-            <HStack spacing={5} overflowX="auto">
-              {addTabs()}
-              <Button
-                onClick={addBirdBandTab}
-                variant="outline"
-                borderRadius="full"
-                colorScheme="cyan"
-                minWidth="180px"
-              >
-                Add Banded Bird +
-              </Button>
-            </HStack>
-          </TabList>
-          <TabPanels>
-            {birdBandTabs.map((birdBandTab, tabIndex) => (
-              <TabPanel
-                bgColor="gray.50"
-                key={birdBandTab.id}
-                padding={4}
-                marginTop={2}
-                rounded="md"
-              >
-                <Grid templateColumns={['repeat(1,1fr)', '', 'repeat(2, 1fr)']} gap="2em">
-                  {BAND_POSITIONS.map((bandPosition, idx) => (
-                    <GridItem key={bandPosition}>
-                      <Text fontWeight="semibold" fontSize="md" mb="2">
-                        {bandPosition} Band
-                      </Text>
-                      <Table variant="unstyled" size="sm">
-                        <Thead>
-                          <Tr>
-                            <Td width="25%" p="0" pr="4">
-                              <Text fontSize="sm" mb="1">
-                                Position on leg
-                              </Text>
-                            </Td>
-                            <Td width="45%" p="0" pr="4">
-                              <Text fontSize="sm" mb="1">
-                                Color(s)
-                              </Text>
-                            </Td>
-                            <Td width="30%" p="0">
-                              <Text fontSize="sm" mb="1">
-                                Alphanumeric code
-                              </Text>
-                            </Td>
-                          </Tr>
-                        </Thead>
-                        <Tbody>
-                          <Tr>
-                            <Td p="0" pr="4" verticalAlign="top">
-                              <ChakraSelect
-                                placeholder="Select..."
-                                bgColor="white"
-                                {...register(`bandTabs.${tabIndex}.${idx}.verticalPosition`)}
-                              >
-                                <option value="above">Above ankle</option>
-                                <option value="below">Below ankle</option>
-                              </ChakraSelect>
-                            </Td>
-                            <Td p="0" pr="4" verticalAlign="top">
-                              <Box bgColor="white">
-                                <Controller
-                                  name={`bandTabs.${tabIndex}.${idx}.colors`}
-                                  control={control}
-                                  render={({ field }) => (
-                                    <Select
-                                      {...field}
-                                      isMulti
-                                      options={mappedColorOptions}
-                                      closeMenuOnSelect={false}
-                                      components={customComponents}
-                                    />
-                                  )}
-                                />
-                              </Box>
-                            </Td>
-                            <Td p="0" verticalAlign="top">
-                              <Input
-                                bgColor="white"
-                                {...register(`bandTabs.${tabIndex}.${idx}.alphanumeric`)}
+          <HStack spacing={5} overflowX="auto">
+            {addTabs()}
+            <Button
+              onClick={addBirdBandTab}
+              variant="outline"
+              borderRadius="full"
+              colorScheme="cyan"
+              minWidth="180px"
+            >
+              Add Banded Bird +
+            </Button>
+          </HStack>
+        </TabList>
+        <TabPanels>
+          {birdBandTabs.map((birdBandTab, tabIndex) => (
+            <TabPanel bgColor="gray.50" key={birdBandTab.id} padding={4} marginTop={2} rounded="md">
+              <Grid templateColumns={['repeat(1,1fr)', '', 'repeat(2, 1fr)']} gap="2em">
+                {BAND_POSITIONS.map((bandPosition, idx) => (
+                  <GridItem key={bandPosition}>
+                    <Text fontWeight="semibold" fontSize="md" mb="2">
+                      {bandPosition} Band
+                    </Text>
+                    <Table variant="unstyled" size="sm">
+                      <Thead>
+                        <Tr>
+                          <Td width="25%" p="0" pr="4">
+                            <Text fontSize="sm" mb="1">
+                              Position on leg
+                            </Text>
+                          </Td>
+                          <Td width="45%" p="0" pr="4">
+                            <Text fontSize="sm" mb="1">
+                              Color(s)
+                            </Text>
+                          </Td>
+                          <Td width="30%" p="0">
+                            <Text fontSize="sm" mb="1">
+                              Alphanumeric code
+                            </Text>
+                          </Td>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        <Tr>
+                          <Td p="0" pr="4" verticalAlign="top">
+                            <ChakraSelect
+                              placeholder="Select..."
+                              bgColor="white"
+                              {...register(`bandTabs.${tabIndex}.${idx}.verticalPosition`)}
+                            >
+                              <option value="above">Above ankle</option>
+                              <option value="below">Below ankle</option>
+                            </ChakraSelect>
+                          </Td>
+                          <Td p="0" pr="4" verticalAlign="top">
+                            <Box bgColor="white">
+                              <Controller
+                                name={`bandTabs.${tabIndex}.${idx}.colors`}
+                                control={control}
+                                render={({ field }) => (
+                                  <Select
+                                    {...field}
+                                    isMulti
+                                    options={mappedColorOptions}
+                                    closeMenuOnSelect={false}
+                                    components={customComponents}
+                                  />
+                                )}
                               />
-                            </Td>
-                          </Tr>
-                          <Tr>
-                            <Td px="0" py="2" colSpan={3}>
-                              <Checkbox {...register(`bandTabs.${tabIndex}.${idx}.flag`)}>
-                                Is an Alphanumeric Flag
-                              </Checkbox>
-                            </Td>
-                          </Tr>
-                        </Tbody>
-                      </Table>
-                    </GridItem>
-                  ))}
-                  <GridItem>
-                    <FormLabel>Generated Banding Code</FormLabel>
-
-                    <Code fontSize="lg">{currentBandTabCode}</Code>
+                            </Box>
+                          </Td>
+                          <Td p="0" verticalAlign="top">
+                            <Input
+                              bgColor="white"
+                              {...register(`bandTabs.${tabIndex}.${idx}.alphanumeric`)}
+                            />
+                          </Td>
+                        </Tr>
+                        <Tr>
+                          <Td px="0" py="2" colSpan={3}>
+                            <Checkbox {...register(`bandTabs.${tabIndex}.${idx}.flag`)}>
+                              Is an Alphanumeric Flag
+                            </Checkbox>
+                          </Td>
+                        </Tr>
+                      </Tbody>
+                    </Table>
                   </GridItem>
-                </Grid>
-              </TabPanel>
-            ))}
-          </TabPanels>
-        </Tabs>
-      </VStack>
-    </Box>
+                ))}
+                <GridItem>
+                  <FormLabel>Generated Banding Code</FormLabel>
+
+                  <Code fontSize="lg">{currentBandTabCode}</Code>
+                </GridItem>
+              </Grid>
+            </TabPanel>
+          ))}
+        </TabPanels>
+      </Tabs>
+    </CollapsibleSection>
   );
 };
 

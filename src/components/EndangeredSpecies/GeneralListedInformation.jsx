@@ -1,29 +1,27 @@
-import { React, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { InfoIcon } from '@chakra-ui/icons';
 import {
-  Stack,
-  VStack,
-  HStack,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Select,
+  Stack,
   Tooltip,
-  Heading,
-  FormLabel,
-  FormControl,
-  Flex,
-  InputGroup,
-  InputRightElement,
-  Button,
 } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
+import { React, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import footNotes from './FootNotes';
+import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import options from './DropdownOptions';
+import footNotes from './FootNotes';
 import './GeneralListedInformation.css';
 
 // component/section name not final
@@ -57,14 +55,7 @@ const GeneralListedInformation = ({ speciesName }) => {
   };
 
   return (
-    <VStack w="100%" maxW="900px" align="start">
-      <HStack>
-        <Heading as="h3" size="md">
-          General {speciesName} Information
-        </Heading>
-      </HStack>
-      <br />
-
+    <CollapsibleSection title="General Information">
       <Stack direction={['column', 'row']} w="100%" spacing="2em">
         <FormControl>
           <FormLabel>
@@ -172,7 +163,7 @@ const GeneralListedInformation = ({ speciesName }) => {
           </FormLabel>
         </FormControl>
       </Stack>
-    </VStack>
+    </CollapsibleSection>
   );
 };
 
