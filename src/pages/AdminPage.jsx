@@ -170,6 +170,294 @@ const dummy = [
     volunteer: 'Yae Miko',
     status: true,
   },
+  {
+    id: 18,
+    segment: 'OC21',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 19,
+    segment: 'OC20',
+    date: new Date(2021, 11, 15),
+    approved: 'READY TO REVIEW',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 20,
+    segment: 'OC09b',
+    date: new Date(2022, 2, 15),
+    approved: 'RESUBMITTED',
+    volunteer: 'Yae Miko',
+    status: false,
+  },
+  {
+    id: 21,
+    segment: 'OC21',
+    date: new Date(2022, 2, 14),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 22,
+    segment: 'OC16',
+    date: new Date(2021, 1, 14),
+    approved: 'EDITS REQUESTED',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 23,
+    segment: 'OC16',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Yae Miko',
+    status: true,
+  },
+  {
+    id: 24,
+    segment: 'OC21',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 25,
+    segment: 'OC20',
+    date: new Date(2021, 11, 15),
+    approved: 'READY TO REVIEW',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 26,
+    segment: 'OC09b',
+    date: new Date(2022, 2, 15),
+    approved: 'RESUBMITTED',
+    volunteer: 'Yae Miko',
+    status: false,
+  },
+  {
+    id: 27,
+    segment: 'OC21',
+    date: new Date(2022, 2, 14),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 28,
+    segment: 'OC16',
+    date: new Date(2021, 1, 14),
+    approved: 'EDITS REQUESTED',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 29,
+    segment: 'OC16',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Yae Miko',
+    status: true,
+  },
+  {
+    id: 30,
+    segment: 'OC21',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 31,
+    segment: 'OC20',
+    date: new Date(2021, 11, 15),
+    approved: 'READY TO REVIEW',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 32,
+    segment: 'OC09b',
+    date: new Date(2022, 2, 15),
+    approved: 'RESUBMITTED',
+    volunteer: 'Yae Miko',
+    status: false,
+  },
+  {
+    id: 33,
+    segment: 'OC21',
+    date: new Date(2022, 2, 14),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 34,
+    segment: 'OC16',
+    date: new Date(2021, 1, 14),
+    approved: 'EDITS REQUESTED',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 35,
+    segment: 'OC16',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Yae Miko',
+    status: true,
+  },
+  {
+    id: 36,
+    segment: 'OC21',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 37,
+    segment: 'OC20',
+    date: new Date(2021, 11, 15),
+    approved: 'READY TO REVIEW',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 38,
+    segment: 'OC09b',
+    date: new Date(2022, 2, 15),
+    approved: 'RESUBMITTED',
+    volunteer: 'Yae Miko',
+    status: false,
+  },
+  {
+    id: 39,
+    segment: 'OC21',
+    date: new Date(2022, 2, 14),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 40,
+    segment: 'OC16',
+    date: new Date(2021, 1, 14),
+    approved: 'EDITS REQUESTED',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 41,
+    segment: 'OC16',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Yae Miko',
+    status: true,
+  },
+  {
+    id: 42,
+    segment: 'OC21',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 43,
+    segment: 'OC20',
+    date: new Date(2021, 11, 15),
+    approved: 'READY TO REVIEW',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 44,
+    segment: 'OC09b',
+    date: new Date(2022, 2, 15),
+    approved: 'RESUBMITTED',
+    volunteer: 'Yae Miko',
+    status: false,
+  },
+  {
+    id: 45,
+    segment: 'OC21',
+    date: new Date(2022, 2, 14),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 46,
+    segment: 'OC16',
+    date: new Date(2021, 1, 14),
+    approved: 'EDITS REQUESTED',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 47,
+    segment: 'OC16',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Yae Miko',
+    status: true,
+  },
+  {
+    id: 48,
+    segment: 'OC21',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 49,
+    segment: 'OC20',
+    date: new Date(2021, 11, 15),
+    approved: 'READY TO REVIEW',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 50,
+    segment: 'OC09b',
+    date: new Date(2022, 2, 15),
+    approved: 'RESUBMITTED',
+    volunteer: 'Yae Miko',
+    status: false,
+  },
+  {
+    id: 51,
+    segment: 'OC21',
+    date: new Date(2022, 2, 14),
+    approved: 'APPROVED',
+    volunteer: 'Segun Adebayo',
+    status: false,
+  },
+  {
+    id: 52,
+    segment: 'OC16',
+    date: new Date(2021, 1, 14),
+    approved: 'EDITS REQUESTED',
+    volunteer: 'Segun Adebayo',
+    status: true,
+  },
+  {
+    id: 53,
+    segment: 'OC16',
+    date: new Date(2021, 10, 15),
+    approved: 'APPROVED',
+    volunteer: 'Yae Miko',
+    status: true,
+  },
 ];
 
 function segmentAscend(a, b) {
@@ -270,7 +558,11 @@ function checkStatusBoolean(status) {
   if (status === 'TRAINED') {
     return true;
   }
-  return false;
+  if (status === 'IN-TRAINING') {
+    return false;
+  }
+
+  return null;
 }
 
 const AdminPage = () => {
@@ -293,8 +585,8 @@ const AdminPage = () => {
   const [isDateAscend, setDateAscend] = useState(false);
   const [isVolunteerAscend, setVolunteerAscend] = useState(false);
   const [isApprovalAscend, setApprovalAscend] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const currentPage = 1;
   let totalData;
 
   const countChecked = () => {
@@ -311,24 +603,59 @@ const AdminPage = () => {
     return (
       (!segmentFilter || row.segment === segmentFilter) &&
       (!approvalFilter || row.approved === approvalFilter) &&
-      (!statusFilter || row.status === statusFilter) &&
+      (statusFilter == null || row.status === statusFilter) &&
       (!nameFilter || row.volunteer.toLowerCase().includes(nameFilter.toLowerCase())) &&
       (dateFilter === null || row.date.getMonth() === dateFilter.getMonth()) &&
       (dateFilter === null || row.date.getFullYear() === dateFilter.getFullYear())
     );
   };
 
+  const updateChangedPage = (oldSize, newSize) => {
+    if (currentPage === 1) {
+      return;
+    }
+    const cutoff = (currentPage - 1) * oldSize;
+    let newPage = 1;
+    let flag = true;
+    while (flag) {
+      if (Math.ceil(totalData / newSize) === newPage) {
+        flag = false;
+      } else if ((newPage - 1) * newSize <= cutoff && newPage * newSize - 1 >= cutoff) {
+        flag = false;
+      } else {
+        newPage += 1;
+      }
+    }
+    setCurrentPage(newPage);
+  };
+
   const perPage = () => {
     const data = dummy.filter(row => isFiltered(row));
     totalData = data.length;
-    return data.slice((currentPage - 1) * pageSize, (currentPage - 1) * pageSize + pageSize - 1);
+
+    if (Math.ceil(totalData / pageSize) !== currentPage) {
+      return data.slice((currentPage - 1) * pageSize, (currentPage - 1) * pageSize + pageSize);
+    }
+    return data.slice(
+      (currentPage - 1) * pageSize,
+      (currentPage - 1) * pageSize + (totalData % pageSize),
+    );
   };
 
   const [dataDisplay, setDataDisplay] = useState(perPage());
 
   useEffect(() => {
     setDataDisplay(perPage());
-  }, [segmentFilter, dateFilter, approvalFilter, statusFilter, nameFilter, checked]);
+  }, [
+    segmentFilter,
+    dateFilter,
+    approvalFilter,
+    statusFilter,
+    nameFilter,
+    checked,
+    currentPage,
+    pageSize,
+  ]);
 
   const handleAllChecked = () => {
     const newCheckedData = new Map(checked);
@@ -567,7 +894,10 @@ const AdminPage = () => {
           <Select
             value={pageSize}
             onChange={e => {
-              setPageSize(e.target.value);
+              const oldSize = pageSize;
+              const newSize = parseInt(e.target.value, 10);
+              setPageSize(newSize);
+              updateChangedPage(oldSize, newSize);
             }}
             bg="white"
             w="75px"
@@ -582,8 +912,24 @@ const AdminPage = () => {
           <Text color="white">
             {currentPage} - {Math.ceil(totalData / pageSize)} of {totalData}
           </Text>
-          <IconButton icon={<ChevronLeftIcon />} />
-          <IconButton icon={<ChevronRightIcon />} />
+          <IconButton
+            icon={<ChevronLeftIcon />}
+            onClick={() => {
+              if (currentPage !== 1) {
+                let temp = currentPage;
+                setCurrentPage((temp -= 1));
+              }
+            }}
+          />
+          <IconButton
+            icon={<ChevronRightIcon />}
+            onClick={() => {
+              if (currentPage !== Math.ceil(totalData / pageSize)) {
+                let temp = currentPage;
+                setCurrentPage((temp += 1));
+              }
+            }}
+          />
         </Flex>
       </div>
     </Container>
