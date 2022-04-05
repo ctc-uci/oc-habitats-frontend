@@ -21,6 +21,14 @@ import {
   Box,
   Button,
   Badge,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import {
   ChevronRightIcon,
@@ -30,6 +38,12 @@ import {
 } from '@chakra-ui/icons';
 import DatePicker from 'react-datepicker';
 import './AdminPage.css';
+import axios from 'axios';
+// import {
+//   generateReport,
+//   exportSelectedLogs,
+//   setReminder,
+// } from '../components/AdminPageTable/AdminPageModals';
 
 const dummy = [
   {
@@ -40,432 +54,7 @@ const dummy = [
     volunteer: 'Segun Adebayo',
     status: false,
   },
-  {
-    id: 1,
-    segment: 'OC20',
-    date: new Date(2021, 11, 15),
-    approved: 'READY TO REVIEW',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 2,
-    segment: 'OC09b',
-    date: new Date(2022, 2, 15),
-    approved: 'RESUBMITTED',
-    volunteer: 'Yae Miko',
-    status: false,
-  },
-  {
-    id: 3,
-    segment: 'OC21',
-    date: new Date(2022, 2, 14),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 4,
-    segment: 'OC16',
-    date: new Date(2021, 1, 14),
-    approved: 'EDITS REQUESTED',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 5,
-    segment: 'OC16',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Yae Miko',
-    status: true,
-  },
-  {
-    id: 6,
-    segment: 'OC21',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 7,
-    segment: 'OC20',
-    date: new Date(2021, 11, 15),
-    approved: 'READY TO REVIEW',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 8,
-    segment: 'OC09b',
-    date: new Date(2022, 2, 15),
-    approved: 'RESUBMITTED',
-    volunteer: 'Yae Miko',
-    status: false,
-  },
-  {
-    id: 9,
-    segment: 'OC21',
-    date: new Date(2022, 2, 14),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 10,
-    segment: 'OC16',
-    date: new Date(2021, 1, 14),
-    approved: 'EDITS REQUESTED',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 11,
-    segment: 'OC16',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Yae Miko',
-    status: true,
-  },
-  {
-    id: 12,
-    segment: 'OC21',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 13,
-    segment: 'OC20',
-    date: new Date(2021, 11, 15),
-    approved: 'READY TO REVIEW',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 14,
-    segment: 'OC09b',
-    date: new Date(2022, 2, 15),
-    approved: 'RESUBMITTED',
-    volunteer: 'Yae Miko',
-    status: false,
-  },
-  {
-    id: 15,
-    segment: 'OC21',
-    date: new Date(2022, 2, 14),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 16,
-    segment: 'OC16',
-    date: new Date(2021, 1, 14),
-    approved: 'EDITS REQUESTED',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 17,
-    segment: 'OC16',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Yae Miko',
-    status: true,
-  },
-  {
-    id: 18,
-    segment: 'OC21',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 19,
-    segment: 'OC20',
-    date: new Date(2021, 11, 15),
-    approved: 'READY TO REVIEW',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 20,
-    segment: 'OC09b',
-    date: new Date(2022, 2, 15),
-    approved: 'RESUBMITTED',
-    volunteer: 'Yae Miko',
-    status: false,
-  },
-  {
-    id: 21,
-    segment: 'OC21',
-    date: new Date(2022, 2, 14),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 22,
-    segment: 'OC16',
-    date: new Date(2021, 1, 14),
-    approved: 'EDITS REQUESTED',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 23,
-    segment: 'OC16',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Yae Miko',
-    status: true,
-  },
-  {
-    id: 24,
-    segment: 'OC21',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 25,
-    segment: 'OC20',
-    date: new Date(2021, 11, 15),
-    approved: 'READY TO REVIEW',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 26,
-    segment: 'OC09b',
-    date: new Date(2022, 2, 15),
-    approved: 'RESUBMITTED',
-    volunteer: 'Yae Miko',
-    status: false,
-  },
-  {
-    id: 27,
-    segment: 'OC21',
-    date: new Date(2022, 2, 14),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 28,
-    segment: 'OC16',
-    date: new Date(2021, 1, 14),
-    approved: 'EDITS REQUESTED',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 29,
-    segment: 'OC16',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Yae Miko',
-    status: true,
-  },
-  {
-    id: 30,
-    segment: 'OC21',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 31,
-    segment: 'OC20',
-    date: new Date(2021, 11, 15),
-    approved: 'READY TO REVIEW',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 32,
-    segment: 'OC09b',
-    date: new Date(2022, 2, 15),
-    approved: 'RESUBMITTED',
-    volunteer: 'Yae Miko',
-    status: false,
-  },
-  {
-    id: 33,
-    segment: 'OC21',
-    date: new Date(2022, 2, 14),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 34,
-    segment: 'OC16',
-    date: new Date(2021, 1, 14),
-    approved: 'EDITS REQUESTED',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 35,
-    segment: 'OC16',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Yae Miko',
-    status: true,
-  },
-  {
-    id: 36,
-    segment: 'OC21',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 37,
-    segment: 'OC20',
-    date: new Date(2021, 11, 15),
-    approved: 'READY TO REVIEW',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 38,
-    segment: 'OC09b',
-    date: new Date(2022, 2, 15),
-    approved: 'RESUBMITTED',
-    volunteer: 'Yae Miko',
-    status: false,
-  },
-  {
-    id: 39,
-    segment: 'OC21',
-    date: new Date(2022, 2, 14),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 40,
-    segment: 'OC16',
-    date: new Date(2021, 1, 14),
-    approved: 'EDITS REQUESTED',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 41,
-    segment: 'OC16',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Yae Miko',
-    status: true,
-  },
-  {
-    id: 42,
-    segment: 'OC21',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 43,
-    segment: 'OC20',
-    date: new Date(2021, 11, 15),
-    approved: 'READY TO REVIEW',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 44,
-    segment: 'OC09b',
-    date: new Date(2022, 2, 15),
-    approved: 'RESUBMITTED',
-    volunteer: 'Yae Miko',
-    status: false,
-  },
-  {
-    id: 45,
-    segment: 'OC21',
-    date: new Date(2022, 2, 14),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 46,
-    segment: 'OC16',
-    date: new Date(2021, 1, 14),
-    approved: 'EDITS REQUESTED',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 47,
-    segment: 'OC16',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Yae Miko',
-    status: true,
-  },
-  {
-    id: 48,
-    segment: 'OC21',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 49,
-    segment: 'OC20',
-    date: new Date(2021, 11, 15),
-    approved: 'READY TO REVIEW',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 50,
-    segment: 'OC09b',
-    date: new Date(2022, 2, 15),
-    approved: 'RESUBMITTED',
-    volunteer: 'Yae Miko',
-    status: false,
-  },
-  {
-    id: 51,
-    segment: 'OC21',
-    date: new Date(2022, 2, 14),
-    approved: 'APPROVED',
-    volunteer: 'Segun Adebayo',
-    status: false,
-  },
-  {
-    id: 52,
-    segment: 'OC16',
-    date: new Date(2021, 1, 14),
-    approved: 'EDITS REQUESTED',
-    volunteer: 'Segun Adebayo',
-    status: true,
-  },
-  {
-    id: 53,
-    segment: 'OC16',
-    date: new Date(2021, 10, 15),
-    approved: 'APPROVED',
-    volunteer: 'Yae Miko',
-    status: true,
-  },
 ];
-
 function ascend(a, b) {
   if (a < b) {
     return -1;
@@ -516,13 +105,7 @@ function checkStatusBoolean(status) {
 }
 
 const AdminPage = () => {
-  const m = new Map();
-  for (let i = 0; i < dummy.length; i += 1) {
-    m.set(dummy[i].id, false);
-  }
-
   // useStates and useEffect
-  const [checked, setChecked] = useState(m);
   const [segmentFilter, setSegmentFilter] = useState('');
   const [dateFilter, setDateFilter] = useState(null);
   const [approvalFilter, setApprovalFilter] = useState('');
@@ -536,6 +119,25 @@ const AdminPage = () => {
   const [isVolunteerAscend, setVolunteerAscend] = useState(false);
   const [isApprovalAscend, setApprovalAscend] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [data, setData] = useState(dummy);
+
+  const m = new Map();
+  for (let i = 0; i < data.length; i += 1) {
+    m.set(data[i].id, false);
+  }
+
+  const [checked, setChecked] = useState(m);
+
+  const getSpecies = async () => {
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/submissions`);
+      console.log(res.data);
+      setData(res.data);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+  };
 
   let totalData;
 
@@ -606,11 +208,11 @@ const AdminPage = () => {
   };
 
   const perPage = () => {
-    const data = dummy.filter(row => isFiltered(row));
-    totalData = data.length;
+    const d = data.filter(row => isFiltered(row));
+    totalData = d.length;
 
     if (Math.ceil(totalData / pageSize) !== currentPage) {
-      return data.slice((currentPage - 1) * pageSize, (currentPage - 1) * pageSize + pageSize);
+      return d.slice((currentPage - 1) * pageSize, (currentPage - 1) * pageSize + pageSize);
     }
     return data.slice(
       (currentPage - 1) * pageSize,
@@ -621,6 +223,7 @@ const AdminPage = () => {
   const [dataDisplay, setDataDisplay] = useState(perPage());
 
   useEffect(() => {
+    // getSpecies();
     setDataDisplay(perPage());
   }, [
     segmentFilter,
@@ -647,6 +250,148 @@ const AdminPage = () => {
     }
     setAllChecked(!allChecked);
     setChecked(newCheckedData);
+  };
+
+  const { isOpen: isReportOpen, onOpen: onReportOpen, onClose: onReportClose } = useDisclosure();
+  const { isOpen: isExportOpen, onOpen: onExportOpen, onClose: onExportClose } = useDisclosure();
+  const {
+    isOpen: isReminderOpen,
+    onOpen: onReminderOpen,
+    onClose: onReminderClose,
+  } = useDisclosure();
+
+  const [reportDate, setReportDate] = useState(null);
+  const [generate, setGenerate] = useState(true);
+
+  const generateReport = () => {
+    const toast = useToast();
+    return (
+      <>
+        <Button onClick={onReportOpen}>Generate Report</Button>
+
+        <Modal closeOnOverlayClick={false} isOpen={isReportOpen} onClose={onReportClose} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Generate Report</ModalHeader>
+            <ModalBody>
+              <Text>Select a month and year you&apos;d like to generate a report for.</Text>
+              <DatePicker
+                selected={reportDate}
+                dateFormat="MMMM, yyyy"
+                showMonthYearPicker
+                placeholderText="Select a month"
+                disabledKeyboardNavigation
+                inline
+                onChange={date => {
+                  setGenerate(false);
+                  setReportDate(date);
+                }}
+              />
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                mr="12px"
+                onClick={() => {
+                  onReportClose();
+                  setGenerate(true);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  onReportClose();
+                  setGenerate(true);
+                  toast({
+                    title: 'Successdully Generated Report',
+                    description: "You've exported {countChecked()} logs.",
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                  });
+                }}
+                bg="#2BC0E3"
+                isDisabled={generate}
+              >
+                Generate Report
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  };
+
+  const exportSelectedLogs = count => {
+    const toast = useToast();
+    return (
+      <>
+        <Button onClick={onExportOpen}>Export Selected Logs</Button>
+
+        <Modal closeOnOverlayClick={false} isOpen={isExportOpen} onClose={onExportClose} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Export Selected Logs</ModalHeader>
+            <ModalBody>
+              <Text>You are about to export {count} logs as csv files.</Text>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button mr="12px" onClick={onExportClose}>
+                Cancel
+              </Button>
+              <Button
+                bg="#38A169"
+                color="white"
+                onClick={() => {
+                  onExportClose();
+                  toast({
+                    title: 'Export Successful!',
+                    description: "You've exported {countChecked()} logs.",
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                  });
+                }}
+              >
+                Yes, Export
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  };
+
+  const setReminder = () => {
+    return (
+      <>
+        <Button onClick={onReminderOpen}>Set Reminder</Button>
+
+        <Modal
+          closeOnOverlayClick={false}
+          isOpen={isReminderOpen}
+          onClose={onReminderClose}
+          isCentered
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Schedule a Reminder</ModalHeader>
+            <ModalBody>
+              <Text>Would you like to...</Text>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button mr="12px">Cancel</Button>
+              <Button bg="#2BC0E3" isDisabled>
+                Next
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
   };
 
   // create the table
@@ -690,9 +435,9 @@ const AdminPage = () => {
           Monitor Log Submissions
         </Heading>
         <Flex gap="24px">
-          <Button>Generate Report</Button>
-          <Button>Export Selected Logs</Button>
-          <Button>Set Reminder</Button>
+          {generateReport()}
+          {exportSelectedLogs(countChecked())}
+          {setReminder()}
         </Flex>
         <Text font size="md" fontWeight="700px" mt="24px" mb="16px">
           Click on a column header (e.g. <span className="bold">DATE</span>) to sort by descending{' '}
@@ -714,7 +459,7 @@ const AdminPage = () => {
                 setSegmentFilter(event.target.value);
               }}
             >
-              {dummy
+              {data
                 .filter(
                   (value, index, self) =>
                     self.findIndex(v => v.segment === value.segment) === index,
@@ -747,7 +492,7 @@ const AdminPage = () => {
                 setApprovalFilter(event.target.value);
               }}
             >
-              {dummy
+              {data
                 .filter(
                   (value, index, self) =>
                     self.findIndex(v => v.approved === value.approved) === index,
@@ -767,7 +512,7 @@ const AdminPage = () => {
                 setStatusFilter(checkStatusBoolean(event.target.value));
               }}
             >
-              {dummy
+              {data
                 .filter(
                   (value, index, self) => self.findIndex(v => v.status === value.status) === index,
                 )
