@@ -62,7 +62,6 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
     event.preventDefault();
     const formData = formMethods.getValues();
 
-    console.log('formData', formData);
     addRow(formData);
     closeModal();
   };

@@ -1,19 +1,12 @@
-import React, { useEffect } from 'react';
-import { VStack, Heading, Grid, GridItem, Box, FormControl, FormLabel } from '@chakra-ui/react';
+import { FormControl, FormLabel, Grid, GridItem } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { PropTypes } from 'prop-types';
+import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 
-const BehaviorsSection = ({
-  behaviorOptions,
-  behaviors,
-  setBehaviors,
-  nestingOptions,
-  nesting,
-  setNesting,
-}) => {
-  const { control, setValue } = useFormContext();
+const BehaviorsSection = ({ behaviorOptions, nestingOptions }) => {
+  const { control } = useFormContext();
 
   const behaviorDropdown = behaviorOptions.map(behavior => ({
     label: behavior,

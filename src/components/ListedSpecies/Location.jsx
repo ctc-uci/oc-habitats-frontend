@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import { IMaskInput, useIMask } from 'react-imask';
+import { IMaskInput } from 'react-imask';
 import { React } from 'react';
 import { useFormContext } from 'react-hook-form';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';

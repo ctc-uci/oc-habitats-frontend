@@ -54,7 +54,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
   const [rowToEdit, setRowToEdit] = useState(undefined);
   const [rowToDelete, setRowToDelete] = useState(undefined);
   const [totals, setTotals] = useState([0, 0, 0]);
-  const { register, setValue, watch } = useFormContext();
+  const { setValue } = useFormContext();
   const toast = useToast();
   const formPrefix = `listedSpecies.${tab}.`;
 

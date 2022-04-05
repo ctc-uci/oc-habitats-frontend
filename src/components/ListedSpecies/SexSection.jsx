@@ -3,7 +3,6 @@ import {
   FormLabel,
   Grid,
   GridItem,
-  Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -24,8 +23,7 @@ const inputs = [
 ];
 
 const SexSection = () => {
-  const { register, setValue, getValues } = useFormContext();
-  console.log('sex', getValues());
+  const { setValue, getValues } = useFormContext();
 
   return (
     <CollapsibleSection title="Sex">

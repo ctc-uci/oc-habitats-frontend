@@ -16,7 +16,6 @@ import {
   Stack,
   Tooltip,
 } from '@chakra-ui/react';
-import PropTypes from 'prop-types';
 import { React, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
@@ -25,16 +24,13 @@ import footNotes from './FootNotes';
 import './GeneralListedInformation.css';
 
 // component/section name not final
-const GeneralListedInformation = ({ speciesName }) => {
+const GeneralListedInformation = () => {
   const { register, setValue, getValues } = useFormContext();
   const [meridiem, setMeridiem] = useState(getValues().meridiem || 'AM');
 
   useEffect(() => {
     setValue('meridiem', meridiem);
   }, [meridiem]);
-
-  console.log('values', getValues());
-  console.log(register('totalAdults'));
 
   const toggleTime = () => {
     if (meridiem === 'AM') {
@@ -165,10 +161,6 @@ const GeneralListedInformation = ({ speciesName }) => {
       </Stack>
     </CollapsibleSection>
   );
-};
-
-GeneralListedInformation.propTypes = {
-  speciesName: PropTypes.string.isRequired,
 };
 
 export default GeneralListedInformation;
