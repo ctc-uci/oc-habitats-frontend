@@ -15,9 +15,12 @@ import {
   ModalFooter,
   useDisclosure,
   Input,
+  VStack,
+  Link,
 } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
+import './Segment.css';
 
 function UpdateSegmentPopup(segment, segmentName, distance, onUpdateSegment, onDeleteSegment) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -91,11 +94,39 @@ function UpdateSegmentPopup(segment, segmentName, distance, onUpdateSegment, onD
   );
 }
 
-const Segment = ({ segment, segmentName, distance, onUpdateSegment, onDeleteSegment }) => {
+// Custom component to render Name
+const Name = ({ segment, segmentName, segmentLocation }) => {
+  return (
+    <>
+      <VStack>
+        <div className="segmentname-container">
+          {segment} {segmentName}
+        </div>
+        <div className="location-container">{segmentLocation}</div>
+      </VStack>
+    </>
+  );
+};
+
+const Segment = ({
+  segment,
+  segmentName,
+  segmentLocation,
+  link,
+  distance,
+  onUpdateSegment,
+  onDeleteSegment,
+}) => {
   return (
     <Tr>
-      <Td>{segment}</Td>
-      <Td>{segmentName}</Td>
+      <Td>
+        <Name segment={segment} segmentName={segmentName} segmentLocation={segmentLocation} />
+      </Td>
+      <Td>
+        <Link href={link} isExternal>
+          <u>Link</u>
+        </Link>
+      </Td>
       <Td>
         <Flex justifyContent="space-between">
           <Text>{distance}</Text>
@@ -105,10 +136,16 @@ const Segment = ({ segment, segmentName, distance, onUpdateSegment, onDeleteSegm
     </Tr>
   );
 };
-
+Name.propTypes = {
+  segment: PropTypes.string.isRequired,
+  segmentName: PropTypes.string.isRequired,
+  segmentLocation: PropTypes.string.isRequired,
+};
 Segment.propTypes = {
   segment: PropTypes.string.isRequired,
   segmentName: PropTypes.string.isRequired,
+  segmentLocation: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
   distance: PropTypes.number.isRequired,
   onUpdateSegment: PropTypes.func.isRequired,
   onDeleteSegment: PropTypes.func.isRequired,

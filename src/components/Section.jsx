@@ -215,6 +215,8 @@ const Section = ({
                   key={segmentItem.segment}
                   segment={segmentItem.segment}
                   segmentName={segmentItem.segmentName}
+                  segmentLocation={segmentItem.segmentLocation}
+                  link={segmentItem.link}
                   distance={segmentItem.distance}
                   onUpdateSegment={
                     (updatedSeg, updatedSegName, updatedSegDist) =>
@@ -244,6 +246,8 @@ Section.propTypes = {
     PropTypes.shape({
       segment: PropTypes.string.isRequired,
       segmentName: PropTypes.string.isRequired,
+      segmentLocation: PropTypes.string.isRequired,
+      link: PropTypes.string.isRequired,
       distance: PropTypes.number.isRequired,
     }),
   ).isRequired,

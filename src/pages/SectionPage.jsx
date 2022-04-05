@@ -31,42 +31,51 @@ const sectionsData = [
     segments: [
       {
         segment: 'OC01',
-        segmentName: 'Seal Beach (1st St. - North End Anaheim Bay)',
+        segmentName: 'Seal Beach',
+        segmentLocation: '1st St. - North End Anaheim Bay',
+        link: 'https://chakra-ui.com',
+        parking: 'Park somewhere',
         distance: 1.6,
       },
       {
         segment: 'OC02',
-        segmentName: 'Surfside (South of Anaheim Bay to 19th Street)',
+        segmentName: 'Surfside',
+        segmentLocation: 'South of Anaheim Bay to 19th Street',
+        link: 'https://chakra-ui.com',
+        parking: 'Park somewhere',
         distance: 1.8,
       },
       {
         segment: 'OC03',
-        segmentName: 'Sunset Beach (19th Street to Warner Avenue)',
+        segmentName: 'Sunset Beach',
+        segmentLocation: '19th Street to Warner Avenue',
+        link: 'https://chakra-ui.com',
+        parking: 'Park somewhere',
         distance: 1.3,
       },
     ],
   },
-  {
-    id: 2,
-    title: 'Section 2: Newport Beach to Laguna Beach',
-    segments: [
-      {
-        segment: '[TEST 2]OC01',
-        segmentName: '[TEST 2]Seal Beach (1st St. - North End Anaheim Bay)',
-        distance: 1.6,
-      },
-      {
-        segment: '[TEST 2]OC02',
-        segmentName: '[TEST 2]Surfside (South of Anaheim Bay to 19th Street)',
-        distance: 1.8,
-      },
-      {
-        segment: '[TEST 2]OC03',
-        segmentName: '[TEST 2]Sunset Beach (19th Street to Warner Avenue)',
-        distance: 1.3,
-      },
-    ],
-  },
+  // {
+  //   id: 2,
+  //   title: 'Section 2: Newport Beach to Laguna Beach',
+  //   segments: [
+  //     {
+  //       segment: '[TEST 2]OC01',
+  //       segmentName: '[TEST 2]Seal Beach (1st St. - North End Anaheim Bay)',
+  //       distance: 1.6,
+  //     },
+  //     {
+  //       segment: '[TEST 2]OC02',
+  //       segmentName: '[TEST 2]Surfside (South of Anaheim Bay to 19th Street)',
+  //       distance: 1.8,
+  //     },
+  //     {
+  //       segment: '[TEST 2]OC03',
+  //       segmentName: '[TEST 2]Sunset Beach (19th Street to Warner Avenue)',
+  //       distance: 1.3,
+  //     },
+  //   ],
+  // },
 ];
 
 function CreateNewSectionSegment(onAddSegment, addSection) {
