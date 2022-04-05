@@ -49,7 +49,7 @@ const Location = () => {
                     mask={`${char} 00[0] 00[0].0[0]`}
                     lazy={false}
                     onAccept={value => setValue(`gps[${i}].${type}`, value)}
-                    defaultValue={getValues()[`gps[${i}].${type}`]}
+                    defaultValue={getValues().gps[i][type]}
                     placeholderChar="-"
                   />
                 ))}

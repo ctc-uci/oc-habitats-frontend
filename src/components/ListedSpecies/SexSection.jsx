@@ -38,7 +38,7 @@ const SexSection = () => {
                 <NumberInput
                   min={0}
                   onChange={val => setValue(`sex[${idx}]`, parseInt(val, 10))}
-                  defaultValue={getValues()[`sex[${idx}]`]}
+                  defaultValue={getValues().sex[idx]}
                 >
                   <NumberInputField />
                   <NumberInputStepper>

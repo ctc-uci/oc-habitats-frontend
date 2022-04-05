@@ -33,9 +33,9 @@ import GeneralListedInformation from './GeneralListedInformation';
 import Location from './Location';
 import SexSection from './SexSection';
 
-const ListedSpeciesPopup = ({ closeModal, adultName, addRow }) => {
+const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) => {
   const formMethods = useForm({
-    defaultValues: {
+    defaultValues: prefilledData || {
       totalAdults: 1,
       totalFledges: 0,
       totalChicks: 0,
@@ -46,7 +46,12 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow }) => {
       sex: [0, 0, 0, 0, 0, 0],
       nesting: [],
       behaviors: [],
-      gps: [{ longitude: '', latitude: '' }],
+      gps: [
+        { longitude: '', latitude: '' },
+        { longitude: '', latitude: '' },
+        { longitude: '', latitude: '' },
+        { longitude: '', latitude: '' },
+      ],
     },
   });
 
@@ -154,7 +159,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow }) => {
           </Button>
           <Spacer />
           <Button colorScheme="cyan" type="submit" onClick={handleSubmit}>
-            Add to Tracker
+            {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker
           </Button>
         </Flex>
       </Flex>
@@ -166,6 +171,9 @@ ListedSpeciesPopup.propTypes = {
   adultName: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
   addRow: PropTypes.func.isRequired,
+  prefilledData: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
+  ).isRequired,
 };
 
 export default ListedSpeciesPopup;

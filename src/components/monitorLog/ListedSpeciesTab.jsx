@@ -1,48 +1,61 @@
 /* eslint-disable react/jsx-key */
-import React, { useState, useCallback, useEffect } from 'react';
 import {
-  Text,
-  Grid,
-  GridItem,
-  Container,
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Td,
-  Tbody,
-  Box,
-  IconButton,
   Accordion,
-  AccordionItem,
   AccordionButton,
   AccordionIcon,
-  Collapse,
+  AccordionItem,
+  Box,
   Button,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  Tfoot,
+  Collapse,
+  Container,
   FormControl,
+  Grid,
+  GridItem,
+  Icon,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure,
+  useToast,
   VStack,
-  Icon,
 } from '@chakra-ui/react';
-import { FiEdit3 } from 'react-icons/fi';
+import update from 'immutability-helper';
 import PropTypes from 'prop-types';
-import { useFormContext, useFieldArray } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { FiEdit3 } from 'react-icons/fi';
 import ListedSpeciesPopup from '../ListedSpecies/ListedSpeciesPopup';
 
 const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen: openPopup, onClose } = useDisclosure();
+  const confirmDeleteModal = useDisclosure();
   const [data, setData] = useState([]);
+  const [rowToEdit, setRowToEdit] = useState(undefined);
+  const [rowToDelete, setRowToDelete] = useState(undefined);
   const [totals, setTotals] = useState([0, 0, 0]);
   const { register, setValue, watch } = useFormContext();
+  const toast = useToast();
   const formPrefix = `listedSpecies.${tab}.`;
 
   useEffect(() => {
@@ -53,26 +66,47 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
     );
   }, [data]);
 
-  // const addRow = useCallback(
-  //   formData => {
-  //     setData([...data, formData]);
-  //   },
-  //   [data, setData],
-  // );
-
-  const openModal = () => {
-    // append({
-    //   totalAdults: 0,
-    //   totalFledges: 0,
-    //   totalChicks: 0,
-    //   timeValue: 'a',
-    //   timeMeridiem: 'PM',
-    // });
-    onOpen();
+  const addRow = formData => {
+    if (formData.editing !== undefined) {
+      setData(update(data, { [formData.editing]: { $set: formData } }));
+      toast({
+        title: `Successfully edited Map #${formData.map} on ${speciesName} Tracker`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+      setRowToEdit(undefined);
+    } else {
+      setData([...data, formData]);
+      toast({
+        title: `Successfully added Map #${formData.map} to ${speciesName} Tracker`,
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
+    }
   };
 
-  const addRow = formData => {
-    setData([...data, formData]);
+  const editRow = (row, idx) => {
+    setRowToEdit({ ...row, editing: idx, map: idx + 1 });
+    openPopup();
+  };
+
+  const deleteRow = idx => {
+    setData(update(data, { $splice: [[idx, 1]] }));
+  };
+
+  const showConfirmDeleteModal = idx => {
+    setRowToDelete(idx);
+    confirmDeleteModal.onOpen();
+  };
+
+  const hideConfirmDeleteModal = remove => {
+    if (remove) {
+      deleteRow(rowToDelete);
+    }
+    setRowToDelete(undefined);
+    confirmDeleteModal.onClose();
   };
 
   const createBirdInfo = row => {
@@ -117,7 +151,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
       ['Behaviors Observed', row.behaviors.map(nest => nest.value).join(', ') || 'None'],
     ];
     return birdInfo.map(([title, content]) => (
-      <Tr key={title + content}>
+      <Tr key={title}>
         <Td border="0" paddingBottom="0" paddingTop="0">
           <Text fontWeight="500">{title}</Text>
         </Td>
@@ -156,6 +190,35 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                   </Tr>
                 </Tbody>
               )}
+              <Modal
+                isOpen={confirmDeleteModal.isOpen}
+                closeOnEsc={false}
+                onClose={() => hideConfirmDeleteModal(false)}
+              >
+                <ModalOverlay />
+                <ModalContent rounded="none">
+                  <ModalHeader>Delete Sighted Species</ModalHeader>
+                  <ModalBody>
+                    Are you sure you want to{' '}
+                    <Text as="span" color="red">
+                      delete
+                    </Text>{' '}
+                    <Text as="span" fontWeight="bold">
+                      {speciesName} #{rowToDelete + 1}
+                    </Text>
+                    ? This action cannot be undone.
+                  </ModalBody>
+
+                  <ModalFooter>
+                    <Button mr="3" onClick={() => hideConfirmDeleteModal(false)}>
+                      Cancel
+                    </Button>
+                    <Button colorScheme="red" onClick={() => hideConfirmDeleteModal(true)}>
+                      Delete
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
               {data.map((row, n) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <AccordionItem key={row.id} as={Tbody}>
@@ -163,7 +226,20 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                     <>
                       <Tr>
                         <Td width="0" borderBottomWidth="0">
-                          <IconButton icon={<Icon as={FiEdit3} w="1.5em" h="1.5em" />} />
+                          <Menu>
+                            <MenuButton
+                              as={IconButton}
+                              icon={<Icon as={FiEdit3} w="1.5em" h="1.5em" />}
+                            />
+                            <MenuList>
+                              <MenuItem onClick={() => editRow(row, n)}>
+                                Edit Sighted {speciesCode} #{n + 1}
+                              </MenuItem>
+                              <MenuItem color="red" onClick={() => showConfirmDeleteModal(n)}>
+                                Delete Sighted {speciesCode} #{n + 1}
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
                         </Td>
                         <Td borderBottomWidth="0">{n + 1}</Td>
                         <Td borderBottomWidth="0">{row.totalAdults}</Td>
@@ -179,7 +255,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                         <Td colSpan="6" padding="0">
                           <Collapse in={isExpanded} as="td" colSpan="6">
                             <Table>
-                              <Tbody>{createBirdInfo(row)}</Tbody>
+                              <Tbody>{createBirdInfo({ ...row, map: n + 1 })}</Tbody>
                             </Table>
                           </Collapse>
                         </Td>
@@ -208,13 +284,18 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
               </Tfoot>
             </Accordion>
           </Box>
-          <Button onClick={openModal} width="100%" marginTop="10px" colorScheme="cyan">
+          <Button onClick={openPopup} width="100%" marginTop="10px" colorScheme="cyan">
             Add Sighted {speciesCode} +
           </Button>
-          <Modal size="full" isOpen={isOpen} onClose={onClose}>
+          <Modal size="full" isOpen={isOpen} closeOnEsc={false}>
             <ModalOverlay />
             <ModalContent margin={0} rounded="none">
-              <ListedSpeciesPopup closeModal={onClose} adultName={speciesName} addRow={addRow} />
+              <ListedSpeciesPopup
+                closeModal={onClose}
+                adultName={speciesName}
+                addRow={addRow}
+                prefilledData={rowToEdit}
+              />
             </ModalContent>
           </Modal>
         </GridItem>
@@ -226,10 +307,9 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
             <Text>To report a sick or injured bird, contact the WWCC at 714.374.5587</Text>
             <FormControl>
               <NumberInput
-                ref={register(`${formPrefix}injuredCount`)}
-                onChange={val => setValue(`${formPrefix}injuredCount`, val)}
-                defaultValue={0}
                 min={0}
+                onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}
+                defaultValue={0}
               >
                 <NumberInputField />
                 <NumberInputStepper>
