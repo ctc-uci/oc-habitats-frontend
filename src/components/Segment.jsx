@@ -113,6 +113,7 @@ const Segment = ({
   segmentName,
   segmentLocation,
   link,
+  parking,
   distance,
   onUpdateSegment,
   onDeleteSegment,
@@ -133,6 +134,9 @@ const Segment = ({
           {UpdateSegmentPopup(segment, segmentName, distance, onUpdateSegment, onDeleteSegment)}
         </Flex>
       </Td>
+      <Td>
+        <Text>{parking}</Text>
+      </Td>
     </Tr>
   );
 };
@@ -146,6 +150,7 @@ Segment.propTypes = {
   segmentName: PropTypes.string.isRequired,
   segmentLocation: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
+  parking: PropTypes.string.isRequired,
   distance: PropTypes.number.isRequired,
   onUpdateSegment: PropTypes.func.isRequired,
   onDeleteSegment: PropTypes.func.isRequired,

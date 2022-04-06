@@ -217,6 +217,7 @@ const Section = ({
                   segmentName={segmentItem.segmentName}
                   segmentLocation={segmentItem.segmentLocation}
                   link={segmentItem.link}
+                  parking={segmentItem.parking}
                   distance={segmentItem.distance}
                   onUpdateSegment={
                     (updatedSeg, updatedSegName, updatedSegDist) =>
@@ -249,6 +250,7 @@ Section.propTypes = {
       segmentLocation: PropTypes.string.isRequired,
       link: PropTypes.string.isRequired,
       distance: PropTypes.number.isRequired,
+      parking: PropTypes.string.isRequired,
     }),
   ).isRequired,
   onAddSegment: PropTypes.func.isRequired,
