@@ -11,6 +11,7 @@ import EndangeredSpeciesPopup from './pages/EndangeredSpeciesPopup';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import Navbar from './components/Navbar/Navbar';
+import NavbarMobile from './components/Navbar/NavbarMobile';
 import theme from './theme/theme';
 import Footer from './components/Footer/Footer';
 
@@ -22,7 +23,7 @@ function App() {
       <Router>
         <Box className="page-container">
           <Box className="content-wrap">
-            <Navbar isAdmin />
+            <NavbarMobile isAdmin />
             <Routes>
               {/* Add routes as needed; route names subject to change */}
               <Route exact path="/" element={<HomePage />} />
@@ -37,7 +38,7 @@ function App() {
               <Route exact path="/species" element={<Species />} />
               {/* Admin only routes (TO DO, make admin only) */}
               <Route exact path="/people" element={<PeoplePage />} />
-              <Route exact path="/contacts" />
+              <Route exact path="/emergency-numbers" />
               <Route exact path="/map" />
               <Route exact path="/logs" element={<AdminPage />} />
               <Route exact path="/common-table-example" element={<CommonTableExample />} />
