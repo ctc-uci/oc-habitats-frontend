@@ -18,6 +18,7 @@ import {
   IconButton,
   Spacer,
   HStack,
+  VStack,
   Box,
   Button,
   Badge,
@@ -29,6 +30,8 @@ import {
   ModalFooter,
   useDisclosure,
   useToast,
+  Radio,
+  RadioGroup,
 } from '@chakra-ui/react';
 import {
   ChevronRightIcon,
@@ -120,6 +123,7 @@ const AdminPage = () => {
   const [isApprovalAscend, setApprovalAscend] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState(dummy);
+  const [change, setChange] = useState(true);
 
   const m = new Map();
   for (let i = 0; i < data.length; i += 1) {
@@ -138,6 +142,10 @@ const AdminPage = () => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    getSpecies();
+  }, [change]);
 
   let totalData;
 
@@ -223,7 +231,6 @@ const AdminPage = () => {
   const [dataDisplay, setDataDisplay] = useState(perPage());
 
   useEffect(() => {
-    // getSpecies();
     setDataDisplay(perPage());
   }, [
     segmentFilter,
@@ -364,6 +371,16 @@ const AdminPage = () => {
     );
   };
 
+  const [reminderValue, setreminderValue] = useState(null);
+  const [scheduleReminder, setScheduleReminder] = useState(true);
+  // const oneTime = () => {
+  //   return (
+  //     <>
+  //       <Button onClick={onOneTimeOpen}>Next</Button>
+  //     </>
+  //   );
+  // };
+
   const setReminder = () => {
     return (
       <>
@@ -380,11 +397,39 @@ const AdminPage = () => {
             <ModalHeader>Schedule a Reminder</ModalHeader>
             <ModalBody>
               <Text>Would you like to...</Text>
+              <RadioGroup
+                onChange={() => {
+                  setScheduleReminder(false);
+                  setreminderValue();
+                  console.log(reminderValue);
+                }}
+                value={reminderValue}
+              >
+                <VStack align="flex-start">
+                  <Radio value="1">Schedule a 1-time reminder</Radio>
+                  <Radio value="monthly" verticalAlign="baseline">
+                    <Flex flexDirection="column">
+                      <Text whiteSpace="nowrap">Reschedule the monthly reminder</Text>
+                      <Text as="i">Monthly Reminders are currently sent on the 20th.</Text>
+                      <Text as="i">Monitor Logs are currently due on the 28th.</Text>
+                    </Flex>
+                  </Radio>
+                </VStack>
+              </RadioGroup>
             </ModalBody>
 
             <ModalFooter>
-              <Button mr="12px">Cancel</Button>
-              <Button bg="#2BC0E3" isDisabled>
+              <Button
+                onClick={() => {
+                  setScheduleReminder(true);
+                  setreminderValue(null);
+                  onReminderClose();
+                }}
+                mr="12px"
+              >
+                Cancel
+              </Button>
+              <Button bg="#2BC0E3" isDisabled={scheduleReminder}>
                 Next
               </Button>
             </ModalFooter>
