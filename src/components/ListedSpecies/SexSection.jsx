@@ -13,6 +13,8 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 
+const TOTAL_FIELDS = ['totalAdults', 'totalFledges', 'totalChicks'];
+
 const inputs = [
   '# of Male Adults',
   '# of Male Fledges',
@@ -23,7 +25,13 @@ const inputs = [
 ];
 
 const SexSection = () => {
-  const { setValue, getValues } = useFormContext();
+  const { watch, setValue, getValues } = useFormContext();
+
+  const getMax = idx => {
+    const otherCount = watch(`sex[${(idx + 3) % 6}]`);
+    const totalCount = watch(TOTAL_FIELDS[idx % 3]);
+    return totalCount - otherCount;
+  };
 
   return (
     <CollapsibleSection title="Sex">
@@ -35,8 +43,9 @@ const SexSection = () => {
                 {input}
                 <NumberInput
                   min={0}
-                  onChange={val => setValue(`sex[${idx}]`, parseInt(val, 10))}
+                  onChange={(_, val) => setValue(`sex[${idx}]`, val)}
                   defaultValue={getValues().sex[idx]}
+                  max={getMax(idx)}
                 >
                   <NumberInputField />
                   <NumberInputStepper>
