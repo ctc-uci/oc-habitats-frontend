@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { HStack, Flex, Button, Avatar, Image } from '@chakra-ui/react';
 import NavbarLink from './NavbarLink';
+import ProfileDropdown from './ProfileDropdown';
 import logo from '../../assets/OCHlogo.png';
 
 const Navbar = ({ isAdmin }) => {
@@ -55,9 +56,7 @@ const Navbar = ({ isAdmin }) => {
             </Button>
           </Link>
         )}
-        <Link to="/account">
-          <Avatar m={1} name={user.firstName + user.lastName} src={user.profilePic} />
-        </Link>
+        <ProfileDropdown isAdmin={isAdmin} />
       </HStack>
     </Flex>
   );

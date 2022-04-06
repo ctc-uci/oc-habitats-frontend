@@ -17,6 +17,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import NavbarLinkMobile from './NavbarLinkMobile';
+import ProfileDropdown from './ProfileDropdown';
 
 import logo from '../../assets/OCHlogo.png';
 
@@ -101,69 +102,7 @@ const NavbarMobile = ({ isAdmin }) => {
             : volunteer.map(v => <NavbarLinkMobile key={v.text} text={v.text} path={v.path} />)}
         </MenuList>
       </Menu>
-
-      <Menu>
-        <MenuButton
-          color="white"
-          transition="all 0.2s"
-          _hover={{ bg: 'gray.400' }}
-          _focus={{ boxShadow: 'outline' }}
-        >
-          <Avatar m={1} name={user.firstName + user.lastName} src={user.profilePic} />
-        </MenuButton>
-        <MenuList>
-          <MenuItem>
-            <Link to="/account">
-              <Button
-                _hover={{ bg: 'transparent' }}
-                stroke="ochLightGrey"
-                width="200px"
-                justifyContent="flex-start"
-                bg="white"
-                size="md"
-              >
-                <Text fontWeight="600">Account</Text>
-              </Button>
-            </Link>
-          </MenuItem>
-          <MenuDivider />
-          {isAdmin ? (
-            <MenuItem>
-              <Link to="/admin-portal">
-                <Button
-                  _hover={{ bg: 'transparent' }}
-                  stroke="ochLightGrey"
-                  width="200px"
-                  justifyContent="flex-start"
-                  bg="white"
-                  size="md"
-                >
-                  <Text fontWeight="600">Admin Portal</Text>
-                </Button>
-              </Link>
-            </MenuItem>
-          ) : null}
-          {isAdmin ? <MenuDivider /> : null}
-
-          <MenuItem>
-            <Link to="/sign-out">
-              <Button
-                _hover={{ bg: 'transparent' }}
-                stroke="ochLightGrey"
-                width="200px"
-                justifyContent="flex-start"
-                bg="white"
-                size="md"
-              >
-                <HStack color="ochRed">
-                  <Text fontWeight="600">Sign Out</Text>
-                  <FiLogOut />
-                </HStack>
-              </Button>
-            </Link>
-          </MenuItem>
-        </MenuList>
-      </Menu>
+      <ProfileDropdown isAdmin={isAdmin} />
     </Flex>
   );
 };
