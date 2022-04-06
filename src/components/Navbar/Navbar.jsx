@@ -11,6 +11,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Text,
 } from '@chakra-ui/react';
 import { FaSignOutAlt } from 'react-icons/fa';
 import NavbarLink from './NavbarLink';
@@ -80,12 +81,12 @@ const Navbar = ({ isAdmin }) => {
               <Avatar m={1} name={user.firstName + user.lastName} src={user.profilePic} />
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={<Link to="/account" />} color="black" fontFamily="Inter">
+              <MenuItem as="a" href="/account" color="black" fontFamily="Inter">
                 Account
               </MenuItem>
               <MenuItem color="red" fontFamily="Inter">
-                {'Sign Out  '}
-                <FaSignOutAlt marginLeft="10" />
+                <Text marginRight="5px">Sign Out</Text>
+                <FaSignOutAlt style={{ display: 'inline' }} />
               </MenuItem>
             </MenuList>
           </Menu>
@@ -96,7 +97,7 @@ const Navbar = ({ isAdmin }) => {
               <Avatar m={1} name={user.firstName + user.lastName} src={user.profilePic} />
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={<Link to="/account" />} color="black" fontFamily="Inter">
+              <MenuItem as="a" href="/account" color="black" fontFamily="Inter">
                 Account
               </MenuItem>
               {adminPortal && (
@@ -110,8 +111,8 @@ const Navbar = ({ isAdmin }) => {
                 </MenuItem>
               )}
               <MenuItem color="red" fontFamily="Inter">
-                {'Sign Out  '}
-                <FaSignOutAlt marginLeft="10" />
+                <Text marginRight="5px">Sign Out</Text>
+                <FaSignOutAlt style={{ display: 'inline' }} />
               </MenuItem>
             </MenuList>
           </Menu>
