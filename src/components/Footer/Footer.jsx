@@ -20,17 +20,11 @@ const Footer = () => {
       <HStack spacing={6} divider={<StackDivider borderColor="white" borderStyle="dashed" />}>
         <Text>949.697.8651</Text>
         <Flex direction="column" align="center">
-          <Text>ochmonitors@ochabitats.org</Text>
-          <Text>info@ochabitats.org</Text>
-        </Flex>
-        <Flex direction="column" align="center">
-          <Text>15333 Culver Drive, Suite</Text>
-          <Text>240-763, Irvine, CA 92604</Text>
+          <Text>och@ochabitats.org</Text>
         </Flex>
         <Link href="http://www.ochabitats.org" isExternal>
           ochabitats.org
         </Link>
-        <Text>EIN # 82-2478090</Text>
         <HStack spacing={3}>
           <Link href="https://www.facebook.com/ochabitats" isExternal>
             <Image maxH="52px" src={facebook} _hover={{ opacity: '0.8' }} />
