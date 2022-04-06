@@ -19,12 +19,14 @@ import {
   Stack,
   Textarea,
   useDisclosure,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { React, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp } from 'react-icons/fi';
+import generateBandingCode from '../../common/bandingCodeUtil';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import BandingSection from './BandingSection';
 import BehaviorsSection from './BehaviorsSection';
@@ -52,18 +54,36 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
         { longitude: '', latitude: '' },
         { longitude: '', latitude: '' },
       ],
+      bandTabs: [],
     },
   });
 
   const confirmCloseModal = useDisclosure();
   const topRef = useRef();
+  const toast = useToast();
 
   const handleSubmit = event => {
     event.preventDefault();
     const formData = formMethods.getValues();
-
-    addRow(formData);
-    closeModal();
+    let valid = true;
+    for (let i = 0; i < formData.bandTabs.length; i += 1) {
+      const row = [...Array(4)].map((_, n) => formData.bandTabs[i][n]);
+      const code = generateBandingCode(row);
+      if (code === 'invalid' || code === 'Top band must be above bottom band') {
+        valid = false;
+        break;
+      }
+    }
+    if (valid) {
+      addRow(formData);
+      closeModal();
+    } else {
+      toast({
+        title: 'Please fix banding inputs.',
+        status: 'error',
+        duration: 1000,
+      });
+    }
   };
 
   const returnToTop = () => {

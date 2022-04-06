@@ -27,43 +27,11 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { IconContext } from 'react-icons';
 import { BsFillCircleFill } from 'react-icons/bs';
 import BandColors from '../../common/BandColors';
+import generateBandingCode from '../../common/bandingCodeUtil';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import CloseableTab from './CloseableTab';
 
 const BAND_POSITIONS = ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'];
-
-const generateSingleBandCode = band => {
-  if (!band.verticalPosition || !band.colors || band.colors.length === 0) return '';
-  let color;
-  if (band.colors.length === 1) {
-    color = band.colors[0].realValue;
-  } else {
-    color = `(${band.colors.map(c => c.realValue).join('/')})`;
-  }
-  if (band.verticalPosition === 'below') {
-    color = color.toLowerCase();
-  }
-  if (band.alphanumeric && band.alphanumeric !== '') {
-    return `${band.flag ? 'F' : ''}${color}.${band.alphanumeric}`;
-  }
-  return `${band.flag ? 'F' : ''}${color}`;
-};
-const generateCode = bands => {
-  if (!bands || !bands[0]) {
-    return 'invalid';
-  }
-  const [topLeft, topRight, bottomLeft, bottomRight] = bands;
-  if (
-    (topLeft.verticalPosition === 'below' && bottomLeft.verticalPosition === 'above') ||
-    (topRight.verticalPosition === 'below' && bottomRight.verticalPosition === 'above')
-  ) {
-    return 'Top band must be above bottom band';
-  }
-  const leftCode = generateSingleBandCode(topLeft) + generateSingleBandCode(bottomLeft);
-  const rightCode = generateSingleBandCode(topRight) + generateSingleBandCode(bottomRight);
-  // if a leg has no bands, put X instead
-  return `${leftCode || 'X'}:${rightCode || 'X'}`;
-};
 
 const BandingSection = () => {
   const { register, watch, control } = useFormContext();
@@ -81,7 +49,7 @@ const BandingSection = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   // watch the 4 bands on the current tab so we can generate the band code
   const currentBandTab = [0, 1, 2, 3].map(idx => watch(`bandTabs.${activeTabIndex}.${idx}`));
-  const currentBandTabCode = generateCode(currentBandTab);
+  const currentBandTabCode = generateBandingCode(currentBandTab);
 
   const addBirdBandTab = () => {
     const newTab = {};
