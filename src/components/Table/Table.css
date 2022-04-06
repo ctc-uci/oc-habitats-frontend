@@ -138,7 +138,7 @@ html {
 }
 
 .training-badge {
-  position: flex;
+  /* position: flex;
   width: 83px;
   height: 16px;
   top: 2px;
@@ -151,7 +151,7 @@ html {
   line-height: 16px;
 
   align-self: stretch;
-  vertical-align: center;
+  vertical-align: center; */
 }
 
 .last-updated {

@@ -26,11 +26,6 @@ const DropdownSearch = ({ options, value, handleSelectedValue }) => {
   );
 };
 
-DropdownSearch.defaultProps = {
-  handleSelectedValue: PropTypes.func,
-  value: PropTypes.string,
-};
-
 DropdownSearch.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
@@ -38,8 +33,8 @@ DropdownSearch.propTypes = {
       label: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  handleSelectedValue: PropTypes.func,
-  value: PropTypes.string,
+  handleSelectedValue: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 export default DropdownSearch;

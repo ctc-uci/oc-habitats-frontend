@@ -17,14 +17,14 @@ const Navbar = ({ isAdmin }) => {
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'People', path: '/people' },
     { text: 'Species List', path: '/species' },
-    { text: 'Sections & Segments', path: '/map' },
+    { text: 'Sections & Segments', path: '/sections' },
     { text: 'Contacts', path: '/contacts' },
   ];
 
   const volunteer = [
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'Species List', path: '/species' },
-    { text: 'Sections & Segments', path: '/map' },
+    { text: 'Sections & Segments', path: '/sections' },
   ];
 
   return (
