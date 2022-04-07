@@ -220,12 +220,20 @@ const Section = ({
                   parking={segmentItem.parking}
                   distance={segmentItem.distance}
                   onUpdateSegment={
-                    (updatedSeg, updatedSegName, updatedSegDist) =>
+                    (
+                      updatedSeg,
+                      updatedSegName,
+                      updatedSegLocation,
+                      updatedSegLink,
+                      updatedSegParking,
+                    ) =>
                       onUpdateSegment(
                         segmentItem.segment,
                         updatedSeg,
                         updatedSegName,
-                        updatedSegDist,
+                        updatedSegLocation,
+                        updatedSegLink,
+                        updatedSegParking,
                       )
                     // eslint-disable-next-line no-use-before-define
                   }

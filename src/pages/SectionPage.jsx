@@ -160,11 +160,21 @@ const SectionPage = () => {
     setSections(updatedSegSections);
   };
 
-  const addSegment = (sectionId, newSegId, newSegName, newSegDist) => {
+  const addSegment = (
+    sectionId,
+    newSegId,
+    newSegName,
+    newSegLocation,
+    newSegLink,
+    newSegParking,
+  ) => {
     const newSegment = {
       segment: newSegId,
       segmentName: newSegName,
-      distance: newSegDist,
+      segmentLocation: newSegLocation,
+      link: newSegLink,
+      parking: newSegParking,
+      distance: 0,
     };
     const newSegSections = [...sections];
     const { segments } = newSegSections.filter(section => section.id === sectionId)[0];
@@ -175,11 +185,22 @@ const SectionPage = () => {
     setSections(newSegSections);
   };
 
-  const updateSegment = (sectionId, segmentId, updatedSeg, updatedSegName, updatedSegDist) => {
+  const updateSegment = (
+    sectionId,
+    segmentId,
+    updatedSeg,
+    updatedSegName,
+    updatedSegLocation,
+    updatedSegLink,
+    updatedSegParking,
+  ) => {
     const newSegment = {
       segment: updatedSeg,
       segmentName: updatedSegName,
-      distance: updatedSegDist,
+      segmentLocation: updatedSegLocation,
+      link: updatedSegLink,
+      parking: updatedSegParking,
+      distance: 0,
     };
     let updatedSection = -1;
     for (let i = 0; i < sections.length; i += 1) {
@@ -234,8 +255,15 @@ const SectionPage = () => {
                 <TabPanel key={sectionObj.id} padding="0px">
                   <CreateNew
                     key={sectionObj.id}
-                    onAddSegment={(newSeg, newSegName, newSegDist) =>
-                      addSegment(sectionObj.id, newSeg, newSegName, newSegDist)
+                    onAddSegment={(newSeg, newSegName, newSegLocation, newSegLink, newSegParking) =>
+                      addSegment(
+                        sectionObj.id,
+                        newSeg,
+                        newSegName,
+                        newSegLocation,
+                        newSegLink,
+                        newSegParking,
+                      )
                     }
                   />
                 </TabPanel>
@@ -269,13 +297,22 @@ const SectionPage = () => {
                     onAddSegment={(newSeg, newSegName, newSegDist) =>
                       addSegment(sectionObj.id, newSeg, newSegName, newSegDist)
                     }
-                    onUpdateSegment={(segmentId, updatedSeg, updatedSegName, updatedSegDist) =>
+                    onUpdateSegment={(
+                      segmentId,
+                      updatedSeg,
+                      updatedSegName,
+                      updatedSegLocation,
+                      updatedSegLink,
+                      updatedSegParking,
+                    ) =>
                       updateSegment(
                         sectionObj.id,
                         segmentId,
                         updatedSeg,
                         updatedSegName,
-                        updatedSegDist,
+                        updatedSegLocation,
+                        updatedSegLink,
+                        updatedSegParking,
                       )
                     }
                     onDeleteSegment={segmentId => deleteSegment(sectionObj.id, segmentId)}

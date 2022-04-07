@@ -17,16 +17,27 @@ import {
   Input,
   VStack,
   Link,
+  Textarea,
 } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
 import './Segment.css';
 
-function UpdateSegmentPopup(segment, segmentName, distance, onUpdateSegment, onDeleteSegment) {
+function UpdateSegmentPopup(
+  segment,
+  segmentName,
+  segmentLocation,
+  link,
+  parking,
+  onUpdateSegment,
+  onDeleteSegment,
+) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [segId, setSegId] = useState(segment);
   const [segName, setSegName] = useState(segmentName);
-  const [segDist, setSegDist] = useState(distance);
+  const [segLocation, setSegLocation] = useState(segmentLocation);
+  const [segLink, setSegLink] = useState(link);
+  const [segParking, setSegParking] = useState(parking);
 
   return (
     <>
@@ -47,26 +58,42 @@ function UpdateSegmentPopup(segment, segmentName, distance, onUpdateSegment, onD
           <ModalHeader>Edit Segment</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Text>Segment ID</Text>
             <Input
               value={segId}
               onChange={event => {
                 setSegId(event.target.value);
               }}
             />
+            <Text>Segment Name</Text>
             <Input
               value={segName}
               onChange={event => {
                 setSegName(event.target.value);
               }}
             />
-            <Input
-              value={segDist}
+            <Text>Section Map Link</Text>
+            <Textarea
+              value={segLink}
               onChange={event => {
-                setSegDist(event.target.value);
+                setSegLink(event.target.value);
+              }}
+            />
+            <Text>Street Names</Text>
+            <Input
+              value={segLocation}
+              onChange={event => {
+                setSegLocation(event.target.value);
+              }}
+            />
+            <Text>Parking Information</Text>
+            <Input
+              value={segParking}
+              onChange={event => {
+                setSegParking(event.target.value);
               }}
             />
           </ModalBody>
-
           <ModalFooter>
             <Button
               colorScheme="red"
@@ -81,7 +108,7 @@ function UpdateSegmentPopup(segment, segmentName, distance, onUpdateSegment, onD
               colorScheme="blue"
               mr={3}
               onClick={() => {
-                onUpdateSegment(segId, segName, segDist);
+                onUpdateSegment(segId, segName, segLocation, segLink, segParking);
                 onClose();
               }}
             >
@@ -128,14 +155,22 @@ const Segment = ({
           <u>Link</u>
         </Link>
       </Td>
-      <Td>
-        <Flex justifyContent="space-between">
-          <Text>{distance}</Text>
-          {UpdateSegmentPopup(segment, segmentName, distance, onUpdateSegment, onDeleteSegment)}
-        </Flex>
-      </Td>
+      <Td>Map image</Td>
       <Td>
         <Text>{parking}</Text>
+      </Td>
+      <Td>
+        <Flex justifyContent="space-between">
+          {UpdateSegmentPopup(
+            segment,
+            segmentName,
+            segmentLocation,
+            link,
+            parking,
+            onUpdateSegment,
+            onDeleteSegment,
+          )}
+        </Flex>
       </Td>
     </Tr>
   );

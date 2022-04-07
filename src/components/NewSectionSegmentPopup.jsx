@@ -14,6 +14,7 @@ import {
   Radio,
   Stack,
   Input,
+  Textarea,
   Text,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
@@ -31,7 +32,9 @@ function NewSectionSegmentPopup(onAddSegment) {
   // const adminEmailHandleChange = event => setAdminEmail(event.target.value);
   let newSegId = '';
   let newSegName = '';
-  let newSegDist = '';
+  let newSegLocation = '';
+  let newSegLink = '';
+  let newSegParking = '';
   return (
     <>
       <Button
@@ -51,36 +54,49 @@ function NewSectionSegmentPopup(onAddSegment) {
           <ModalHeader>Create New:</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Text>User Type</Text>
             <RadioGroup onChange={setValue} value={value}>
               <Stack column="vertical">
                 <Radio value="1">Section</Radio>
                 <Radio value="2">Segment</Radio>
               </Stack>
             </RadioGroup>
-            {value === '1' && (
+            {value === '2' && (
               <Stack columnt="vertical">
-                <br />
-                <Text>Section ID</Text>
+                <ModalHeader>Add Segment</ModalHeader>
+                <Text>Segment ID</Text>
                 <Input
                   onChange={event => {
                     newSegId = event.target.value;
                   }}
                 />
-                <Text>Section Name</Text>
+                <Text>Segment Name</Text>
                 <Input
                   onChange={event => {
                     newSegName = event.target.value;
                   }}
                 />
-                <Text>Section Distance</Text>
+                <Text>Section Map Link</Text>
+                <Textarea
+                  onChange={event => {
+                    newSegLink = event.target.value;
+                  }}
+                />
+                <Text>Street Names</Text>
                 <Input
                   onChange={event => {
-                    newSegDist = event.target.value;
+                    newSegLocation = event.target.value;
+                  }}
+                />
+                <Text>Parking Information</Text>
+                <Input
+                  onChange={event => {
+                    newSegParking = event.target.value;
                   }}
                 />
               </Stack>
             )}
-            {value === '2' && <Text>Placeholder for Segment Form</Text>}
+            {value === '1' && <Text>Placeholder for Section Form</Text>}
           </ModalBody>
 
           <ModalFooter>
@@ -93,11 +109,11 @@ function NewSectionSegmentPopup(onAddSegment) {
               color="#F7FAFC"
               variant="solid"
               onClick={() => {
-                onAddSegment(newSegId, newSegName, newSegDist);
+                onAddSegment(newSegId, newSegName, newSegLocation, newSegLink, newSegParking);
                 onClose();
               }}
             >
-              Create New User
+              Create New Section
             </Button>
           </ModalFooter>
         </ModalContent>
