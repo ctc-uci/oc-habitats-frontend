@@ -155,22 +155,19 @@ const Segment = ({
           <u>Link</u>
         </Link>
       </Td>
-      <Td>Map image</Td>
       <Td>
         <Text>{parking}</Text>
       </Td>
-      <Td>
-        <Flex justifyContent="space-between">
-          {UpdateSegmentPopup(
-            segment,
-            segmentName,
-            segmentLocation,
-            link,
-            parking,
-            onUpdateSegment,
-            onDeleteSegment,
-          )}
-        </Flex>
+      <Td isNumeric>
+        {UpdateSegmentPopup(
+          segment,
+          segmentName,
+          segmentLocation,
+          link,
+          parking,
+          onUpdateSegment,
+          onDeleteSegment,
+        )}
       </Td>
     </Tr>
   );
