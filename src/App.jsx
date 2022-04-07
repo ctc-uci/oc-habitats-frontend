@@ -17,18 +17,19 @@ import ProtectedRoute from './common/ProtectedRoute';
 import EmailAction from './components/Authentication/EmailAction';
 
 import CommonTableExample from './pages/CommonTableExample';
-import AdminPage from '../src/pages/AdminPage/AdminPage';
+import AdminPage from '../src/pages/AdminPage';
 import HomePage from './pages/HomePage';
 import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
 import EndangeredSpeciesPopup from './pages/EndangeredSpeciesPopup';
-import Register from './components/Authentication/Register/Register';
+import Register from './components/Authentication/Register';
 // import NewUser from './components/Authentication/NewUser';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
+import AdminInviteModal from './components/Authentication/AdminInviteModal';
 
 import theme from './theme/theme';
 import AUTH_ROLES from './common/auth_config';
@@ -45,6 +46,7 @@ function App() {
               <Navbar isAdmin />
               <Routes>
                 {/* Add routes as needed; route names subject to change */}
+                <Route exact path="/invite-modal" element={<AdminInviteModal />} />
                 <Route exact path="/" element={<HomePage />} />
                 <Route exact path="/account" element={<AccountPage />} />
                 <Route exact path="/create-log" element={<MonitorLogPage />} />

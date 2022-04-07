@@ -307,21 +307,19 @@ const sendEmail = (email, emailTemplate) => {
   });
 };
 
-const initiateInviteProcess = (firstName, lastName, email, role) => {
+const initiateInviteProcess = (email, role) => {
   try {
     const id = uuidv4();
     const url = `localhost:3000/invite-user/${id}`;
     const expireDate = moment().add(1, 'days');
     OCHBackend.post('/adminInvite/', {
       id,
-      firstName,
-      lastName,
       email,
       role,
       expireDate,
     });
 
-    sendEmail(email, <AdminInviteEmail name={`${firstName} ${lastName}`} url={url} />);
+    sendEmail(email, <AdminInviteEmail role={role} url={url} />);
   } catch (err) {
     throw new Error(err.message);
   }
