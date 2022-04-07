@@ -200,9 +200,6 @@ const Section = ({
               <Th fontWeight="bold" style={{ width: '5%' }}>
                 Map
               </Th>
-              <Th fontWeight="bold" style={{ width: '10%' }}>
-                Map Image
-              </Th>
               <Th fontWeight="bold" style={{ width: '45%' }}>
                 Parking
               </Th>
