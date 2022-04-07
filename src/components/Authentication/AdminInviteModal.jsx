@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Box,
   Button,
   Center,
+  CloseButton,
   FormControl,
   FormLabel,
   Heading,
@@ -13,6 +18,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
+import useForceUpdate from 'use-force-update';
 import { initiateInviteProcess } from '../../common/auth_utils';
 
 const AdminInviteModal = () => {
@@ -20,17 +26,19 @@ const AdminInviteModal = () => {
   const [email, setEmail] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [confirmationMessage, setConfirmationMessage] = useState();
+  const forceUpdate = useForceUpdate();
 
   const handleSubmit = async e => {
     try {
       e.preventDefault();
       await initiateInviteProcess(email, role);
       setConfirmationMessage(
-        `A one-time use ${role}  sign up link was successfully sent to ${email}!`,
+        `A one-time use ${role} sign up link was successfully sent to ${email}.`,
       );
       setErrorMessage('');
       setEmail('');
       setRole('');
+      forceUpdate();
     } catch (err) {
       setErrorMessage(err.message);
     }
@@ -78,8 +86,22 @@ const AdminInviteModal = () => {
             </Button>
           </HStack>
         </FormControl>
-        {confirmationMessage && <p>{confirmationMessage}</p>}
-        {errorMessage && <p>{errorMessage}</p>}
+        {confirmationMessage && (
+          <Alert status="success" position="absolute" left="10px" bottom="30px">
+            <AlertIcon />
+            <AlertTitle mr={2}>Sign up link sent!</AlertTitle>
+            <AlertDescription>{confirmationMessage}</AlertDescription>
+            <CloseButton position="absolute" right="8px" top="8px" />
+          </Alert>
+        )}
+        {errorMessage && (
+          <Alert status="error" position="absolute" left="10px" bottom="30px">
+            <AlertIcon />
+            <AlertTitle mr={2}>There was an error sending the invite!</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+            <CloseButton position="absolute" right="8px" top="8px" />
+          </Alert>
+        )}
       </Box>
     </Center>
   );
