@@ -2,20 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { PropTypes, instanceOf } from 'prop-types';
 import { withCookies, cookieKeys, Cookies, clearCookies } from './cookie_utils';
-import { NPOBackend, refreshToken } from './auth_utils';
+import { refreshToken } from './auth_utils';
+import { OCHBackend } from './utils';
 
 const userIsAuthenticated = async (roles, cookies) => {
   try {
     const accessToken = await refreshToken(cookies);
-    console.log(accessToken);
+    // console.log(accessToken);
     if (!accessToken) {
       return false;
     }
-    const loggedIn = await NPOBackend.get(`/auth/verifyToken/${accessToken}`);
-    console.log(accessToken, loggedIn);
+    const loggedIn = await OCHBackend.get(`/auth/verifyToken/${accessToken}`);
+    // console.log(accessToken, loggedIn);
     return roles.includes(cookies.get(cookieKeys.ROLE)) && loggedIn.status === 200;
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     clearCookies(cookies);
     return false;
   }

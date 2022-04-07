@@ -14,8 +14,8 @@ import {
   Center,
 } from '@chakra-ui/react';
 import { instanceOf } from 'prop-types';
-import { Cookies, withCookies } from '../../utils/cookie_utils';
-import { logInWithEmailAndPassword, useNavigate } from '../../utils/auth_utils';
+import { Cookies, withCookies } from '../../common/cookie_utils';
+import { logInWithEmailAndPassword, useNavigate } from '../../common/auth_utils';
 
 import OCHLogo from '../../assets/OCHlogo.png';
 
@@ -73,7 +73,7 @@ const Login = ({ cookies }) => {
           />
         </InputGroup>
       </FormControl>
-      <Link mt="30px" as={ReachLink} to="/forgotpassword" textDecoration="underline">
+      <Link mt="30px" as={ReachLink} to="/forgot-password" textDecoration="underline">
         Forgot Your Password?
       </Link>
       <Button

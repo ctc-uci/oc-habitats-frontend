@@ -8,15 +8,13 @@ import { CookiesProvider } from 'react-cookie';
 import './App.css';
 
 // NEW AUTH IMPORTS
-import InviteLandingPage from './components/InviteLandingPage';
-import AdminInvite from './components/AdminInvite';
-import ForgotPassword from './components/ForgotPassword';
-import Login from './components/login/Login';
-import Logout from './components/Logout';
-import ProtectedRoute from './utils/ProtectedRoute';
-import Register from './components/register/register';
-import EmailAction from './components/EmailAction';
-import NewUser from './components/NewUser';
+import InviteLandingPage from './components/Authentication/InviteLandingPage';
+import AdminInvite from './components/Authentication/AdminInvite';
+import ForgotPassword from './components/Authentication/ForgotPassword';
+import Login from './components/Authentication/Login';
+import Logout from './components/Authentication/Logout';
+import ProtectedRoute from './common/ProtectedRoute';
+import EmailAction from './components/Authentication/EmailAction';
 
 import CommonTableExample from './pages/CommonTableExample';
 import AdminPage from '../src/pages/AdminPage/AdminPage';
@@ -24,15 +22,16 @@ import HomePage from './pages/HomePage';
 import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
-import EndangeredSpecies from './pages/EndangeredSpeciesPopup';
+import EndangeredSpeciesPopup from './pages/EndangeredSpeciesPopup';
+import Register from './components/Authentication/Register/Register';
+// import NewUser from './components/Authentication/NewUser';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
-import Navbar from '../src/components/Navbar/Navbar';
-import Footer from '../src/components/Footer/Footer';
+import Navbar from './components/Navbar/Navbar';
+import Footer from './components/Footer/Footer';
 
-import theme from '../src/theme/theme';
-
-import AUTH_ROLES from './utils/auth_config';
+import theme from './theme/theme';
+import AUTH_ROLES from './common/auth_config';
 
 const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
@@ -46,19 +45,6 @@ function App() {
               <Navbar isAdmin />
               <Routes>
                 {/* Add routes as needed; route names subject to change */}
-                <Route path="/" element={<HomePage />} />
-                <Route path="/account" element={<AccountPage />} />
-                <Route path="/create-log" element={<MonitorLogPage />} />
-                <Route path="/sections" element={<SectionPage />} />
-                <Route
-                  path="/endangered"
-                  element={<EndangeredSpecies adultName="Snowy Plovers" />}
-                />
-                <Route path="/species" element={<Species />} />
-                {/* Admin only routes (TO DO, make admin only) */}
-                <Route path="/people" element={<PeoplePage />} />
-
-                {/* Add routes as needed; route names subject to change */}
                 <Route exact path="/" element={<HomePage />} />
                 <Route exact path="/account" element={<AccountPage />} />
                 <Route exact path="/create-log" element={<MonitorLogPage />} />
@@ -66,11 +52,15 @@ function App() {
                 <Route
                   exact
                   path="/endangered"
-                  element={<EndangeredSpecies adultName="Snowy Plovers" />}
+                  element={<EndangeredSpeciesPopup adultName="Snowy Plovers" />}
                 />
                 <Route exact path="/species" element={<Species />} />
                 {/* Admin only routes (TO DO, make admin only) */}
                 <Route exact path="/people" element={<PeoplePage />} />
+                <Route exact path="/contacts" />
+                <Route exact path="/map" />
+                <Route exact path="/logs" element={<AdminPage />} />
+                <Route exact path="/common-table-example" element={<CommonTableExample />} />
 
                 {/* NEW AUTH ROUTES */}
                 <Route path="/login" element={<Login />} />
@@ -117,7 +107,7 @@ function App() {
                   }
                 />
                 <Route path="/register" element={<Register />} />
-                <Route path="/new-user" element={<NewUser />} />
+                {/* <Route path="/new-user" element={<NewUser />} /> */}
                 <Route exact path="/contacts" />
                 <Route exact path="/map" />
                 <Route exact path="/logs" element={<AdminPage />} />

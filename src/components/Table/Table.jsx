@@ -15,7 +15,6 @@ import {
   Table,
   Thead,
   Tbody,
-  // Tfoot,
   Tr,
   Th,
   Td,
@@ -36,7 +35,6 @@ import {
   ChevronDownIcon,
 } from '@chakra-ui/icons';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-// import { AiFillTag } from 'react-icons/ai';
 
 // import makeData from "./makeData";
 import './Table.css';

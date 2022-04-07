@@ -10,11 +10,6 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   signOut,
-  GoogleAuthProvider,
-  signInWithPopup,
-  getAdditionalUserInfo,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
   sendPasswordResetEmail,
   confirmPasswordReset,
   applyActionCode,
@@ -25,22 +20,8 @@ import { renderEmail } from 'react-html-email';
 
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
 
+import { OCHBackend } from './utils';
 import AdminInviteEmail from '../components/Email/EmailTemplates/AdminInviteEmail';
-
-import AUTH_ROLES from './auth_config';
-
-const { VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
-
-/*
-  TODO:
-  X Login:
-    X Fix refresh token bug
-  X Get roles working:
-    X Switch from 2 booleans to string value for role
-    X Make sure correct cookies are being set
-  - Admin Invite / Forgot password page
-  X Test all CRUD routes for users
-*/
 
 // Using Firebase Web version 9
 const firebaseConfig = {
@@ -54,12 +35,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
-// TEMP: Make sure to remove
-const NPOBackend = axios.create({
-  baseURL: 'http://localhost:3001',
-  withCredentials: true,
-});
 
 const refreshUrl = `https://securetoken.googleapis.com/v1/token?key=${process.env.REACT_APP_FIREBASE_APIKEY}`;
 
@@ -111,7 +86,7 @@ const refreshToken = async () => {
     });
     // Sets the appropriate cookies after refreshing access token
     setCookie(cookieKeys.ACCESS_TOKEN, idToken, cookieConfig);
-    const user = await NPOBackend.get(`/users/${auth.currentUser.uid}`);
+    const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`);
     console.log(user.data.user);
     setCookie(cookieKeys.ROLE, user.data.role, cookieConfig);
     return idToken;
@@ -124,13 +99,12 @@ const refreshToken = async () => {
  * @param {string} email
  * @param {string} userId
  * @param {string} role
- * @param {bool} signUpWithGoogle true if user used Google provider to sign in
  * @param {string} password
  */
 const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
   try {
     console.log(`firebaseId param received as ${firebaseId} and passing it into POST`);
-    await NPOBackend.post('/users/', {
+    await OCHBackend.post('/users/', {
       firebaseId,
       firstName,
       lastName,
@@ -142,58 +116,8 @@ const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
       segments: null,
     });
   } catch (err) {
-    // Since this route is called after user is created in firebase, if this
-    // route errors out, that means we have to discard the created firebase object
-    // if (!signUpWithGoogle) {
-    //   await signInWithEmailAndPassword(auth, email, password);
-    // }
-    // const userToBeTerminated = await auth.currentUser;
-    // userToBeTerminated.delete();
     throw new Error(err.message);
   }
-};
-
-/**
- * Signs a user in with Google using Firebase. Users are given VOLUNTEER_ROLE by default
- * @param {string} newUserRedirectPath path to redirect new users to after signing in with Google Provider for the first time
- * @param {string} defaultRedirectPath path to redirect users to after signing in with Google Provider
- * @param {hook} navigate An instance of the useNavigate hook from react-router-dom
- * @param {Cookies} cookies The user's cookies to populate
- * @returns A boolean indicating whether or not the user is new
- */
-const signInWithGoogle = async (newUserRedirectPath, defaultRedirectPath, navigate, cookies) => {
-  const provider = new GoogleAuthProvider();
-  const userCredential = await signInWithPopup(auth, provider);
-  const newUser = getAdditionalUserInfo(userCredential).isNewUser;
-  cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
-  if (newUser) {
-    await createUserInDB(auth.currentUser.email, userCredential.user.uid, VOLUNTEER_ROLE, true);
-    cookies.set(cookieKeys.ROLE, VOLUNTEER_ROLE, cookieConfig);
-    navigate(newUserRedirectPath);
-  } else {
-    const user = await NPOBackend.get(`/users/${auth.currentUser.uid}`);
-    cookies.set(cookieKeys.ROLE, user.data.user.role, cookieConfig);
-    if (!user.data.user.registered) {
-      navigate(newUserRedirectPath);
-    } else {
-      navigate(defaultRedirectPath);
-    }
-  }
-};
-
-/**
- * When a user signs in with Google for the first time, they will need to add additional info
- * This is called when the user submits the additional information which will lead to the flag
- * in the backend changed so that user is not new anymore
- * @param {string} redirectPath path to redirect user
- * @param {hook} navigate used to redirect the user after submitted
- */
-const finishGoogleLoginRegistration = async (redirectPath, navigate) => {
-  // TODO: Switch to correct update route
-  await NPOBackend.put(`/users/update/${auth.currentUser.uid}`, {
-    registered: true,
-  });
-  navigate(redirectPath);
 };
 
 /**
@@ -212,7 +136,7 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
     throw new Error('Please verify your email before logging in.');
   }
   cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
-  const user = await NPOBackend.get(`/users/${auth.currentUser.uid}`);
+  const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`);
   console.log('Current user: ');
   console.table(user.data);
   cookies.set(cookieKeys.ROLE, user.data.role, cookieConfig);
@@ -227,7 +151,7 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
  */
 const createUserInFirebase = async (email, password) => {
   // const user = await createUserWithEmailAndPassword(auth, email, password);
-  const user = await NPOBackend.post('/users/firebase', {
+  const user = await OCHBackend.post('/users/firebase', {
     email,
     password,
   });
@@ -242,10 +166,12 @@ const createUserInFirebase = async (email, password) => {
  * @returns A UserCredential object from firebase
  */
 const createUser = async (email, password, firstName, lastName, role) => {
-  const user = await createUserInFirebase(email, password);
-  console.log('in createUser on line 246, user looks like: ');
-  console.log(user);
-  await createUserInDB(email, user.data.uid, role, firstName, lastName);
+  try {
+    const user = await createUserInFirebase(email, password);
+    await createUserInDB(email, user.data.uid, role, firstName, lastName);
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
 /**
@@ -266,9 +192,13 @@ const registerWithEmailAndPassword = async (
   navigate,
   redirectPath,
 ) => {
-  createUser(email, password, firstName, lastName, role);
-  await NPOBackend.delete(`/adminInvite/${email}`);
-  navigate(redirectPath);
+  try {
+    createUser(email, password, firstName, lastName, role);
+    await OCHBackend.delete(`/adminInvite/${email}`);
+    navigate(redirectPath);
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
 /**
@@ -366,39 +296,40 @@ const addAuthInterceptor = axiosInstance => {
   );
 };
 
+addAuthInterceptor(OCHBackend);
+
 // -------- ADMIN INVITE ROUTES START HERE ------------------------------------------
 
 const sendEmail = (email, emailTemplate) => {
-  NPOBackend.post('/nodemailer/send', {
+  OCHBackend.post('/nodemailer/send', {
     email,
     messageHtml: renderEmail(emailTemplate),
   });
 };
 
 const initiateInviteProcess = (firstName, lastName, email, role) => {
-  const id = uuidv4();
-  const url = `localhost:3000/invite-user/${id}`;
-  const expireDate = moment().add(1, 'days');
-  NPOBackend.post('/adminInvite/', {
-    id,
-    firstName,
-    lastName,
-    email,
-    role,
-    expireDate,
-  });
+  try {
+    const id = uuidv4();
+    const url = `localhost:3000/invite-user/${id}`;
+    const expireDate = moment().add(1, 'days');
+    OCHBackend.post('/adminInvite/', {
+      id,
+      firstName,
+      lastName,
+      email,
+      role,
+      expireDate,
+    });
 
-  sendEmail(email, <AdminInviteEmail name={`${firstName} ${lastName}`} url={url} />);
+    sendEmail(email, <AdminInviteEmail name={`${firstName} ${lastName}`} url={url} />);
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
-// to be moved where NPOBackend is declared
-addAuthInterceptor(NPOBackend);
-
 export {
-  NPOBackend,
   auth,
   useNavigate,
-  signInWithGoogle,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   addAuthInterceptor,
@@ -408,6 +339,5 @@ export {
   getCurrentUser,
   confirmNewPassword,
   confirmVerifyEmail,
-  finishGoogleLoginRegistration,
   initiateInviteProcess,
 };
