@@ -89,7 +89,7 @@ function NewSectionSegmentPopup(onAddSegment) {
                   }}
                 />
                 <Text>Parking Information</Text>
-                <Input
+                <Textarea
                   onChange={event => {
                     newSegParking = event.target.value;
                   }}

@@ -87,7 +87,7 @@ function UpdateSegmentPopup(
               }}
             />
             <Text>Parking Information</Text>
-            <Input
+            <Textarea
               value={segParking}
               onChange={event => {
                 setSegParking(event.target.value);
