@@ -34,7 +34,7 @@ const AdminInviteModal = () => {
       setConfirmationMessage(
         `A one-time use ${role} sign up link was successfully sent to ${email}.`,
       );
-      setErrorMessage('');
+      setErrorMessage('Test error');
       setEmail('');
       setRole('');
       forceUpdate();
@@ -89,6 +89,15 @@ const AdminInviteModal = () => {
           <AlertIcon />
           <AlertTitle mr={2}>Sign up link sent!</AlertTitle>
           <AlertDescription>{confirmationMessage}</AlertDescription>
+          <CloseButton
+            position="fixed"
+            right="20px"
+            bottom="107px"
+            onClick={() => {
+              setErrorMessage('');
+              setConfirmationMessage('');
+            }}
+          />
         </Alert>
       )}
       {errorMessage && (
@@ -96,7 +105,15 @@ const AdminInviteModal = () => {
           <AlertIcon />
           <AlertTitle mr={2}>There was an error sending the invite!</AlertTitle>
           <AlertDescription>{errorMessage}</AlertDescription>
-          {/* <CloseButton position="absolute" right="8px" top="8px" /> */}
+          <CloseButton
+            position="fixed"
+            right="20px"
+            bottom="107px"
+            onClick={() => {
+              setErrorMessage('');
+              setConfirmationMessage('');
+            }}
+          />
         </Alert>
       )}
     </Box>
