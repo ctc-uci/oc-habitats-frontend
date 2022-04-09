@@ -1,7 +1,8 @@
+/* eslint-disable global-require */
 /* eslint-disable react/jsx-no-target-blank */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Email, Item, Image } from 'react-html-email';
+import { Email, Item } from 'react-html-email';
 import { Button, Img } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
@@ -11,7 +12,12 @@ const AdminInviteEmail = ({ role, url }) => {
   return (
     <div>
       <Email title="">
-        <img src={OCHLogo} alt="OC Habitats logo" width="346" height="105" />
+        <img
+          src="https://drive.google.com/drive/u/1/folders/114Maiy7HtmzcL1JZ9fs7bw12rQwd8WMe"
+          alt="OC Habitats logo"
+          width="346"
+          height="105"
+        />
         <Item>
           <h1>{`Hello OC Habitats ${role === 'volunteer' ? 'Monitor' : 'Administrator'}!`}</h1>
         </Item>
@@ -29,7 +35,7 @@ const AdminInviteEmail = ({ role, url }) => {
           </strong>
         </Item>
         <Item>
-          <a href="https://nba.com">{url}</a>
+          <a href={url}>{url}</a>
           {/* <Button bgColor="ochBlue" w="410px" h="45px">
               Finish Account Creation
             </Button> */}
