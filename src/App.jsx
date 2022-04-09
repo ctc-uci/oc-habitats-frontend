@@ -46,7 +46,7 @@ function App() {
               <Navbar isAdmin />
               <Routes>
                 {/* Add routes as needed; route names subject to change */}
-                <Route path="/invite-user/:inviteID" element={InviteLandingPage} />
+                <Route path="/invite-user/:inviteID" element={<InviteLandingPage />} />
                 <Route exact path="/invite-modal" element={<AdminInviteModal />} />
                 <Route exact path="/" element={<HomePage />} />
                 <Route exact path="/account" element={<AccountPage />} />
