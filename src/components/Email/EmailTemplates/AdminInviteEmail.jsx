@@ -29,9 +29,7 @@ const AdminInviteEmail = ({ role, url }) => {
           </strong>
         </Item>
         <Item>
-          <a href={url} target="_blank">
-            {url}
-          </a>
+          <a href="https://nba.com">{url}</a>
           {/* <Button bgColor="ochBlue" w="410px" h="45px">
               Finish Account Creation
             </Button> */}
