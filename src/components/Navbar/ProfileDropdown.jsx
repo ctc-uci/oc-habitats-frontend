@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import {
   Avatar,
-  Button,
   HStack,
   Menu,
   MenuButton,
@@ -13,6 +12,7 @@ import {
   MenuDivider,
   Text,
 } from '@chakra-ui/react';
+import NavbarLinkMobile from './NavbarLinkMobile';
 
 const user = {
   firstName: 'Dan',
@@ -31,58 +31,18 @@ const ProfileDropdown = ({ isAdmin }) => {
         <Avatar m={1} name={user.firstName + user.lastName} src={user.profilePic} />
       </MenuButton>
       <MenuList>
-        <MenuItem>
-          <Link to="/account">
-            <Button
-              _hover={{ bg: 'transparent' }}
-              stroke="ochLightGrey"
-              width="200px"
-              justifyContent="flex-start"
-              bg="white"
-              size="md"
-              color="ochBlack"
-            >
-              <Text fontWeight="600">Account</Text>
-            </Button>
-          </Link>
-        </MenuItem>
+        <NavbarLinkMobile text="Account" path="/account" />
         <MenuDivider />
-        {isAdmin ? (
-          <MenuItem>
-            <Link to="/admin-portal">
-              <Button
-                _hover={{ bg: 'transparent' }}
-                stroke="ochLightGrey"
-                width="200px"
-                justifyContent="flex-start"
-                bg="white"
-                size="md"
-                color="ochBlack"
-              >
-                <Text fontWeight="600">Admin Portal</Text>
-              </Button>
-            </Link>
-          </MenuItem>
-        ) : null}
+        {isAdmin ? <NavbarLinkMobile text="Admin Portal" path="/admin-portal" /> : null}
         {isAdmin ? <MenuDivider /> : null}
-
-        <MenuItem>
-          <Link to="/sign-out">
-            <Button
-              _hover={{ bg: 'transparent' }}
-              stroke="ochLightGrey"
-              width="200px"
-              justifyContent="flex-start"
-              bg="white"
-              size="md"
-            >
-              <HStack color="ochRed">
-                <Text fontWeight="600">Sign Out</Text>
-                <FiLogOut />
-              </HStack>
-            </Button>
-          </Link>
-        </MenuItem>
+        <Link to="/sign-out">
+          <MenuItem>
+            <HStack color="ochRed">
+              <Text fontWeight="600">Sign Out</Text>
+              <FiLogOut />
+            </HStack>
+          </MenuItem>
+        </Link>
       </MenuList>
     </Menu>
   );

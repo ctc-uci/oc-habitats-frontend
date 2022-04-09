@@ -23,7 +23,7 @@ function App() {
       <Router>
         <Box className="page-container">
           <Box className="content-wrap">
-            <NavbarMobile />
+            <Navbar isAdmin />
             <Routes>
               {/* Add routes as needed; route names subject to change */}
               <Route exact path="/" element={<HomePage />} />
