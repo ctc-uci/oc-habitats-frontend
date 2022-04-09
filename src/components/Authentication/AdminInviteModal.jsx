@@ -6,7 +6,6 @@ import {
   AlertTitle,
   Box,
   Button,
-  Center,
   CloseButton,
   FormControl,
   FormLabel,
@@ -56,7 +55,7 @@ const AdminInviteModal = () => {
           </Text>
           <RadioGroup
             id="role"
-            onChange={e => setRole(e.target.value)}
+            onChange={e => setRole(e)}
             value={role}
             maxW="700px"
             defaultValue="volunteer"
@@ -86,19 +85,18 @@ const AdminInviteModal = () => {
         </HStack>
       </FormControl>
       {confirmationMessage && (
-        <Alert status="success" position="absolute" left="10px" bottom="30px">
+        <Alert status="success" position="fixed" left="30px" bottom="100px">
           <AlertIcon />
           <AlertTitle mr={2}>Sign up link sent!</AlertTitle>
           <AlertDescription>{confirmationMessage}</AlertDescription>
-          <CloseButton position="absolute" right="8px" top="8px" />
         </Alert>
       )}
       {errorMessage && (
-        <Alert status="error" position="absolute" left="10px" bottom="30px">
+        <Alert status="error" position="fixed" left="30px" bottom="100px">
           <AlertIcon />
           <AlertTitle mr={2}>There was an error sending the invite!</AlertTitle>
           <AlertDescription>{errorMessage}</AlertDescription>
-          <CloseButton position="absolute" right="8px" top="8px" />
+          {/* <CloseButton position="absolute" right="8px" top="8px" /> */}
         </Alert>
       )}
     </Box>

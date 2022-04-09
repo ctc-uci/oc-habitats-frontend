@@ -11,6 +11,7 @@ const InviteLandingPage = () => {
   const { inviteID } = useParams();
 
   const checkInviteValidity = async id => {
+    console.log('getting invite from backend in InviteLandingPage');
     const foundInvite = await OCHBackend.get(`/adminInvite/${id}`);
     setInvite(foundInvite.data);
     if (!inviteID || !foundInvite || !foundInvite.data) {
@@ -33,12 +34,7 @@ const InviteLandingPage = () => {
         {isLoading ? (
           <p>LOADING...</p>
         ) : (
-          <Register
-            inviteFirstName={invite.firstName}
-            inviteLastName={invite.lastName}
-            inviteEmail={invite.email}
-            inviteRole={invite.role}
-          />
+          <Register inviteEmail={invite.email} inviteRole={invite.role} />
         )}
       </div>
     );

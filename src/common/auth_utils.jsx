@@ -300,7 +300,7 @@ addAuthInterceptor(OCHBackend);
 
 // -------- ADMIN INVITE ROUTES START HERE ------------------------------------------
 
-const sendEmail = (email, emailTemplate) => {
+const sendInviteEmail = (email, emailTemplate) => {
   OCHBackend.post('/nodemailer/send', {
     email,
     messageHtml: renderEmail(emailTemplate),
@@ -319,7 +319,7 @@ const initiateInviteProcess = (email, role) => {
       expireDate,
     });
 
-    sendEmail(email, <AdminInviteEmail role={role} url={url} />);
+    sendInviteEmail(email, <AdminInviteEmail role={role} url={url} />);
   } catch (err) {
     throw new Error(err.message);
   }

@@ -46,6 +46,7 @@ function App() {
               <Navbar isAdmin />
               <Routes>
                 {/* Add routes as needed; route names subject to change */}
+                <Route path="/invite-user/:inviteID" element={InviteLandingPage} />
                 <Route exact path="/invite-modal" element={<AdminInviteModal />} />
                 <Route exact path="/" element={<HomePage />} />
                 <Route exact path="/account" element={<AccountPage />} />
@@ -81,16 +82,6 @@ function App() {
                   element={
                     <ProtectedRoute
                       Component={AdminInvite}
-                      redirectPath="/"
-                      roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
-                    />
-                  }
-                />
-                <Route
-                  path="/invite-user/:inviteID"
-                  element={
-                    <ProtectedRoute
-                      Component={InviteLandingPage}
                       redirectPath="/"
                       roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
                     />

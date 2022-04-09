@@ -20,10 +20,10 @@ import {
 import { withCookies } from '../../common/cookie_utils';
 import { registerWithEmailAndPassword } from '../../common/auth_utils';
 
-const Register = ({ inviteFirstName, inviteLastName, inviteEmail, inviteRole }) => {
+const Register = ({ inviteEmail, inviteRole }) => {
   const [errorMessage, setErrorMessage] = useState();
-  const [firstName, setFirstName] = useState(inviteFirstName);
-  const [lastName, setLastName] = useState(inviteLastName);
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
   const [role, setRole] = useState(inviteRole);
   const [email, setEmail] = useState(inviteEmail);
   const [password, setPassword] = useState();
@@ -84,7 +84,7 @@ const Register = ({ inviteFirstName, inviteLastName, inviteEmail, inviteRole }) 
               bg="white"
               onChange={({ target }) => setFirstName(target.value)}
               size="md"
-              value={inviteFirstName}
+              value={firstName}
             />
           </FormControl>
           <FormControl>
@@ -94,7 +94,7 @@ const Register = ({ inviteFirstName, inviteLastName, inviteEmail, inviteRole }) 
               bg="white"
               onChange={({ target }) => setLastName(target.value)}
               size="md"
-              value={inviteLastName}
+              value={lastName}
             />
           </FormControl>
           <FormControl>
@@ -176,8 +176,6 @@ const Register = ({ inviteFirstName, inviteLastName, inviteEmail, inviteRole }) 
 };
 
 Register.propTypes = {
-  inviteFirstName: string.isRequired,
-  inviteLastName: string.isRequired,
   inviteEmail: string.isRequired,
   inviteRole: string.isRequired,
 };
