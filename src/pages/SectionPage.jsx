@@ -23,6 +23,7 @@ import { AddIcon } from '@chakra-ui/icons';
 import { React, useState } from 'react';
 import Section from '../components/Section';
 import CreateNew from '../components/NewSectionSegmentPopup';
+import { SectionTable } from '../components/SectionTable';
 
 const sectionsData = [
   {
@@ -160,21 +161,11 @@ const SectionPage = () => {
     setSections(updatedSegSections);
   };
 
-  const addSegment = (
-    sectionId,
-    newSegId,
-    newSegName,
-    newSegLocation,
-    newSegLink,
-    newSegParking,
-  ) => {
+  const addSegment = (sectionId, newSegId, newSegName, newSegDist) => {
     const newSegment = {
       segment: newSegId,
       segmentName: newSegName,
-      segmentLocation: newSegLocation,
-      link: newSegLink,
-      parking: newSegParking,
-      distance: 0,
+      distance: newSegDist,
     };
     const newSegSections = [...sections];
     const { segments } = newSegSections.filter(section => section.id === sectionId)[0];
@@ -185,22 +176,11 @@ const SectionPage = () => {
     setSections(newSegSections);
   };
 
-  const updateSegment = (
-    sectionId,
-    segmentId,
-    updatedSeg,
-    updatedSegName,
-    updatedSegLocation,
-    updatedSegLink,
-    updatedSegParking,
-  ) => {
+  const updateSegment = (sectionId, segmentId, updatedSeg, updatedSegName, updatedSegDist) => {
     const newSegment = {
       segment: updatedSeg,
       segmentName: updatedSegName,
-      segmentLocation: updatedSegLocation,
-      link: updatedSegLink,
-      parking: updatedSegParking,
-      distance: 0,
+      distance: updatedSegDist,
     };
     let updatedSection = -1;
     for (let i = 0; i < sections.length; i += 1) {
@@ -255,15 +235,8 @@ const SectionPage = () => {
                 <TabPanel key={sectionObj.id} padding="0px">
                   <CreateNew
                     key={sectionObj.id}
-                    onAddSegment={(newSeg, newSegName, newSegLocation, newSegLink, newSegParking) =>
-                      addSegment(
-                        sectionObj.id,
-                        newSeg,
-                        newSegName,
-                        newSegLocation,
-                        newSegLink,
-                        newSegParking,
-                      )
+                    onAddSegment={(newSeg, newSegName, newSegDist) =>
+                      addSegment(sectionObj.id, newSeg, newSegName, newSegDist)
                     }
                   />
                 </TabPanel>
@@ -297,22 +270,13 @@ const SectionPage = () => {
                     onAddSegment={(newSeg, newSegName, newSegDist) =>
                       addSegment(sectionObj.id, newSeg, newSegName, newSegDist)
                     }
-                    onUpdateSegment={(
-                      segmentId,
-                      updatedSeg,
-                      updatedSegName,
-                      updatedSegLocation,
-                      updatedSegLink,
-                      updatedSegParking,
-                    ) =>
+                    onUpdateSegment={(segmentId, updatedSeg, updatedSegName, updatedSegDist) =>
                       updateSegment(
                         sectionObj.id,
                         segmentId,
                         updatedSeg,
                         updatedSegName,
-                        updatedSegLocation,
-                        updatedSegLink,
-                        updatedSegParking,
+                        updatedSegDist,
                       )
                     }
                     onDeleteSegment={segmentId => deleteSegment(sectionObj.id, segmentId)}
@@ -320,6 +284,13 @@ const SectionPage = () => {
                       updateSectionTitle(sectionObj.id, newSecTitle)
                     }
                     onDeleteSection={() => deleteSection(sectionObj.id)}
+                  />
+
+                  <SectionTable
+                  // variant="volunteer"
+                  // userData={volunteerData}
+                  // segments={segments}
+                  // loading={isLoading}
                   />
                 </TabPanel>
               );
