@@ -23,7 +23,7 @@ import { AddIcon } from '@chakra-ui/icons';
 import { React, useState } from 'react';
 import Section from '../components/Section';
 import CreateNew from '../components/NewSectionSegmentPopup';
-import { SectionTable } from '../components/SectionTable';
+import SectionTable from '../components/SectionTable/SectionTable';
 
 const sectionsData = [
   {
