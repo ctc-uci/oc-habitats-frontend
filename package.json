@@ -46,6 +46,7 @@
     "react-select": "^5.2.2",
     "react-select-search": "^3.0.8",
     "react-table": "latest",
+    "serve": "^13.0.2",
     "testing-library": "0.0.2",
     "web-vitals": "^1.0.1",
     "webpack": "4.44.2",
