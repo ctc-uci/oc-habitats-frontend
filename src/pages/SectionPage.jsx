@@ -255,6 +255,7 @@ const SectionPage = () => {
                 <TabPanel key={sectionObj.id} padding="0px">
                   <CreateNew
                     key={sectionObj.id}
+                    onAddSection={newSecName => addSection(newSecName)}
                     onAddSegment={(newSeg, newSegName, newSegLocation, newSegLink, newSegParking) =>
                       addSegment(
                         sectionObj.id,
