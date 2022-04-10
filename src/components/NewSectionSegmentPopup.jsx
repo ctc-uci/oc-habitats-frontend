@@ -21,7 +21,7 @@ import { AddIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
 import Section from './Section';
 
-function NewSectionSegmentPopup(onAddSegment) {
+function NewSectionSegmentPopup(onAddSection, onAddSegment) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [value, setValue] = useState('0');
   const [volInput, setVolInput] = useState('');
@@ -30,6 +30,9 @@ function NewSectionSegmentPopup(onAddSegment) {
   // const volHandleChange = event => setVolInput(event.target.value);
   // const adminNameHandleChange = event => setAdminName(event.target.value);
   // const adminEmailHandleChange = event => setAdminEmail(event.target.value);
+  let newSecId = '';
+  let newSecName = '';
+  let newSecMapLink = '';
   let newSegId = '';
   let newSegName = '';
   let newSegLocation = '';
@@ -96,25 +99,63 @@ function NewSectionSegmentPopup(onAddSegment) {
                 />
               </Stack>
             )}
-            {value === '1' && <Text>Placeholder for Section Form</Text>}
+            {value === '1' && (
+              <Stack columnt="vertical">
+                <ModalHeader>Add Section</ModalHeader>
+                <Text>Section Id</Text>
+                <Input
+                  onChange={event => {
+                    newSecId = event.target.value;
+                  }}
+                />
+                <Text>Section Name</Text>
+                <Input
+                  onChange={event => {
+                    newSecName = event.target.value;
+                  }}
+                />
+                <Text>Section Map Link</Text>
+                <Textarea
+                  onChange={event => {
+                    newSecMapLink = event.target.value;
+                  }}
+                />
+              </Stack>
+            )}
           </ModalBody>
 
           <ModalFooter>
             <Button colorScheme="gray" mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button
-              colorScheme="blue"
-              bg="ochBlue"
-              color="#F7FAFC"
-              variant="solid"
-              onClick={() => {
-                onAddSegment(newSegId, newSegName, newSegLocation, newSegLink, newSegParking);
-                onClose();
-              }}
-            >
-              Create New Section
-            </Button>
+            {value === '1' && (
+              <Button
+                colorScheme="blue"
+                bg="ochBlue"
+                color="#F7FAFC"
+                variant="solid"
+                onClick={() => {
+                  onAddSection(newSecName);
+                  onClose();
+                }}
+              >
+                Create New Section
+              </Button>
+            )}
+            {value === '2' && (
+              <Button
+                colorScheme="blue"
+                bg="ochBlue"
+                color="#F7FAFC"
+                variant="solid"
+                onClick={() => {
+                  onAddSegment(newSegId, newSegName, newSegLocation, newSegLink, newSegParking);
+                  onClose();
+                }}
+              >
+                Create New Segment
+              </Button>
+            )}
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -122,11 +163,12 @@ function NewSectionSegmentPopup(onAddSegment) {
   );
 }
 
-const CreateNew = ({ onAddSegment }) => {
-  return <Box align="left">{NewSectionSegmentPopup(onAddSegment)}</Box>;
+const CreateNew = ({ onAddSection, onAddSegment }) => {
+  return <Box align="left">{NewSectionSegmentPopup(onAddSection, onAddSegment)}</Box>;
 };
 
 CreateNew.propTypes = {
+  onAddSection: PropTypes.func.isRequired,
   onAddSegment: PropTypes.func.isRequired,
 };
 export default CreateNew;
