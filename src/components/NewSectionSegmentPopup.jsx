@@ -23,7 +23,8 @@ import Section from './Section';
 
 function NewSectionSegmentPopup(onAddSection, onAddSegment) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [value, setValue] = useState('0');
+  const [value, setValue] = useState(0);
+  const [step, setStep] = useState(0);
   const [volInput, setVolInput] = useState('');
   const [adminName, setAdminName] = useState('');
   const [adminEmail, setAdminEmail] = useState('');
@@ -38,15 +39,20 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
   let newSegLocation = '';
   let newSegLink = '';
   let newSegParking = '';
+  const handButtonClick = () => {
+    onOpen();
+    setValue(0);
+    setStep(0);
+  };
+
   return (
     <>
       <Button
-        onClick={onOpen}
+        onClick={handButtonClick}
         size="md"
         bg="ochBlue"
         variant="solid"
         rightIcon={<AddIcon />}
-        value="0"
       >
         Create New Section or Segment
       </Button>
@@ -57,15 +63,19 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
           <ModalHeader>Create New:</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>User Type</Text>
-            <RadioGroup onChange={setValue} value={value}>
+            {step === 0 && (
+              <>
+                <Text>User Type</Text>
+                <RadioGroup onChange={setStep} step={value}>
+                  <Stack column="vertical">
+                    <Radio value={1}>Section</Radio>
+                    <Radio value={2}>Segment</Radio>
+                  </Stack>
+                </RadioGroup>
+              </>
+            )}
+            {step === 2 && (
               <Stack column="vertical">
-                <Radio value="1">Section</Radio>
-                <Radio value="2">Segment</Radio>
-              </Stack>
-            </RadioGroup>
-            {value === '2' && (
-              <Stack columnt="vertical">
                 <ModalHeader>Add Segment</ModalHeader>
                 <Text>Segment ID</Text>
                 <Input
@@ -99,8 +109,8 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
                 />
               </Stack>
             )}
-            {value === '1' && (
-              <Stack columnt="vertical">
+            {step === 1 && (
+              <Stack column="vertical">
                 <ModalHeader>Add Section</ModalHeader>
                 <Text>Section Id</Text>
                 <Input
@@ -128,7 +138,7 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
             <Button colorScheme="gray" mr={3} onClick={onClose}>
               Close
             </Button>
-            {value === '1' && (
+            {step === 1 && (
               <Button
                 colorScheme="blue"
                 bg="ochBlue"
@@ -142,7 +152,7 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
                 Create New Section
               </Button>
             )}
-            {value === '2' && (
+            {step === 2 && (
               <Button
                 colorScheme="blue"
                 bg="ochBlue"

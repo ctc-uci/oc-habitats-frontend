@@ -18,9 +18,13 @@ import {
   TabPanels,
   Tabs,
   useDisclosure,
+  Container,
+  Text,
+  VStack,
 } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, EditIcon } from '@chakra-ui/icons';
 import { React, useState } from 'react';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import Section from '../components/Section';
 import CreateNew from '../components/NewSectionSegmentPopup';
 import SectionTable from '../components/SectionTable/SectionTable';
@@ -28,7 +32,7 @@ import SectionTable from '../components/SectionTable/SectionTable';
 const sectionsData = [
   {
     id: 1,
-    title: 'Section 1: Seal Beach to Huntington Beach (South)',
+    title: 'Seal Beach to Huntington Beach (South)',
     segments: [
       {
         segment: 'OC01',
@@ -56,27 +60,27 @@ const sectionsData = [
       },
     ],
   },
-  // {
-  //   id: 2,
-  //   title: 'Section 2: Newport Beach to Laguna Beach',
-  //   segments: [
-  //     {
-  //       segment: '[TEST 2]OC01',
-  //       segmentName: '[TEST 2]Seal Beach (1st St. - North End Anaheim Bay)',
-  //       distance: 1.6,
-  //     },
-  //     {
-  //       segment: '[TEST 2]OC02',
-  //       segmentName: '[TEST 2]Surfside (South of Anaheim Bay to 19th Street)',
-  //       distance: 1.8,
-  //     },
-  //     {
-  //       segment: '[TEST 2]OC03',
-  //       segmentName: '[TEST 2]Sunset Beach (19th Street to Warner Avenue)',
-  //       distance: 1.3,
-  //     },
-  //   ],
-  // },
+  {
+    id: 2,
+    title: 'Section 2: Newport Beach to Laguna Beach',
+    segments: [
+      {
+        segment: '[TEST 2]OC01',
+        segmentName: '[TEST 2]Seal Beach (1st St. - North End Anaheim Bay)',
+        distance: 1.6,
+      },
+      {
+        segment: '[TEST 2]OC02',
+        segmentName: '[TEST 2]Surfside (South of Anaheim Bay to 19th Street)',
+        distance: 1.8,
+      },
+      {
+        segment: '[TEST 2]OC03',
+        segmentName: '[TEST 2]Sunset Beach (19th Street to Warner Avenue)',
+        distance: 1.3,
+      },
+    ],
+  },
 ];
 
 function CreateNewSectionSegment(onAddSegment, addSection) {
@@ -133,7 +137,7 @@ function AddSectionPopup(addSection) {
 
 const SectionPage = () => {
   const [sections, setSections] = useState(sectionsData);
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const addSection = newSecName => {
     const newSection = {
       id: sections.length + 1,
@@ -270,7 +274,7 @@ const SectionPage = () => {
             {sections.map(sectionObj => {
               return (
                 <TabPanel key={sectionObj.id} padding="0px">
-                  <Box h="25px" />
+                  {/* <Box h="25px" />
                   <Section
                     key={sectionObj.id}
                     title={sectionObj.title}
@@ -292,14 +296,47 @@ const SectionPage = () => {
                       updateSectionTitle(sectionObj.id, newSecTitle)
                     }
                     onDeleteSection={() => deleteSection(sectionObj.id)}
-                  />
+                  /> */}
+                  <Container maxW="container.x1">
+                    <Heading fontWeight="600" fontSize="20px" mb="4px" mt="40px" align="left">
+                      <>
+                        Section {sectionObj.id} - <Text as="u">{sectionObj.title}</Text>
+                      </>
+                    </Heading>
+                    <HStack w="100%" justifyContent="space-between" spacing="10">
+                      <VStack>
+                        <Text fontWeight="400" fontSize="18px" align="left" display="inline">
+                          <>
+                            Select the <BsThreeDotsVertical style={{ display: 'inline' }} /> button
+                            on a row in the table to view, edit, or delete a Segment.
+                          </>
+                        </Text>
+                      </VStack>
+                      <VStack>
+                        <div>
+                          <Button
+                            size="sm"
+                            bg="#2BC0E3"
+                            variant="solid"
+                            aria-label="Edit Section"
+                            rightIcon={<EditIcon />}
+                            onClick={onOpen}
+                          >
+                            Edit Section
+                          </Button>
+                        </div>
+                      </VStack>
+                    </HStack>
+                    <br />
 
-                  <SectionTable
-                  // variant="volunteer"
-                  // userData={volunteerData}
-                  // segments={segments}
-                  // loading={isLoading}
-                  />
+                    <SectionTable
+                      // variant="volunteer"
+                      // userData={volunteerData}
+                      // segments={segments}
+                      // loading={isLoading}
+                      loading={false}
+                    />
+                  </Container>
                 </TabPanel>
               );
             })}
