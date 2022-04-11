@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Heading, Flex, Text } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 // import GenerateReportModal from '../components/AdminPageTable/GenerateReportModal';
@@ -6,7 +6,11 @@ import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 // import SetReminderModal from '../components/AdminPageTable/SetReminderModal';
 import AdminPageTable from '../components/AdminPageTable/AdminPageTable';
 // import Pagination from '../components/AdminPageTable/Pagination';
-// import AdminPageFilters from '../components/AdminPageTable/AdminPageFilters';
+import AdminPageFilters from '../components/AdminPageTable/AdminPageFilters';
+
+const dummySegments = ['OCH01', 'OCH02', 'OCH03', 'OCH04'];
+
+const checkCount = 0;
 
 const dummy = [
   {
@@ -74,6 +78,11 @@ const dummy = [
 ];
 
 const AdminPage = () => {
+  const [segmentFilter, setSegmentFilter] = useState('');
+  const [dateFilter, setDateFilter] = useState(null);
+  const [approvalFilter, setApprovalFilter] = useState('');
+  const [searchFilter, setSearchFilter] = useState('');
+
   return (
     <Container maxW="container.xl">
       <div>
@@ -91,7 +100,30 @@ const AdminPage = () => {
           <span className="bold">SEGMENT</span>, <span className="bold">VOLUNTEER(S)</span>, and
           <span className="bold"> APPROVAL STATUS</span>.
         </Text>
-        {/* <AdminPageFilters /> */}
+        {/* <pre>
+          {JSON.stringify(
+            {
+              segmentFilter,
+              dateFilter,
+              approvalFilter,
+              searchFilter,
+            },
+            null,
+            2,
+          )}
+        </pre> */}
+        <AdminPageFilters
+          segments={dummySegments}
+          checkCount={checkCount}
+          segmentFilter={segmentFilter}
+          setSegmentFilter={setSegmentFilter}
+          dateFilter={dateFilter}
+          setDateFilter={setDateFilter}
+          approvalFilter={approvalFilter}
+          setApprovalFilter={setApprovalFilter}
+          searchFilter={searchFilter}
+          setSearchFilter={setSearchFilter}
+        />
         <AdminPageTable tableData={dummy} />
         {/* <Pagination /> */}
       </div>
