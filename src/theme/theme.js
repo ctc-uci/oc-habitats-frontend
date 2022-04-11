@@ -10,6 +10,7 @@ const theme = extendTheme({
     ochGrey: '#4E4E4E',
     ochOrange: '#F49923',
     ochBlack: '#231F20',
+    ochBluePress: '#156071',
   },
   components: {
     Badge: {
