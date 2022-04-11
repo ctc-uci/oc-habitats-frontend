@@ -11,11 +11,9 @@ import AccountPage from './pages/AccountPage';
 import AdminPage from './pages/AdminPage'; // monitor-log table
 import MonitorLogPage from './pages/MonitorLogPage';
 import PeoplePage from './pages/PeoplePage';
-import SectionPage from './pages/SectionPage';
 import Species from './pages/Species';
 import theme from './theme/theme';
 import AdminDashboardPage from './pages/AdminDashboardPage';
-
 
 import CommonTableExample from './pages/CommonTableExample';
 
