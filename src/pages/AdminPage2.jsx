@@ -10,8 +10,6 @@ import AdminPageFilters from '../components/AdminPageTable/AdminPageFilters';
 
 const dummySegments = ['OCH01', 'OCH02', 'OCH03', 'OCH04'];
 
-const checkCount = 0;
-
 const dummy = [
   {
     generalFieldValues: {
@@ -78,6 +76,8 @@ const dummy = [
 ];
 
 const AdminPage = () => {
+  // const [checkCount, setCheckCount] = useState(0);
+  const checkCount = 0;
   const [segmentFilter, setSegmentFilter] = useState('');
   const [dateFilter, setDateFilter] = useState(null);
   const [approvalFilter, setApprovalFilter] = useState('');
@@ -91,8 +91,8 @@ const AdminPage = () => {
         </Heading>
         <Flex gap="24px">
           <GenerateReportModal />
-          {/* <ExportLogsModal />
-          <SetReminderModal /> */}
+          <ExportLogsModal count={checkCount} />
+          {/* <SetReminderModal /> */}
         </Flex>
         <Text font size="md" fontWeight="700px" mt="24px" mb="16px">
           Click on a column header (e.g. <span className="bold">DATE</span>) to sort by descending{' '}
