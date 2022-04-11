@@ -10,7 +10,7 @@ const EmergentIssues = ({ month, year, emergentIssuesData }) => {
       <Text fontSize="24px" fontWeight="600" ml="110px" mt="64px">
         {month} {year} Emergent Issues
       </Text>
-      <Grid ml="110px" mt="24px" templateColumns="repeat(4, 0.1fr)" gap="24px">
+      <Grid ml="110px" mt="24px" templateColumns="repeat(3, 0.1fr)" gap="24px">
         {emergentIssuesData.map(issuesData => {
           return (
             <GridItem key={issuesData.id}>
