@@ -45,7 +45,7 @@ const ExportLogsModal = ({ count }) => {
         <ModalContent>
           <ModalHeader>Export Selected Logs</ModalHeader>
           <ModalBody>
-            <Text>You are about to export {count} logs as csv files.</Text>
+            <Text>You are about to export {count} log(s) as csv files.</Text>
           </ModalBody>
 
           <ModalFooter>

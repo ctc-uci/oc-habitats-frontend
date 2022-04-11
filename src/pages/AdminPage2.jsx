@@ -3,7 +3,7 @@ import { Container, Heading, Flex, Text } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import GenerateReportModal from '../components/AdminPageTable/GenerateReportModal';
 import ExportLogsModal from '../components/AdminPageTable/ExportLogsModal';
-// import SetReminderModal from '../components/AdminPageTable/SetReminderModal';
+import SetReminderModal from '../components/AdminPageTable/SetReminderModal';
 import AdminPageTable from '../components/AdminPageTable/AdminPageTable';
 // import Pagination from '../components/AdminPageTable/Pagination';
 import AdminPageFilters from '../components/AdminPageTable/AdminPageFilters';
@@ -92,7 +92,7 @@ const AdminPage = () => {
         <Flex gap="24px">
           <GenerateReportModal />
           <ExportLogsModal count={checkCount} />
-          {/* <SetReminderModal /> */}
+          <SetReminderModal />
         </Flex>
         <Text font size="md" fontWeight="700px" mt="24px" mb="16px">
           Click on a column header (e.g. <span className="bold">DATE</span>) to sort by descending{' '}

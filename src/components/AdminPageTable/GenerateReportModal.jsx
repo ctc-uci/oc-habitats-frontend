@@ -74,7 +74,7 @@ const GenerateReportModal = () => {
               onClick={() => generateReport()}
               variant="solidNoHover"
               bg="ochBlue"
-              disabled={reportDate === null}
+              disabled={!reportDate}
             >
               Generate Report
             </Button>
