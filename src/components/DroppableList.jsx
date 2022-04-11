@@ -15,37 +15,22 @@ const DroppableList = ({ name, species, colID, searchItem }) => {
       justifyContent="center"
     >
       <VStack w="93%" align="left" m="1.75em 0" spacing="1.6em">
-        <Heading fontWeight={450} fontSize="1.25em">
-          {name}
-        </Heading>
-        <Droppable droppableId={colID} direction="horizontal">
-          {provided => (
-            <Grid
-              templateColumns="repeat(3, 1fr)"
-              autoFlow="row dense"
-              w="100%"
-              columnGap="5em"
-              rowGap="1em"
-              minHeight="7em"
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              {species.map((specie, index) => {
-                return (
-                  <GridItem key={specie}>
-                    <DraggableItem
-                      key={specie}
-                      specie={specie}
-                      index={index}
-                      searchItem={searchItem}
-                    />
-                  </GridItem>
-                );
-              })}
-              {provided.placeholder}
-            </Grid>
-          )}
-        </Droppable>
+        <Grid
+          templateColumns="repeat(3, 1fr)"
+          autoFlow="row dense"
+          w="100%"
+          columnGap="5em"
+          rowGap="1em"
+          minHeight="7em"
+        >
+          {species.map((specie, index) => {
+            return (
+              <GridItem key={specie}>
+                <DraggableItem key={specie} specie={specie} index={index} searchItem={searchItem} />
+              </GridItem>
+            );
+          })}
+        </Grid>
       </VStack>
     </Flex>
   );

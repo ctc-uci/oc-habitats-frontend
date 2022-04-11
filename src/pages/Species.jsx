@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Spacer, Stack, Text, VStack } from '@chakra-ui/react';
+import { Box, Center, Flex, Spacer, Stack, Text, VStack, HStack } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
@@ -8,8 +8,8 @@ import NewSpeciesModal from '../components/NewSpeciesModal';
 
 const initialData = {
   endangered: {
-    id: 'endangered',
-    name: 'Listed Species (Endangered)',
+    id: 'listed',
+    name: 'Listed Species',
     speciesIds: [],
   },
   additional: { id: 'additional', name: 'Additional Species', speciesIds: [] },
@@ -60,13 +60,29 @@ const createLists = (columns, searchItem) => {
   return Object.entries(columns).map(([id, col]) => {
     const specieNames = col.speciesIds.map(specie => specie.name);
     return (
-      <DroppableList
-        key={id}
-        name={col.name}
-        species={specieNames}
-        colID={id}
-        searchItem={searchItem}
-      />
+      <>
+        {/* <Text>{col.title}</Text> */}
+        <VStack align="left">
+          {col.title !== '' && (
+            <Text fontWeight={550} align="left">
+              {col.title}
+            </Text>
+          )}
+          {/* <Text fontWeight={550} align="left">
+            {col.title}
+          </Text> */}
+          <Text as="i" fontWeight={450}>
+            {col.text}
+          </Text>
+        </VStack>
+        <DroppableList
+          key={id}
+          name={col.name}
+          species={specieNames}
+          colID={id}
+          searchItem={searchItem}
+        />
+      </>
     );
   });
 };
@@ -85,16 +101,25 @@ const Species = () => {
     try {
       setIsLoading(true);
       const res = await axios.get(`${process.env.REACT_APP_API_URL}/species`);
+      console.log(res.data);
       const formattedData = {
         endangered: {
-          id: 'endangered',
-          name: 'Listed Species (Endangered)',
-          speciesIds: res.data.filter(specie => specie.isEndangered),
+          id: 'listed',
+          title: 'Listed Species',
+          text: 'Note: Adding a listed species will create a new section on the monitor log.',
+          speciesIds: res.data.filter(specie => specie.isListed),
         },
-        additional: {
-          id: 'additional',
-          name: 'Additional Species',
-          speciesIds: res.data.filter(specie => !specie.isEndangered),
+        predators: {
+          id: 'predators',
+          title: 'Predators',
+          text: 'Note: To mark a tracked non-listed species as a predator, click on the species, select "Edit", and select "Yes" on the "Is a Predator" field.',
+          speciesIds: res.data.filter(specie => specie.isPredator),
+        },
+        nonListed: {
+          id: 'nonListed',
+          title: 'Non-Listed Species',
+          text: '',
+          speciesIds: res.data.filter(specie => !specie.isListed),
         },
       };
       Object.entries(formattedData).forEach(column => {
@@ -120,11 +145,24 @@ const Species = () => {
     await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
       name: newSpecies.name,
       code: newSpecies.code,
+      // isEndangered: newSpecies.group === 'endangered',
+      isListed: newSpecies.group === 'listed',
+      isPredator: newSpecies.predator === 'Yes',
+      isAssigned: false,
+    });
+    setChange(!change);
+  };
+
+  const addNewPredator = async newSpecies => {
+    await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
+      name: newSpecies.name,
+      code: newSpecies.code,
       isEndangered: newSpecies.group === 'endangered',
       isAssigned: false,
     });
     setChange(!change);
   };
+
   return (
     <Center>
       <Stack w="container.xl" justify-content="center" mb="4em">
@@ -134,22 +172,21 @@ const Species = () => {
           </Text>
           <VStack spacing={2} align="stretch">
             <strong>Search for a Species:</strong>
-            <Box w="32.5%">
-              <DropdownSearch options={options} handleSelectedValue={highlightSearch} />
-            </Box>
-            <Flex align="end">
-              <Flex align="center">
-                <Text as="i" fontWeight={450}>
-                  Note: Adding a listed species will create a new section on the monitor log.
-                </Text>
-              </Flex>
-              <Spacer />
-              <NewSpeciesModal addNewSpecies={addNewSpecies} />
-            </Flex>
+            <HStack>
+              <Box w="100%">
+                <Flex justifyContent="space-between" flexDir="row">
+                  <Box w="32.5%">
+                    <DropdownSearch options={options} handleSelectedValue={highlightSearch} />
+                  </Box>
+                  <Box>
+                    <NewSpeciesModal addNewSpecies={addNewSpecies} />
+                    <NewSpeciesModal addNewPredator={addNewPredator} />
+                  </Box>
+                </Flex>
+              </Box>
+            </HStack>
           </VStack>
-          <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
-            {createLists(columns, searchItem)}
-          </DragDropContext>
+          {createLists(columns, searchItem)}
         </VStack>
       </Stack>
     </Center>
