@@ -2,7 +2,27 @@
 // import PropTypes from 'prop-types';
 // import { Flex, Select, Text, Tooltip, IconButton, Box } from '@chakra-ui/react';
 
-// const AdminPageFooter = ({ pageSize, totalData, currentPage }) => {
+// // pagination that is represented at the bottom of the table
+// const Pagination = ({ pageSize, totalData, currentPage }) => {
+//   const updateChangedPage = (oldSize, newSize) => {
+//     if (currentPage === 1) {
+//       return;
+//     }
+//     const cutoff = (currentPage - 1) * oldSize;
+//     let newPage = 1;
+//     let flag = true;
+//     while (flag) {
+//       if (Math.ceil(totalData / newSize) === newPage) {
+//         flag = false;
+//       } else if ((newPage - 1) * newSize <= cutoff && newPage * newSize - 1 >= cutoff) {
+//         flag = false;
+//       } else {
+//         newPage += 1;
+//       }
+//     }
+//     setCurrentPage(newPage);
+//   };
+
 //   return (
 //     <Flex
 //       bg="#4E4E4E"
@@ -74,3 +94,5 @@
 //     </Flex>
 //   );
 // };
+
+// export default Pagination;
