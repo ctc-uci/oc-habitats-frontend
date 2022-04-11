@@ -1,19 +1,21 @@
+import { Box, ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
-import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
-import { ChakraProvider, Box } from '@chakra-ui/react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 // import HomePage from './pages/HomePage';
 import SectionPage from './pages/SectionPage';
-import MonitorLogPage from './pages/MonitorLogPage';
+import ListedSpeciesPopup from './components/ListedSpecies/ListedSpeciesPopup';
+import Footer from './components/Footer/Footer';
+import Navbar from './components/Navbar/Navbar';
 import AccountPage from './pages/AccountPage';
 import AdminPage from './pages/AdminPage'; // monitor-log table
-import EndangeredSpeciesPopup from './pages/EndangeredSpeciesPopup';
+import MonitorLogPage from './pages/MonitorLogPage';
 import PeoplePage from './pages/PeoplePage';
+import SectionPage from './pages/SectionPage';
 import Species from './pages/Species';
-import Navbar from './components/Navbar/Navbar';
 import theme from './theme/theme';
-import Footer from './components/Footer/Footer';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+
 
 import CommonTableExample from './pages/CommonTableExample';
 
@@ -33,7 +35,7 @@ function App() {
               <Route
                 exact
                 path="/endangered"
-                element={<EndangeredSpeciesPopup adultName="Snowy Plovers" />}
+                element={<ListedSpeciesPopup adultName="Snowy Plovers" />}
               />
               <Route exact path="/species" element={<Species />} />
               {/* Admin only routes (TO DO, make admin only) */}
