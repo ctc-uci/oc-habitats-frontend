@@ -19,7 +19,7 @@ function StatsPopUp(title, numIssues, issueData) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <IconButton icon={<ExternalLinkIcon boxSize="2em" />} onClick={onOpen} />
+      <IconButton bg="#F7FAFC" icon={<ExternalLinkIcon boxSize="2em" />} onClick={onOpen} />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -52,7 +52,14 @@ function StatsPopUp(title, numIssues, issueData) {
 
 const EmergentIssuesCard = ({ title, numIssues, issueData }) => {
   return (
-    <Box w="390px" h="132px" borderWidth="1px" bg="#E2E8F0" borderRadius="12px">
+    <Box
+      w="390px"
+      h="132px"
+      borderWidth="1px"
+      bg="#F7FAFC"
+      borderRadius="12px"
+      borderColor="#E2E8F0"
+    >
       <Text ml="24px" mt="24px" fontSize="20px" fontWeight="500">
         {title}
       </Text>
@@ -75,17 +82,21 @@ const EmergentIssuesCard = ({ title, numIssues, issueData }) => {
   );
 };
 
+EmergentIssuesCard.defaultProps = {
+  issueData: [],
+};
+
 EmergentIssuesCard.propTypes = {
   title: PropTypes.string.isRequired,
   numIssues: PropTypes.number.isRequired,
   issueData: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      firstName: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired,
-      accountInfoLink: PropTypes.string.isRequired,
+      segment: PropTypes.string.isRequired,
+      date: PropTypes.string.isRequired,
+      monitorLogLink: PropTypes.string.isRequired,
     }),
-  ).isRequired,
+  ),
 };
 
 export default EmergentIssuesCard;

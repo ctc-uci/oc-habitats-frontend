@@ -26,8 +26,9 @@ const monthNames = [
 ];
 const month = monthNames[new Date().getMonth()];
 const year = new Date().getUTCFullYear();
-const numLogsCompleted = 13;
-const numLogsNotSubmitted = 20;
+const numLogsCompleted = 5;
+const numLogsNotCompleted = 5;
+const numSegsUnassigned = 3;
 
 const emergentIssuesData = [
   {
@@ -135,79 +136,257 @@ const speciesData = [
 
 const statsDataCompleted = [
   {
-    id: 1,
-    firstName: 'firstName',
-    lastName: 'lastName',
-    accountInfoLink: '/account',
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
   },
   {
-    id: 2,
-    firstName: 'NamesLongerThan25Characters',
-    lastName: 'lastName',
-    accountInfoLink: '/account',
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'NamesLongerThan25Characters',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
   },
   {
-    id: 3,
-    firstName: 'firstName',
-    lastName: 'lastName',
-    accountInfoLink: '/account',
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
   },
   {
-    id: 4,
-    firstName: 'firstName',
-    lastName: 'lastName',
-    accountInfoLink: '/account',
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
   },
   {
-    id: 5,
-    firstName: 'firstName',
-    lastName: 'lastName',
-    accountInfoLink: '/account',
-  },
-  {
-    id: 6,
-    firstName: 'firstName',
-    lastName: 'lastName',
-    accountInfoLink: '/account',
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
   },
 ];
 
-const statsDataNotSubmitted = [
+const statsDataNotCompleted = [
   {
-    id: 1,
-    firstName: 'firstName',
-    lastName: 'lastName',
-    accountInfoLink: '/account',
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
   },
   {
-    id: 2,
-    firstName: 'NamesLongerThan25Characters',
-    lastName: 'lastName',
-    accountInfoLink: '/account',
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'NamesLongerThan25Characters',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
   },
   {
-    id: 3,
-    firstName: 'firstName',
-    lastName: 'lastName',
-    accountInfoLink: '/account',
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
   },
   {
-    id: 4,
-    firstName: 'firstName',
-    lastName: 'lastName',
-    accountInfoLink: '/account',
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
   },
   {
-    id: 5,
-    firstName: 'firstName',
-    lastName: 'lastName',
-    accountInfoLink: '/account',
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
+  },
+];
+
+const statsDataUnassigned = [
+  {
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
   },
   {
-    id: 6,
-    firstName: 'firstName',
-    lastName: 'noSubmission',
-    accountInfoLink: '/account',
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'NamesLongerThan25Characters',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
+  },
+  {
+    segId: 'XX',
+    peopleAssigned: [
+      {
+        id: 1,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
   },
 ];
 
@@ -228,9 +407,11 @@ const AdminDashboardPage = () => {
         month={month}
         year={year}
         numLogsCompleted={numLogsCompleted}
-        numLogsNotSubmitted={numLogsNotSubmitted}
+        numLogsNotCompleted={numLogsNotCompleted}
+        numSegsUnassigned={numSegsUnassigned}
         statsDataCompleted={statsDataCompleted}
-        statsDataNotSubmitted={statsDataNotSubmitted}
+        statsDataNotCompleted={statsDataNotCompleted}
+        statsDataUnassigned={statsDataUnassigned}
       />
       <EmergentIssues month={month} year={year} emergentIssuesData={emergentIssuesData} />
       <SightedListedSpecies month={month} year={year} speciesData={speciesData} />

@@ -42,7 +42,7 @@ EmergentIssues.propTypes = {
           date: PropTypes.string.isRequired,
           monitorLogLink: PropTypes.string.isRequired,
         }),
-      ).isRequired,
+      ),
     }),
   ).isRequired,
 };

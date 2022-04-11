@@ -10,7 +10,7 @@ const LogNotification = ({ numNotifications }) => {
       <Flex h="100%" justify="space-between" align="center">
         <CheckCircleIcon ml="18px" mr="14px" color="green" />
         <Text fontSize="16px">
-          There are <b>{numNotifications}</b> new monitor logs to review
+          There are <b>{numNotifications}</b> monitor logs to review
         </Text>
         <Spacer />
         <Link to="/logs">

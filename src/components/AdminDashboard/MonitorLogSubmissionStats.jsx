@@ -1,64 +1,28 @@
 import { React } from 'react';
-import {
-  Text,
-  Box,
-  Flex,
-  HStack,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  IconButton,
-  useDisclosure,
-} from '@chakra-ui/react';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { Text, HStack } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
 
-function StatsPopUp(title, numLogs, statsData) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  return (
-    <>
-      <IconButton icon={<ExternalLinkIcon boxSize="2em" />} onClick={onOpen} />
+import StatsCard from './StatsCard';
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader fontSize="20px" fontWeight="medium">
-            {title}
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text fontSize="36px" fontWeight="bold">
-              {numLogs}
-            </Text>
-            {statsData.map(data => {
-              const name = `${data.firstName} ${data.lastName}`;
-              return (
-                <Flex key={data.id} justify="space-between">
-                  <Text>{name.substring(0, 25) + (name.length > 25 ? '...' : '')}</Text>
-                  <a href={data.accountInfoLink}>
-                    <Text textDecoration="underline">Details</Text>
-                  </a>
-                </Flex>
-              );
-            })}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-}
+const cardTitles = ['Completed', 'Not Completed', 'Unassigned Segments'];
+const cardDescriptions = [
+  'Segments that logs have been submitted for by all assigned monitors',
+  'Segments that logs have not been submitted for yet',
+  'These segments have not been assigned to anyone this month',
+];
 
 const MonitorLogSubmissionStats = ({
   month,
   year,
   numLogsCompleted,
-  numLogsNotSubmitted,
+  numLogsNotCompleted,
+  numSegsUnassigned,
   statsDataCompleted,
-  statsDataNotSubmitted,
+  statsDataNotCompleted,
+  statsDataUnassigned,
 }) => {
+  const cardNums = [numLogsCompleted, numLogsNotCompleted, numSegsUnassigned];
+  const cardData = [statsDataCompleted, statsDataNotCompleted, statsDataUnassigned];
   return (
     <>
       <Text fontSize="24px" fontWeight="600" ml="110px" mt="64px">
@@ -66,51 +30,17 @@ const MonitorLogSubmissionStats = ({
       </Text>
 
       <HStack h="218px" mt="24px" spacing="24px">
-        <Box maxW="390px" borderWidth="1px" ml="110px" bg="#E2E8F0" borderRadius="12px">
-          <Text ml="24px" mt="24px" fontSize="20px" fontWeight="500">
-            Completed
-          </Text>
-          <Flex flexDirection="row" justify="space-between" height="40px" align="center">
-            <Box ml="24px" mt="16px" mb="5px">
-              <Text fontSize="36px" fontWeight="700">
-                {numLogsCompleted}
-              </Text>
-            </Box>
-            <Box mr="24px">
-              {numLogsCompleted ? (
-                StatsPopUp('Completed', numLogsCompleted, statsDataCompleted)
-              ) : (
-                <></>
-              )}
-            </Box>
-          </Flex>
-          <Text ml="24px" mr="41px" mt="30px" mb="24px" fontSize="20px">
-            Monitors that have submitted logs for their assigned segments
-          </Text>
-        </Box>
-
-        <Box maxW="390px" borderWidth="1px" bg="#E2E8F0" borderRadius="12px">
-          <Text ml="24px" mt="24px" fontSize="20px" fontWeight="500">
-            Not Submitted
-          </Text>
-          <Flex flexDirection="row" justify="space-between" height="40px" align="center">
-            <Box ml="24px" mt="16px" mb="5px">
-              <Text fontSize="36px" fontWeight="700">
-                {numLogsNotSubmitted}
-              </Text>
-            </Box>
-            <Box mr="24px">
-              {numLogsNotSubmitted ? (
-                StatsPopUp('Not Submitted', numLogsNotSubmitted, statsDataNotSubmitted)
-              ) : (
-                <></>
-              )}
-            </Box>
-          </Flex>
-          <Text ml="24px" mr="41px" mt="30px" mb="24px" fontSize="20px">
-            Monitors that have not submitted logs for their assigned segments
-          </Text>
-        </Box>
+        {cardTitles.map((title, index) => {
+          return (
+            <StatsCard
+              key={title}
+              title={title}
+              numLogs={cardNums[index]}
+              description={cardDescriptions[index]}
+              data={cardData[index]}
+            />
+          );
+        })}
       </HStack>
     </>
   );
@@ -120,21 +50,48 @@ MonitorLogSubmissionStats.propTypes = {
   month: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
   numLogsCompleted: PropTypes.number.isRequired,
-  numLogsNotSubmitted: PropTypes.number.isRequired,
+  numLogsNotCompleted: PropTypes.number.isRequired,
+  numSegsUnassigned: PropTypes.number.isRequired,
   statsDataCompleted: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      firstName: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired,
-      accountInfoLink: PropTypes.string.isRequired,
+      segId: PropTypes.string.isRequired,
+      peopleAssigned: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          firstName: PropTypes.string.isRequired,
+          lastName: PropTypes.string.isRequired,
+          email: PropTypes.string.isRequired,
+          accountInfoLink: PropTypes.string.isRequired,
+        }),
+      ),
     }),
   ).isRequired,
-  statsDataNotSubmitted: PropTypes.arrayOf(
+  statsDataNotCompleted: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      firstName: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired,
-      accountInfoLink: PropTypes.string.isRequired,
+      segId: PropTypes.string.isRequired,
+      peopleAssigned: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          firstName: PropTypes.string.isRequired,
+          lastName: PropTypes.string.isRequired,
+          email: PropTypes.string.isRequired,
+          accountInfoLink: PropTypes.string.isRequired,
+        }),
+      ),
+    }),
+  ).isRequired,
+  statsDataUnassigned: PropTypes.arrayOf(
+    PropTypes.shape({
+      segId: PropTypes.string.isRequired,
+      peopleAssigned: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          firstName: PropTypes.string.isRequired,
+          lastName: PropTypes.string.isRequired,
+          email: PropTypes.string.isRequired,
+          accountInfoLink: PropTypes.string.isRequired,
+        }),
+      ),
     }),
   ).isRequired,
 };
