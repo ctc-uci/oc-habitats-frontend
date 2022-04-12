@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, React } from 'react';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import { ChakraProvider, Box } from '@chakra-ui/react';
 import './App.css';
@@ -15,16 +15,23 @@ import theme from './theme/theme';
 import Footer from './components/Footer/Footer';
 
 function App() {
+  const [accMadeChanges, setAccMadeChanges] = useState(false);
   return (
     <ChakraProvider theme={theme}>
       <Router>
         <Box className="page-container">
           <Box className="content-wrap">
-            <Navbar isAdmin />
+            <Navbar isAdmin changesMade={accMadeChanges} />
             <Routes>
               {/* Add routes as needed; route names subject to change */}
               <Route exact path="/" element={<HomePage />} />
-              <Route exact path="/account" element={<AccountPage />} />
+              <Route
+                exact
+                path="/account"
+                element={
+                  <AccountPage changesMade={accMadeChanges} setChangesMade={setAccMadeChanges} />
+                }
+              />
               <Route exact path="/create-log" element={<MonitorLogPage />} />
               <Route exact path="/sections" element={<SectionPage />} />
               <Route

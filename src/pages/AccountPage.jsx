@@ -17,12 +17,21 @@ import {
   Grid,
   Flex,
   Box,
+  HStack,
+  useToast,
 } from '@chakra-ui/react';
 import { FiEdit2 } from 'react-icons/fi';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import UploadModal from '../components/UploadModal';
+import defaultPic from '../assets/defaultProfile.jpg';
+import Toast from '../components/Toast';
 
-const AccountPage = props => {
+const AccountPage = ({
+  changesMade,
+  setChangesMade,
+  id = 'd882dffe-d560-4f24-a3ff-a3dc8eb9ef0d',
+}) => {
   const [isLoading, setLoading] = useState(false);
 
   // stores information on whether the passwords are hidden/shown, plus the state of the button text
@@ -32,28 +41,26 @@ const AccountPage = props => {
   const [rightButtonText, setRightButtonText] = useState('Show');
 
   // storing form data in state for retrieval on submission
-  const [changesMade, setChangesMade] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [prefName, setPrefName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [currPassword, setCurrPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [trainingStatus, setTrainingStatus] = useState('');
-  const [activeStatus, setActiveStatus] = useState('');
-  const [assignedSegments, setAsignedSegments] = useState('');
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [isTrainee, setIsTrainee] = useState(null);
+  const [isActive, setIsActive] = useState(null);
+  const [assignedSegments, setAsignedSegments] = useState(null);
+  const [currPassword, setCurrPassword] = useState(null);
+  const [newPassword, setNewPassword] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  console.log('url...', process.env.REACT_APP_API_URL);
-
-  const placeHolder = {
-    firstName: 'Peter',
-    lastName: 'Anteater',
-    email: 'panteater@uci.edu',
-    trainingStatus: 'In-Training',
-    activeStatus: 'Active',
-    assignedSegments: 'OC09A, OC09b',
-  };
+  const [imageSource, setImageSource] = useState(null);
+  const [file, setFile] = useState(0);
+  // Holds user info from mongo
+  const [user, setUser] = useState({
+    firstName: null,
+    lastName: null,
+    email: null,
+    isTrainee: null,
+    isActive: null,
+    assignedSegments: null,
+  });
 
   // shows/hides the left ("current") password accordingly
   // and changes the button text from "show" to "hide"
@@ -61,7 +68,7 @@ const AccountPage = props => {
   const toggleLeftPassword = () => {
     if (leftPasswordType === 'password') {
       setLeftPasswordType('text');
-      setLeftButtonText('hide');
+      setLeftButtonText('Hide');
     } else {
       setLeftPasswordType('password');
       setLeftButtonText('Show');
@@ -82,17 +89,27 @@ const AccountPage = props => {
   };
 
   const getAccountInfo = async () => {
-    // FILL OUT WITH API ENDPOINT CALL
-    // const id = '58693166-b08a-4459-9503-4f211bd6a760';
-    // const info = await axios.get(`${process.env.REACT_APP_API_URL}/${id}`);
-    // const user = info.data;
-    // setFirstName(user.firstName);
-    // setLastName(user.lastName);
-    // setEmail(user.email);
-    // setCurrPassword(user.password);
-    // setTrainingStatus(user.isTrainee ? 'In-Training' : 'Not In-Training');
-    // setActiveStatus(user.isActive ? 'Active' : 'Inactive');
-    // setAsignedSegments(user.segments.toString());
+    let currUser = await axios.get(`${process.env.REACT_APP_API_URL}/users/${id}`);
+    currUser = currUser.data;
+
+    setFirstName(currUser.firstName);
+    setLastName(currUser.lastName);
+    setEmail(currUser.email);
+    setIsTrainee(currUser.isTrainee);
+    setIsActive(currUser.isActive);
+    setAsignedSegments(currUser.segments.toString());
+    setUser({
+      ...user,
+      firstName: currUser.firstName,
+      lastName: currUser.lastName,
+      email: currUser.email,
+      isTrainee: currUser.isTrainee,
+      isActive: currUser.isActive,
+      assignedSegments: currUser.segments.toString(),
+      currPassword: currUser.password,
+    });
+    const base64String = Buffer.from(currUser.profileImage.data.data).toString('base64');
+    setImageSource(`data:${currUser.profileImage.contentType};base64,${base64String}`);
   };
 
   useEffect(async () => {
@@ -101,26 +118,74 @@ const AccountPage = props => {
     setLoading(false);
   }, []);
 
+  useEffect(() => {
+    // Make sure to revoke the data uris to avoid memory leaks
+    if (file) URL.revokeObjectURL(file.preview);
+  }, file);
+
+  const checkChanges = () => {
+    if (
+      user.email !== email ||
+      user.firstName !== firstName ||
+      user.lastName !== lastName ||
+      currPassword ||
+      newPassword
+    ) {
+      setChangesMade(true);
+    } else {
+      setChangesMade(false);
+    }
+  };
+
+  const saveUpload = upload => {
+    setFile(upload);
+    setChangesMade(true);
+  };
   // submits the information the user entered into the form, bypassing default form submission effect
   // replace with POST call to backend when endpoints are ready
-  const handleSubmit = e => {
+  const toast = useToast();
+  const handleSubmit = async e => {
     e.preventDefault();
+    if (newPassword && currPassword !== user.currPassword) {
+      return Toast(toast, 'password');
+    }
+    if (currPassword && !newPassword) {
+      return Toast(toast, 'empty');
+    }
+    const formData = new FormData();
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('email', email);
+    if (file) formData.append('profileImage', file);
+    if (newPassword && currPassword) formData.append('password', newPassword);
+    try {
+      await axios.put(`${process.env.REACT_APP_API_URL}/users/update/${id}`, formData);
+      setChangesMade(false);
+      setCurrPassword('');
+      setNewPassword('');
+      if (newPassword) setUser({ ...user, currPassword: newPassword });
+      return Toast(toast, 'success');
+    } catch (err) {
+      return Toast(toast, 'error');
+    }
   };
 
   if (isLoading) {
     return <div>loading...</div>;
   }
 
+  const imgSrc = file ? file.preview : null;
+
   return (
     <div>
-      <Container h="100vh" maxW="85vw">
+      <Container h="110vh" maxW="85vw">
         <VStack align="left">
           <Heading fontSize="2.4em" py="10" pl="2%" fontWeight={550}>
             Account Information
           </Heading>
           <Grid
             h="200px"
-            templateRows="repeat(3, 1fr)"
+            templateRows="repeat(4, 1fr)"
             templateColumns="repeat(5, 1fr)"
             rowGap="4.75em"
           >
@@ -132,8 +197,10 @@ const AccountPage = props => {
                     h="8"
                     borderRadius="full"
                     boxSize="180px"
-                    src="https://bit.ly/dan-abramov"
+                    src={imgSrc || imageSource}
                     alt="Profile picture"
+                    objectFit="cover"
+                    fallbackSrc={defaultPic}
                   />
                   <IconButton
                     bgColor="ochBlue"
@@ -149,12 +216,13 @@ const AccountPage = props => {
                     position="absolute"
                     bottom={-0.5}
                     right={-0.75}
-                    onClick={e => setIsModalOpen(true)}
+                    onClick={() => setIsModalOpen(true)}
                   />
                   <UploadModal
                     title="Edit Profile Picture"
                     isOpen={isModalOpen}
                     toggleOpen={setIsModalOpen}
+                    saveUpload={saveUpload}
                   />
                 </Box>
               </Flex>
@@ -169,13 +237,13 @@ const AccountPage = props => {
                   <FormControl>
                     <FormLabel>First Name</FormLabel>
                     <Input
-                      placeholder={placeHolder.firstName}
+                      placeholder="First Name"
                       name="firstName"
                       type="text"
-                      value={firstName}
+                      value={firstName || ''}
                       onChange={e => {
                         setFirstName(e.target.value);
-                        setChangesMade(true);
+                        checkChanges();
                       }}
                     />
                   </FormControl>
@@ -184,13 +252,13 @@ const AccountPage = props => {
                   <FormControl>
                     <FormLabel>Last Name</FormLabel>
                     <Input
-                      placeholder={placeHolder.lastName}
+                      placeholder="Last Name"
                       name="lastName"
                       type="text"
-                      value={lastName}
+                      value={lastName || ''}
                       onChange={e => {
                         setLastName(e.target.value);
-                        setChangesMade(true);
+                        checkChanges();
                       }}
                     />
                   </FormControl>
@@ -199,13 +267,13 @@ const AccountPage = props => {
                   <FormControl>
                     <FormLabel>Email</FormLabel>
                     <Input
-                      placeholder={placeHolder.email}
+                      placeholder="Email"
                       name="email"
                       type="email"
-                      value={email}
+                      value={email || ''}
                       onChange={e => {
                         setEmail(e.target.value);
-                        setChangesMade(true);
+                        checkChanges();
                       }}
                     />
                   </FormControl>
@@ -227,9 +295,8 @@ const AccountPage = props => {
                       color="#2D3748"
                       bgColor="#EDF2F7"
                       borderRadius="5px"
-                      placeholder={placeHolder.trainingStatus}
                     >
-                      {trainingStatus}
+                      {isTrainee ? 'In-Training' : 'Not In-Training'}
                     </Text>
                   </FormControl>
                 </GridItem>
@@ -243,9 +310,8 @@ const AccountPage = props => {
                       color="#2D3748"
                       bgColor="#EDF2F7"
                       borderRadius="5px"
-                      placeholder={placeHolder.activeStatus}
                     >
-                      {activeStatus}
+                      {isActive ? 'Active' : 'Not Active'}
                     </Text>
                   </FormControl>
                 </GridItem>
@@ -259,7 +325,6 @@ const AccountPage = props => {
                       color="#2D3748"
                       bgColor="#EDF2F7"
                       borderRadius="5px"
-                      placeholder={placeHolder.assignedSegments}
                     >
                       {assignedSegments}
                     </Text>
@@ -267,7 +332,7 @@ const AccountPage = props => {
                 </GridItem>
               </SimpleGrid>
             </GridItem>
-            <GridItem align="left" colStart={2} colSpan={4}>
+            <GridItem gridRowStart={3} align="left" colStart={2} colSpan={4}>
               <Heading fontSize="1.5em" alignSelf="flex-start" mb=".8em" fontWeight={550}>
                 Change Password
               </Heading>
@@ -279,7 +344,12 @@ const AccountPage = props => {
                       <Input
                         type={leftPasswordType}
                         placeholder="Enter Password"
-                        value={currPassword}
+                        value={currPassword || ''}
+                        name="currPassword"
+                        onChange={e => {
+                          setCurrPassword(e.target.value);
+                          checkChanges();
+                        }}
                       />
                       <InputRightAddon
                         fontWeight={600}
@@ -293,7 +363,15 @@ const AccountPage = props => {
                   <FormControl>
                     <FormLabel>New Password</FormLabel>
                     <InputGroup>
-                      <Input type={rightPasswordType} placeholder="Enter Password" />
+                      <Input
+                        type={rightPasswordType}
+                        placeholder="Enter Password"
+                        value={newPassword || ''}
+                        onChange={e => {
+                          setNewPassword(e.target.value);
+                          checkChanges();
+                        }}
+                      />
                       <InputRightAddon
                         fontWeight={600}
                         children={rightButtonText}
@@ -303,23 +381,32 @@ const AccountPage = props => {
                   </FormControl>
                 </GridItem>
               </SimpleGrid>
-            </GridItem>
-            <GridItem colStart={4} colSpan={3}>
-              <Input
-                disabled={!changesMade}
-                color="#F7FAFC"
-                bg="#2D3748"
-                type="submit"
-                w="30"
-                onClick={handleSubmit}
-                value="Save Changes"
-              />
+              <GridItem>
+                <HStack justifyContent="flex-end" mt="1.5em">
+                  <Input
+                    disabled={!changesMade}
+                    color="#F7FAFC"
+                    bg="#2D3748"
+                    type="submit"
+                    onClick={handleSubmit}
+                    w="31%"
+                    h="3em"
+                    value="Save Changes"
+                  />
+                </HStack>
+              </GridItem>
             </GridItem>
           </Grid>
         </VStack>
       </Container>
     </div>
   );
+};
+
+AccountPage.propTypes = {
+  changesMade: PropTypes.bool.isRequired,
+  setChangesMade: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default AccountPage;

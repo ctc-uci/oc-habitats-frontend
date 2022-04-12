@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { AiOutlinePicture } from 'react-icons/ai';
 import { FiTrash } from 'react-icons/fi';
@@ -22,17 +21,19 @@ import {
 import Dropzone from './Dropzone';
 
 function UploadModal({ title, isOpen, toggleOpen, saveUpload }) {
-  // const [isValid, setIsValid] = useState(true);
   const [files, setFiles] = useState([]);
   const preview = files.map(file => (
-    <Image boxSize="31em" objectFit="contain" src={file.preview} key={file.name} />
+    <Image
+      // boxSize="31em"
+      w="94%"
+      objectFit="contain"
+      src={file.preview}
+      key={file.name}
+    />
   ));
-  useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks
-    files.forEach(file => URL.revokeObjectURL(file.preview));
-  }, [files]);
 
   const hasUpload = files.length > 0;
+
   return (
     <>
       <Modal isOpen={isOpen} size="xl">
@@ -45,7 +46,7 @@ function UploadModal({ title, isOpen, toggleOpen, saveUpload }) {
           <ModalBody>
             <VStack>
               <Text align="left" w="95%" color="ochBlack" fontWeight={500}>
-                Upload Image (PNG or JPEG Only)
+                Upload Image (PNG, JPG, or JPEG Only)
               </Text>
               <Dropzone hasUpload={hasUpload} setFiles={setFiles} />
               {files.length > 0 && (
@@ -76,7 +77,7 @@ function UploadModal({ title, isOpen, toggleOpen, saveUpload }) {
                     }}
                     _focus={{ outline: 'none' }}
                     icon={<FiTrash />}
-                    onClick={e => setFiles([])}
+                    onClick={() => setFiles([])}
                   />
                 </Flex>
               )}
@@ -85,15 +86,6 @@ function UploadModal({ title, isOpen, toggleOpen, saveUpload }) {
           </ModalBody>
           <ModalFooter>
             <VStack>
-              {/* TEMP ERROR MSG, NEED OFFICIAL DESIGNS */}
-              {/* {isValid ? (
-                <></>
-              ) : (
-                <Text color="red" fontWeight={500} align="center">
-                  Error. Please check inputs again.
-                </Text>
-              )} */}
-
               <HStack spacing={4}>
                 <Button
                   colorScheme="gray"
@@ -106,7 +98,16 @@ function UploadModal({ title, isOpen, toggleOpen, saveUpload }) {
                 >
                   Cancel
                 </Button>
-                <Button bgColor="ochBlue" variant="solid">
+                <Button
+                  bgColor="ochBlue"
+                  variant="solid"
+                  onClick={() => {
+                    saveUpload(files[0]);
+                    toggleOpen(false);
+                    setFiles([]);
+                  }}
+                  isDisabled={!hasUpload}
+                >
                   Save Changes
                 </Button>
               </HStack>
