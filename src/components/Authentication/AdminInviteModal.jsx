@@ -63,7 +63,6 @@ const AdminInviteModal = () => {
             <Stack spacing="2px" mb="10px">
               <Radio value="volunteer">Volunteer</Radio>
               <Radio value="admin">Admin</Radio>
-              <Radio value="super-admin">Super Admin</Radio>
             </Stack>
           </RadioGroup>
         </FormControl>

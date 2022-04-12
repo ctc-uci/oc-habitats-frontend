@@ -45,8 +45,8 @@ function App() {
               <Navbar isAdmin />
               <Routes>
                 {/* Add routes as needed; route names subject to change */}
-                <Route path="/invite-user/:inviteID" element={<InviteLandingPage />} />
-                <Route exact path="/invite-modal" element={<AdminInviteModal />} />
+                <Route path="/register/:inviteID" element={<InviteLandingPage />} />
+                <Route exact path="/invite" element={<AdminInviteModal />} />
                 <Route exact path="/" element={<HomePage />} />
                 <Route exact path="/account" element={<AccountPage />} />
                 <Route exact path="/create-log" element={<MonitorLogPage />} />
@@ -88,7 +88,6 @@ function App() {
                     />
                   }
                 />
-                <Route path="/register" element={<Register />} />
                 {/* <Route path="/new-user" element={<NewUser />} /> */}
                 <Route exact path="/contacts" />
                 <Route exact path="/map" />

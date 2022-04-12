@@ -310,7 +310,9 @@ const sendInviteEmail = (email, emailTemplate) => {
 const initiateInviteProcess = (email, role) => {
   try {
     const id = uuidv4();
-    const url = `localhost:3000/invite-user/${id}`;
+    const url = `localhost:3000/register/${id}`;
+    console.log('URL passed into register is');
+    console.log(url);
     const expireDate = moment().add(1, 'days');
     OCHBackend.post('/adminInvite/', {
       id,

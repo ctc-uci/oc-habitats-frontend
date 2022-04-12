@@ -12,7 +12,12 @@ const AdminInviteEmail = ({ role, url }) => {
   return (
     <div>
       <Email title="">
-        <Image src={OCHLogo} w="346px" h="105px" alt="OC Habitats Logo" />
+        <img
+          src={require('../../../assets/OCHlogo.png').default}
+          w="346px"
+          h="105px"
+          alt="OC Habitats Logo"
+        />
         <Item>
           <h1>{`Hello OC Habitats ${role === 'volunteer' ? 'Monitor' : 'Administrator'}!`}</h1>
         </Item>
