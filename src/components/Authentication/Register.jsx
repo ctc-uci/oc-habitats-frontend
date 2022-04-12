@@ -2,7 +2,7 @@
 /* eslint-disable react/no-children-prop */
 import React, { useState } from 'react';
 import { string } from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   FormControl,
   FormLabel,
@@ -155,7 +155,10 @@ const Register = ({ inviteEmail, inviteRole }) => {
             </Center>
           )}
           <Text>
-            By continuing, you agree to OC Habitat&apos;s Terms & Conditions and Privacy Notice.
+            {/* TODO: REPLACE THESE LINKS WITH ACTUAL URLS */}
+            By continuing, you agree to OC Habitats&apos;s{' '}
+            <a href="https://www.nba.com">Terms & Conditions</a> and
+            <a href="https://www.nba.com"> Privacy Notice</a>.
           </Text>
           <Button
             bg="#2BC0E3"

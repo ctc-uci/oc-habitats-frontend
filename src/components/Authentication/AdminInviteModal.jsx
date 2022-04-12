@@ -34,7 +34,7 @@ const AdminInviteModal = () => {
       setConfirmationMessage(
         `A one-time use ${role} sign up link was successfully sent to ${email}.`,
       );
-      setErrorMessage('Test error');
+      setErrorMessage('');
       setEmail('');
       setRole('');
       forceUpdate();

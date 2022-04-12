@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Email, Item } from 'react-html-email';
-import { Button, Img } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 import OCHLogo from '../../../assets/OCHlogo.png';
@@ -12,12 +12,7 @@ const AdminInviteEmail = ({ role, url }) => {
   return (
     <div>
       <Email title="">
-        <img
-          src="https://drive.google.com/drive/u/1/folders/114Maiy7HtmzcL1JZ9fs7bw12rQwd8WMe"
-          alt="OC Habitats logo"
-          width="346"
-          height="105"
-        />
+        <Image src={OCHLogo} w="346px" h="105px" alt="OC Habitats Logo" />
         <Item>
           <h1>{`Hello OC Habitats ${role === 'volunteer' ? 'Monitor' : 'Administrator'}!`}</h1>
         </Item>
@@ -35,7 +30,7 @@ const AdminInviteEmail = ({ role, url }) => {
           </strong>
         </Item>
         <Item>
-          <a href={url}>{url}</a>
+          <a href={`http://${url}`}>OC Habitats Digital Monitor Log site</a>
           {/* <Button bgColor="ochBlue" w="410px" h="45px">
               Finish Account Creation
             </Button> */}

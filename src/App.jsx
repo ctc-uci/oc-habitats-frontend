@@ -9,7 +9,6 @@ import './App.css';
 
 // NEW AUTH IMPORTS
 import InviteLandingPage from './components/Authentication/InviteLandingPage';
-import AdminInvite from './components/Authentication/AdminInvite';
 import ForgotPassword from './components/Authentication/ForgotPassword';
 import Login from './components/Authentication/Login';
 import Logout from './components/Authentication/Logout';
@@ -73,16 +72,6 @@ function App() {
                     <ProtectedRoute
                       Component={Logout}
                       redirectPath="/logout"
-                      roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
-                    />
-                  }
-                />
-                <Route
-                  path="/adminInvite"
-                  element={
-                    <ProtectedRoute
-                      Component={AdminInvite}
-                      redirectPath="/"
                       roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
                     />
                   }
