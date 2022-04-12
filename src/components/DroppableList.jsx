@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Flex, Grid, GridItem, Heading, VStack } from '@chakra-ui/react';
 import DraggableItem from './DraggableItem';
 
-const DroppableList = ({ name, species, colID, searchItem }) => {
+const DroppableList = ({ name, species, colID, searchItem, editSpecies }) => {
   return (
     <Flex
       border="1px"
@@ -26,7 +26,14 @@ const DroppableList = ({ name, species, colID, searchItem }) => {
           {species.map((specie, index) => {
             return (
               <GridItem key={specie}>
-                <DraggableItem key={specie} specie={specie} index={index} searchItem={searchItem} />
+                <DraggableItem
+                  key={specie}
+                  specie={specie}
+                  index={index}
+                  searchItem={searchItem}
+                  col={colID}
+                  editSpecies={editSpecies}
+                />
               </GridItem>
             );
           })}
@@ -36,18 +43,12 @@ const DroppableList = ({ name, species, colID, searchItem }) => {
   );
 };
 
-DroppableList.defaultProps = {
-  name: PropTypes.string,
-  species: PropTypes.arrayOf(PropTypes.string),
-  colID: PropTypes.string,
-  searchItem: PropTypes.string,
-};
-
 DroppableList.propTypes = {
-  name: PropTypes.string,
-  species: PropTypes.arrayOf(PropTypes.string),
-  colID: PropTypes.string,
-  searchItem: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  species: PropTypes.arrayOf(PropTypes.string).isRequired,
+  colID: PropTypes.string.isRequired,
+  searchItem: PropTypes.string.isRequired,
+  editSpecies: PropTypes.func.isRequired,
 };
 
 export default DroppableList;

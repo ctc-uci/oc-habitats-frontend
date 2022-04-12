@@ -50,15 +50,16 @@ const onDragEnd = async (result, columns, setColumns) => {
     await axios.put(`${process.env.REACT_APP_API_URL}/species/${speciesID}/${newListing}`);
   }
 };
+
 /*
   input: columns - contains id, names of columns, and species that belong to each column
   populates the page with each type of column and the species that belong to them
 */
-const createLists = (columns, searchItem) => {
+const createLists = (columns, searchItem, editSpecies) => {
   // Create DroppableLists by iterating over each column in columns
   // Will pass in the species that belong to each list as well as their titles and ids
   return Object.entries(columns).map(([id, col]) => {
-    const specieNames = col.speciesIds.map(specie => specie.name);
+    // const specieNames = col.speciesIds.map(specie => specie.name);
     return (
       <>
         {/* <Text>{col.title}</Text> */}
@@ -78,9 +79,10 @@ const createLists = (columns, searchItem) => {
         <DroppableList
           key={id}
           name={col.name}
-          species={specieNames}
+          species={col.speciesIds}
           colID={id}
           searchItem={searchItem}
+          editSpecies={editSpecies}
         />
       </>
     );
@@ -101,7 +103,7 @@ const Species = () => {
     try {
       setIsLoading(true);
       const res = await axios.get(`${process.env.REACT_APP_API_URL}/species`);
-      console.log(res.data);
+      // console.log(res.data);
       const formattedData = {
         endangered: {
           id: 'listed',
@@ -145,7 +147,6 @@ const Species = () => {
     await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
       name: newSpecies.name,
       code: newSpecies.code,
-      // isEndangered: newSpecies.group === 'endangered',
       isListed: newSpecies.group === 'listed',
       isPredator: newSpecies.predator === 'Yes',
       isAssigned: false,
@@ -161,6 +162,18 @@ const Species = () => {
       isAssigned: false,
     });
     setChange(!change);
+  };
+
+  const editSpecies = async (newSpecies, oldSpecies) => {
+    // eslint-disable-next-line dot-notation
+    await axios.put(`${process.env.REACT_APP_API_URL}/species/${oldSpecies['_id']}`, {
+      name: newSpecies.name,
+      code: newSpecies.code,
+      isListed: newSpecies.group === 'listed',
+      isPredator: newSpecies.predator === 'Yes',
+      isAssigned: false,
+    });
+    setChange(c => !c);
   };
 
   return (
@@ -186,7 +199,7 @@ const Species = () => {
               </Box>
             </HStack>
           </VStack>
-          {createLists(columns, searchItem)}
+          {createLists(columns, searchItem, editSpecies)}
         </VStack>
       </Stack>
     </Center>
