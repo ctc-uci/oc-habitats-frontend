@@ -1,20 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { FiMenu, FiLogOut } from 'react-icons/fi';
+import { FiMenu } from 'react-icons/fi';
 import {
-  Avatar,
   Button,
   Flex,
-  HStack,
   Image,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   Spacer,
-  Text,
 } from '@chakra-ui/react';
 import NavbarLinkMobile from './NavbarLinkMobile';
 import ProfileDropdown from './ProfileDropdown';
@@ -65,7 +61,15 @@ const NavbarMobile = ({ isAdmin }) => {
       h="60px"
     >
       <Link to="/">
-        <Image pl={4} pr={0} maxW="25%" src={logo} alt="logo" _hover={{ opacity: '0.8' }} />
+        <Image
+          pl={4}
+          pr={0}
+          maxW="50%"
+          maxH="100"
+          src={logo}
+          alt="logo"
+          _hover={{ opacity: '0.8' }}
+        />
       </Link>
       <Spacer />
       <Menu>
