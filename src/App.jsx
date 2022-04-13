@@ -76,8 +76,8 @@ function App() {
                     />
                   }
                 />
-                <Route path="/emailAction" element={<EmailAction redirectPath="/" />} />
-                <Route path="/forgotPassword" element={<ForgotPassword />} />
+                <Route path="/email-action" element={<EmailAction redirectPath="/" />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route
                   path="/logout"
                   element={

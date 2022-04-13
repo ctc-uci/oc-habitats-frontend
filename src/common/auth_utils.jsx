@@ -206,7 +206,12 @@ const registerWithEmailAndPassword = async (
  * @param {string} email The email to resend password to
  */
 const sendPasswordReset = async email => {
-  await sendPasswordResetEmail(auth, email);
+  const user = await OCHBackend.get(`/users/email/${email}`);
+  if (user.response.status !== 200 || !user || !user.data) {
+    throw new Error(`There is no account associated with the email ${email}`);
+  } else {
+    await sendPasswordResetEmail(auth, email);
+  }
 };
 
 /**

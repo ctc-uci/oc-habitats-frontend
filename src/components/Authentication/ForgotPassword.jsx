@@ -15,13 +15,12 @@ const ForgotPassword = () => {
       setErrorMessage('');
       setEmail('');
     } catch (err) {
-      setErrorMessage(err.message);
+      setErrorMessage(`Sorry! We couldn't find an account associated with the email ${email}.`);
     }
   };
   return (
     <div>
       <h2>Send Reset Email</h2>
-      {errorMessage && <p>{errorMessage}</p>}
       <form onSubmit={handleForgotPassword}>
         <input
           type="text"
@@ -34,6 +33,8 @@ const ForgotPassword = () => {
       </form>
       {confirmationMessage && <p>{confirmationMessage}</p>}
       <a href="/">Back to Login</a>
+      <br />
+      {errorMessage && <p>{errorMessage}</p>}
     </div>
   );
 };
