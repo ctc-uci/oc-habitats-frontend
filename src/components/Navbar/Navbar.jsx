@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { HStack, Flex, Button, Avatar, Image } from '@chakra-ui/react';
+import { HStack, Flex, Button, Image } from '@chakra-ui/react';
 import NavbarLink from './NavbarLink';
 import ProfileDropdown from './ProfileDropdown';
 import logo from '../../assets/OCHlogo.png';

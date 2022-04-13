@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useLocation, Link } from 'react-router-dom';
-import { Button, MenuItem, Text } from '@chakra-ui/react';
+import { MenuItem, Text } from '@chakra-ui/react';
 
 const NavbarLinkMobile = ({ text, path = '/', color }) => {
   const current = useLocation().pathname;
