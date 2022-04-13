@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  Container,
   Flex,
   FormControl,
   Grid,
@@ -23,20 +24,24 @@ import {
   Tr,
   VStack,
 } from '@chakra-ui/react';
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import AddSpeciesModal from './AddSpeciesModal';
 import EditSpeciesModal from './EditSpeciesModal';
 
-const FORM_PREFIX = 'additionalSpecies.';
+const rows = [
+  { name: 'Sandpiper: Long-billed Curlew (LBCU)', total: 2, notes: 'testing' },
+  { name: 'Test', total: 1, notes: null },
+];
 
-const AdditionalSpeciesTab = ({ showHeader, isDisabled }) => {
+const FORM_KEY = 'additionalSpecies';
+
+const AdditionalSpeciesTab = () => {
   const { getValues, setValue } = useFormContext();
-  const [species, setSpecies] = useState(getValues(`${FORM_PREFIX}data`) || []);
+  const [species, setSpecies] = useState(getValues()[FORM_KEY] || []);
 
   useEffect(() => {
-    setValue(`${FORM_PREFIX}data`, species);
+    setValue(FORM_KEY, species);
   }, [species]);
 
   const handleAddRow = newSpecie => {
@@ -77,13 +82,11 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled }) => {
           <>
             <Tr>
               <Td border="none">
-                {!isDisabled && (
-                  <EditSpeciesModal
-                    specie={getSpecie(row.name)}
-                    editRow={handleEditRow}
-                    deleteRow={handleDeleteRows}
-                  />
-                )}
+                <EditSpeciesModal
+                  specie={getSpecie(row.name)}
+                  editRow={handleEditRow}
+                  deleteRow={handleDeleteRows}
+                />
               </Td>
               <Td border="none">
                 <Text fontSize="1.05em" color="#2D3748" fontWeight={450}>
@@ -128,111 +131,99 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled }) => {
   };
 
   return (
-    <VStack align="left" spacing="29px">
-      {showHeader && (
+    <Container maxW="100vw">
+      <VStack align="left" spacing="29px">
         <Text fontWeight="600" fontSize="2xl">
           Additional Species
         </Text>
-      )}
-      <FormControl>
-        <Grid marginTop="20px" minH="200px" templateColumns="repeat(6, 1fr)" gap="150">
-          <GridItem colSpan={3}>
-            <Box overflow="hidden" border="1px solid darkgray" rounded="md" mb="4">
-              <Accordion as={Table} allowToggle reduceMotion>
-                <Thead w="100%" bg="#4E4E4E" borderColor="gray.200">
-                  <Tr>
-                    <Th w="8%" bgColor="none" />
-                    <Th
-                      w="65%"
-                      fontWeight={600}
-                      color="#FFFFFF"
-                      textTransform="capitalize"
-                      fontSize=".8em"
-                    >
-                      Species
-                    </Th>
-                    <Th
-                      bgColor="none"
-                      fontWeight={600}
-                      color="#FFFFFF"
-                      textTransform="capitalize"
-                      fontSize=".8em"
-                    >
-                      Total
-                    </Th>
-                    <Th />
-                  </Tr>
-                </Thead>
-                {species.length === 0 && (
-                  <Tbody>
+        <FormControl>
+          <Grid marginTop="20px" minH="200px" templateColumns="repeat(6, 1fr)" gap="150">
+            <GridItem colSpan={3}>
+              <Box overflow="hidden" border="1px solid darkgray" rounded="md" mb="4">
+                <Accordion as={Table} allowToggle reduceMotion>
+                  <Thead w="100%" bg="#4E4E4E" borderColor="gray.200">
                     <Tr>
-                      <Td colSpan={4} textAlign="center">
-                        No species added
-                      </Td>
+                      <Th w="8%" bgColor="none" />
+                      <Th
+                        w="65%"
+                        fontWeight={600}
+                        color="#FFFFFF"
+                        textTransform="capitalize"
+                        fontSize=".8em"
+                      >
+                        Species
+                      </Th>
+                      <Th
+                        bgColor="none"
+                        fontWeight={600}
+                        color="#FFFFFF"
+                        textTransform="capitalize"
+                        fontSize=".8em"
+                      >
+                        Total
+                      </Th>
+                      <Th />
                     </Tr>
-                  </Tbody>
-                )}
-                {createTable(species)}
-              </Accordion>
-            </Box>
-            {!isDisabled && <AddSpeciesModal addNewRow={handleAddRow} />}
-          </GridItem>
-          <GridItem colSpan="2">
-            <VStack alignItems="start">
-              <Text fontWeight="600" fontSize="xl">
-                Injured Terrestrial Wildlife
-              </Text>
-              <Text>
-                To report sick or injured terrestrial wildlife, contact the WWCC at 714.374.5587
-              </Text>
-              <FormControl>
-                <NumberInput
-                  min={0}
-                  isDisabled={isDisabled}
-                  onChange={val => setValue(`${FORM_PREFIX}injuredCount`, parseInt(val, 10))}
-                  defaultValue={getValues(`${FORM_PREFIX}injuredCount`) || 0}
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
+                  </Thead>
+                  {species.length === 0 && (
+                    <Tbody>
+                      <Tr>
+                        <Td colSpan={4} textAlign="center">
+                          No species added yet
+                        </Td>
+                      </Tr>
+                    </Tbody>
+                  )}
+                  {createTable(species)}
+                </Accordion>
+              </Box>
+              <AddSpeciesModal addNewRow={handleAddRow} />
+            </GridItem>
+            <GridItem colSpan="2">
+              <VStack alignItems="start">
+                <Text fontWeight="600" fontSize="xl">
+                  Injured Terrestrial Wildlife
+                </Text>
+                <Text>
+                  To report sick or injured terrestrial wildlife, contact the WWCC at 714.374.5587
+                </Text>
+                <FormControl>
+                  <NumberInput
+                    min={0}
+                    // onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}
+                    defaultValue={0}
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
 
-              <Text fontWeight="600" fontSize="xl">
-                Beach Cast
-              </Text>
-              <FormControl>
-                <NumberInput
-                  min={0}
-                  isDisabled={isDisabled}
-                  onChange={val => setValue(`${FORM_PREFIX}beachCast`, parseInt(val, 10))}
-                  defaultValue={getValues(`${FORM_PREFIX}beachCast`) || 0}
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
-            </VStack>
-          </GridItem>
-        </Grid>
-      </FormControl>
-    </VStack>
+                <Text fontWeight="600" fontSize="xl">
+                  Beach Cast
+                </Text>
+                <FormControl>
+                  <NumberInput
+                    min={0}
+                    // onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}
+                    defaultValue={0}
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
+              </VStack>
+            </GridItem>
+          </Grid>
+        </FormControl>
+      </VStack>
+    </Container>
   );
-};
-
-AdditionalSpeciesTab.defaultProps = {
-  isDisabled: false,
-  showHeader: true,
-};
-
-AdditionalSpeciesTab.propTypes = {
-  isDisabled: PropTypes.bool,
-  showHeader: PropTypes.bool,
 };
 
 export default AdditionalSpeciesTab;
