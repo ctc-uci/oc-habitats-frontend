@@ -22,48 +22,79 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import { React, useReducer, useState } from 'react';
+import { React, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import AdditionalSpecies from '../components/monitorLog/AdditionalSpecies';
-import GeneralInfo from '../components/monitorLog/GeneralInfo';
-import HumanActivity from '../components/monitorLog/HumanActivity';
-import ListedSpeciesTab from '../components/monitorLog/ListedSpeciesTab';
-import MonitorLogSection from '../components/monitorLog/MonitorLogSection';
-import Predators from '../components/monitorLog/Predators';
-import ReviewElementTooltip from '../components/monitorLog/ReviewElementTooltip';
+import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
+import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
+import HumanActivity from '../components/MonitorLog/HumanActivity';
+import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
+import MonitorLogSection from '../components/MonitorLog/MonitorLogSection';
+import Predators from '../components/MonitorLog/Predators';
+import ReviewElementTooltip from '../components/MonitorLog/ReviewElementTooltip';
 
 const options = [
   {
-    value: 'Dave (dave@gmail.com)',
-    label: 'Dave (dave@gmail.com)',
     name: 'Dave',
     email: 'dave@gmail.com',
   },
   {
-    value: 'Brenda (brenda@gmail.com)',
-    label: 'Brenda (brenda@gmail.com)',
     name: 'Brenda',
     email: 'brenda@gmail.com',
+  },
+  {
+    name: 'Chris',
+    email: 'chris@gmail.com',
+  },
+  {
+    name: 'Chad',
+    email: 'chad@gmail.com',
+  },
+  {
+    name: 'Steve',
+    email: 'steve@gmail.com',
+  },
+  {
+    name: 'Daniel',
+    email: 'daniel@gmail.com',
+  },
+  {
+    name: 'Ryan',
+    email: 'ryan@gmail.com',
+  },
+  {
+    name: 'Jamie',
+    email: 'jamie@gmail.com',
+  },
+  {
+    name: 'Alexa',
+    email: 'alexa@gmail.com',
+  },
+  {
+    name: 'Julie',
+    email: 'julie@gmail.com',
+  },
+  {
+    name: 'Carmen',
+    email: 'carmen@gmail.com',
   },
 ];
 
 const MonitorLogPage = () => {
-  const formMethods = useForm();
-
-  const [surveySegment, setSegment] = useState();
-  const [surveyDate, setSurveyDate] = useState(new Date());
-  const [startTime, setSurveyStart] = useState('7:00');
-  const [startTimeAM, toggleStartTimeAM] = useReducer(am => !am, true);
-  const [endTime, setSurveyEnd] = useState('7:00');
-  const [endTimeAM, toggleEndTimeAM] = useReducer(am => !am, true);
-  const [temperature, setTemperature] = useState();
-  const [cloudCover, setCloudCover] = useState();
-  const [precipitation, setPrecipitation] = useState();
-  const [windSpeed, setWindSpeed] = useState();
-  const [windDirection, setWindDirection] = useState();
-  const [tides, setTides] = useState();
-  const [habitatType, setHabitatType] = useState();
-  const [habitatWidth, setHabitatWidth] = useState();
+  const formMethods = useForm({
+    defaultValues: {
+      segment: 'segment0',
+      startTime: '03:36',
+      temperature: '123',
+      cloudCover: '66',
+      precipitation: 'drizzle',
+      windSpeed: '123',
+      windDirection: 'NW',
+      tides: '3123',
+      habitatType: 'vegetation-native',
+      habitatWidth: '100-300',
+      partners: [],
+    },
+  });
 
   const [totalCrows, setTotalCrows] = useState(0);
   const [totalRavens, setTotalRavens] = useState(0);
@@ -86,21 +117,19 @@ const MonitorLogPage = () => {
   const [totalDogsOffLeash, setTotalDogsOffLeash] = useState(0);
   const [outreachNotes, setOutreachNotes] = useState();
   const [otherNotes, setOtherNotes] = useState();
-  const [partners, setPartners] = useState([]);
-  const [popup, setPopup] = useState([]);
 
   const GeneralInformationItems = [
-    { sectionTitle: 'Survey Segment', value: surveySegment },
-    { sectionTitle: 'Date (MM/DD/YYY)', value: dayjs(surveyDate).format('MM/DD/YYYY') },
-    { sectionTitle: 'Survey Start Time', value: startTime + (startTimeAM ? ' AM' : ' PM') },
-    { sectionTitle: 'Survey End Time', value: endTime + (endTimeAM ? ' AM' : ' PM') },
-    { sectionTitle: 'Temperature (F)', value: temperature },
-    { sectionTitle: 'Cloud Cover (%)', value: cloudCover },
-    { sectionTitle: 'Precipitation', value: precipitation },
-    { sectionTitle: 'Wind (Speed/Direction)', value: `${windSpeed}/${windDirection}` },
-    { sectionTitle: 'Tides (ft)', value: tides },
-    { sectionTitle: 'Overall Habitat Type', value: habitatType, toolTip: 'hi' },
-    { sectionTitle: 'Habitat Width', value: habitatWidth },
+    // { sectionTitle: 'Survey Segment', value: surveySegment },
+    // { sectionTitle: 'Date (MM/DD/YYY)', value: dayjs(surveyDate).format('MM/DD/YYYY') },
+    // { sectionTitle: 'Survey Start Time', value: startTime + (startTimeAM ? ' AM' : ' PM') },
+    // { sectionTitle: 'Survey End Time', value: endTime + (endTimeAM ? ' AM' : ' PM') },
+    // { sectionTitle: 'Temperature (F)', value: temperature },
+    // { sectionTitle: 'Cloud Cover (%)', value: cloudCover },
+    // { sectionTitle: 'Precipitation', value: precipitation },
+    // { sectionTitle: 'Wind (Speed/Direction)', value: `${windSpeed}/${windDirection}` },
+    // { sectionTitle: 'Tides (ft)', value: tides },
+    // { sectionTitle: 'Overall Habitat Type', value: habitatType, toolTip: 'hi' },
+    // { sectionTitle: 'Habitat Width', value: habitatWidth },
   ];
   const predatorItems = [
     { sectionTitle: 'Crows', value: totalCrows },
@@ -174,31 +203,7 @@ const MonitorLogPage = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <GeneralInfo
-                options={options}
-                setSegment={setSegment}
-                surveyDate={surveyDate}
-                setSurveyDate={setSurveyDate}
-                setSurveyStart={setSurveyStart}
-                startTime={startTime}
-                startTimeAM={startTimeAM}
-                toggleStartTimeAM={toggleStartTimeAM}
-                setSurveyEnd={setSurveyEnd}
-                toggleEndTimeAM={toggleEndTimeAM}
-                endTimeAM={endTimeAM}
-                setTemperature={setTemperature}
-                setCloudCover={setCloudCover}
-                setPrecipitation={setPrecipitation}
-                setWindSpeed={setWindSpeed}
-                setWindDirection={setWindDirection}
-                setTides={setTides}
-                setHabitatType={setHabitatType}
-                setHabitatWidth={setHabitatWidth}
-                partners={partners}
-                setPartners={setPartners}
-                popup={popup}
-                setPopup={setPopup}
-              />
+              <GeneralInfoTab ochUsers={options} />
             </TabPanel>
             <TabPanel>
               <ListedSpeciesTab tab={0} speciesName="Least Tern" speciesCode="LETE" />
@@ -207,7 +212,7 @@ const MonitorLogPage = () => {
               <ListedSpeciesTab tab={1} speciesName="Snowy Plover" speciesCode="WSPL" />
             </TabPanel>
             <TabPanel>
-              <AdditionalSpecies />
+              <AdditionalSpeciesTab />
             </TabPanel>
             <TabPanel>
               <Predators
