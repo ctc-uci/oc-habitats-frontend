@@ -278,7 +278,7 @@ const MonitorLogPage = () => {
                               Partner Information
                             </Th>
                             <Tbody h="72px" bg="#FFFFFF" align="left">
-                              {createTable(popup)}
+                              {/* {createTable(popup)} */}
                             </Tbody>
                           </Table>
                         </Box>

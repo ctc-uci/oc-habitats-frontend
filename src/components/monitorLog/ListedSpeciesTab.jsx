@@ -48,15 +48,15 @@ import { FiEdit3 } from 'react-icons/fi';
 import ListedSpeciesPopup from '../ListedSpecies/ListedSpeciesPopup';
 
 const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
+  const formPrefix = `listedSpecies.${tab}.`;
   const { isOpen, onOpen: openPopup, onClose } = useDisclosure();
+  const { setValue, getValues } = useFormContext();
   const confirmDeleteModal = useDisclosure();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(getValues()[`${formPrefix}data`] || []);
   const [rowToEdit, setRowToEdit] = useState(undefined);
   const [rowToDelete, setRowToDelete] = useState(undefined);
   const [totals, setTotals] = useState([0, 0, 0]);
-  const { setValue } = useFormContext();
   const toast = useToast();
-  const formPrefix = `listedSpecies.${tab}.`;
 
   useEffect(() => {
     setTotals(
@@ -64,6 +64,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
         .map(row => [row.totalAdults, row.totalFledges, row.totalChicks])
         .reduce((l, r) => [l[0] + r[0], l[1] + r[1], l[2] + r[2]], [0, 0, 0]),
     );
+    setValue(`${formPrefix}data`, data);
   }, [data]);
 
   const addRow = formData => {
