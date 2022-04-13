@@ -34,6 +34,7 @@ const ForgotPassword = () => {
       {confirmationMessage && <p>{confirmationMessage}</p>}
       <a href="/">Back to Login</a>
       <br />
+      <br />
       {errorMessage && <p>{errorMessage}</p>}
     </div>
   );
