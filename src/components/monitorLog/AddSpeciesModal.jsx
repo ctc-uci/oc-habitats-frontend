@@ -51,7 +51,7 @@ const AddSpeciesModal = ({ addNewRow }) => {
 
   return (
     <div>
-      <Button onClick={onOpen} bgColor="#2BC0E3" width="49.75em" height="48px">
+      <Button onClick={onOpen} bgColor="#2BC0E3" width="100%" height="48px">
         Add New Row +
       </Button>
       <Modal isOpen={isOpen} isCentered size="md">
