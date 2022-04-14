@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { React } from 'react';
+// import { withCookies } from 'react-cookie';
+import { Cookies, withCookies, cookieConfig } from '../common/cookie_utils';
 
 const HomePage = props => {
   return (
@@ -8,4 +10,4 @@ const HomePage = props => {
   );
 };
 
-export default HomePage;
+export default withCookies(HomePage);
