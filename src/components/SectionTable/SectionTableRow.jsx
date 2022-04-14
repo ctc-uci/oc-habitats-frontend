@@ -33,7 +33,9 @@ const SegmentNameColumn = ({ data }) => {
   return (
     <>
       <VStack>
-        <div className="segmentname-container">{data.name}</div>
+        <div className="segmentname-container">
+          {data.segment} {data.name}
+        </div>
         <div className="location-container">{data.description}</div>
       </VStack>
     </>

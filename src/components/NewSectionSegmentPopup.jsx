@@ -24,7 +24,7 @@ import Section from './Section';
 function NewSectionSegmentPopup(onAddSection, onAddSegment) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [value, setValue] = useState(0);
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState('0');
   const [volInput, setVolInput] = useState('');
   const [adminName, setAdminName] = useState('');
   const [adminEmail, setAdminEmail] = useState('');
@@ -42,7 +42,7 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
   const handButtonClick = () => {
     onOpen();
     setValue(0);
-    setStep(0);
+    setStep('0');
   };
 
   return (
@@ -63,18 +63,18 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
           <ModalHeader>Create New:</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {step === 0 && (
+            {step === '0' && (
               <>
                 <Text>User Type</Text>
                 <RadioGroup onChange={setStep} step={value}>
                   <Stack column="vertical">
-                    <Radio value={1}>Section</Radio>
-                    <Radio value={2}>Segment</Radio>
+                    <Radio value="1">Section</Radio>
+                    <Radio value="2">Segment</Radio>
                   </Stack>
                 </RadioGroup>
               </>
             )}
-            {step === 2 && (
+            {step === '2' && (
               <Stack column="vertical">
                 <ModalHeader>Add Segment</ModalHeader>
                 <Text>Segment ID</Text>
@@ -109,7 +109,7 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
                 />
               </Stack>
             )}
-            {step === 1 && (
+            {step === '1' && (
               <Stack column="vertical">
                 <ModalHeader>Add Section</ModalHeader>
                 <Text>Section Id</Text>
@@ -138,21 +138,21 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
             <Button colorScheme="gray" mr={3} onClick={onClose}>
               Close
             </Button>
-            {step === 1 && (
+            {step === '1' && (
               <Button
                 colorScheme="blue"
                 bg="ochBlue"
                 color="#F7FAFC"
                 variant="solid"
                 onClick={() => {
-                  onAddSection(newSecName);
+                  onAddSection(newSecId, newSecName, newSecMapLink);
                   onClose();
                 }}
               >
                 Create New Section
               </Button>
             )}
-            {step === 2 && (
+            {step === '2' && (
               <Button
                 colorScheme="blue"
                 bg="ochBlue"

@@ -1,4 +1,7 @@
 /* eslint-disable react/jsx-key */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
@@ -28,6 +31,7 @@ const cellStructure = [
     id: 'segmentName',
     Header: 'Segment Name',
     accessor: d => ({
+      segment: d.segment,
       name: d.name,
       description: d.description,
     }),
@@ -61,78 +65,78 @@ const cellStructure = [
   },
 ];
 
-const tempData = [
-  {
-    name: 'OCH01 Seal Beach',
-    description: '1st St. - North End of Anaheim Bay',
-    map: 'http://example.com',
-    parking: 'here is how you park',
-  },
-  {
-    name: 'OCH02 Seal Beach',
-    description: '1st St. - North End of Anaheim Bay',
-    map: 'http://example.com',
-    parking: 'here is how you park2',
-  },
-  {
-    name: 'OCH03 Seal Beach',
-    description: '1st St. - North End of Anaheim Bay',
-    map: 'http://example.com',
-    parking: 'here is how you park2',
-  },
-  {
-    name: 'OCH04 Seal Beach',
-    description: '1st St. - North End of Anaheim Bay',
-    map: 'http://example.com',
-    parking: 'here is how you park2',
-  },
-  {
-    name: 'OCH05 Seal Beach',
-    description: '1st St. - North End of Anaheim Bay',
-    map: 'http://example.com',
-    parking: 'here is how you park2',
-  },
-  {
-    name: 'OCH06 Seal Beach',
-    description: '1st St. - North End of Anaheim Bay',
-    map: 'http://example.com',
-    parking: 'here is how you park2',
-  },
-  {
-    name: 'OCH07 Seal Beach',
-    description: '1st St. - North End of Anaheim Bay',
-    map: 'http://example.com',
-    parking: 'here is how you park2',
-  },
-  {
-    name: 'OCH08 Seal Beach',
-    description: '1st St. - North End of Anaheim Bay',
-    map: 'http://example.com',
-    parking: 'here is how you park2',
-  },
-  {
-    name: 'OCH09 Seal Beach',
-    description: '1st St. - North End of Anaheim Bay',
-    map: 'http://example.com',
-    parking: 'here is how you park2',
-  },
-  {
-    name: 'OCH10 Seal Beach',
-    description: '1st St. - North End of Anaheim Bay',
-    map: 'http://example.com',
-    parking: 'here is how you park2',
-  },
-  {
-    name: 'OCH11 Seal Beach',
-    description: '1st St. - North End of Anaheim Bay',
-    map: 'http://example.com',
-    parking: 'here is how you park2',
-  },
-];
+// const tempData = [
+//   {
+//     name: 'OCH01 Seal Beach',
+//     description: '1st St. - North End of Anaheim Bay',
+//     map: 'http://example.com',
+//     parking: 'here is how you park',
+//   },
+//   {
+//     name: 'OCH02 Seal Beach',
+//     description: '1st St. - North End of Anaheim Bay',
+//     map: 'http://example.com',
+//     parking: 'here is how you park2',
+//   },
+//   {
+//     name: 'OCH03 Seal Beach',
+//     description: '1st St. - North End of Anaheim Bay',
+//     map: 'http://example.com',
+//     parking: 'here is how you park2',
+//   },
+//   {
+//     name: 'OCH04 Seal Beach',
+//     description: '1st St. - North End of Anaheim Bay',
+//     map: 'http://example.com',
+//     parking: 'here is how you park2',
+//   },
+//   {
+//     name: 'OCH05 Seal Beach',
+//     description: '1st St. - North End of Anaheim Bay',
+//     map: 'http://example.com',
+//     parking: 'here is how you park2',
+//   },
+//   {
+//     name: 'OCH06 Seal Beach',
+//     description: '1st St. - North End of Anaheim Bay',
+//     map: 'http://example.com',
+//     parking: 'here is how you park2',
+//   },
+//   {
+//     name: 'OCH07 Seal Beach',
+//     description: '1st St. - North End of Anaheim Bay',
+//     map: 'http://example.com',
+//     parking: 'here is how you park2',
+//   },
+//   {
+//     name: 'OCH08 Seal Beach',
+//     description: '1st St. - North End of Anaheim Bay',
+//     map: 'http://example.com',
+//     parking: 'here is how you park2',
+//   },
+//   {
+//     name: 'OCH09 Seal Beach',
+//     description: '1st St. - North End of Anaheim Bay',
+//     map: 'http://example.com',
+//     parking: 'here is how you park2',
+//   },
+//   {
+//     name: 'OCH10 Seal Beach',
+//     description: '1st St. - North End of Anaheim Bay',
+//     map: 'http://example.com',
+//     parking: 'here is how you park2',
+//   },
+//   {
+//     name: 'OCH11 Seal Beach',
+//     description: '1st St. - North End of Anaheim Bay',
+//     map: 'http://example.com',
+//     parking: 'here is how you park2',
+//   },
+// ];
 
-const SectionTable = ({ loading }) => {
+const SectionTable = ({ sectionId, loading, segments }) => {
   const columns = useMemo(() => cellStructure, []);
-  const data = useMemo(() => tempData, []);
+  const data = useMemo(() => segments, []);
   const {
     getTableProps,
     getTableBodyProps,

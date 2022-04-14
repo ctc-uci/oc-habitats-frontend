@@ -29,6 +29,119 @@ import Section from '../components/Section';
 import CreateNew from '../components/NewSectionSegmentPopup';
 import SectionTable from '../components/SectionTable/SectionTable';
 
+const tempData = [
+  {
+    id: 1,
+    title: 'sdadsdfssdf',
+    segments: [
+      {
+        segment: 'OCH01',
+        name: 'Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park',
+      },
+      {
+        segment: 'OCH01',
+        name: 'Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park2',
+      },
+      {
+        segment: 'OCH01',
+        name: 'Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park2',
+      },
+      {
+        segment: 'OCH01',
+        name: 'Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park2',
+      },
+      {
+        segment: 'OCH01',
+        name: 'Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park2',
+      },
+      {
+        segment: 'OCH01',
+        name: 'Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park2',
+      },
+      {
+        segment: 'OCH01',
+        name: 'Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park2',
+      },
+      {
+        segment: 'OCH01',
+        name: 'Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park2',
+      },
+      {
+        segment: 'OCH01',
+        name: 'Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park2',
+      },
+      {
+        segment: 'OCH01',
+        name: 'Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park2',
+      },
+      {
+        segment: 'OCH01',
+        name: 'Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park2',
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: 'Newport Beach to Laguna Beach',
+    segments: [
+      {
+        segment: 'OCH01',
+        name: '2OCH01 Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park',
+      },
+      {
+        segment: 'OCH01',
+        name: '2OCH02 Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park2',
+      },
+      {
+        segment: 'OCH01',
+        name: '2OCH03 Seal Beach',
+        description: '1st St. - North End of Anaheim Bay',
+        map: 'http://example.com',
+        parking: 'here is how you park2',
+      },
+    ],
+  },
+];
+
 const sectionsData = [
   {
     id: 1,
@@ -83,17 +196,6 @@ const sectionsData = [
   },
 ];
 
-function CreateNewSectionSegment(onAddSegment, addSection) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  return (
-    <>
-      {/* <Button size="md" bg="#2BC0E3" variant="solid" rightIcon={<AddIcon />} onClick={onOpen}>
-        Create New Section or Segment
-      </Button> */}
-    </>
-  );
-}
-
 function AddSectionPopup(addSection) {
   let newSecName = '';
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -136,11 +238,11 @@ function AddSectionPopup(addSection) {
 }
 
 const SectionPage = () => {
-  const [sections, setSections] = useState(sectionsData);
+  const [sections, setSections] = useState(tempData); // sectionsData
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const addSection = newSecName => {
+  const addSection = (newSecId, newSecName, newSecMapLink) => {
     const newSection = {
-      id: sections.length + 1,
+      id: newSecId,
       title: newSecName,
       segments: [],
     };
@@ -165,11 +267,20 @@ const SectionPage = () => {
     setSections(updatedSegSections);
   };
 
-  const addSegment = (sectionId, newSegId, newSegName, newSegDist) => {
+  const addSegment = (
+    sectionId,
+    newSegId,
+    newSegName,
+    newSegDescription,
+    newSegMap,
+    newSegParking,
+  ) => {
     const newSegment = {
       segment: newSegId,
-      segmentName: newSegName,
-      distance: newSegDist,
+      name: newSegName,
+      description: newSegDescription,
+      map: newSegMap,
+      parking: newSegParking,
     };
     const newSegSections = [...sections];
     const { segments } = newSegSections.filter(section => section.id === sectionId)[0];
@@ -229,7 +340,7 @@ const SectionPage = () => {
     <>
       <Box marginLeft="110px">
         <Heading align="left" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
-          Sections & Segments
+          Sections & Segments with PAGINATIOON
         </Heading>
 
         <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange">
@@ -239,14 +350,22 @@ const SectionPage = () => {
                 <TabPanel key={sectionObj.id} padding="0px">
                   <CreateNew
                     key={sectionObj.id}
-                    onAddSection={newSecName => addSection(newSecName)}
-                    onAddSegment={(newSeg, newSegName, newSegLocation, newSegLink, newSegParking) =>
+                    onAddSection={(newSecId, newSecName, newSecMapLink) =>
+                      addSection(newSecId, newSecName, newSecMapLink)
+                    }
+                    onAddSegment={(
+                      newSegId,
+                      newSegName,
+                      newSegDescription,
+                      newSegMap,
+                      newSegParking,
+                    ) =>
                       addSegment(
                         sectionObj.id,
-                        newSeg,
+                        newSegId,
                         newSegName,
-                        newSegLocation,
-                        newSegLink,
+                        newSegDescription,
+                        newSegMap,
                         newSegParking,
                       )
                     }
@@ -334,7 +453,9 @@ const SectionPage = () => {
                       // userData={volunteerData}
                       // segments={segments}
                       // loading={isLoading}
+                      sectionId={sectionObj.id}
                       loading={false}
+                      segments={sectionObj.segments}
                     />
                   </Container>
                 </TabPanel>
