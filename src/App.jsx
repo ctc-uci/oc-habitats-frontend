@@ -24,11 +24,25 @@ import MonitorLogPage from './pages/MonitorLogPage';
 import EndangeredSpeciesPopup from './pages/EndangeredSpeciesPopup';
 import Register from './components/Authentication/Register';
 // import NewUser from './components/Authentication/NewUser';
+import { Box, ChakraProvider } from '@chakra-ui/react';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './App.css';
+import ListedSpeciesPopup from './components/ListedSpecies/ListedSpeciesPopup';
+import Footer from './components/Footer/Footer';
+import Navbar from './components/Navbar/Navbar';
+import AccountPage from './pages/AccountPage';
+import AdminPage from './pages/AdminPage'; // monitor-log table
+import HomePage from './pages/HomePage';
+import MonitorLogPage from './pages/MonitorLogPage';
 import PeoplePage from './pages/PeoplePage';
+import SectionPage from './pages/SectionPage';
 import Species from './pages/Species';
+
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
+import theme from './theme/theme';
 
 import theme from './theme/theme';
 import AUTH_ROLES from './common/auth_config';
