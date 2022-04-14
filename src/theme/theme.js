@@ -11,6 +11,34 @@ const theme = extendTheme({
     ochOrange: '#F49923',
     ochBlack: '#231F20',
   },
+  components: {
+    Badge: {
+      variants: {
+        capitalize: props => ({
+          ...theme.components.Badge.variants.solid(props),
+          textTransform: 'capitalize',
+          width: 'min-content',
+        }),
+      },
+    },
+    Button: {
+      variants: {
+        solidNoHover: props => ({
+          ...theme.components.Button.variants.solid(props),
+          _hover: {},
+          _active: {},
+        }),
+      },
+    },
+    IconButton: {
+      variants: {
+        noHover: {
+          _hover: {},
+          _active: {},
+        },
+      },
+    },
+  },
 });
 
 export default theme;

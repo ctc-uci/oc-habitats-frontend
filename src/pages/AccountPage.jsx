@@ -395,6 +395,7 @@ const AccountPage = ({
                   />
                 </HStack>
               </GridItem>
+
             </GridItem>
           </Grid>
         </VStack>

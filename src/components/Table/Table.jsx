@@ -312,7 +312,7 @@ function PeopleTable({ columns, data }) {
               <Tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map(column => (
                   <Th
-                    class="table-head"
+                    className="table-head"
                     key={column.id}
                     userSelect="none"
                     {...column.getHeaderProps(column.getSortByToggleProps())}

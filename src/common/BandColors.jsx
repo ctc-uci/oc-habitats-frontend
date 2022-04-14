@@ -1,24 +1,7 @@
-import React from 'react';
-import { chakra } from '@chakra-ui/react';
-import { IconContext } from 'react-icons';
-import { BsFillCircleFill } from 'react-icons/bs';
-
 const createColorOption = (label, value, selectColor, realColor) => ({
   label: `${label} (${value})`,
   value,
   selectColor,
-  selectIcon: (
-    <chakra.span
-      marginRight={2}
-      borderWidth="1px"
-      borderColor={value === 'W' ? 'gray.600' : realColor}
-      borderRadius="3xl"
-    >
-      <IconContext.Provider value={{ color: realColor }}>
-        <BsFillCircleFill />
-      </IconContext.Provider>
-    </chakra.span>
-  ),
   realColor,
 });
 
