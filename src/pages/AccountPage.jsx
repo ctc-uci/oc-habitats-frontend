@@ -163,7 +163,23 @@ const AccountPage = ({
       setChangesMade(false);
       setCurrPassword('');
       setNewPassword('');
-      if (newPassword) setUser({ ...user, currPassword: newPassword });
+      if (newPassword)
+        setUser({
+          ...user,
+          firstName,
+          lastName,
+          email,
+          currPassword: newPassword,
+        });
+      else {
+        setUser({
+          ...user,
+          firstName,
+          lastName,
+          email,
+        });
+      }
+
       return Toast(toast, 'success');
     } catch (err) {
       return Toast(toast, 'error');

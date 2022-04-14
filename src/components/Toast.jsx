@@ -7,66 +7,35 @@ const Toast = (toast, status) => {
   const position = 'top';
   const isClosable = true;
   const duration = 5000;
+  let description = '';
   if (status === 'success') {
-    return toast({
-      description: 'Successfully saved changes!',
-      position,
-      status,
-      variant,
-      duration,
-      isClosable,
-      containerStyle,
-    });
+    description = 'Successfully saved changes!';
   }
 
   if (status === 'error') {
-    return toast({
-      description: 'Error: Unable to save',
-      position,
-      status,
-      variant,
-      duration,
-      isClosable,
-      containerStyle,
-    });
+    description = 'Error: Unable to save';
   }
 
   if (status === 'password') {
-    return toast({
-      description: 'Error: Current passowrd is incorrect',
-      position,
-      status: 'error',
-      variant,
-      duration,
-      isClosable,
-      containerStyle,
-    });
+    description = 'Error: Current passowrd is incorrect';
   }
 
   if (status === 'empty') {
-    return toast({
-      description: 'Error - Please enter a new passowrd',
-      position,
-      status: 'error',
-      variant,
-      duration,
-      isClosable,
-      containerStyle,
-    });
+    description = 'Error: Please enter a new passowrd';
   }
 
   if (status === 'unsaved') {
-    return toast({
-      description: `Careful - you have unsaved changes`,
-      position,
-      status: 'error',
-      variant,
-      duration,
-      isClosable,
-      containerStyle,
-    });
+    description = 'Careful - you have unsaved changes';
   }
-  return {};
+  return toast({
+    description,
+    position,
+    status: status === 'success' ? status : 'error',
+    variant,
+    duration,
+    isClosable,
+    containerStyle,
+  });
 };
 
 Toast.propTypes = {
