@@ -19,7 +19,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, useFormContext } from 'react-hook-form';
 import './GeneralInfoTab.css';
 
-function GeneralInfoTab({ ochUsers }) {
+function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
   const { control, register } = useFormContext();
 
   const partnerSelectOptions = ochUsers.map(user => ({
@@ -37,9 +37,11 @@ function GeneralInfoTab({ ochUsers }) {
   return (
     <div>
       <Container maxW="100vw">
-        <Text fontWeight="600" fontSize="2xl">
-          General Information
-        </Text>
+        {showHeader && (
+          <Text fontWeight="600" fontSize="2xl">
+            General Information
+          </Text>
+        )}
         <VStack spacing="23px" align="left">
           <SimpleGrid columns={4} rows={3} spacingX="64px" spacingY="68px">
             <GridItem colSpan={1} rowSpan={1} width="200px">
@@ -47,7 +49,7 @@ function GeneralInfoTab({ ochUsers }) {
                 <Text fontWeight="500" fontSize="md">
                   Survey Segment
                 </Text>
-                <Select {...register('segment')}>
+                <Select disabled={isDisabled} {...register('segment')}>
                   {user.segments.map(segment => (
                     <option value={segment.name} key={segment.id}>
                       {segment.name}
@@ -64,7 +66,11 @@ function GeneralInfoTab({ ochUsers }) {
                 control={control}
                 name="surveyDate"
                 render={({ field }) => (
-                  <DatePicker onChange={field.onChange} selected={field.value} />
+                  <DatePicker
+                    disabled={isDisabled}
+                    onChange={field.onChange}
+                    selected={field.value}
+                  />
                 )}
               />
             </GridItem>
@@ -73,7 +79,7 @@ function GeneralInfoTab({ ochUsers }) {
                 <Text fontWeight="500" fontSize="md">
                   Survey Start Time
                 </Text>
-                <Input type="time" {...register('startTime')} />
+                <Input disabled={isDisabled} type="time" {...register('startTime')} />
               </VStack>
             </GridItem>
             <GridItem colSpan={1} rowSpan={1} width="200px">
@@ -81,7 +87,7 @@ function GeneralInfoTab({ ochUsers }) {
                 <Text fontWeight="500" fontSize="md">
                   Survey End Time
                 </Text>
-                <Input type="time" {...register('endTime')} />
+                <Input disabled={isDisabled} type="time" {...register('endTime')} />
               </VStack>
             </GridItem>
             <GridItem colSpan={1} rowSpan={1} width="200px">
@@ -89,7 +95,7 @@ function GeneralInfoTab({ ochUsers }) {
                 <Text fontWeight="500" fontSize="md">
                   Temperature (F)
                 </Text>
-                <Input {...register('temperature')} />
+                <Input disabled={isDisabled} {...register('temperature')} />
               </VStack>
             </GridItem>
             <GridItem colSpan={1} rowSpan={1} width="200px">
@@ -97,7 +103,7 @@ function GeneralInfoTab({ ochUsers }) {
                 <Text fontWeight="500" fontSize="md">
                   Cloud Cover (%)
                 </Text>
-                <Select {...register('cloudCover')}>
+                <Select disabled={isDisabled} {...register('cloudCover')}>
                   <option value="0">0</option>
                   <option value="33">33</option>
                   <option value="66">66</option>
@@ -110,7 +116,7 @@ function GeneralInfoTab({ ochUsers }) {
                 <Text fontWeight="500" fontSize="md">
                   Precipitation
                 </Text>
-                <Select {...register('precipitation')}>
+                <Select disabled={isDisabled} {...register('precipitation')}>
                   <option value="none">None</option>
                   <option value="fog">Fog</option>
                   <option value="drizzle">Drizzle</option>
@@ -125,10 +131,10 @@ function GeneralInfoTab({ ochUsers }) {
                 </Text>
                 <SimpleGrid columns={2} spacing="12px">
                   <GridItem>
-                    <Input {...register('windSpeed')} />
+                    <Input disabled={isDisabled} {...register('windSpeed')} />
                   </GridItem>
                   <GridItem>
-                    <Select {...register('windDirection')}>
+                    <Select disabled={isDisabled} {...register('windDirection')}>
                       <option value="N">N</option>
                       <option value="NE">NE</option>
                       <option value="NW">NW</option>
@@ -147,7 +153,7 @@ function GeneralInfoTab({ ochUsers }) {
                 <Text fontWeight="500" fontSize="md">
                   Tides (ft)
                 </Text>
-                <Input placeholder="00.00" {...register('tides')} />
+                <Input disabled={isDisabled} placeholder="00.00" {...register('tides')} />
               </VStack>
             </GridItem>
             <GridItem colSpan={1} rowSpan={1} width="200px">
@@ -164,7 +170,7 @@ function GeneralInfoTab({ ochUsers }) {
                     <InfoIcon />
                   </Tooltip>
                 </Flex>
-                <Select {...register('habitatType')}>
+                <Select disabled={isDisabled} {...register('habitatType')}>
                   <option value="sandy beach">Sandy beach</option>
                   <option value="dunes">Dunes</option>
                   <option value="vegetation-native">Vegetation-Native</option>
@@ -180,7 +186,7 @@ function GeneralInfoTab({ ochUsers }) {
                 <Text fontWeight="500" fontSize="md">
                   Habitat Width (ft)
                 </Text>
-                <Select {...register('habitatWidth')}>
+                <Select disabled={isDisabled} {...register('habitatWidth')}>
                   <option value="0=10">0-10</option>
                   <option value="10-50">10-50</option>
                   <option value="50-100">50-100</option>
@@ -205,6 +211,7 @@ function GeneralInfoTab({ ochUsers }) {
               render={({ field }) => (
                 <ReactSelect
                   {...field}
+                  isDisabled={isDisabled}
                   isMulti
                   options={partnerSelectOptions}
                   placeholder="Search for member by name or email..."
@@ -221,6 +228,11 @@ function GeneralInfoTab({ ochUsers }) {
   );
 }
 
+GeneralInfoTab.defaultProps = {
+  isDisabled: false,
+  showHeader: true,
+};
+
 GeneralInfoTab.propTypes = {
   ochUsers: PropTypes.arrayOf(
     PropTypes.shape({
@@ -229,6 +241,8 @@ GeneralInfoTab.propTypes = {
       email: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  isDisabled: PropTypes.bool,
+  showHeader: PropTypes.bool,
 };
 
 export default GeneralInfoTab;

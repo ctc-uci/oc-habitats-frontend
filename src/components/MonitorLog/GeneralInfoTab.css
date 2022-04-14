@@ -12,3 +12,7 @@
   border-radius: 6px;
   padding-left: 16px;
 }
+
+input[disabled], select[disabled] {
+  opacity: 0.6 !important;
+}

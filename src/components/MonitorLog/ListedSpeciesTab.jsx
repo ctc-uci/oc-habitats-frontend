@@ -52,7 +52,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
   const { isOpen, onOpen: openPopup, onClose } = useDisclosure();
   const { setValue, getValues } = useFormContext();
   const confirmDeleteModal = useDisclosure();
-  const [data, setData] = useState(getValues()[`${formPrefix}data`] || []);
+  const [data, setData] = useState(getValues(`${formPrefix}data`) || []);
   const [rowToEdit, setRowToEdit] = useState(undefined);
   const [rowToDelete, setRowToDelete] = useState(undefined);
   const [totals, setTotals] = useState([0, 0, 0]);
@@ -116,8 +116,9 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
       ['Map #', row.map],
       [
         'GPS',
-        row.gps.map(gps => (
-          <div key={gps.latitude + gps.longitude}>
+        row.gps.map((gps, idx) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <div key={idx}>
             {gps.latitude || 'n/a'}, {gps.longitude || 'n/a'}
           </div>
         )),

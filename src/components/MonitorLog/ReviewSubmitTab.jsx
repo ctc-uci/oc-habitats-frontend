@@ -4,20 +4,21 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Button,
   HStack,
   Text,
 } from '@chakra-ui/react';
-import React from 'react';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { FormProvider, useForm, useFormContext, useWatch } from 'react-hook-form';
 import GeneralInfoTab from './GeneralInfoTab';
 
 const ReviewSubmitTab = () => {
-  const { register, getValues } = useFormContext();
-  const nestedForm = useForm({
-    defaultValues: getValues(),
-  });
+  // const { control, register, getValues, watch } = useFormContext();
+  const parentForm = useFormContext();
+  const nestedForm = useForm({ defaultValues: parentForm.getValues() });
   return (
     <FormProvider {...nestedForm}>
+      {/* <Button onClick={test}>Test</Button> */}
       <Accordion allowMultiple="true" defaultIndex={[0]}>
         <AccordionItem borderColor="white" spacing={10}>
           <HStack>
@@ -33,7 +34,7 @@ const ReviewSubmitTab = () => {
             </AccordionButton>
           </HStack>
           <AccordionPanel padding="0">
-            <GeneralInfoTab ochUsers={[]} />
+            <GeneralInfoTab ochUsers={[]} showHeader={false} isDisabled />
           </AccordionPanel>
         </AccordionItem>
       </Accordion>

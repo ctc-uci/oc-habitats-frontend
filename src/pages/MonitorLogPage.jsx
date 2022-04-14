@@ -31,6 +31,7 @@ import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
 import MonitorLogSection from '../components/MonitorLog/MonitorLogSection';
 import PredatorsTab from '../components/MonitorLog/PredatorsTab';
 import ReviewElementTooltip from '../components/MonitorLog/ReviewElementTooltip';
+import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
 
 const options = [
   {
@@ -167,7 +168,7 @@ const MonitorLogPage = () => {
         <Heading align="center" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
           Coastal Dune Habitat Survey Log
         </Heading>
-        <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange">
+        <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange" isLazy>
           <TabList p="32px" alignItems="center">
             <HStack spacing="24px">
               <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
@@ -228,6 +229,7 @@ const MonitorLogPage = () => {
             </TabPanel>
             <TabPanel>
               <Stack spacing={8}>
+                <ReviewSubmitTab />
                 <Accordion allowMultiple="true" defaultIndex={[0]}>
                   <AccordionItem borderColor="white" spacing={10}>
                     <HStack>
@@ -243,7 +245,6 @@ const MonitorLogPage = () => {
                       </AccordionButton>
                     </HStack>
                     <AccordionPanel padding="0">
-                      <GeneralInfoTab ochUsers={options} />
                       <MonitorLogSection reviewElements={GeneralInformationItems} />
                       <VStack align="left" pt={8}>
                         <Text fontSize="21px" fontWeight={550} width="30%">
