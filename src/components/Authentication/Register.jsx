@@ -36,10 +36,23 @@ const Register = ({ inviteEmail, inviteRole }) => {
     e.preventDefault();
     // console.log(`handleSubmit called with ${firstName}, ${lastName}, ${email}, ${password}`);
     try {
-      if (password !== checkPassword) {
-        throw new Error("Passwords don't match");
+      if (password === checkPassword) {
+        if (password.length > 5) {
+          await registerWithEmailAndPassword(
+            email,
+            password,
+            firstName,
+            lastName,
+            role,
+            navigate,
+            '/',
+          );
+        } else {
+          setErrorMessage('Password must be 6 characters or longer');
+        }
+      } else {
+        setErrorMessage("Passwords don't match");
       }
-      await registerWithEmailAndPassword(email, password, firstName, lastName, role, navigate, '/');
     } catch (error) {
       setErrorMessage(error.message);
     }

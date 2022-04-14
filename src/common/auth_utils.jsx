@@ -195,10 +195,10 @@ const registerWithEmailAndPassword = async (
   try {
     createUser(email, password, firstName, lastName, role);
     await OCHBackend.delete(`/adminInvite/${email}`);
-    navigate(redirectPath);
   } catch (err) {
     throw new Error(err.message);
   }
+  navigate(redirectPath);
 };
 
 /**
