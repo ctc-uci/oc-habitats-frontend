@@ -26,7 +26,7 @@ import { React, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
 import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
-import HumanActivity from '../components/MonitorLog/HumanActivity';
+import HumanActivity from '../components/MonitorLog/HumanActivityTab';
 import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
 import MonitorLogSection from '../components/MonitorLog/MonitorLogSection';
 import PredatorsTab from '../components/MonitorLog/PredatorsTab';
@@ -124,13 +124,13 @@ const MonitorLogPage = () => {
     // { sectionTitle: 'Habitat Width', value: habitatWidth },
   ];
   const predatorItems = [
-    { sectionTitle: 'Crows', value: totalCrows },
-    { sectionTitle: 'Ravens', value: totalRavens },
-    { sectionTitle: 'Raptors', value: totalRaptors },
-    { sectionTitle: 'Horses', value: totalHorses },
-    { sectionTitle: 'Coyotes', value: totalCoyotes },
-    { sectionTitle: 'Foxes', value: totalFoxes },
-    { sectionTitle: 'Cats', value: totalCats },
+    // { sectionTitle: 'Crows', value: totalCrows },
+    // { sectionTitle: 'Ravens', value: totalRavens },
+    // { sectionTitle: 'Raptors', value: totalRaptors },
+    // { sectionTitle: 'Horses', value: totalHorses },
+    // { sectionTitle: 'Coyotes', value: totalCoyotes },
+    // { sectionTitle: 'Foxes', value: totalFoxes },
+    // { sectionTitle: 'Cats', value: totalCats },
   ];
   const humanActivityItems = [
     { sectionTitle: 'Humans Sitting', value: totalSitting },
@@ -243,6 +243,7 @@ const MonitorLogPage = () => {
                       </AccordionButton>
                     </HStack>
                     <AccordionPanel padding="0">
+                      <GeneralInfoTab ochUsers={options} />
                       <MonitorLogSection reviewElements={GeneralInformationItems} />
                       <VStack align="left" pt={8}>
                         <Text fontSize="21px" fontWeight={550} width="30%">
@@ -287,7 +288,7 @@ const MonitorLogPage = () => {
                       <MonitorLogSection reviewElements={predatorItems} />
                       <ReviewElementTooltip
                         sectionTitle="Other Predator(s)"
-                        value={otherPredators}
+                        // value={otherPredators}
                         label="Any potential predator species not listed above"
                         toggle="true"
                       />
