@@ -17,11 +17,11 @@ const Toast = (toast, status) => {
   }
 
   if (status === 'password') {
-    description = 'Error: Current passowrd is incorrect';
+    description = 'Error: Current password is incorrect';
   }
 
   if (status === 'empty') {
-    description = 'Error: Please enter a new passowrd';
+    description = 'Error: Please enter a new password';
   }
 
   if (status === 'unsaved') {

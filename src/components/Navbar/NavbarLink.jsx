@@ -8,8 +8,6 @@ const NavbarLink = ({ text, path = '/', changesMade }) => {
   const current = useLocation().pathname;
   const toast = useToast();
   const handleOnClick = e => {
-    e.preventDefault();
-
     if (changesMade) {
       e.preventDefault();
       return Toast(toast, 'unsaved');

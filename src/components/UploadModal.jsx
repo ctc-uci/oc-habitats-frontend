@@ -108,7 +108,7 @@ function UploadModal({ title, isOpen, toggleOpen, saveUpload }) {
                   }}
                   isDisabled={!hasUpload}
                 >
-                  Save Changes
+                  Confirm
                 </Button>
               </HStack>
             </VStack>
@@ -119,18 +119,11 @@ function UploadModal({ title, isOpen, toggleOpen, saveUpload }) {
   );
 }
 
-UploadModal.defaultProps = {
-  title: PropTypes.string,
-  isOpen: PropTypes.bool,
-  saveUpload: PropTypes.func,
-  toggleOpen: PropTypes.func,
-};
-
 UploadModal.propTypes = {
-  title: PropTypes.string,
-  isOpen: PropTypes.bool,
-  saveUpload: PropTypes.func,
-  toggleOpen: PropTypes.func,
+  title: PropTypes.string.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  saveUpload: PropTypes.func.isRequired,
+  toggleOpen: PropTypes.func.isRequired,
 };
 
 export default UploadModal;

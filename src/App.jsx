@@ -2,7 +2,6 @@ import { useState, React } from 'react';
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/no-useless-path-segments */
-import React from 'react';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import { Box, ChakraProvider } from '@chakra-ui/react';
 import { CookiesProvider } from 'react-cookie';
@@ -53,7 +52,13 @@ function App() {
                 <Route path="/register/:inviteID" element={<InviteLandingPage />} />
                 <Route exact path="/invite" element={<AdminInviteModal />} />
                 <Route exact path="/" element={<HomePage />} />
-                <Route exact path="/account" element={<AccountPage changesMade={accMadeChanges} setChangesMade={setAccMadeChanges} />} />
+                <Route
+                  exact
+                  path="/account"
+                  element={
+                    <AccountPage changesMade={accMadeChanges} setChangesMade={setAccMadeChanges} />
+                  }
+                />
                 <Route exact path="/create-log" element={<MonitorLogPage />} />
                 <Route exact path="/sections" element={<SectionPage />} />
                 <Route exact path="/species" element={<Species />} />

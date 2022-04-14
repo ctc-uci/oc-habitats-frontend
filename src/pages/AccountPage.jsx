@@ -52,6 +52,7 @@ const AccountPage = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageSource, setImageSource] = useState(null);
   const [file, setFile] = useState(0);
+
   // Holds user info from mongo
   const [user, setUser] = useState({
     firstName: null,
@@ -118,11 +119,6 @@ const AccountPage = ({
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks
-    if (file) URL.revokeObjectURL(file.preview);
-  }, file);
-
   const checkChanges = () => {
     if (
       user.email !== email ||
@@ -138,6 +134,7 @@ const AccountPage = ({
   };
 
   const saveUpload = upload => {
+    URL.revokeObjectURL(file.preview);
     setFile(upload);
     setChangesMade(true);
   };
