@@ -29,7 +29,7 @@ import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
 import HumanActivity from '../components/MonitorLog/HumanActivity';
 import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
 import MonitorLogSection from '../components/MonitorLog/MonitorLogSection';
-import Predators from '../components/MonitorLog/Predators';
+import PredatorsTab from '../components/MonitorLog/PredatorsTab';
 import ReviewElementTooltip from '../components/MonitorLog/ReviewElementTooltip';
 
 const options = [
@@ -96,14 +96,6 @@ const MonitorLogPage = () => {
     },
   });
 
-  const [totalCrows, setTotalCrows] = useState(0);
-  const [totalRavens, setTotalRavens] = useState(0);
-  const [totalRaptors, setTotalRaptors] = useState(0);
-  const [totalHorses, setTotalHorses] = useState(0);
-  const [totalCoyotes, setTotalCoyotes] = useState(0);
-  const [totalFoxes, setTotalFoxes] = useState(0);
-  const [totalCats, setTotalCats] = useState(0);
-  const [otherPredators, setOtherPredators] = useState();
   const [totalSitting, setTotalSitting] = useState(0);
   const [totalWalkingRunning, setTotalWalkingRunning] = useState(0);
   const [totalBikes, setTotalBikes] = useState(0);
@@ -215,16 +207,7 @@ const MonitorLogPage = () => {
               <AdditionalSpeciesTab />
             </TabPanel>
             <TabPanel>
-              <Predators
-                setTotalCrows={setTotalCrows}
-                setTotalRavens={setTotalRavens}
-                setTotalRaptors={setTotalRaptors}
-                setTotalHorses={setTotalHorses}
-                setTotalCoyotes={setTotalCoyotes}
-                setTotalFoxes={setTotalFoxes}
-                setTotalCats={setTotalCats}
-                setOtherPredators={setOtherPredators}
-              />
+              <PredatorsTab />
             </TabPanel>
             <TabPanel>
               <HumanActivity
