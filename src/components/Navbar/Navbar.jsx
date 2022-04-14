@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { HStack, Flex, Button, Avatar, Image, useToast } from '@chakra-ui/react';
 import NavbarLink from './NavbarLink';
+import ProfileDropdown from './ProfileDropdown';
 import logo from '../../assets/OCHlogo.png';
 import Toast from '../Toast';
 
@@ -18,15 +19,16 @@ const Navbar = ({ isAdmin, changesMade }) => {
   const admin = [
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'People', path: '/people' },
-    { text: 'Species List', path: '/species' },
+    { text: 'Species Catalog', path: '/species' },
     { text: 'Sections & Segments', path: '/sections' },
-    { text: 'Contacts', path: '/contacts' },
+    { text: 'Emergency Numbers', path: '/emergency-numbers' },
   ];
 
   const volunteer = [
     { text: 'Monitor Logs', path: '/logs' },
-    { text: 'Species List', path: '/species' },
+    { text: 'Species Catalog', path: '/species' },
     { text: 'Sections & Segments', path: '/sections' },
+    { text: 'Emergency Numbers', path: '/emergency-numbers' },
   ];
 
   const handleOnClick = e => {
@@ -51,7 +53,15 @@ const Navbar = ({ isAdmin, changesMade }) => {
       h="60px"
     >
       <Link to="/" onClick={handleOnClick}>
-        <Image pl={4} pr={0} maxW="25%" src={logo} alt="logo" _hover={{ opacity: '0.8' }} />
+        <Image
+          pl={4}
+          pr={0}
+          maxW="50%"
+          maxH="100"
+          src={logo}
+          alt="logo"
+          _hover={{ opacity: '0.8' }}
+        />
       </Link>
       {/* TO DO: if user is not signed in, only logo */}
       <HStack h="inherit" spacing={6} pr={4}>
@@ -71,9 +81,7 @@ const Navbar = ({ isAdmin, changesMade }) => {
             </Button>
           </Link>
         )}
-        <Link to="/account">
-          <Avatar m={1} name={user.firstName + user.lastName} src={user.profilePic} />
-        </Link>
+        <ProfileDropdown isAdmin={isAdmin} />
       </HStack>
     </Flex>
   );
