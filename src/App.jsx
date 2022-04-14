@@ -36,6 +36,8 @@ import AUTH_ROLES from './common/auth_config';
 
 const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
+// TO-DO: Navbar based on screen width
+
 function App() {
   return (
     <ChakraProvider theme={theme}>
