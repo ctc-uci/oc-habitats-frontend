@@ -31,7 +31,7 @@ const PREDATORS = [
   ['Cat', 'cat'],
 ];
 
-const PredatorField = ({ predatorName, predatorId }) => {
+const PredatorField = ({ predatorName, predatorId, isDisabled }) => {
   const { setValue, getValues } = useFormContext();
 
   return (
@@ -42,8 +42,9 @@ const PredatorField = ({ predatorName, predatorId }) => {
         </Text>
         <NumberInput
           min={0}
+          isDisabled={isDisabled}
           onChange={(_, val) => setValue(FORM_PREFIX + predatorId, val)}
-          defaultValue={getValues()[FORM_PREFIX + predatorId] || 0}
+          defaultValue={getValues(FORM_PREFIX + predatorId) || 0}
         >
           <NumberInputField />
           <NumberInputStepper>
@@ -59,19 +60,27 @@ const PredatorField = ({ predatorName, predatorId }) => {
 PredatorField.propTypes = {
   predatorName: PropTypes.string.isRequired,
   predatorId: PropTypes.string.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
 };
 
-const PredatorsTab = () => {
+const PredatorsTab = ({ showHeader, isDisabled }) => {
   const { register } = useFormContext();
   return (
     <Container maxW="100vw">
       <VStack spacing="23px" align="left">
-        <Text fontWeight="600" fontSize="2xl">
-          Predators
-        </Text>
+        {showHeader && (
+          <Text fontWeight="600" fontSize="2xl">
+            Predators
+          </Text>
+        )}
         <SimpleGrid columns={4} spacingX="64px" spacingY="68px">
           {PREDATORS.map(([name, value]) => (
-            <PredatorField key={value} predatorName={name} predatorId={value} />
+            <PredatorField
+              key={value}
+              predatorName={name}
+              predatorId={value}
+              isDisabled={isDisabled}
+            />
           ))}
         </SimpleGrid>
         <Spacer />
@@ -95,6 +104,16 @@ const PredatorsTab = () => {
       </VStack>
     </Container>
   );
+};
+
+PredatorsTab.defaultProps = {
+  isDisabled: false,
+  showHeader: true,
+};
+
+PredatorsTab.propTypes = {
+  isDisabled: PropTypes.bool,
+  showHeader: PropTypes.bool,
 };
 
 export default PredatorsTab;

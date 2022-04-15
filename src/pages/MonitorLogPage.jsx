@@ -1,5 +1,5 @@
 import { Box, Heading, HStack, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import { React } from 'react';
+import { React, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
 import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
@@ -56,21 +56,9 @@ const options = [
 ];
 
 const MonitorLogPage = () => {
-  const formMethods = useForm({
-    defaultValues: {
-      segment: 'segment0',
-      startTime: '03:36',
-      temperature: '123',
-      cloudCover: '66',
-      precipitation: 'drizzle',
-      windSpeed: '123',
-      windDirection: 'NW',
-      tides: '3123',
-      habitatType: 'vegetation-native',
-      habitatWidth: '100-300',
-      partners: [],
-    },
-  });
+  const formMethods = useForm({});
+
+  const [activeTab, setActiveTab] = useState(0);
 
   return (
     <Box ml="171px" mr="171px">
@@ -78,7 +66,15 @@ const MonitorLogPage = () => {
         <Heading align="center" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
           Coastal Dune Habitat Survey Log
         </Heading>
-        <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange" isLazy>
+        <Tabs
+          variant="solid-rounded"
+          size="lg"
+          align="start"
+          colorScheme="orange"
+          index={activeTab}
+          onChange={setActiveTab}
+          isLazy
+        >
           <TabList p="32px" alignItems="center">
             <HStack spacing="24px">
               <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
@@ -124,7 +120,7 @@ const MonitorLogPage = () => {
               <HumanActivity />
             </TabPanel>
             <TabPanel>
-              <ReviewSubmitTab />
+              <ReviewSubmitTab jumpToTab={setActiveTab} />
             </TabPanel>
           </TabPanels>
         </Tabs>

@@ -14,6 +14,7 @@ import {
   Textarea,
   Tooltip,
   VStack,
+  chakra,
 } from '@chakra-ui/react';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -47,13 +48,15 @@ const HumanActivityField = ({ activityName, activityDesc, activityId, isDisabled
         <Text fontWeight="500" fontSize="md">
           {activityName}
         </Text>
-        <Text>{activityDesc}</Text>
-        {activityId === 'speedingVehicles' && (
-          <Text color="#156071" style={{ marginTop: 0 }}>
-            {/* ^ color should be ochBluePress */}
-            Report to ENTITY at XXX-XXX-XXXX
-          </Text>
-        )}
+        <Text minHeight="50px">
+          {activityDesc}
+          {activityId === 'speedingVehicles' && (
+            <chakra.span color="#156071" style={{ marginTop: 0 }}>
+              {/* ^ color should be ochBluePress */}
+              Report to ENTITY at XXX-XXX-XXXX
+            </chakra.span>
+          )}
+        </Text>
         <NumberInput
           isDisabled={isDisabled}
           min={0}

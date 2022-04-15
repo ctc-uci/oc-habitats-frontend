@@ -1,22 +1,52 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Button, Text } from '@chakra-ui/react';
 import React from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { FiEdit3 } from 'react-icons/fi';
+import PropTypes from 'prop-types';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import AdditionalSpeciesTab from './AdditionalSpeciesTab';
 import GeneralInfoTab from './GeneralInfoTab';
 import HumanActivityTab from './HumanActivityTab';
 import ListedSpeciesTab from './ListedSpeciesTab';
+import PredatorsTab from './PredatorsTab';
 
-const ReviewSubmitTab = () => {
+const EditSectionButton = ({ tabNum, jumpToTab }) => {
+  return (
+    <Button colorScheme="cyan" minW="150px" onClick={() => jumpToTab(tabNum)}>
+      Edit Section
+      <FiEdit3 style={{ marginLeft: '4px' }} />
+    </Button>
+  );
+};
+
+EditSectionButton.propTypes = {
+  tabNum: PropTypes.number.isRequired,
+  jumpToTab: PropTypes.func.isRequired,
+};
+
+const ReviewSubmitTab = ({ jumpToTab }) => {
   const parentForm = useFormContext();
   const nestedForm = useForm({ defaultValues: parentForm.getValues() });
+
+  const createJumpButton = tabNum => {
+    return <EditSectionButton tabNum={tabNum} jumpToTab={jumpToTab} />;
+  };
+
   return (
     <FormProvider {...nestedForm}>
-      <CollapsibleSection title="General Information" limitWidth={false}>
+      <CollapsibleSection
+        title="General Information"
+        limitWidth={false}
+        rightElement={createJumpButton(0)}
+      >
         <GeneralInfoTab ochUsers={[]} showHeader={false} isDisabled />
       </CollapsibleSection>
       <Box mt="10">
-        <CollapsibleSection title="Least Tern" limitWidth={false}>
+        <CollapsibleSection
+          title="Least Tern"
+          limitWidth={false}
+          rightElement={createJumpButton(1)}
+        >
           <ListedSpeciesTab
             tab={0}
             speciesName="Least Tern"
@@ -26,7 +56,11 @@ const ReviewSubmitTab = () => {
           />
         </CollapsibleSection>
       </Box>
-      <CollapsibleSection title="Snowy Plover" limitWidth={false}>
+      <CollapsibleSection
+        title="Snowy Plover"
+        limitWidth={false}
+        rightElement={createJumpButton(2)}
+      >
         <ListedSpeciesTab
           tab={1}
           speciesName="Snowy Plover"
@@ -35,10 +69,21 @@ const ReviewSubmitTab = () => {
           isDisabled
         />
       </CollapsibleSection>
-      <CollapsibleSection title="Additional Species" limitWidth={false}>
+      <CollapsibleSection
+        title="Additional Species"
+        limitWidth={false}
+        rightElement={createJumpButton(3)}
+      >
         <AdditionalSpeciesTab showHeader={false} isDisabled />
       </CollapsibleSection>
-      <CollapsibleSection title="Human Activity" limitWidth={false}>
+      <CollapsibleSection title="Predators" limitWidth={false} rightElement={createJumpButton(4)}>
+        <PredatorsTab showHeader={false} isDisabled />
+      </CollapsibleSection>
+      <CollapsibleSection
+        title="Human Activity"
+        limitWidth={false}
+        rightElement={createJumpButton(5)}
+      >
         <HumanActivityTab showHeader={false} isDisabled />
       </CollapsibleSection>
       <Text fontStyle="oblique">
@@ -50,6 +95,10 @@ const ReviewSubmitTab = () => {
       </Text>
     </FormProvider>
   );
+};
+
+ReviewSubmitTab.propTypes = {
+  jumpToTab: PropTypes.func.isRequired,
 };
 
 export default ReviewSubmitTab;
