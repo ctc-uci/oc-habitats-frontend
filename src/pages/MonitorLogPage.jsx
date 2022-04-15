@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Container,
+  Flex,
   Heading,
   HStack,
   Modal,
@@ -10,6 +11,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spacer,
   Tab,
   TabList,
   TabPanel,
@@ -19,6 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { React, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { FiArrowUp } from 'react-icons/fi';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
 import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
 import HumanActivity from '../components/MonitorLog/HumanActivityTab';
@@ -101,86 +104,119 @@ const MonitorLogPage = () => {
   }, []);
 
   return (
-    <Box ml="171px" mr="171px">
-      <FormProvider {...formMethods}>
-        <Modal isOpen={checkInModal.isOpen} onClose={checkInModal.onClose}>
-          <ModalOverlay />
-          <ModalContent marginTop="100" rounded="none">
-            <ModalHeader>Have You Checked In Yet?</ModalHeader>
-            <ModalBody>
-              Check in on <b>BetterImpact</b> or Text <b>949.697.8651</b>
-            </ModalBody>
+    <Flex w="100%" justifyContent="center">
+      <Box w="1500px">
+        <FormProvider {...formMethods}>
+          <Modal isOpen={checkInModal.isOpen} onClose={checkInModal.onClose}>
+            <ModalOverlay />
+            <ModalContent marginTop="100" rounded="none">
+              <ModalHeader>Have You Checked In Yet?</ModalHeader>
+              <ModalBody>
+                Check in on <b>BetterImpact</b> or Text <b>949.697.8651</b>
+              </ModalBody>
 
-            <ModalFooter>
-              <Button onClick={checkInModal.onClose} colorScheme="cyan">
-                Yes, I&apos;m Checked In
+              <ModalFooter>
+                <Button onClick={checkInModal.onClose} colorScheme="cyan">
+                  Yes, I&apos;m Checked In
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+          <Heading px="32px" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
+            OCH Monitor Log
+          </Heading>
+          <Tabs
+            variant="solid-rounded"
+            size="lg"
+            align="start"
+            colorScheme="orange"
+            index={activeTab}
+            onChange={setActiveTab}
+            isLazy
+          >
+            <TabList px="32px" alignItems="center">
+              <HStack spacing="24px">
+                <MonitorTabButton>General Info</MonitorTabButton>
+                <MonitorTabButton>Least Tern</MonitorTabButton>
+                <MonitorTabButton>Snowy Plover</MonitorTabButton>
+                <MonitorTabButton>Additional Species</MonitorTabButton>
+                <MonitorTabButton>Predators</MonitorTabButton>
+                <MonitorTabButton>Human Activity</MonitorTabButton>
+                <MonitorTabButton>Review and Submit</MonitorTabButton>
+              </HStack>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <Container maxW="100vw">
+                  <GeneralInfoTab ochUsers={options} />
+                </Container>
+              </TabPanel>
+              <TabPanel>
+                <Container maxW="100vw">
+                  <ListedSpeciesTab tab={0} speciesName="Least Tern" speciesCode="LETE" />
+                </Container>
+              </TabPanel>
+              <TabPanel>
+                <Container maxW="100vw">
+                  <ListedSpeciesTab tab={1} speciesName="Snowy Plover" speciesCode="WSPL" />
+                </Container>
+              </TabPanel>
+              <TabPanel>
+                <Container maxW="100vw">
+                  <AdditionalSpeciesTab />
+                </Container>
+              </TabPanel>
+              <TabPanel>
+                <Container maxW="100vw">
+                  <PredatorsTab />
+                </Container>
+              </TabPanel>
+              <TabPanel>
+                <Container maxW="100vw">
+                  <HumanActivity />
+                </Container>
+              </TabPanel>
+              <TabPanel>
+                <Container maxW="100vw">
+                  <ReviewSubmitTab jumpToTab={setActiveTab} />
+                </Container>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            bg="ochGrey"
+            position="fixed"
+            w="100%"
+            left="0"
+            bottom="0"
+            h="16"
+            zIndex="banner"
+          >
+            <Flex width="100%" maxWidth="1500px" p="32px">
+              <Button
+                // onClick={returnToTop}
+                variant="outline"
+                color="white"
+                _hover={{ color: 'black', backgroundColor: 'white' }}
+              >
+                Return to Top <FiArrowUp style={{ marginLeft: '4px' }} />
               </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-        <Heading px="32px" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
-          OCH Monitor Log
-        </Heading>
-        <Tabs
-          variant="solid-rounded"
-          size="lg"
-          align="start"
-          colorScheme="orange"
-          index={activeTab}
-          onChange={setActiveTab}
-          isLazy
-        >
-          <TabList px="32px" alignItems="center">
-            <HStack spacing="24px">
-              <MonitorTabButton>General Info</MonitorTabButton>
-              <MonitorTabButton>Least Tern</MonitorTabButton>
-              <MonitorTabButton>Snowy Plover</MonitorTabButton>
-              <MonitorTabButton>Additional Species</MonitorTabButton>
-              <MonitorTabButton>Predators</MonitorTabButton>
-              <MonitorTabButton>Human Activity</MonitorTabButton>
-              <MonitorTabButton>Review and Submit</MonitorTabButton>
-            </HStack>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <Container maxW="100vw">
-                <GeneralInfoTab ochUsers={options} />
-              </Container>
-            </TabPanel>
-            <TabPanel>
-              <Container maxW="100vw">
-                <ListedSpeciesTab tab={0} speciesName="Least Tern" speciesCode="LETE" />
-              </Container>
-            </TabPanel>
-            <TabPanel>
-              <Container maxW="100vw">
-                <ListedSpeciesTab tab={1} speciesName="Snowy Plover" speciesCode="WSPL" />
-              </Container>
-            </TabPanel>
-            <TabPanel>
-              <Container maxW="100vw">
-                <AdditionalSpeciesTab />
-              </Container>
-            </TabPanel>
-            <TabPanel>
-              <Container maxW="100vw">
-                <PredatorsTab />
-              </Container>
-            </TabPanel>
-            <TabPanel>
-              <Container maxW="100vw">
-                <HumanActivity />
-              </Container>
-            </TabPanel>
-            <TabPanel>
-              <Container maxW="100vw">
-                <ReviewSubmitTab jumpToTab={setActiveTab} />
-              </Container>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </FormProvider>
-    </Box>
+              <Spacer />
+              <Button
+                colorScheme="cyan"
+                type="submit"
+                //  onClick={handleSubmit}
+              >
+                {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
+                Save Changes
+              </Button>
+            </Flex>
+          </Flex>
+        </FormProvider>
+      </Box>
+    </Flex>
   );
 };
 
