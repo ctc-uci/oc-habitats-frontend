@@ -1,6 +1,5 @@
 import { InfoIcon } from '@chakra-ui/icons';
 import {
-  Container,
   GridItem,
   HStack,
   NumberDecrementStepper,

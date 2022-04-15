@@ -1,8 +1,8 @@
-import { Box, Button, Container, Text } from '@chakra-ui/react';
+import { Box, Button, Text } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { FiEdit3 } from 'react-icons/fi';
-import PropTypes from 'prop-types';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import AdditionalSpeciesTab from './AdditionalSpeciesTab';
 import GeneralInfoTab from './GeneralInfoTab';

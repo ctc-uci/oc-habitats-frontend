@@ -1,6 +1,6 @@
 import { InfoIcon } from '@chakra-ui/icons';
 import {
-  Container,
+  chakra,
   Flex,
   GridItem,
   NumberDecrementStepper,
@@ -14,10 +14,9 @@ import {
   Textarea,
   Tooltip,
   VStack,
-  chakra,
 } from '@chakra-ui/react';
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 const FORM_PREFIX = 'humanActivity.';
