@@ -39,23 +39,19 @@ const ReviewSubmitTab = ({ jumpToTab }) => {
         limitWidth={false}
         rightElement={createJumpButton(0)}
       >
-        <GeneralInfoTab ochUsers={[]} showHeader={false} isDisabled />
+        <Box mb="10">
+          <GeneralInfoTab ochUsers={[]} showHeader={false} isDisabled />
+        </Box>
       </CollapsibleSection>
-      <Box mt="10">
-        <CollapsibleSection
-          title="Least Tern"
-          limitWidth={false}
-          rightElement={createJumpButton(1)}
-        >
-          <ListedSpeciesTab
-            tab={0}
-            speciesName="Least Tern"
-            speciesCode="LETE"
-            showHeader={false}
-            isDisabled
-          />
-        </CollapsibleSection>
-      </Box>
+      <CollapsibleSection title="Least Tern" limitWidth={false} rightElement={createJumpButton(1)}>
+        <ListedSpeciesTab
+          tab={0}
+          speciesName="Least Tern"
+          speciesCode="LETE"
+          showHeader={false}
+          isDisabled
+        />
+      </CollapsibleSection>
       <CollapsibleSection
         title="Snowy Plover"
         limitWidth={false}
