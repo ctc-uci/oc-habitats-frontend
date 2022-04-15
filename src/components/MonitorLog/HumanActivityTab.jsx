@@ -88,57 +88,55 @@ const HumanActivityTab = ({ showHeader, isDisabled }) => {
   const { register } = useFormContext();
 
   return (
-    <Container maxW="100vw">
-      <VStack spacing="23px" align="left">
-        {showHeader && (
-          <Text fontWeight="600" fontSize="2xl">
-            Human Activity
-          </Text>
-        )}
-        <SimpleGrid columns={3} spacingX="64px" spacingY="68px">
-          {HUMAN_ACTIVITIES.map(([name, desc, value]) => (
-            <HumanActivityField
-              key={value}
-              activityName={name}
-              activityDesc={desc}
-              activityId={value}
-              isDisabled={isDisabled}
-            />
-          ))}
-        </SimpleGrid>
-        <Spacer />
-        <VStack spacing="8px" align="left">
-          <Flex>
-            <Text fontWeight="500" fontSize="md">
-              Outreach
-            </Text>
-            <Spacer />
-            <Tooltip label="Tooltip" placement="top">
-              <InfoIcon />
-            </Tooltip>
-          </Flex>
-          <Textarea
-            disabled={isDisabled}
-            placeholder="Type here..."
-            {...register(`${FORM_PREFIX}outreach`)}
+    <VStack spacing="23px" align="left">
+      {showHeader && (
+        <Text fontWeight="600" fontSize="2xl">
+          Human Activity
+        </Text>
+      )}
+      <SimpleGrid columns={3} spacingX="64px" spacingY="68px">
+        {HUMAN_ACTIVITIES.map(([name, desc, value]) => (
+          <HumanActivityField
+            key={value}
+            activityName={name}
+            activityDesc={desc}
+            activityId={value}
+            isDisabled={isDisabled}
           />
-          <Spacer />
-          <Spacer />
-        </VStack>
-        <VStack spacing="8px" align="left">
+        ))}
+      </SimpleGrid>
+      <Spacer />
+      <VStack spacing="8px" align="left">
+        <Flex>
           <Text fontWeight="500" fontSize="md">
-            Other Notes
+            Outreach
           </Text>
-          <Textarea
-            disabled={isDisabled}
-            placeholder="Type here..."
-            {...register(`${FORM_PREFIX}otherNotes`)}
-          />
           <Spacer />
-          <Spacer />
-        </VStack>
+          <Tooltip label="Tooltip" placement="top">
+            <InfoIcon />
+          </Tooltip>
+        </Flex>
+        <Textarea
+          disabled={isDisabled}
+          placeholder="Type here..."
+          {...register(`${FORM_PREFIX}outreach`)}
+        />
+        <Spacer />
+        <Spacer />
       </VStack>
-    </Container>
+      <VStack spacing="8px" align="left">
+        <Text fontWeight="500" fontSize="md">
+          Other Notes
+        </Text>
+        <Textarea
+          disabled={isDisabled}
+          placeholder="Type here..."
+          {...register(`${FORM_PREFIX}otherNotes`)}
+        />
+        <Spacer />
+        <Spacer />
+      </VStack>
+    </VStack>
   );
 };
 

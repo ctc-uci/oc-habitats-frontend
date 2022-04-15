@@ -66,43 +66,41 @@ PredatorField.propTypes = {
 const PredatorsTab = ({ showHeader, isDisabled }) => {
   const { register } = useFormContext();
   return (
-    <Container maxW="100vw">
-      <VStack spacing="23px" align="left">
-        {showHeader && (
-          <Text fontWeight="600" fontSize="2xl">
-            Predators
+    <VStack spacing="23px" align="left">
+      {showHeader && (
+        <Text fontWeight="600" fontSize="2xl">
+          Predators
+        </Text>
+      )}
+      <SimpleGrid columns={4} spacingX="64px" spacingY="68px">
+        {PREDATORS.map(([name, value]) => (
+          <PredatorField
+            key={value}
+            predatorName={name}
+            predatorId={value}
+            isDisabled={isDisabled}
+          />
+        ))}
+      </SimpleGrid>
+      <Spacer />
+      <VStack spacing="8px" align="left">
+        <HStack spacing="390">
+          <Text fontWeight="500" fontSize="md">
+            Other Predator(s)
           </Text>
-        )}
-        <SimpleGrid columns={4} spacingX="64px" spacingY="68px">
-          {PREDATORS.map(([name, value]) => (
-            <PredatorField
-              key={value}
-              predatorName={name}
-              predatorId={value}
-              isDisabled={isDisabled}
-            />
-          ))}
-        </SimpleGrid>
-        <Spacer />
-        <VStack spacing="8px" align="left">
-          <HStack spacing="390">
-            <Text fontWeight="500" fontSize="md">
-              Other Predator(s)
-            </Text>
-            <Tooltip
-              label="Describe any potential predator species not listed above.
+          <Tooltip
+            label="Describe any potential predator species not listed above.
               e.g. Unicorn - 2 "
-              placement="top"
-            >
-              <InfoIcon />
-            </Tooltip>
-          </HStack>
-          <Textarea width="536px" placeholder="Type here..." {...register(`${FORM_PREFIX}other`)} />
-          <Spacer />
-          <Spacer />
-        </VStack>
+            placement="top"
+          >
+            <InfoIcon />
+          </Tooltip>
+        </HStack>
+        <Textarea width="536px" placeholder="Type here..." {...register(`${FORM_PREFIX}other`)} />
+        <Spacer />
+        <Spacer />
       </VStack>
-    </Container>
+    </VStack>
   );
 };
 

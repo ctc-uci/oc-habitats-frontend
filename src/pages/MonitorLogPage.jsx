@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Container,
   Heading,
   HStack,
   Modal,
@@ -142,25 +143,39 @@ const MonitorLogPage = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <GeneralInfoTab ochUsers={options} />
+              <Container maxW="100vw">
+                <GeneralInfoTab ochUsers={options} />
+              </Container>
             </TabPanel>
             <TabPanel>
-              <ListedSpeciesTab tab={0} speciesName="Least Tern" speciesCode="LETE" />
+              <Container maxW="100vw">
+                <ListedSpeciesTab tab={0} speciesName="Least Tern" speciesCode="LETE" />
+              </Container>
             </TabPanel>
             <TabPanel>
-              <ListedSpeciesTab tab={1} speciesName="Snowy Plover" speciesCode="WSPL" />
+              <Container maxW="100vw">
+                <ListedSpeciesTab tab={1} speciesName="Snowy Plover" speciesCode="WSPL" />
+              </Container>
             </TabPanel>
             <TabPanel>
-              <AdditionalSpeciesTab />
+              <Container maxW="100vw">
+                <AdditionalSpeciesTab />
+              </Container>
             </TabPanel>
             <TabPanel>
-              <PredatorsTab />
+              <Container maxW="100vw">
+                <PredatorsTab />
+              </Container>
             </TabPanel>
             <TabPanel>
-              <HumanActivity />
+              <Container maxW="100vw">
+                <HumanActivity />
+              </Container>
             </TabPanel>
             <TabPanel>
-              <ReviewSubmitTab jumpToTab={setActiveTab} />
+              <Container maxW="100vw">
+                <ReviewSubmitTab jumpToTab={setActiveTab} />
+              </Container>
             </TabPanel>
           </TabPanels>
         </Tabs>

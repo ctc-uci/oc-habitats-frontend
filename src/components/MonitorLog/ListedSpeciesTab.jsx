@@ -166,7 +166,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisable
   };
 
   return (
-    <Container maxW="100vw">
+    <>
       {showHeader && (
         <Text fontWeight="600" fontSize="2xl">
           {speciesName}s
@@ -340,7 +340,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisable
           </VStack>
         </GridItem>
       </Grid>
-    </Container>
+    </>
   );
 };
 
