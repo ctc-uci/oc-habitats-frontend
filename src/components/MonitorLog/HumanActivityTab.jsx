@@ -19,7 +19,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useFormContext } from 'react-hook-form';
 
-const FORM_PREFIX = 'humanActivity';
+const FORM_PREFIX = 'humanActivity.';
 const HUMAN_ACTIVITIES = [
   [
     'Beach Activity',
@@ -38,7 +38,7 @@ const HUMAN_ACTIVITIES = [
   ['[On Leash] Domestic Animals', 'Dogs, Cats, Other', 'onLeashAnimals'],
 ];
 
-const HumanActivityField = ({ activityName, activityDesc, activityId }) => {
+const HumanActivityField = ({ activityName, activityDesc, activityId, isDisabled }) => {
   const { setValue, getValues } = useFormContext();
 
   return (
@@ -55,9 +55,10 @@ const HumanActivityField = ({ activityName, activityDesc, activityId }) => {
           </Text>
         )}
         <NumberInput
+          isDisabled={isDisabled}
           min={0}
           onChange={(_, val) => setValue(FORM_PREFIX + activityId, val)}
-          defaultValue={getValues()[FORM_PREFIX + activityId] || 0}
+          defaultValue={getValues(FORM_PREFIX + activityId) || 0}
         >
           <NumberInputField />
           <NumberInputStepper>
@@ -74,17 +75,20 @@ HumanActivityField.propTypes = {
   activityName: PropTypes.string.isRequired,
   activityDesc: PropTypes.string.isRequired,
   activityId: PropTypes.string.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
 };
 
-function HumanActivityTab() {
+const HumanActivityTab = ({ showHeader, isDisabled }) => {
   const { register } = useFormContext();
 
   return (
     <Container maxW="100vw">
       <VStack spacing="23px" align="left">
-        <Text fontWeight="600" fontSize="2xl">
-          Human Activity
-        </Text>
+        {showHeader && (
+          <Text fontWeight="600" fontSize="2xl">
+            Human Activity
+          </Text>
+        )}
         <SimpleGrid columns={3} spacingX="64px" spacingY="68px">
           {HUMAN_ACTIVITIES.map(([name, desc, value]) => (
             <HumanActivityField
@@ -92,6 +96,7 @@ function HumanActivityTab() {
               activityName={name}
               activityDesc={desc}
               activityId={value}
+              isDisabled={isDisabled}
             />
           ))}
         </SimpleGrid>
@@ -107,10 +112,9 @@ function HumanActivityTab() {
             </Tooltip>
           </Flex>
           <Textarea
+            disabled={isDisabled}
             placeholder="Type here..."
-            onChange={e => {
-              setOutreachNotes(e.target.value);
-            }}
+            {...register(`${FORM_PREFIX}outreach`)}
           />
           <Spacer />
           <Spacer />
@@ -120,10 +124,9 @@ function HumanActivityTab() {
             Other Notes
           </Text>
           <Textarea
+            disabled={isDisabled}
             placeholder="Type here..."
-            onChange={e => {
-              setOtherNotes(e.target.value);
-            }}
+            {...register(`${FORM_PREFIX}otherNotes`)}
           />
           <Spacer />
           <Spacer />
@@ -131,6 +134,16 @@ function HumanActivityTab() {
       </VStack>
     </Container>
   );
-}
+};
+
+HumanActivityTab.defaultProps = {
+  isDisabled: false,
+  showHeader: true,
+};
+
+HumanActivityTab.propTypes = {
+  isDisabled: PropTypes.bool,
+  showHeader: PropTypes.bool,
+};
 
 export default HumanActivityTab;

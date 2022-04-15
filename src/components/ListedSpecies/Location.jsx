@@ -48,7 +48,7 @@ const Location = () => {
                     as={IMaskInput}
                     mask={`${char} 00[0] 00[0].0[0]`}
                     lazy={false}
-                    onAccept={value => setValue(`gps[${i}].${type}`, value)}
+                    onAccept={value => setValue(`gps[${i}].${type}`, value, { shouldDirty: true })}
                     defaultValue={getValues().gps[i][type]}
                     placeholderChar="-"
                   />

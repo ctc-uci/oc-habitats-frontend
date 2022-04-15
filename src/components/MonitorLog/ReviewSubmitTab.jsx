@@ -1,43 +1,53 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Button,
-  HStack,
-  Text,
-} from '@chakra-ui/react';
-import React, { useEffect } from 'react';
-import { FormProvider, useForm, useFormContext, useWatch } from 'react-hook-form';
+import { Box, Text } from '@chakra-ui/react';
+import React from 'react';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
+import AdditionalSpeciesTab from './AdditionalSpeciesTab';
 import GeneralInfoTab from './GeneralInfoTab';
+import HumanActivityTab from './HumanActivityTab';
+import ListedSpeciesTab from './ListedSpeciesTab';
 
 const ReviewSubmitTab = () => {
-  // const { control, register, getValues, watch } = useFormContext();
   const parentForm = useFormContext();
   const nestedForm = useForm({ defaultValues: parentForm.getValues() });
   return (
     <FormProvider {...nestedForm}>
-      {/* <Button onClick={test}>Test</Button> */}
-      <Accordion allowMultiple="true" defaultIndex={[0]}>
-        <AccordionItem borderColor="white" spacing={10}>
-          <HStack>
-            <AccordionButton
-              padding="0"
-              _focus={{ boxShadow: 'none' }}
-              _hover={{ backgroundColor: 'none' }}
-            >
-              <Text mr="10px" fontSize="24px" fontWeight={550}>
-                General Information
-              </Text>
-              <AccordionIcon />
-            </AccordionButton>
-          </HStack>
-          <AccordionPanel padding="0">
-            <GeneralInfoTab ochUsers={[]} showHeader={false} isDisabled />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+      <CollapsibleSection title="General Information" limitWidth={false}>
+        <GeneralInfoTab ochUsers={[]} showHeader={false} isDisabled />
+      </CollapsibleSection>
+      <Box mt="10">
+        <CollapsibleSection title="Least Tern" limitWidth={false}>
+          <ListedSpeciesTab
+            tab={0}
+            speciesName="Least Tern"
+            speciesCode="LETE"
+            showHeader={false}
+            isDisabled
+          />
+        </CollapsibleSection>
+      </Box>
+      <CollapsibleSection title="Snowy Plover" limitWidth={false}>
+        <ListedSpeciesTab
+          tab={1}
+          speciesName="Snowy Plover"
+          speciesCode="WSPL"
+          showHeader={false}
+          isDisabled
+        />
+      </CollapsibleSection>
+      <CollapsibleSection title="Additional Species" limitWidth={false}>
+        <AdditionalSpeciesTab showHeader={false} isDisabled />
+      </CollapsibleSection>
+      <CollapsibleSection title="Human Activity" limitWidth={false}>
+        <HumanActivityTab showHeader={false} isDisabled />
+      </CollapsibleSection>
+      <Text fontStyle="oblique">
+        Any person gathering and/or submitting data in this document acknowledges that the data is
+        solely owned by OC Habitats™ and is copyright protected. Data is not to be shared with other
+        organizations absent written permission from OC Habitats™. ©2022 OC Habitats™. All Rights
+        Reserved. If you have questions, please contact OC Habitats at 949.697.8651 or
+        och@ochabitats.org.
+      </Text>
     </FormProvider>
   );
 };

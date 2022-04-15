@@ -57,10 +57,20 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
       bandTabs: [],
     },
   });
+  const { isDirty } = formMethods.formState;
 
   const confirmCloseModal = useDisclosure();
   const topRef = useRef();
   const toast = useToast();
+
+  // close modal if there's no unsaved changes, otherwise show the modal to confirm
+  const checkUnsavedChanges = () => {
+    if (isDirty) {
+      confirmCloseModal.onOpen();
+    } else {
+      closeModal();
+    }
+  };
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -69,6 +79,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
     for (let i = 0; i < formData.bandTabs.length; i += 1) {
       const row = [...Array(4)].map((_, n) => formData.bandTabs[i][n]);
       const code = generateBandingCode(row);
+      formData.bandTabs[i].code = code;
       if (code === 'invalid' || code === 'Top band must be above bottom band') {
         valid = false;
         break;
@@ -97,7 +108,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
           <IconButton
             icon={<ArrowBackIcon boxSize={10} />}
             bgColor="transparent"
-            onClick={confirmCloseModal.onOpen}
+            onClick={checkUnsavedChanges}
             left="16px"
           />
           <Modal isOpen={confirmCloseModal.isOpen} onClose={confirmCloseModal.onClose}>
@@ -127,7 +138,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
             separator={<ChevronRightIcon color="gray.500" />}
           >
             <BreadcrumbItem>
-              <BreadcrumbLink onClick={confirmCloseModal.onOpen}>Survey Log</BreadcrumbLink>
+              <BreadcrumbLink onClick={checkUnsavedChanges}>Survey Log</BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbItem isCurrentPage>

@@ -43,7 +43,7 @@ const GeneralListedInformation = () => {
             <NumberInput
               min={1}
               defaultValue={getValues().totalAdults}
-              onChange={val => setValue('totalAdults', parseInt(val, 10))}
+              onChange={val => setValue('totalAdults', parseInt(val, 10), { shouldDirty: true })}
             >
               <NumberInputField />
               <NumberInputStepper>
@@ -64,7 +64,7 @@ const GeneralListedInformation = () => {
             </Flex>
             <NumberInput
               min={0}
-              onChange={val => setValue('totalFledges', parseInt(val, 10))}
+              onChange={val => setValue('totalFledges', parseInt(val, 10), { shouldDirty: true })}
               defaultValue={getValues().totalFledges}
             >
               <NumberInputField />
@@ -81,7 +81,7 @@ const GeneralListedInformation = () => {
             # of Chicks
             <NumberInput
               min={0}
-              onChange={val => setValue('totalChicks', parseInt(val, 10))}
+              onChange={val => setValue('totalChicks', parseInt(val, 10), { shouldDirty: true })}
               defaultValue={getValues().totalChicks}
             >
               <NumberInputField />
