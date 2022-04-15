@@ -1,5 +1,22 @@
-import { Box, Heading, HStack, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import { React, useState } from 'react';
+import {
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { React, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
 import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
@@ -55,14 +72,51 @@ const options = [
   },
 ];
 
+const MonitorTabButton = props => {
+  // eslint-disable-next-line react/prop-types
+  const { children } = props;
+  return (
+    <Tab
+      height="40px"
+      borderColor="ochBlack"
+      borderWidth="1px"
+      _selected={{ borderColor: 'ochOrange', color: 'ochBlack', bg: 'ochOrange' }}
+      {...props}
+    >
+      {children}
+    </Tab>
+  );
+};
+
 const MonitorLogPage = () => {
   const formMethods = useForm({});
 
+  const checkInModal = useDisclosure();
+
   const [activeTab, setActiveTab] = useState(0);
+
+  useEffect(() => {
+    checkInModal.onOpen();
+  }, []);
 
   return (
     <Box ml="171px" mr="171px">
       <FormProvider {...formMethods}>
+        <Modal isOpen={checkInModal.isOpen} onClose={checkInModal.onClose}>
+          <ModalOverlay />
+          <ModalContent marginTop="100" rounded="none">
+            <ModalHeader>Have You Checked In Yet?</ModalHeader>
+            <ModalBody>
+              Check in on <b>BetterImpact</b> or Text <b>949.697.8651</b>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button onClick={checkInModal.onClose} colorScheme="cyan">
+                Yes, I&apos;m Checked In
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         <Heading align="center" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
           Coastal Dune Habitat Survey Log
         </Heading>
@@ -77,27 +131,13 @@ const MonitorLogPage = () => {
         >
           <TabList p="32px" alignItems="center">
             <HStack spacing="24px">
-              <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
-                General Info
-              </Tab>
-              <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
-                Least Tern
-              </Tab>
-              <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
-                Snowy Plover
-              </Tab>
-              <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
-                Additional Species
-              </Tab>
-              <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
-                Predators
-              </Tab>
-              <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
-                Human Activity
-              </Tab>
-              <Tab style={{ height: '40px' }} _selected={{ color: 'ochBlack', bg: 'ochOrange' }}>
-                Review and Submit
-              </Tab>
+              <MonitorTabButton>General Info</MonitorTabButton>
+              <MonitorTabButton>Least Tern</MonitorTabButton>
+              <MonitorTabButton>Snowy Plover</MonitorTabButton>
+              <MonitorTabButton>Additional Species</MonitorTabButton>
+              <MonitorTabButton>Predators</MonitorTabButton>
+              <MonitorTabButton>Human Activity</MonitorTabButton>
+              <MonitorTabButton>Review and Submit</MonitorTabButton>
             </HStack>
           </TabList>
           <TabPanels>

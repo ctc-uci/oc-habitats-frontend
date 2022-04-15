@@ -51,10 +51,13 @@ const HumanActivityField = ({ activityName, activityDesc, activityId, isDisabled
         <Text minHeight="50px">
           {activityDesc}
           {activityId === 'speedingVehicles' && (
-            <chakra.span color="#156071" style={{ marginTop: 0 }}>
-              {/* ^ color should be ochBluePress */}
-              Report to ENTITY at XXX-XXX-XXXX
-            </chakra.span>
+            <>
+              <br />
+              <chakra.span color="#156071" style={{ marginTop: 0 }}>
+                {/* ^ color should be ochBluePress */}
+                Report to ENTITY at XXX-XXX-XXXX
+              </chakra.span>
+            </>
           )}
         </Text>
         <NumberInput
