@@ -26,22 +26,18 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import PropTypes from 'prop-types';
 import AddSpeciesModal from './AddSpeciesModal';
 import EditSpeciesModal from './EditSpeciesModal';
 
-const rows = [
-  { name: 'Sandpiper: Long-billed Curlew (LBCU)', total: 2, notes: 'testing' },
-  { name: 'Test', total: 1, notes: null },
-];
+const FORM_PREFIX = 'additionalSpecies.';
 
-const FORM_KEY = 'additionalSpecies';
-
-const AdditionalSpeciesTab = () => {
+const AdditionalSpeciesTab = ({ showHeader, isDisabled }) => {
   const { getValues, setValue } = useFormContext();
-  const [species, setSpecies] = useState(getValues()[FORM_KEY] || []);
+  const [species, setSpecies] = useState(getValues(`${FORM_PREFIX}data`) || []);
 
   useEffect(() => {
-    setValue(FORM_KEY, species);
+    setValue(`${FORM_PREFIX}data`, species);
   }, [species]);
 
   const handleAddRow = newSpecie => {
@@ -82,11 +78,13 @@ const AdditionalSpeciesTab = () => {
           <>
             <Tr>
               <Td border="none">
-                <EditSpeciesModal
-                  specie={getSpecie(row.name)}
-                  editRow={handleEditRow}
-                  deleteRow={handleDeleteRows}
-                />
+                {!isDisabled && (
+                  <EditSpeciesModal
+                    specie={getSpecie(row.name)}
+                    editRow={handleEditRow}
+                    deleteRow={handleDeleteRows}
+                  />
+                )}
               </Td>
               <Td border="none">
                 <Text fontSize="1.05em" color="#2D3748" fontWeight={450}>
@@ -133,9 +131,11 @@ const AdditionalSpeciesTab = () => {
   return (
     <Container maxW="100vw">
       <VStack align="left" spacing="29px">
-        <Text fontWeight="600" fontSize="2xl">
-          Additional Species
-        </Text>
+        {showHeader && (
+          <Text fontWeight="600" fontSize="2xl">
+            Additional Species
+          </Text>
+        )}
         <FormControl>
           <Grid marginTop="20px" minH="200px" templateColumns="repeat(6, 1fr)" gap="150">
             <GridItem colSpan={3}>
@@ -169,7 +169,7 @@ const AdditionalSpeciesTab = () => {
                     <Tbody>
                       <Tr>
                         <Td colSpan={4} textAlign="center">
-                          No species added yet
+                          No species added
                         </Td>
                       </Tr>
                     </Tbody>
@@ -177,7 +177,7 @@ const AdditionalSpeciesTab = () => {
                   {createTable(species)}
                 </Accordion>
               </Box>
-              <AddSpeciesModal addNewRow={handleAddRow} />
+              {!isDisabled && <AddSpeciesModal addNewRow={handleAddRow} />}
             </GridItem>
             <GridItem colSpan="2">
               <VStack alignItems="start">
@@ -190,8 +190,9 @@ const AdditionalSpeciesTab = () => {
                 <FormControl>
                   <NumberInput
                     min={0}
-                    // onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}
-                    defaultValue={0}
+                    isDisabled={isDisabled}
+                    onChange={val => setValue(`${FORM_PREFIX}injuredCount`, parseInt(val, 10))}
+                    defaultValue={getValues(`${FORM_PREFIX}injuredCount`) || 0}
                   >
                     <NumberInputField />
                     <NumberInputStepper>
@@ -207,8 +208,9 @@ const AdditionalSpeciesTab = () => {
                 <FormControl>
                   <NumberInput
                     min={0}
-                    // onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}
-                    defaultValue={0}
+                    isDisabled={isDisabled}
+                    onChange={val => setValue(`${FORM_PREFIX}beachCast`, parseInt(val, 10))}
+                    defaultValue={getValues(`${FORM_PREFIX}beachCast`) || 0}
                   >
                     <NumberInputField />
                     <NumberInputStepper>
@@ -224,6 +226,16 @@ const AdditionalSpeciesTab = () => {
       </VStack>
     </Container>
   );
+};
+
+AdditionalSpeciesTab.defaultProps = {
+  isDisabled: false,
+  showHeader: true,
+};
+
+AdditionalSpeciesTab.propTypes = {
+  isDisabled: PropTypes.bool,
+  showHeader: PropTypes.bool,
 };
 
 export default AdditionalSpeciesTab;
