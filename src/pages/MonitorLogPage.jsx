@@ -117,8 +117,8 @@ const MonitorLogPage = () => {
             </ModalFooter>
           </ModalContent>
         </Modal>
-        <Heading align="center" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
-          Coastal Dune Habitat Survey Log
+        <Heading px="32px" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
+          OCH Monitor Log
         </Heading>
         <Tabs
           variant="solid-rounded"
@@ -129,7 +129,7 @@ const MonitorLogPage = () => {
           onChange={setActiveTab}
           isLazy
         >
-          <TabList p="32px" alignItems="center">
+          <TabList px="32px" alignItems="center">
             <HStack spacing="24px">
               <MonitorTabButton>General Info</MonitorTabButton>
               <MonitorTabButton>Least Tern</MonitorTabButton>
