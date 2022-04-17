@@ -56,23 +56,25 @@ function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
               </Select>
             </VStack>
           </GridItem>
-          <GridItem colSpan={1} rowSpan={1} width="200px">
-            <Text fontWeight="500" fontSize="md">
-              Date (MM/DD/YYYY)
-            </Text>
-            <Controller
-              control={control}
-              name="surveyDate"
-              render={({ field }) => (
-                <DatePicker
-                  disabled={isDisabled}
-                  onChange={field.onChange}
-                  selected={field.value}
-                />
-              )}
-            />
+          <GridItem colSpan={1} rowSpan={1}>
+            <VStack spacing="8px" align="left">
+              <Text fontWeight="500" fontSize="md">
+                Date (MM/DD/YYYY)
+              </Text>
+              <Controller
+                control={control}
+                name="surveyDate"
+                render={({ field }) => (
+                  <DatePicker
+                    disabled={isDisabled}
+                    onChange={field.onChange}
+                    selected={field.value}
+                  />
+                )}
+              />
+            </VStack>
           </GridItem>
-          <GridItem colSpan={1} rowSpan={1} width="200px">
+          <GridItem colSpan={1} rowSpan={1}>
             <VStack spacing="8px" align="left">
               <Text fontWeight="500" fontSize="md">
                 Survey Start Time
@@ -80,7 +82,7 @@ function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
               <Input disabled={isDisabled} type="time" {...register('startTime')} />
             </VStack>
           </GridItem>
-          <GridItem colSpan={1} rowSpan={1} width="200px">
+          <GridItem colSpan={1} rowSpan={1}>
             <VStack spacing="8px" align="left">
               <Text fontWeight="500" fontSize="md">
                 Survey End Time
@@ -88,7 +90,7 @@ function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
               <Input disabled={isDisabled} type="time" {...register('endTime')} />
             </VStack>
           </GridItem>
-          <GridItem colSpan={1} rowSpan={1} width="200px">
+          <GridItem colSpan={1} rowSpan={1}>
             <VStack spacing="8px" align="left">
               <Text fontWeight="500" fontSize="md">
                 Temperature (F)
@@ -96,7 +98,7 @@ function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
               <Input disabled={isDisabled} {...register('temperature')} />
             </VStack>
           </GridItem>
-          <GridItem colSpan={1} rowSpan={1} width="200px">
+          <GridItem colSpan={1} rowSpan={1}>
             <VStack spacing="8px" align="left">
               <Text fontWeight="500" fontSize="md">
                 Cloud Cover (%)
@@ -109,7 +111,7 @@ function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
               </Select>
             </VStack>
           </GridItem>
-          <GridItem colSpan={1} rowSpan={1} width="200px">
+          <GridItem colSpan={1} rowSpan={1}>
             <VStack spacing="8px" align="left">
               <Text fontWeight="500" fontSize="md">
                 Precipitation
@@ -122,7 +124,7 @@ function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
               </Select>
             </VStack>
           </GridItem>
-          <GridItem colSpan={1} rowSpan={1} width="200px">
+          <GridItem colSpan={1} rowSpan={1}>
             <VStack spacing="8px" align="left">
               <Text fontWeight="500" fontSize="md">
                 Wind Speed/Direction
@@ -146,7 +148,7 @@ function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
               </SimpleGrid>
             </VStack>
           </GridItem>
-          <GridItem colSpan={1} rowSpan={1} width="200px">
+          <GridItem colSpan={1} rowSpan={1}>
             <VStack spacing="8px" align="left">
               <Text fontWeight="500" fontSize="md">
                 Tides (ft)
@@ -154,7 +156,7 @@ function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
               <Input disabled={isDisabled} placeholder="00.00" {...register('tides')} />
             </VStack>
           </GridItem>
-          <GridItem colSpan={1} rowSpan={1} width="200px">
+          <GridItem colSpan={1} rowSpan={1}>
             <VStack spacing="8px" align="left">
               <Flex align="center">
                 <Text fontWeight="500" fontSize="md">
@@ -179,7 +181,7 @@ function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
               </Select>
             </VStack>
           </GridItem>
-          <GridItem colSpan={1} rowSpan={1} width="200px">
+          <GridItem colSpan={1} rowSpan={1}>
             <VStack spacing="8px" align="left">
               <Text fontWeight="500" fontSize="md">
                 Habitat Width (ft)

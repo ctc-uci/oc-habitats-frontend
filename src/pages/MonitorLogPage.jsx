@@ -19,9 +19,9 @@ import {
   Tabs,
   useDisclosure,
 } from '@chakra-ui/react';
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useState, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { FiArrowUp } from 'react-icons/fi';
+import { FiArrowUp, FiCheck } from 'react-icons/fi';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
 import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
 import HumanActivity from '../components/MonitorLog/HumanActivityTab';
@@ -98,6 +98,14 @@ const MonitorLogPage = () => {
   const checkInModal = useDisclosure();
 
   const [activeTab, setActiveTab] = useState(0);
+  // tab # will be dynamic with dynamic listed species
+  const totalTabs = 7;
+
+  const topRef = useRef();
+
+  const returnToTop = () => {
+    topRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
     checkInModal.onOpen();
@@ -122,7 +130,7 @@ const MonitorLogPage = () => {
               </ModalFooter>
             </ModalContent>
           </Modal>
-          <Heading px="32px" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
+          <Heading ref={topRef} px="32px" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
             OCH Monitor Log
           </Heading>
           <Tabs
@@ -196,7 +204,7 @@ const MonitorLogPage = () => {
           >
             <Flex width="100%" maxWidth="1500px" p="32px">
               <Button
-                // onClick={returnToTop}
+                onClick={returnToTop}
                 variant="outline"
                 color="white"
                 _hover={{ color: 'black', backgroundColor: 'white' }}
@@ -204,14 +212,26 @@ const MonitorLogPage = () => {
                 Return to Top <FiArrowUp style={{ marginLeft: '4px' }} />
               </Button>
               <Spacer />
-              <Button
-                colorScheme="cyan"
-                type="submit"
-                //  onClick={handleSubmit}
-              >
-                {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
-                Save Changes
-              </Button>
+              {activeTab !== totalTabs - 1 && (
+                <Button
+                  colorScheme="cyan"
+                  type="submit"
+                  //  onClick={handleSubmit}
+                >
+                  {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
+                  Save Changes
+                </Button>
+              )}
+              {activeTab === totalTabs - 1 && (
+                <Button
+                  colorScheme="green"
+                  type="submit"
+                  //  onClick={handleSubmit}
+                >
+                  {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
+                  Submit Log <FiCheck style={{ marginLeft: '4px' }} />
+                </Button>
+              )}
             </Flex>
           </Flex>
         </FormProvider>
