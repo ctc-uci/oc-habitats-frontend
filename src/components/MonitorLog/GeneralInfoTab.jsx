@@ -18,21 +18,15 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, useFormContext } from 'react-hook-form';
 import './GeneralInfoTab.css';
 
-function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
+function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHeader }) {
   const { control, register } = useFormContext();
 
-  const partnerSelectOptions = ochUsers.map(user => ({
+  const partnerSelectOptions = monitorPartners.map(user => ({
     ...user,
-    value: user.name, // should be id
-    label: `${user.name} (${user.email})`,
+    value: user.firebaseId,
+    label: `${user.firstName} ${user.lastName} (${user.email})`,
   }));
 
-  const user = {
-    segments: [
-      { id: '0', name: 'segment0' },
-      { id: '1', name: 'segment1' },
-    ],
-  };
   return (
     <div>
       {showHeader && (
@@ -48,9 +42,9 @@ function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
                 Survey Segment
               </Text>
               <Select disabled={isDisabled} {...register('segment')}>
-                {user.segments.map(segment => (
-                  <option value={segment.name} key={segment.id}>
-                    {segment.name}
+                {assignedSegments.map(segment => (
+                  <option value={segment.segmentId} key={segment.segmentId}>
+                    {segment.segmentId} - {segment.name}
                   </option>
                 ))}
               </Select>
@@ -230,16 +224,25 @@ function GeneralInfoTab({ ochUsers, isDisabled, showHeader }) {
 GeneralInfoTab.defaultProps = {
   isDisabled: false,
   showHeader: true,
+  assignedSegments: [],
+  monitorPartners: [],
 };
 
 GeneralInfoTab.propTypes = {
-  ochUsers: PropTypes.arrayOf(
+  assignedSegments: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      segmentId: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
     }),
-  ).isRequired,
+  ),
+  monitorPartners: PropTypes.arrayOf(
+    PropTypes.shape({
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      firebaseId: PropTypes.string.isRequired,
+    }),
+  ),
   isDisabled: PropTypes.bool,
   showHeader: PropTypes.bool,
 };

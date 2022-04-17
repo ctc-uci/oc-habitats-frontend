@@ -19,62 +19,16 @@ import {
   Tabs,
   useDisclosure,
 } from '@chakra-ui/react';
-import { React, useEffect, useState, useRef } from 'react';
+import { React, useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp, FiCheck } from 'react-icons/fi';
+import { OCHBackend } from '../common/utils';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
 import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
 import HumanActivity from '../components/MonitorLog/HumanActivityTab';
 import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
 import PredatorsTab from '../components/MonitorLog/PredatorsTab';
 import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
-
-const options = [
-  {
-    name: 'Dave',
-    email: 'dave@gmail.com',
-  },
-  {
-    name: 'Brenda',
-    email: 'brenda@gmail.com',
-  },
-  {
-    name: 'Chris',
-    email: 'chris@gmail.com',
-  },
-  {
-    name: 'Chad',
-    email: 'chad@gmail.com',
-  },
-  {
-    name: 'Steve',
-    email: 'steve@gmail.com',
-  },
-  {
-    name: 'Daniel',
-    email: 'daniel@gmail.com',
-  },
-  {
-    name: 'Ryan',
-    email: 'ryan@gmail.com',
-  },
-  {
-    name: 'Jamie',
-    email: 'jamie@gmail.com',
-  },
-  {
-    name: 'Alexa',
-    email: 'alexa@gmail.com',
-  },
-  {
-    name: 'Julie',
-    email: 'julie@gmail.com',
-  },
-  {
-    name: 'Carmen',
-    email: 'carmen@gmail.com',
-  },
-];
 
 const MonitorTabButton = props => {
   // eslint-disable-next-line react/prop-types
@@ -106,10 +60,26 @@ const MonitorLogPage = () => {
   const returnToTop = () => {
     topRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+  const [user, setUser] = useState(null);
+  const [monitorPartners, setMonitorPartners] = useState([]);
 
-  useEffect(() => {
+  useEffect(async () => {
     checkInModal.onOpen();
+
+    try {
+      const [userData, monitorPartnersData] = await Promise.all([
+        OCHBackend.get('users/me', { withCredentials: true }),
+        OCHBackend.get('users/monitorPartners', { withCredentials: true }),
+      ]);
+      setUser(userData.data);
+      setMonitorPartners(monitorPartnersData.data);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err.message);
+    }
   }, []);
+
+  const assignedSegments = useMemo(() => user?.segments || [], [user]);
 
   return (
     <Flex w="100%" justifyContent="center">
@@ -156,7 +126,10 @@ const MonitorLogPage = () => {
             <TabPanels>
               <TabPanel>
                 <Container maxW="100vw">
-                  <GeneralInfoTab ochUsers={options} />
+                  <GeneralInfoTab
+                    assignedSegments={assignedSegments}
+                    monitorPartners={monitorPartners}
+                  />
                 </Container>
               </TabPanel>
               <TabPanel>
