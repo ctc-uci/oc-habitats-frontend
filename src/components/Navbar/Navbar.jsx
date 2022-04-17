@@ -7,13 +7,6 @@ import ProfileDropdown from './ProfileDropdown';
 import logo from '../../assets/OCHlogo.png';
 
 const Navbar = ({ isAdmin }) => {
-  // TO DO: get profile image and name
-  const user = {
-    firstName: 'Dan',
-    lastName: 'Abramov',
-    profilePic: 'https://bit.ly/dan-abramov',
-  };
-
   const admin = [
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'People', path: '/people' },
