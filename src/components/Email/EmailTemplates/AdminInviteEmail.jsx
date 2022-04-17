@@ -6,14 +6,14 @@ import { Email, Item } from 'react-html-email';
 import { Image } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
-import OCHLogo from '../../../assets/OCHlogo.png';
+import OCHLogo from '../../../assets/OCH_Logo_SVG.svg';
 
 const AdminInviteEmail = ({ role, url }) => {
   return (
     <div>
       <Email title="">
         <img
-          src={require('../../../assets/OCHlogo.png').default}
+          src={require('../../../assets/OCH_Logo_SVG.svg').default}
           w="346px"
           h="105px"
           alt="OC Habitats Logo"

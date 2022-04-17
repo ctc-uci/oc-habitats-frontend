@@ -15,7 +15,7 @@ import {
 import NavbarLinkMobile from './NavbarLinkMobile';
 import ProfileDropdown from './ProfileDropdown';
 
-import logo from '../../assets/OCHlogo.png';
+import logo from '../../assets/OCH_Logo_SVG.svg';
 
 const NavbarMobile = ({ isAdmin }) => {
   // TO DO: get profile image and name

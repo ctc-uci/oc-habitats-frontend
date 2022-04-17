@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { HStack, Flex, Button, Image } from '@chakra-ui/react';
+import { HStack, Flex, Button, Image, useMediaQuery } from '@chakra-ui/react';
 import NavbarLink from './NavbarLink';
 import ProfileDropdown from './ProfileDropdown';
-import logo from '../../assets/OCHlogo.png';
+import logo from '../../assets/OCH_Logo_SVG.svg';
+import NavbarMobile from './NavbarMobile';
 
 const Navbar = ({ isAdmin }) => {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   // TO DO: get profile image and name
   const user = {
     firstName: 'Dan',
@@ -29,7 +31,9 @@ const Navbar = ({ isAdmin }) => {
     { text: 'Emergency Numbers', path: '/emergency-numbers' },
   ];
 
-  return (
+  return isMobile ? (
+    <NavbarMobile isAdmin />
+  ) : (
     <Flex
       as="nav"
       bgColor="ochGrey"

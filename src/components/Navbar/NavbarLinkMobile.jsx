@@ -4,7 +4,6 @@ import { useLocation, Link } from 'react-router-dom';
 import { MenuItem, Text } from '@chakra-ui/react';
 
 const NavbarLinkMobile = ({ text, path = '/', color }) => {
-  const current = useLocation().pathname;
   return (
     <Link to={path} align="left">
       <MenuItem>

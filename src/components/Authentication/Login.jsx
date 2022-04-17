@@ -17,7 +17,7 @@ import { instanceOf } from 'prop-types';
 import { Cookies, withCookies } from '../../common/cookie_utils';
 import { logInWithEmailAndPassword, useNavigate } from '../../common/auth_utils';
 
-import OCHLogo from '../../assets/OCHlogo.png';
+import OCHLogo from '../../assets/OCH_Logo_SVG.svg';
 
 const Login = ({ cookies }) => {
   const navigate = useNavigate();
