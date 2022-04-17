@@ -21,9 +21,6 @@ import HomePage from './pages/HomePage';
 import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
-import Register from './components/Authentication/Register';
-// import NewUser from './components/Authentication/NewUser';
-import ListedSpeciesPopup from './components/ListedSpecies/ListedSpeciesPopup';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
@@ -94,7 +91,10 @@ function App() {
               </Routes>
             </Box>
           </Box>
-          <Footer />
+          <Routes>
+            <Route path="/create-log" />
+            <Route path="/*" element={<Footer />} />
+          </Routes>
         </Router>
       </CookiesProvider>
     </ChakraProvider>
