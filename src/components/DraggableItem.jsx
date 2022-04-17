@@ -5,8 +5,9 @@ import axios from 'axios';
 import { Box, Text, Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import EditSpeciesModal from './EditSpeciesModal';
+import DeleteSpeciesModal from './DeleteSpeciesModal';
 
-const DraggableItem = ({ specie, index, searchItem, col, editSpecies }) => {
+const DraggableItem = ({ specie, index, searchItem, col, editSpecies, deleteSpecies }) => {
   // const [change, setChange] = useState(true);
   return (
     <div draggableId={specie} index={index}>
@@ -26,14 +27,22 @@ const DraggableItem = ({ specie, index, searchItem, col, editSpecies }) => {
         </MenuButton>
         {col === 'predators' && (
           <MenuList>
-            <EditSpeciesModal editSpecies={editSpecies} specie={specie} />
-            <MenuItem color="red">Delete Predator</MenuItem>
+            <EditSpeciesModal editSpecies={editSpecies} specie={specie} predOrSpecies="Predator" />
+            <DeleteSpeciesModal
+              deleteSpecies={deleteSpecies}
+              specie={specie}
+              predOrSpecies="Predator"
+            />
           </MenuList>
         )}
         {col !== 'predators' && (
           <MenuList>
-            <EditSpeciesModal editSpecies={editSpecies} specie={specie} />
-            <MenuItem color="red">Delete Species</MenuItem>
+            <EditSpeciesModal editSpecies={editSpecies} specie={specie} predOrSpecies="Species" />
+            <DeleteSpeciesModal
+              deleteSpecies={deleteSpecies}
+              specie={specie}
+              predOrSpecies="Species"
+            />
           </MenuList>
         )}
       </Menu>
@@ -47,6 +56,7 @@ DraggableItem.propTypes = {
   searchItem: PropTypes.string.isRequired,
   col: PropTypes.string.isRequired,
   editSpecies: PropTypes.func.isRequired,
+  deleteSpecies: PropTypes.func.isRequired,
 };
 
 export default DraggableItem;

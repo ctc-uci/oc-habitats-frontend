@@ -5,6 +5,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import DropdownSearch from '../components/DropdownSearch';
 import DroppableList from '../components/DroppableList';
 import NewSpeciesModal from '../components/NewSpeciesModal';
+import NewPredatorModal from '../components/NewPredatorModal';
 
 const initialData = {
   endangered: {
@@ -55,7 +56,7 @@ const onDragEnd = async (result, columns, setColumns) => {
   input: columns - contains id, names of columns, and species that belong to each column
   populates the page with each type of column and the species that belong to them
 */
-const createLists = (columns, searchItem, editSpecies) => {
+const createLists = (columns, searchItem, editSpecies, deleteSpecies) => {
   // Create DroppableLists by iterating over each column in columns
   // Will pass in the species that belong to each list as well as their titles and ids
   return Object.entries(columns).map(([id, col]) => {
@@ -83,6 +84,7 @@ const createLists = (columns, searchItem, editSpecies) => {
           colID={id}
           searchItem={searchItem}
           editSpecies={editSpecies}
+          deleteSpecies={deleteSpecies}
         />
       </>
     );
@@ -121,7 +123,7 @@ const Species = () => {
           id: 'nonListed',
           title: 'Non-Listed Species',
           text: '',
-          speciesIds: res.data.filter(specie => !specie.isListed),
+          speciesIds: res.data.filter(specie => specie.isPredator && !specie.isListed),
         },
       };
       Object.entries(formattedData).forEach(column => {
@@ -158,7 +160,8 @@ const Species = () => {
     await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
       name: newSpecies.name,
       code: newSpecies.code,
-      isEndangered: newSpecies.group === 'endangered',
+      isListed: newSpecies.group === 'listed',
+      isPredator: true,
       isAssigned: false,
     });
     setChange(!change);
@@ -173,6 +176,13 @@ const Species = () => {
       isPredator: newSpecies.predator === 'Yes',
       isAssigned: false,
     });
+    setChange(c => !c);
+  };
+
+  const deleteSpecies = async deletedSpecie => {
+    console.log(deletedSpecie);
+    // eslint-disable-next-line dot-notation
+    await axios.delete(`${process.env.REACT_APP_API_URL}/species/${deletedSpecie}`);
     setChange(c => !c);
   };
 
@@ -191,15 +201,15 @@ const Species = () => {
                   <Box w="32.5%">
                     <DropdownSearch options={options} handleSelectedValue={highlightSearch} />
                   </Box>
-                  <Box>
+                  <HStack>
                     <NewSpeciesModal addNewSpecies={addNewSpecies} />
-                    <NewSpeciesModal addNewPredator={addNewPredator} />
-                  </Box>
+                    <NewPredatorModal addNewPredator={addNewPredator} />
+                  </HStack>
                 </Flex>
               </Box>
             </HStack>
           </VStack>
-          {createLists(columns, searchItem, editSpecies)}
+          {createLists(columns, searchItem, editSpecies, deleteSpecies)}
         </VStack>
       </Stack>
     </Center>

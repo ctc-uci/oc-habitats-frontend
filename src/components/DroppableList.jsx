@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Flex, Grid, GridItem, Heading, VStack } from '@chakra-ui/react';
 import DraggableItem from './DraggableItem';
 
-const DroppableList = ({ name, species, colID, searchItem, editSpecies }) => {
+const DroppableList = ({ name, species, colID, searchItem, editSpecies, deleteSpecies }) => {
   return (
     <Flex
       border="1px"
@@ -33,6 +33,7 @@ const DroppableList = ({ name, species, colID, searchItem, editSpecies }) => {
                   searchItem={searchItem}
                   col={colID}
                   editSpecies={editSpecies}
+                  deleteSpecies={deleteSpecies}
                 />
               </GridItem>
             );
@@ -49,6 +50,7 @@ DroppableList.propTypes = {
   colID: PropTypes.string.isRequired,
   searchItem: PropTypes.string.isRequired,
   editSpecies: PropTypes.func.isRequired,
+  deleteSpecies: PropTypes.func.isRequired,
 };
 
 export default DroppableList;
