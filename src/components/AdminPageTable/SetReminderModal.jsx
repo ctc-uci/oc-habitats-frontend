@@ -15,7 +15,6 @@ import {
   Flex,
   InputGroup,
   Input,
-  VStack,
   Select,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -135,18 +134,102 @@ const OneTimeReminder = ({ onSubmit, onClose }) => {
 const MonthlyReminder = ({ onClose, onSubmit }) => {
   // TODO: fetch current reminder/due date from backend
   const [monthlyReminder, setMonthlyReminder] = useState(1);
-  const [reminderTime, setReminderTime] = useState('1:00');
+  const [reminderTime, setReminderTime] = useState(() => {
+    const date = new Date();
+    date.setHours(13);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    return date;
+  });
   const [monthlyDue, setMonthlyDue] = useState(1);
-  const [dueTime, setDueTime] = useState('1:00');
+  const [dueTime, setDueTime] = useState(() => {
+    const date = new Date();
+    date.setHours(13);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    return date;
+  });
+
+  const convertDay = day => {
+    if (
+      day % 100 === 11 ||
+      day % 100 === 12 ||
+      day % 100 === 13 ||
+      day % 100 === 14 ||
+      day % 100 === 15 ||
+      day % 100 === 16 ||
+      day % 100 === 17 ||
+      day % 100 === 18 ||
+      day % 100 === 19
+    ) {
+      return <sup>th</sup>;
+    }
+    if (day % 10 === 1) {
+      return <sup>st</sup>;
+    }
+    if (day % 10 === 2) {
+      return <sup>nd</sup>;
+    }
+    if (day % 10 === 3) {
+      return <sup>th</sup>;
+    }
+
+    return <sup>th</sup>;
+  };
+
+  const toast = useToast();
+  const setMonthly = () => {
+    onClose();
+
+    toast({
+      title: (
+        <Text>
+          Scheduled a Reminder to Submit Monitor Logs by {monthlyReminder}
+          {convertDay(monthlyReminder)} at {reminderTime.toLocaleTimeString()}!
+        </Text>
+      ),
+      description: (
+        <Text>
+          This reminder is scheduled to send on {monthlyReminder}
+          {convertDay(monthlyReminder)} at {reminderTime.toLocaleTimeString()} to monitors that
+          haven&apos;t submitted logs.
+        </Text>
+      ),
+      status: 'success',
+      duration: 7000,
+      isClosable: true,
+    });
+    toast({
+      title: (
+        <Text>
+          Rescheduled the Monthly Due Date to {monthlyDue}
+          {convertDay(monthlyDue)} at {dueTime.toLocaleTimeString()}!
+        </Text>
+      ),
+      description: (
+        <Text>
+          This reminder is scheduled to send on {monthlyDue}
+          {convertDay(monthlyDue)} at {dueTime.toLocaleTimeString()} to monitors that haven&apos;t
+          submitted logs.
+        </Text>
+      ),
+      status: 'success',
+      duration: 7000,
+      isClosable: true,
+    });
+  };
+
   return (
     <>
       <ModalHeader>Reschedule Monthly Reminder</ModalHeader>
       <ModalBody>
         <Text>
-          Current Reminder Date: {monthlyReminder} at {reminderTime}
+          Current Reminder Date: {monthlyReminder}
+          {convertDay(monthlyReminder)} at {reminderTime.toLocaleTimeString()}
         </Text>
         <Text>
-          Current Due Date: {monthlyDue} at {dueTime}
+          Current Due Date: {monthlyDue}
+          {convertDay(monthlyReminder)} at {dueTime.toLocaleTimeString()}
         </Text>
         <br />
         <Text>Reminder Date</Text>
@@ -162,8 +245,13 @@ const MonthlyReminder = ({ onClose, onSubmit }) => {
           <Input
             className="without-meridiem"
             type="time"
-            value={reminderTime}
-            onChange={e => setReminderTime(e.target.value)}
+            value={reminderTime.toLocaleTimeString()}
+            onChange={e => {
+              const now = new Date();
+              const dateTime = now.toISOString();
+              const date = dateTime.split('T')[0];
+              setReminderTime(new Date(`${date} ${e.target.value}`));
+            }}
           />
         </InputGroup>
         <br />
@@ -181,7 +269,12 @@ const MonthlyReminder = ({ onClose, onSubmit }) => {
             className="without-meridiem"
             type="time"
             value={dueTime}
-            onChange={e => setDueTime(e.target.value)}
+            onChange={e => {
+              const now = new Date();
+              const dateTime = now.toISOString();
+              const date = dateTime.split('T')[0];
+              setDueTime(new Date(`${date} ${e.target.value}`));
+            }}
           />
         </InputGroup>
       </ModalBody>
@@ -194,7 +287,7 @@ const MonthlyReminder = ({ onClose, onSubmit }) => {
           bg="ochBlue"
           variant="solidNoHover"
           onClick={() => {
-            onClose();
+            setMonthly();
             onSubmit({ reminderTime, monthlyReminder, dueTime, monthlyDue });
           }}
         >
@@ -229,7 +322,9 @@ const SetReminderModal = () => {
   // const toast = useToast();
   return (
     <>
-      <Button onClick={onOpen}>Set Reminder</Button>
+      <Button bg="ochBlue" variant="solidNoHover" onClick={onOpen}>
+        Set Reminder
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
