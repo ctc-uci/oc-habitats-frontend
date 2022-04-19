@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { React, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -5,11 +6,7 @@ import {
   Td,
   VStack,
   HStack,
-  Flex,
-  Avatar,
-  Badge,
   Text,
-  IconButton,
   Menu,
   MenuButton,
   MenuList,
@@ -25,8 +22,12 @@ import {
   Input,
   Textarea,
   useDisclosure,
+  Link,
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+// import axios from 'axios'; // new
+// const express = require('express') // new
+// const app = express() // new
 
 // Custom component to render Name
 const SegmentNameColumn = ({ data }) => {
@@ -34,9 +35,9 @@ const SegmentNameColumn = ({ data }) => {
     <>
       <VStack>
         <div className="segmentname-container">
-          {data.segment} {data.name}
+          {data.segmentId} {data.name}
         </div>
-        <div className="location-container">{data.description}</div>
+        <div className="location-container">{data.streets}</div>
       </VStack>
     </>
   );
@@ -49,44 +50,68 @@ const ParkingColumn = ({ data }) => {
         <VStack align="normal">
           <Text>{data}</Text>
         </VStack>
-        <div>
+        {/* <div>
           <UpdateSegmentPopup />
-        </div>
+        </div> */}
       </HStack>
     </>
   );
 };
 
-function UpdateSegmentPopup(
-  segment,
-  segmentName,
-  segmentLocation,
-  link,
-  parking,
-  onUpdateSegment,
-  onDeleteSegment,
-) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [segId, setSegId] = useState(segment);
-  const [segName, setSegName] = useState(segmentName);
-  const [segLocation, setSegLocation] = useState(segmentLocation);
-  const [segLink, setSegLink] = useState(link);
-  const [segParking, setSegParking] = useState(parking);
+const MapLinkColumn = ({ data }) => {
+  return (
+    <>
+      <Link href={`${data}`} isExternal>
+        <u>Link</u>
+      </Link>
+    </>
+  );
+};
+
+const UpdateSegmentPopupColumn = ({ data }) => {
+  // const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
+  const [segId, setSegId] = useState('');
+  const [segName, setSegName] = useState('');
+  const [segLocation, setSegLocation] = useState('');
+  const [segLink, setSegLink] = useState('');
+  const [segParking, setSegParking] = useState('');
+  const [change, setChange] = useState(false); // new
+
+  // const addNewSpecies = async newSpecies => {
+  //   await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
+  //     name: newSpecies.name,
+  //     code: newSpecies.code,
+  //     isEndangered: newSpecies.group === 'endangered',
+  //     isAssigned: false,
+  //   });
+  //   setChange(change);
+  // };
+
+  const handleDeleteClick = async () => {
+    // await axios.delete(`${process.env.REACT_APP_API_URL}/sections/`, {
+    //   id: data,
+    // });
+    // console.log('Clicked');
+    setChange(change);
+  };
 
   return (
     <>
-      <IconButton
-        size="xl"
-        variant="ghost"
-        colorScheme="white"
-        aria-label="Edit Segment"
-        icon={<BsThreeDotsVertical />}
-        onClick={onOpen}
-      >
-        opened
-      </IconButton>
+      <Menu>
+        <MenuButton>
+          <BsThreeDotsVertical />
+        </MenuButton>
+        <MenuList>
+          <MenuItem onClick={onOpenEdit}>Edit Segment</MenuItem>
+          {/* <MenuItem><Text color='red' onClick={onOpenDelete}>Delete Segment</Text></MenuItem> */}
+          <MenuItem onClick={handleDeleteClick}>
+            <Text color="red">Delete Segment</Text>
+          </MenuItem>
+        </MenuList>
+      </Menu>
 
-      <Modal size="xl" isOpen={isOpen} onClose={onClose}>
+      <Modal size="xl" isOpen={isOpenEdit} onClose={onCloseEdit}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit Segment</ModalHeader>
@@ -129,15 +154,15 @@ function UpdateSegmentPopup(
             />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="gray" mr={3} onClick={onClose}>
+            <Button colorScheme="gray" mr={3} onClick={onCloseEdit}>
               Close
             </Button>
             <Button
               colorScheme="blue"
               mr={3}
               onClick={() => {
-                onUpdateSegment(segId, segName, segLocation, segLink, segParking);
-                onClose();
+                // onUpdateSegment(segId, segName, segLocation, segLink, segParking);
+                onCloseEdit();
               }}
             >
               Save
@@ -147,7 +172,7 @@ function UpdateSegmentPopup(
       </Modal>
     </>
   );
-}
+};
 const SectionTableRow = ({ row }) => {
   return (
     <Tr {...row.getRowProps()}>
@@ -168,9 +193,15 @@ SegmentNameColumn.propTypes = {
 SectionTableRow.propTypes = {
   row: PropTypes.string.isRequired,
 };
-
+MapLinkColumn.propTypes = {
+  data: PropTypes.string.isRequired,
+};
 ParkingColumn.propTypes = {
   data: PropTypes.string.isRequired,
 };
 
-export { SegmentNameColumn, ParkingColumn, UpdateSegmentPopup };
+UpdateSegmentPopupColumn.propTypes = {
+  data: PropTypes.string.isRequired,
+};
+
+export { SegmentNameColumn, MapLinkColumn, ParkingColumn, UpdateSegmentPopupColumn };

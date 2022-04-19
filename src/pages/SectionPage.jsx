@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-unused-vars */
 import {
   Box,
   Button,
@@ -22,125 +24,55 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { AddIcon, EditIcon } from '@chakra-ui/icons';
-import { React, useState } from 'react';
+import { EditIcon } from '@chakra-ui/icons';
+import { React, useEffect, useState } from 'react';
+import axios from 'axios';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import Section from '../components/Section';
+// import Section from '../components/Section';
 import CreateNew from '../components/NewSectionSegmentPopup';
 import SectionTable from '../components/SectionTable/SectionTable';
 
-const tempData = [
-  {
-    id: 1,
-    title: 'sdadsdfssdf',
-    segments: [
-      {
-        segment: 'OCH01',
-        name: 'Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park',
-      },
-      {
-        segment: 'OCH01',
-        name: 'Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park2',
-      },
-      {
-        segment: 'OCH01',
-        name: 'Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park2',
-      },
-      {
-        segment: 'OCH01',
-        name: 'Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park2',
-      },
-      {
-        segment: 'OCH01',
-        name: 'Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park2',
-      },
-      {
-        segment: 'OCH01',
-        name: 'Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park2',
-      },
-      {
-        segment: 'OCH01',
-        name: 'Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park2',
-      },
-      {
-        segment: 'OCH01',
-        name: 'Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park2',
-      },
-      {
-        segment: 'OCH01',
-        name: 'Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park2',
-      },
-      {
-        segment: 'OCH01',
-        name: 'Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park2',
-      },
-      {
-        segment: 'OCH01',
-        name: 'Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park2',
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: 'Newport Beach to Laguna Beach',
-    segments: [
-      {
-        segment: 'OCH01',
-        name: '2OCH01 Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park',
-      },
-      {
-        segment: 'OCH01',
-        name: '2OCH02 Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park2',
-      },
-      {
-        segment: 'OCH01',
-        name: '2OCH03 Seal Beach',
-        description: '1st St. - North End of Anaheim Bay',
-        map: 'http://example.com',
-        parking: 'here is how you park2',
-      },
-    ],
-  },
-];
+const tempData = {
+  id: 1,
+  title: 'sdadsdfssdf',
+  segments: [
+    {
+      segment: 'OCH01',
+      name: 'Seal Beach',
+      description: '1st St. - North End of Anaheim Bay',
+      mapLink: 'http://example.com',
+      parking: 'here is how you park',
+    },
+    {
+      segment: 'OCH01',
+      name: 'Seal Beach',
+      description: '1st St. - North End of Anaheim Bay',
+      mapLink: 'http://example.com',
+      parking: 'here is how you park2',
+    },
+    {
+      segment: 'OCH01',
+      name: 'Seal Beach',
+      description: '1st St. - North End of Anaheim Bay',
+      mapLink: 'http://example.com',
+      parking: 'here is how you park2',
+    },
+    {
+      segment: 'OCH01',
+      name: 'Seal Beach',
+      description: '1st St. - North End of Anaheim Bay',
+      mapLink: 'http://example.com',
+      parking: 'here is how you park2',
+    },
+    {
+      segment: 'OCH01',
+      name: 'Seal Beach',
+      description: '1st St. - North End of Anaheim Bay',
+      mapLink: 'http://example.com',
+      parking: 'here is how you park2',
+    },
+  ],
+};
 
 const sectionsData = [
   {
@@ -238,8 +170,24 @@ function AddSectionPopup(addSection) {
 }
 
 const SectionPage = () => {
-  const [sections, setSections] = useState(tempData); // sectionsData
+  const [sections, setSections] = useState([]); // sectionsData
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setIsLoading] = useState(true);
+  const [change, setChange] = useState(true);
+
+  const getSections = async () => {
+    try {
+      setIsLoading(true);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/sections`);
+      setSections(res.data);
+
+      setIsLoading(false);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+  };
+
   const addSection = (newSecId, newSecName, newSecMapLink) => {
     const newSection = {
       id: newSecId,
@@ -249,23 +197,23 @@ const SectionPage = () => {
     setSections([...sections, newSection]);
   };
 
-  const updateSectionTitle = (sectionId, newSecTitle) => {
-    let updatedSection = -1;
-    for (let i = 0; i < sections.length; i += 1) {
-      if (sections[i].id === sectionId) {
-        updatedSection = i;
-        break;
-      }
-    }
-    const updatedSecTitle = [...sections];
-    updatedSecTitle[updatedSection].title = newSecTitle;
-    setSections(updatedSecTitle);
-  };
+  // const updateSectionTitle = (sectionId, newSecTitle) => {
+  //   let updatedSection = -1;
+  //   for (let i = 0; i < sections.length; i += 1) {
+  //     if (sections[i].id === sectionId) {
+  //       updatedSection = i;
+  //       break;
+  //     }
+  //   }
+  //   const updatedSecTitle = [...sections];
+  //   updatedSecTitle[updatedSection].title = newSecTitle;
+  //   setSections(updatedSecTitle);
+  // };
 
-  const deleteSection = sectionId => {
-    const updatedSegSections = [...sections].filter(section => section.id !== sectionId);
-    setSections(updatedSegSections);
-  };
+  // const deleteSection = sectionId => {
+  //   const updatedSegSections = [...sections].filter(section => section.id !== sectionId);
+  //   setSections(updatedSegSections);
+  // };
 
   const addSegment = (
     sectionId,
@@ -291,65 +239,69 @@ const SectionPage = () => {
     setSections(newSegSections);
   };
 
-  const updateSegment = (sectionId, segmentId, updatedSeg, updatedSegName, updatedSegDist) => {
-    const newSegment = {
-      segment: updatedSeg,
-      segmentName: updatedSegName,
-      distance: updatedSegDist,
-    };
-    let updatedSection = -1;
-    for (let i = 0; i < sections.length; i += 1) {
-      if (sections[i].id === sectionId) {
-        updatedSection = i;
-        break;
-      }
-    }
-    const { segments } = sections[updatedSection];
-    let updatedSegment = -1;
-    for (let i = 0; i < segments.length; i += 1) {
-      if (segments[i].segment === segmentId) {
-        updatedSegment = i;
-        break;
-      }
-    }
-    const updatedSegSections = [...sections];
-    updatedSegSections[updatedSection].segments[updatedSegment] = newSegment;
-    setSections(updatedSegSections);
-  };
+  // const updateSegment = (sectionId, segmentId, updatedSeg, updatedSegName, updatedSegDist) => {
+  //   const newSegment = {
+  //     segment: updatedSeg,
+  //     segmentName: updatedSegName,
+  //     distance: updatedSegDist,
+  //   };
+  //   let updatedSection = -1;
+  //   for (let i = 0; i < sections.length; i += 1) {
+  //     if (sections[i].id === sectionId) {
+  //       updatedSection = i;
+  //       break;
+  //     }
+  //   }
+  //   const { segments } = sections[updatedSection];
+  //   let updatedSegment = -1;
+  //   for (let i = 0; i < segments.length; i += 1) {
+  //     if (segments[i].segment === segmentId) {
+  //       updatedSegment = i;
+  //       break;
+  //     }
+  //   }
+  //   const updatedSegSections = [...sections];
+  //   updatedSegSections[updatedSection].segments[updatedSegment] = newSegment;
+  //   setSections(updatedSegSections);
+  // };
 
-  const deleteSegment = (sectionId, segmentId) => {
-    // step 1 find section with segment
-    // step 2 find the segment within the section
-    // step 3 delete and update sectionsData
-    let searchDeleteSection = -1;
-    for (let i = 0; i < sections.length; i += 1) {
-      if (sections[i].id === sectionId) {
-        searchDeleteSection = i;
-        break;
-      }
-    }
-    const { segments } = sections[searchDeleteSection];
-    const updatedSegSections = [...sections];
-    updatedSegSections[searchDeleteSection].segments = segments.filter(
-      segment => segment.segment !== segmentId,
-    );
-    setSections(updatedSegSections);
-  };
+  // const deleteSegment = (sectionId, segmentId) => {
+  //   // step 1 find section with segment
+  //   // step 2 find the segment within the section
+  //   // step 3 delete and update sectionsData
+  //   let searchDeleteSection = -1;
+  //   for (let i = 0; i < sections.length; i += 1) {
+  //     if (sections[i].id === sectionId) {
+  //       searchDeleteSection = i;
+  //       break;
+  //     }
+  //   }
+  //   const { segments } = sections[searchDeleteSection];
+  //   const updatedSegSections = [...sections];
+  //   updatedSegSections[searchDeleteSection].segments = segments.filter(
+  //     segment => segment.segment !== segmentId,
+  //   );
+  //   setSections(updatedSegSections);
+  // };
+
+  useEffect(() => {
+    getSections();
+  }, [change]);
 
   return (
     <>
       <Box marginLeft="110px">
         <Heading align="left" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
-          Sections & Segments with PAGINATIOON
+          Sections & Segments
         </Heading>
 
         <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange">
           <TabPanels>
             {sections.map(sectionObj => {
               return (
-                <TabPanel key={sectionObj.id} padding="0px">
+                <TabPanel key={sectionObj._id} padding="0px">
                   <CreateNew
-                    key={sectionObj.id}
+                    key={sectionObj._id}
                     onAddSection={(newSecId, newSecName, newSecMapLink) =>
                       addSection(newSecId, newSecName, newSecMapLink)
                     }
@@ -361,7 +313,7 @@ const SectionPage = () => {
                       newSegParking,
                     ) =>
                       addSegment(
-                        sectionObj.id,
+                        sectionObj._id,
                         newSegId,
                         newSegName,
                         newSegDescription,
@@ -379,11 +331,11 @@ const SectionPage = () => {
               {sections.map(sectionObj => {
                 return (
                   <Tab
-                    key={sectionObj.id}
+                    key={sectionObj._id}
                     style={{ height: '40px' }}
                     _selected={{ color: 'ochBlack', bg: 'ochOrange' }}
                   >
-                    Section {sectionObj.id}
+                    Section {sectionObj._id}
                   </Tab>
                 );
               })}
@@ -392,34 +344,11 @@ const SectionPage = () => {
           <TabPanels>
             {sections.map(sectionObj => {
               return (
-                <TabPanel key={sectionObj.id} padding="0px">
-                  {/* <Box h="25px" />
-                  <Section
-                    key={sectionObj.id}
-                    title={sectionObj.title}
-                    segments={sectionObj.segments}
-                    onAddSegment={(newSeg, newSegName, newSegDist) =>
-                      addSegment(sectionObj.id, newSeg, newSegName, newSegDist)
-                    }
-                    onUpdateSegment={(segmentId, updatedSeg, updatedSegName, updatedSegDist) =>
-                      updateSegment(
-                        sectionObj.id,
-                        segmentId,
-                        updatedSeg,
-                        updatedSegName,
-                        updatedSegDist,
-                      )
-                    }
-                    onDeleteSegment={segmentId => deleteSegment(sectionObj.id, segmentId)}
-                    onUpdateSectionTitle={newSecTitle =>
-                      updateSectionTitle(sectionObj.id, newSecTitle)
-                    }
-                    onDeleteSection={() => deleteSection(sectionObj.id)}
-                  /> */}
+                <TabPanel key={sectionObj._id} padding="0px">
                   <Container maxW="container.x1">
                     <Heading fontWeight="600" fontSize="20px" mb="4px" mt="40px" align="left">
                       <>
-                        Section {sectionObj.id} - <Text as="u">{sectionObj.title}</Text>
+                        Section {sectionObj._id} - <Text as="u">{sectionObj.name}</Text>
                       </>
                     </Heading>
                     <HStack w="100%" justifyContent="space-between" spacing="10">

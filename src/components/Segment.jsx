@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { React, useState } from 'react';
 import {
   IconButton,
@@ -5,7 +6,6 @@ import {
   Tr,
   Td,
   Text,
-  Flex,
   Modal,
   ModalOverlay,
   ModalContent,

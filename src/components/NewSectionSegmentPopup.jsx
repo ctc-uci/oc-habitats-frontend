@@ -16,18 +16,19 @@ import {
   Input,
   Textarea,
   Text,
+  Select,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
-import Section from './Section';
+// import Section from './Section';
 
 function NewSectionSegmentPopup(onAddSection, onAddSegment) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [value, setValue] = useState(0);
   const [step, setStep] = useState('0');
-  const [volInput, setVolInput] = useState('');
-  const [adminName, setAdminName] = useState('');
-  const [adminEmail, setAdminEmail] = useState('');
+  // const [volInput, setVolInput] = useState('');
+  // const [adminName, setAdminName] = useState('');
+  // const [adminEmail, setAdminEmail] = useState('');
   // const volHandleChange = event => setVolInput(event.target.value);
   // const adminNameHandleChange = event => setAdminName(event.target.value);
   // const adminEmailHandleChange = event => setAdminEmail(event.target.value);
@@ -44,6 +45,19 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
     setValue(0);
     setStep('0');
   };
+
+  // const getSections = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     const res = await w(`${process.env.REACT_APP_API_URL}/sections`);
+  //     setSections(res.data);
+
+  //     setIsLoading(false);
+  //   } catch (err) {
+  //     // eslint-disable-next-line no-console
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <>
@@ -83,6 +97,9 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
                     newSegId = event.target.value;
                   }}
                 />
+                <Select>
+                  <option value="option1">Option 1</option>
+                </Select>
                 <Text>Segment Name</Text>
                 <Input
                   onChange={event => {
