@@ -1,11 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { Droppable } from 'react-beautiful-dnd';
 import PropTypes from 'prop-types';
-import { Flex, Grid, GridItem, Heading, VStack } from '@chakra-ui/react';
-import DraggableItem from './DraggableItem';
+import { Flex, Grid, GridItem, VStack } from '@chakra-ui/react';
+import SpeciesItem from './SpeciesItem';
 
-const DroppableList = ({ name, species, colID, searchItem, editSpecies, deleteSpecies }) => {
+const SpeciesList = ({ species, colID, searchItem, editSpecies, deleteSpecies }) => {
   return (
     <Flex
       border="1px"
@@ -26,7 +25,7 @@ const DroppableList = ({ name, species, colID, searchItem, editSpecies, deleteSp
           {species.map((specie, index) => {
             return (
               <GridItem key={specie}>
-                <DraggableItem
+                <SpeciesItem
                   key={specie}
                   specie={specie}
                   index={index}
@@ -44,8 +43,7 @@ const DroppableList = ({ name, species, colID, searchItem, editSpecies, deleteSp
   );
 };
 
-DroppableList.propTypes = {
-  name: PropTypes.string.isRequired,
+SpeciesList.propTypes = {
   species: PropTypes.arrayOf(PropTypes.string).isRequired,
   colID: PropTypes.string.isRequired,
   searchItem: PropTypes.string.isRequired,
@@ -53,4 +51,4 @@ DroppableList.propTypes = {
   deleteSpecies: PropTypes.func.isRequired,
 };
 
-export default DroppableList;
+export default SpeciesList;

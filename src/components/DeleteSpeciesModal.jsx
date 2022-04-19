@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import {
   Button,
   Modal,
@@ -10,15 +9,10 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  RadioGroup,
-  Radio,
   HStack,
-  InputGroup,
-  Input,
   Text,
   VStack,
   MenuItem,
-  Flex,
 } from '@chakra-ui/react';
 
 function DeleteSpeciesModal({ deleteSpecies, specie, predOrSpecies }) {
@@ -29,7 +23,6 @@ function DeleteSpeciesModal({ deleteSpecies, specie, predOrSpecies }) {
   // const [speciesPredator] = useState(specie.isPredator ? 'Yes' : 'No');
 
   const [isValid, setIsValid] = useState(true);
-  console.log(specie);
   const checkDelete = () => {
     // eslint-disable-next-line dot-notation
     deleteSpecies(specie['_id']);

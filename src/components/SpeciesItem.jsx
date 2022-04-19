@@ -1,14 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
-import axios from 'axios';
-// import { Draggable } from 'react-beautiful-dnd';
-import { Box, Text, Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react';
+import React from 'react';
+import { Text, Menu, MenuButton, MenuList, Button } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import EditSpeciesModal from './EditSpeciesModal';
 import DeleteSpeciesModal from './DeleteSpeciesModal';
 
-const DraggableItem = ({ specie, index, searchItem, col, editSpecies, deleteSpecies }) => {
-  // const [change, setChange] = useState(true);
+const SpeciesItem = ({ specie, index, searchItem, col, editSpecies, deleteSpecies }) => {
   return (
     <div draggableId={specie} index={index}>
       <Menu>
@@ -50,7 +47,7 @@ const DraggableItem = ({ specie, index, searchItem, col, editSpecies, deleteSpec
   );
 };
 
-DraggableItem.propTypes = {
+SpeciesItem.propTypes = {
   specie: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   searchItem: PropTypes.string.isRequired,
@@ -59,4 +56,4 @@ DraggableItem.propTypes = {
   deleteSpecies: PropTypes.func.isRequired,
 };
 
-export default DraggableItem;
+export default SpeciesItem;

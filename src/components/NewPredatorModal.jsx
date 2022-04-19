@@ -12,13 +12,11 @@ import {
   ModalCloseButton,
   RadioGroup,
   Radio,
-  Stack,
   HStack,
   InputGroup,
   Input,
   Text,
   VStack,
-  Spacer,
 } from '@chakra-ui/react';
 
 function NewPredatorModal({ addNewPredator }) {
@@ -26,7 +24,7 @@ function NewPredatorModal({ addNewPredator }) {
   const [speciesName, setSpeciesName] = useState(null);
   const [speciesCode, setSpeciesCode] = useState(null);
   const [speciesGroup, setSpeciesGroup] = useState(null);
-  const [speciesPredator, setSpeciesPredator] = useState(null);
+  const [speciesPredator] = useState(null);
   const [isValid, setIsValid] = useState(true);
 
   const checkInput = () => {
@@ -89,39 +87,14 @@ function NewPredatorModal({ addNewPredator }) {
               <Text fontWeight={550} fontSize="18px">
                 Is also Non-Listed
               </Text>
-              <RadioGroup
-                value={speciesGroup}
-                onChange={val => setSpeciesGroup(val)}
-                as={HStack}
-                spacing={10}
-              >
-                <Radio color="#3182CE" value="predator">
+              <RadioGroup onChange={val => setSpeciesGroup(val)} as={HStack} spacing={10}>
+                <Radio color="#3182CE" value="listed">
                   <Text fontWeight={475}>No</Text>
                 </Radio>
                 <Radio color="#3182CE" value="nonListed">
                   <Text fontWeight={475}>Yes</Text>
                 </Radio>
               </RadioGroup>
-              {/* {speciesGroup === 'nonListed' && (
-                <>
-                  <Text fontWeight={550} fontSize="18px">
-                    Is a Predator
-                  </Text>
-                  <RadioGroup
-                    defaultValue=""
-                    onChange={val => setSpeciesPredator(val)}
-                    as={HStack}
-                    spacing={10}
-                  >
-                    <Radio color="#3182CE" value="No">
-                      <Text fontWeight={475}>No</Text>
-                    </Radio>
-                    <Radio color="#3182CE" value="Yes">
-                      <Text fontWeight={475}>Yes</Text>
-                    </Radio>
-                  </RadioGroup>
-                </>
-              )} */}
             </VStack>
           </ModalBody>
           <ModalFooter>

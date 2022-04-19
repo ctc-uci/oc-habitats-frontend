@@ -12,13 +12,11 @@ import {
   ModalCloseButton,
   RadioGroup,
   Radio,
-  Stack,
   HStack,
   InputGroup,
   Input,
   Text,
   VStack,
-  Spacer,
 } from '@chakra-ui/react';
 
 function NewSpeciesModal({ addNewSpecies }) {
