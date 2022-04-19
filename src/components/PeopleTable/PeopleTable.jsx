@@ -34,7 +34,7 @@ nameFilterFn.autoRemove = val => !val;
 const segmentFilterFn = (rows, id, filterValue) => {
   return rows.filter(row => {
     const { segments } = row.values[id];
-    return segments !== undefined ? segments.some(segment => segment.id === filterValue) : true;
+    return segments !== null ? segments.some(segment => segment.id === filterValue) : false;
   });
 };
 segmentFilterFn.autoRemove = val => !val;
@@ -47,7 +47,7 @@ const nameSortFn = (rowA, rowB, id, desc) => {
   return activeSort || rowB.values[id].name.localeCompare(rowA.values[id].name);
 };
 
-/* eslint-disable react/destructuring-assignment, react/prop-types */
+/* eslint-disable react/prop-types */
 const cellStructure = [
   {
     id: 'name',
@@ -61,7 +61,7 @@ const cellStructure = [
     }),
     filter: 'nameFilter',
     sortType: nameSortFn,
-    Cell: props => <NameColumn data={props.value} />,
+    Cell: ({ value }) => <NameColumn data={value} />,
   },
   {
     id: 'lastUpdated',
@@ -79,10 +79,10 @@ const cellStructure = [
       isActive: d.isActive,
     }),
     filter: 'segmentFilter',
-    Cell: props => <SegmentColumn data={props.value} />,
+    Cell: ({ value }) => <SegmentColumn data={value} />,
   },
 ];
-/* eslint-enable react/destructuring-assignment, react/prop-types */
+/* eslint-enable react/prop-types */
 
 const LoadingRow = () => (
   <Tr>

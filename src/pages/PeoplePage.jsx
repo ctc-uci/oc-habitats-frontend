@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { OCHBackend } from '../common/utils';
 import { PeopleTable, AddAccountPopup } from '../components/PeopleTable';
+import AUTH_ROLES from '../common/auth_config';
+
+const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 /*
 Using backend branch 32-add-user-router
@@ -16,7 +19,7 @@ TODO:
   - Wide toast variant that can be used elsewhere
   - Mobile
 - Update to new schema:
-  - Fetching/filtering users
+  X Fetching/filtering users
   - Registered badge
   - Three dot menu conditional render
   - Last updated column (sorting)
@@ -46,14 +49,9 @@ const PeoplePage = () => {
 
     setSegments(segmentsData.data);
 
-    // Temporarily remove new schema users
-    // TODO - remove
-    // const oldSchema = users?.data.filter(user => !('registered' in user));
-    const oldSchema = users.data;
-
     // Split admins and volunteers
-    setVolunteerData(oldSchema.filter(user => user?.isAdmin === false));
-    setAdminData(oldSchema.filter(user => user?.isAdmin === true));
+    setVolunteerData(users.data.filter(user => user?.role === ADMIN_ROLE));
+    setAdminData(users.data.filter(user => user?.role === VOLUNTEER_ROLE));
     setIsLoading(false);
   }, []);
 

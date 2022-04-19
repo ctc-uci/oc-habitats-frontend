@@ -32,7 +32,6 @@ const schema = yup.object({
 const userTypes = {
   volunteer: 'Volunteer',
   admin: 'Admin',
-  superAdmin: 'Super Admin',
 };
 
 const AddAccountPopup = () => {
@@ -59,7 +58,7 @@ const AddAccountPopup = () => {
     alert(JSON.stringify(data, null, 2));
 
     // TODO: send user request
-
+    // await initiateInviteProcess(email, role);
     toast({
       title: 'Sign Up Link Sent!',
       description: `
