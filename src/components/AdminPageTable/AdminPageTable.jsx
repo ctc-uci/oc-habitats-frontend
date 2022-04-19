@@ -9,23 +9,11 @@ import CellStructure from './AdminPageStructure';
 
 /* eslint-enable react/destructuring-assignment, react/prop-types */
 
-const AdminPageTable = ({ tableData }) => {
-  const m = new Map();
-  for (let i = 0; i < tableData.length; i += 1) {
-    // eslint-disable-next-line dot-notation
-    m.set(tableData[i]['_id'], false);
-  }
-
-  console.log(tableData);
-
-  const [checked, setChecked] = useState(m);
-  const [allChecked, setAllChecked] = useState(false);
-
+const AdminPageTable = ({ tableData, checked, setChecked, allChecked, setAllChecked }) => {
   const columns = useMemo(
     () => CellStructure(checked, setChecked, allChecked, setAllChecked),
     [checked, setChecked, allChecked, setAllChecked],
   );
-  // const data = useMemo(() => tableData, []);
   const data = tableData;
 
   const {
@@ -49,7 +37,6 @@ const AdminPageTable = ({ tableData }) => {
     usePagination,
   );
 
-  console.log(`Columns: ${columns}`);
   return (
     <>
       {/* <pre>
@@ -68,7 +55,7 @@ const AdminPageTable = ({ tableData }) => {
         </code>
       </pre> */}
       <Table variant="striped" {...getTableProps()}>
-        <AdminPageHeader headerGroups={headerGroups} checked={checked} />
+        <AdminPageHeader headerGroups={headerGroups} />
         <Tbody {...getTableBodyProps()}>
           {rows.map(row => {
             prepareRow(row);
@@ -102,7 +89,12 @@ const AdminPageTable = ({ tableData }) => {
 
 AdminPageTable.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
+  checked: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   tableData: PropTypes.array.isRequired,
+  allChecked: PropTypes.bool.isRequired,
+  setChecked: PropTypes.func.isRequired,
+  setAllChecked: PropTypes.func.isRequired,
 };
 
 export default AdminPageTable;

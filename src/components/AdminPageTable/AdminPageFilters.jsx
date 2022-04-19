@@ -23,7 +23,6 @@ const approvalStatues = {
 // set the filters when the user selects them
 const AdminPageFilters = ({
   segments,
-  checkCount,
   segmentFilter,
   setSegmentFilter,
   dateFilter,
@@ -32,12 +31,14 @@ const AdminPageFilters = ({
   setApprovalFilter,
   searchFilter,
   setSearchFilter,
+  checked,
 }) => {
   const [searchTerm, setSearchTerm] = useState(searchFilter);
+
   return (
     <Flex bg="#4E4E4E" pt="14px" pr="28px" pl="28px" borderTopRadius={10}>
       <Flex alignItems="center">
-        <Text color="white">{checkCount} Selected</Text>
+        <Text color="white">{checked} Selected</Text>
       </Flex>
       <Spacer />
       <Box>
@@ -116,7 +117,6 @@ const AdminPageFilters = ({
 
 AdminPageFilters.propTypes = {
   segments: PropTypes.arrayOf(PropTypes.object).isRequired,
-  checkCount: PropTypes.number.isRequired,
   setSegmentFilter: PropTypes.func.isRequired,
   setDateFilter: PropTypes.func.isRequired,
   setApprovalFilter: PropTypes.func.isRequired,
@@ -125,6 +125,7 @@ AdminPageFilters.propTypes = {
   segmentFilter: PropTypes.string.isRequired,
   approvalFilter: PropTypes.string.isRequired,
   searchFilter: PropTypes.string.isRequired,
+  checked: PropTypes.number.isRequired,
 };
 
 export default AdminPageFilters;

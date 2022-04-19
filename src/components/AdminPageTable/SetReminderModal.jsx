@@ -19,6 +19,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
+import { AiOutlineClockCircle } from 'react-icons/ai';
 
 const ReminderSelect = ({ setModalStep, onClose }) => {
   const [selected, setSelected] = useState(null);
@@ -55,11 +56,11 @@ const ReminderSelect = ({ setModalStep, onClose }) => {
     </>
   );
 };
-
 const OneTimeReminder = ({ onSubmit, onClose }) => {
   const [step, setStep] = useState(0);
   const [reminderDate, setReminderDate] = useState(null);
   const [dueDate, setDueDate] = useState(null);
+  const toast = useToast();
 
   const StepOne = () => (
     <div>
@@ -106,6 +107,26 @@ const OneTimeReminder = ({ onSubmit, onClose }) => {
         onClick={() => {
           onClose();
           onSubmit({ reminderDate, dueDate });
+          toast({
+            title: (
+              <Text>
+                Scheduled a Reminder to Submit Monitor Logs by{' '}
+                {dueDate.toLocaleString('default', { month: 'long' })} {dueDate.getDate()}{' '}
+                {dueDate.getFullYear()} at {dueDate.toLocaleTimeString()}!
+              </Text>
+            ),
+            description: (
+              <Text>
+                This reminder is scheduled to send on{' '}
+                {reminderDate.toLocaleString('default', { month: 'long' })} {reminderDate.getDate()}{' '}
+                {reminderDate.getFullYear()} at {reminderDate.toLocaleTimeString()} to monitors that
+                haven&apos;t submitted logs.
+              </Text>
+            ),
+            status: 'success',
+            duration: 7000,
+            isClosable: true,
+          });
         }}
       >
         Schedule Reminder
@@ -322,7 +343,12 @@ const SetReminderModal = () => {
   // const toast = useToast();
   return (
     <>
-      <Button bg="ochBlue" variant="solidNoHover" onClick={onOpen}>
+      <Button
+        bg="ochBlue"
+        variant="solidNoHover"
+        onClick={onOpen}
+        rightIcon={<AiOutlineClockCircle />}
+      >
         Set Reminder
       </Button>
 

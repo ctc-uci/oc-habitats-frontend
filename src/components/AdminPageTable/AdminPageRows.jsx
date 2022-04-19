@@ -1,10 +1,6 @@
-import { useState, React } from 'react';
+import { React } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox } from '@chakra-ui/react';
-
-const ApprovalStatus = ({ isApproved }) => {
-  return isApproved ? 'APPROVED' : 'NOT APPROVED';
-};
+import { Checkbox, Badge, Text, HStack } from '@chakra-ui/react';
 
 const DateFormat = ({ date }) => {
   const dateString = new Date(date);
@@ -50,10 +46,51 @@ const AllCheck = ({ checked, setChecked, allChecked, setAllChecked }) => {
   return <Checkbox bg="white" isChecked={allChecked} onChange={handleAllChecked} />;
 };
 
-ApprovalStatus.propTypes = {
-  isApproved: PropTypes.bool.isRequired,
+const ApplyBadge = ({ approval }) => {
+  if (approval === 'UNDER_REVIEW') {
+    return (
+      <Badge variant="solid" colorScheme="blue">
+        {approval}
+      </Badge>
+    );
+  }
+  if (approval === 'RESUBMITTED') {
+    return (
+      <Badge variant="solid" colorScheme="purple">
+        {approval}
+      </Badge>
+    );
+  }
+  if (approval === 'EDITS_REQUESTED') {
+    return (
+      <Badge variant="solid" colorScheme="red">
+        EDITS REQUESTED
+      </Badge>
+    );
+  }
+  return <Text fontSize="xs">{approval}</Text>;
 };
 
+const ApplyTrain = ({ trainee }) => {
+  if (trainee) {
+    return (
+      <Badge variant="solid" colorScheme="orange">
+        IN TRAINING
+      </Badge>
+    );
+  }
+
+  return <Text />;
+};
+
+const VolunteerColumn = ({ data }) => {
+  return (
+    <HStack>
+      <Text>{data.submitter}</Text>
+      {ApplyTrain(data.isSubmittedByTrainee)}
+    </HStack>
+  );
+};
 DateFormat.propTypes = {
   date: PropTypes.string.isRequired,
 };
@@ -73,4 +110,20 @@ AllCheck.propTypes = {
   setAllChecked: PropTypes.func.isRequired,
 };
 
-export { ApprovalStatus, DateFormat, Check, AllCheck };
+ApplyBadge.propTypes = {
+  approval: PropTypes.string.isRequired,
+};
+
+ApplyBadge.propTypes = {
+  approval: PropTypes.string.isRequired,
+};
+
+VolunteerColumn.propTypes = {
+  data: PropTypes.string.isRequired,
+};
+
+ApplyTrain.propTypes = {
+  trainee: PropTypes.bool.isRequired,
+};
+
+export { DateFormat, Check, AllCheck, ApplyBadge, VolunteerColumn };

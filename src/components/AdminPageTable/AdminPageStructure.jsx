@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ApprovalStatus, DateFormat, Check, AllCheck } from './AdminPageRows';
+import { ApplyBadge, DateFormat, Check, AllCheck, VolunteerColumn } from './AdminPageRows';
 
 const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
   /* eslint-disable react/destructuring-assignment, react/prop-types */
@@ -35,15 +35,15 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       Header: 'Volunteer(s)',
       accessor: d => ({
         submitter: d.submitter,
-        partners: d.sessionPartners,
+        isSubmittedByTrainee: d.isSubmittedByTrainee,
       }),
-      Cell: props => <p>{props.value.submitter}</p>,
+      Cell: props => <VolunteerColumn data={props.value} />,
     },
     {
       id: 'approval',
       Header: 'Approval Status',
       accessor: 'status',
-      Cell: ({ value }) => <ApprovalStatus isApproved={value} />,
+      Cell: ({ value }) => <ApplyBadge approval={value} />,
     },
   ];
   return cellStructure;

@@ -12,6 +12,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
+import { FiPieChart } from 'react-icons/fi';
 
 // modal for the generate report button
 const GenerateReportModal = () => {
@@ -41,7 +42,13 @@ const GenerateReportModal = () => {
 
   return (
     <>
-      <Button onClick={onReportOpen} variant="solidNoHover" bg="ochBluePress" color="white">
+      <Button
+        onClick={onReportOpen}
+        variant="solidNoHover"
+        bg="ochBluePress"
+        color="white"
+        rightIcon={<FiPieChart />}
+      >
         Generate Report
       </Button>
 
