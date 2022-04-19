@@ -26,9 +26,23 @@ import {
   MenuItem,
   MenuDivider,
 } from '@chakra-ui/react';
+import axios from 'axios'; // new
 import { EditIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
 import Segment from './Segment';
+
+const [change, setChange] = useState(false); // new
+
+const deleteSection = async id => {
+  try {
+    await axios.delete(`${process.env.REACT_APP_API_URL}/section/${id}`);
+    console.log('Clicked Delete Section');
+    setChange(change);
+  } catch (err) {
+    console.log(err);
+    alert(err);
+  }
+};
 
 function AddSegmentPopup(onAddSegment) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -110,7 +124,7 @@ function EditSectionNamePopup(title, onUpdateSectionTitle, onDeleteSection) {
           </Text>
         </MenuItem>
         <MenuDivider />
-        <MenuItem>
+        <MenuItem onClick={deleteSection}>
           <Text fontSize="16px" color="red">
             Delete Section
           </Text>

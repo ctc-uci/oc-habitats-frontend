@@ -25,7 +25,7 @@ import {
   Link,
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-// import axios from 'axios'; // new
+import axios from 'axios'; // new
 // const express = require('express') // new
 // const app = express() // new
 
@@ -88,12 +88,15 @@ const UpdateSegmentPopupColumn = ({ data }) => {
   //   setChange(change);
   // };
 
-  const handleDeleteClick = async () => {
-    // await axios.delete(`${process.env.REACT_APP_API_URL}/sections/`, {
-    //   id: data,
-    // });
-    // console.log('Clicked');
-    setChange(change);
+  const deleteSegment = async id => {
+    try {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/segment/${id}`);
+      console.log('Clicked Delete Segment');
+      setChange(change);
+    } catch (err) {
+      console.log(err);
+      alert(err);
+    }
   };
 
   return (
@@ -105,7 +108,7 @@ const UpdateSegmentPopupColumn = ({ data }) => {
         <MenuList>
           <MenuItem onClick={onOpenEdit}>Edit Segment</MenuItem>
           {/* <MenuItem><Text color='red' onClick={onOpenDelete}>Delete Segment</Text></MenuItem> */}
-          <MenuItem onClick={handleDeleteClick}>
+          <MenuItem onClick={deleteSegment}>
             <Text color="red">Delete Segment</Text>
           </MenuItem>
         </MenuList>
