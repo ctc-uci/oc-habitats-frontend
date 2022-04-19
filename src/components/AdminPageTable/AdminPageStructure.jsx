@@ -42,7 +42,7 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
     {
       id: 'approval',
       Header: 'Approval Status',
-      accessor: 'isApproved',
+      accessor: 'status',
       Cell: ({ value }) => <ApprovalStatus isApproved={value} />,
     },
   ];

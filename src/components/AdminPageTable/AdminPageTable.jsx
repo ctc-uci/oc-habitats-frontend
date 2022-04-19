@@ -6,57 +6,27 @@ import { Table, Tr, Td, Tbody } from '@chakra-ui/react';
 import AdminPageHeader from './AdminPageHeader';
 import Pagination from './Pagination';
 import CellStructure from './AdminPageStructure';
-// import { ApprovalStatus, DateFormat, Check } from './AdminPageRows';
 
-// /* eslint-disable react/destructuring-assignment, react/prop-types */
-// const cellStructure = [
-//   {
-//     id: 'checkbox',
-//     Header: <Check />,
-//     accessor: 'temp',
-//     Cell: () => <Check setChecked={setChecked} />,
-//   },
-//   {
-//     id: 'segment',
-//     Header: 'Segment',
-//     accessor: 'generalFieldValues.surveySegment',
-//     Cell: props => <p>{props.value}</p>,
-//   },
-//   {
-//     id: 'date',
-//     Header: 'Date',
-//     accessor: 'submittedAt',
-//     Cell: ({ value }) => <DateFormat date={value} />,
-//   },
-//   {
-//     id: 'volunteers',
-//     Header: 'Volunteer(s)',
-//     accessor: d => ({
-//       submitter: d.submitter,
-//       partners: d.sessionPartners,
-//     }),
-//     Cell: props => <p>{props.value.submitter}</p>,
-//   },
-//   {
-//     id: 'approval',
-//     Header: 'Approval Status',
-//     accessor: 'isApproved',
-//     Cell: ({ value }) => <ApprovalStatus isApproved={value} />,
-//   },
-// ];
 /* eslint-enable react/destructuring-assignment, react/prop-types */
 
 const AdminPageTable = ({ tableData }) => {
   const m = new Map();
   for (let i = 0; i < tableData.length; i += 1) {
-    // m.set(tableData[i]._id, false);
+    // eslint-disable-next-line dot-notation
+    m.set(tableData[i]['_id'], false);
   }
+
+  console.log(tableData);
 
   const [checked, setChecked] = useState(m);
   const [allChecked, setAllChecked] = useState(false);
 
-  const columns = useMemo(() => CellStructure(checked, setChecked, allChecked, setAllChecked), []);
-  const data = useMemo(() => tableData, []);
+  const columns = useMemo(
+    () => CellStructure(checked, setChecked, allChecked, setAllChecked),
+    [checked, setChecked, allChecked, setAllChecked],
+  );
+  // const data = useMemo(() => tableData, []);
+  const data = tableData;
 
   const {
     getTableProps,
@@ -79,6 +49,7 @@ const AdminPageTable = ({ tableData }) => {
     usePagination,
   );
 
+  console.log(`Columns: ${columns}`);
   return (
     <>
       {/* <pre>
@@ -97,7 +68,7 @@ const AdminPageTable = ({ tableData }) => {
         </code>
       </pre> */}
       <Table variant="striped" {...getTableProps()}>
-        <AdminPageHeader headerGroups={headerGroups} />
+        <AdminPageHeader headerGroups={headerGroups} checked={checked} />
         <Tbody {...getTableBodyProps()}>
           {rows.map(row => {
             prepareRow(row);
@@ -131,7 +102,7 @@ const AdminPageTable = ({ tableData }) => {
 
 AdminPageTable.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  tableData: PropTypes.object.isRequired,
+  tableData: PropTypes.array.isRequired,
 };
 
 export default AdminPageTable;
