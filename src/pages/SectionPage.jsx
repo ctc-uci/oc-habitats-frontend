@@ -174,6 +174,18 @@ const SectionPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(true);
   const [change, setChange] = useState(true);
+  // const [change, setChange] = useState(false); // new
+
+  const editSection = async id => {
+    try {
+      await axios.put(`${process.env.REACT_APP_API_URL}/section/${id}`);
+      console.log('Clicked Edit Segment');
+      setChange(!change);
+    } catch (err) {
+      console.log(err);
+      alert(err);
+    }
+  };
 
   const getSections = async () => {
     try {
@@ -368,7 +380,7 @@ const SectionPage = () => {
                             variant="solid"
                             aria-label="Edit Section"
                             rightIcon={<EditIcon />}
-                            onClick={onOpen}
+                            onClick={editSection}
                           >
                             Edit Section
                           </Button>

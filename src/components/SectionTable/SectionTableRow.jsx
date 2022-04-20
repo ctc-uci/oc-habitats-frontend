@@ -88,10 +88,23 @@ const UpdateSegmentPopupColumn = ({ data }) => {
   //   setChange(change);
   // };
 
+  // fixme this is editing a segment?
+
   const deleteSegment = async id => {
     try {
       await axios.delete(`${process.env.REACT_APP_API_URL}/segment/${id}`);
       console.log('Clicked Delete Segment');
+      setChange(change);
+    } catch (err) {
+      console.log(err);
+      alert(err);
+    }
+  };
+
+  const editSegment = async id => {
+    try {
+      await axios.put(`${process.env.REACT_APP_API_URL}/segment/${id}`);
+      console.log('Clicked Edit Segment');
       setChange(change);
     } catch (err) {
       console.log(err);
@@ -114,7 +127,7 @@ const UpdateSegmentPopupColumn = ({ data }) => {
         </MenuList>
       </Menu>
 
-      <Modal size="xl" isOpen={isOpenEdit} onClose={onCloseEdit}>
+      <Modal size="xl" isOpen={isOpenEdit} onClose={editSegment}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit Segment</ModalHeader>
@@ -157,16 +170,17 @@ const UpdateSegmentPopupColumn = ({ data }) => {
             />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="gray" mr={3} onClick={onCloseEdit}>
+            <Button colorScheme="gray" mr={3} onClick={editSegment}>
               Close
             </Button>
             <Button
               colorScheme="blue"
               mr={3}
-              onClick={() => {
-                // onUpdateSegment(segId, segName, segLocation, segLink, segParking);
-                onCloseEdit();
-              }}
+              onClick={editSegment}
+              // onClick={() => {
+              //   // onUpdateSegment(segId, segName, segLocation, segLink, segParking);
+              //   editSegment;
+              // }}
             >
               Save
             </Button>
