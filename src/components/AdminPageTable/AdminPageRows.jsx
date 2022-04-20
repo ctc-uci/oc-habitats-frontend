@@ -111,7 +111,8 @@ ApplyBadge.propTypes = {
 };
 
 VolunteerColumn.propTypes = {
-  data: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  data: PropTypes.object.isRequired,
 };
 
 export { DateFormat, Check, AllCheck, ApplyBadge, VolunteerColumn };
