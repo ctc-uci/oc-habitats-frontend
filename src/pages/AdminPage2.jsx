@@ -14,12 +14,17 @@ const AdminPage = () => {
   const [approvalFilter, setApprovalFilter] = useState('');
   const [searchFilter, setSearchFilter] = useState('');
   const [data, setData] = useState([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  const [checked, setChecked] = useState(new Map());
+  const [allChecked, setAllChecked] = useState(false);
 
   // get data from backend
   const getSubmissions = async () => {
     try {
       const res = await OCHBackend.get(`submissions`);
       setData(res.data);
+      setDataLoaded(true);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err);
@@ -30,14 +35,14 @@ const AdminPage = () => {
     getSubmissions();
   }, []);
 
-  const m = new Map();
-  for (let i = 0; i < data.length; i += 1) {
-    // eslint-disable-next-line dot-notation
-    m.set(data[i]['_id'], false);
-  }
-
-  const [checked, setChecked] = useState(m);
-  const [allChecked, setAllChecked] = useState(false);
+  useEffect(() => {
+    const m = new Map();
+    for (let i = 0; i < data.length; i += 1) {
+      // eslint-disable-next-line dot-notation
+      m.set(data[i]['_id'], false);
+    }
+    setChecked(m);
+  }, [dataLoaded]);
 
   const checkCount = () => {
     let count = 0;

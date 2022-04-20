@@ -14,13 +14,14 @@ const AdminPageTable = ({ tableData, checked, setChecked, allChecked, setAllChec
     () => CellStructure(checked, setChecked, allChecked, setAllChecked),
     [checked, setChecked, allChecked, setAllChecked],
   );
-  const data = tableData;
+  const data = useMemo(() => tableData);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
     prepareRow,
     canPreviousPage,
     canNextPage,
@@ -57,7 +58,7 @@ const AdminPageTable = ({ tableData, checked, setChecked, allChecked, setAllChec
       <Table variant="striped" {...getTableProps()}>
         <AdminPageHeader headerGroups={headerGroups} />
         <Tbody {...getTableBodyProps()}>
-          {rows.map(row => {
+          {page.map(row => {
             prepareRow(row);
             return (
               <Tr {...row.getRowProps()}>
