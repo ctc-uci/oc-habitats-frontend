@@ -11,6 +11,9 @@ import {
   Text,
   Button,
 } from '@chakra-ui/react';
+import AUTH_ROLES from '../../common/auth_config';
+
+const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 const DeletePendingAccountModal = ({ userData, isOpen, onClose }) => {
   return (
@@ -21,15 +24,18 @@ const DeletePendingAccountModal = ({ userData, isOpen, onClose }) => {
         <ModalCloseButton />
         <ModalBody>
           <br />
-          <Text>delete pending account</Text>
-          <pre>{JSON.stringify(userData, null, 2)}</pre>
+          <Text>
+            Are you sure you want to <Text as="b">delete {userData.email}</Text>&apos;s pending
+            account? This action cannot be undone.
+          </Text>
+          <br />
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="gray" mr="12px" onClick={onClose}>
+          <Button w="120px" colorScheme="gray" mr="12px" onClick={onClose}>
             No
           </Button>
-          <Button variant="solid" bg="red.600" color="white">
-            Yes, Convert Account
+          <Button w="120px" variant="solid" bg="red.600" color="white">
+            Yes, Delete
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -38,6 +44,18 @@ const DeletePendingAccountModal = ({ userData, isOpen, onClose }) => {
 };
 
 const ConvertAccountTypeModal = ({ userData, isOpen, onClose }) => {
+  const modalText = {
+    [ADMIN_ROLE]: (
+      <>
+        Admin account to a <Text as="b">Volunteer account</Text>?
+      </>
+    ),
+    [VOLUNTEER_ROLE]: (
+      <>
+        Volunteer account to an <Text as="b">Admin account</Text>?{' '}
+      </>
+    ),
+  };
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
@@ -46,14 +64,17 @@ const ConvertAccountTypeModal = ({ userData, isOpen, onClose }) => {
         <ModalCloseButton />
         <ModalBody>
           <br />
-          <Text>convert account</Text>
-          <pre>{JSON.stringify(userData, null, 2)}</pre>
+          <Text>
+            Are you sure you want to convert <Text as="b">{userData.name}</Text>&apos;s{' '}
+            {modalText[userData.role]}
+          </Text>
+          <br />
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="gray" mr="12px" onClick={onClose}>
+          <Button w="120px" colorScheme="gray" mr="12px" onClick={onClose}>
             No
           </Button>
-          <Button variant="solid" bg="green.500" color="white">
+          <Button w="200px" variant="solid" bg="green.500" color="white">
             Yes, Convert Account
           </Button>
         </ModalFooter>

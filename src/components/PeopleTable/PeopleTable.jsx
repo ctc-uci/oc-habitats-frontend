@@ -75,6 +75,8 @@ const cellStructure = [
     accessor: d => ({
       segments: d.segments,
       userId: d.id,
+      name: `${d.firstName} ${d.lastName}`,
+      email: d.email,
       role: d.role,
       registered: d.registered,
       isActive: d.isActive,
