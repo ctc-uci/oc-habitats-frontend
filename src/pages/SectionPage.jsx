@@ -179,6 +179,7 @@ const SectionPage = () => {
   const editSection = async id => {
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}/section/${id}`);
+      // eslint-disable-next-line no-console
       console.log('Clicked Edit Segment');
       setChange(!change);
     } catch (err) {
@@ -317,22 +318,22 @@ const SectionPage = () => {
                     onAddSection={(newSecId, newSecName, newSecMapLink) =>
                       addSection(newSecId, newSecName, newSecMapLink)
                     }
-                    onAddSegment={(
-                      newSegId,
-                      newSegName,
-                      newSegDescription,
-                      newSegMap,
-                      newSegParking,
-                    ) =>
-                      addSegment(
-                        sectionObj._id,
-                        newSegId,
-                        newSegName,
-                        newSegDescription,
-                        newSegMap,
-                        newSegParking,
-                      )
-                    }
+                    // onAddSegment={(
+                    //   newSegId,
+                    //   newSegName,
+                    //   newSegDescription,
+                    //   newSegMap,
+                    //   newSegParking,
+                    // ) =>
+                    //   addSegment(
+                    //     sectionObj._id,
+                    //     newSegId,
+                    //     newSegName,
+                    //     newSegDescription,
+                    //     newSegMap,
+                    //     newSegParking,
+                    //   )
+                    // }
                   />
                 </TabPanel>
               );

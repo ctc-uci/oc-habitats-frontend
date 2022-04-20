@@ -23,15 +23,7 @@ const cellStructure = [
       name: d.name,
       streets: d.streets,
     }),
-    Cell: props => (
-      // <div>
-      //   <VStack>
-      //     <div className="segmentname-container">{props.value.name}</div>
-      //     <div className="location-container">{props.value.description}</div>
-      //   </VStack>
-      // </div>
-      <SegmentNameColumn data={props.value} />
-    ),
+    Cell: props => <SegmentNameColumn data={props.value} />,
   },
   {
     id: 'map',
@@ -54,79 +46,10 @@ const cellStructure = [
   {
     id: 'delete',
     accessor: 'id',
-    Header: 'Delete',
+    Header: '',
     Cell: props => <UpdateSegmentPopupColumn data={props.value} />,
   },
 ];
-
-// const tempData = [
-//   {
-//     name: 'OCH01 Seal Beach',
-//     description: '1st St. - North End of Anaheim Bay',
-//     map: 'http://example.com',
-//     parking: 'here is how you park',
-//   },
-//   {
-//     name: 'OCH02 Seal Beach',
-//     description: '1st St. - North End of Anaheim Bay',
-//     map: 'http://example.com',
-//     parking: 'here is how you park2',
-//   },
-//   {
-//     name: 'OCH03 Seal Beach',
-//     description: '1st St. - North End of Anaheim Bay',
-//     map: 'http://example.com',
-//     parking: 'here is how you park2',
-//   },
-//   {
-//     name: 'OCH04 Seal Beach',
-//     description: '1st St. - North End of Anaheim Bay',
-//     map: 'http://example.com',
-//     parking: 'here is how you park2',
-//   },
-//   {
-//     name: 'OCH05 Seal Beach',
-//     description: '1st St. - North End of Anaheim Bay',
-//     map: 'http://example.com',
-//     parking: 'here is how you park2',
-//   },
-//   {
-//     name: 'OCH06 Seal Beach',
-//     description: '1st St. - North End of Anaheim Bay',
-//     map: 'http://example.com',
-//     parking: 'here is how you park2',
-//   },
-//   {
-//     name: 'OCH07 Seal Beach',
-//     description: '1st St. - North End of Anaheim Bay',
-//     map: 'http://example.com',
-//     parking: 'here is how you park2',
-//   },
-//   {
-//     name: 'OCH08 Seal Beach',
-//     description: '1st St. - North End of Anaheim Bay',
-//     map: 'http://example.com',
-//     parking: 'here is how you park2',
-//   },
-//   {
-//     name: 'OCH09 Seal Beach',
-//     description: '1st St. - North End of Anaheim Bay',
-//     map: 'http://example.com',
-//     parking: 'here is how you park2',
-//   },
-//   {
-//     name: 'OCH10 Seal Beach',
-//     description: '1st St. - North End of Anaheim Bay',
-//     map: 'http://example.com',
-//     parking: 'here is how you park2',
-//   },
-//   {
-//     name: 'OCH11 Seal Beach',
-//     description: '1st St. - North End of Anaheim Bay',
-//     map: 'http://example.com',
-//     parking: 'here is how you park2',
-//   },
-// ];
 
 const SectionTable = ({ sectionId, loading, segments }) => {
   const columns = useMemo(() => cellStructure, []);

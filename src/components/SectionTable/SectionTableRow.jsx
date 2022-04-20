@@ -25,9 +25,7 @@ import {
   Link,
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import axios from 'axios'; // new
-// const express = require('express') // new
-// const app = express() // new
+import axios from 'axios';
 
 // Custom component to render Name
 const SegmentNameColumn = ({ data }) => {
@@ -50,6 +48,7 @@ const ParkingColumn = ({ data }) => {
         <VStack align="normal">
           <Text>{data}</Text>
         </VStack>
+
         {/* <div>
           <UpdateSegmentPopup />
         </div> */}
@@ -93,6 +92,7 @@ const UpdateSegmentPopupColumn = ({ data }) => {
   const deleteSegment = async id => {
     try {
       await axios.delete(`${process.env.REACT_APP_API_URL}/segment/${id}`);
+      // eslint-disable-next-line no-console
       console.log('Clicked Delete Segment');
       setChange(change);
     } catch (err) {
@@ -104,6 +104,7 @@ const UpdateSegmentPopupColumn = ({ data }) => {
   const editSegment = async id => {
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}/segment/${id}`);
+      // eslint-disable-next-line no-console
       console.log('Clicked Edit Segment');
       setChange(change);
     } catch (err) {
@@ -115,8 +116,8 @@ const UpdateSegmentPopupColumn = ({ data }) => {
   return (
     <>
       <Menu>
-        <MenuButton>
-          <BsThreeDotsVertical />
+        <MenuButton size="xl">
+          <BsThreeDotsVertical color="ochBlack" />
         </MenuButton>
         <MenuList>
           <MenuItem onClick={onOpenEdit}>Edit Segment</MenuItem>

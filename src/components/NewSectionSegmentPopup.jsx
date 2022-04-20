@@ -20,18 +20,20 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
-// import Section from './Section';
+import axios from 'axios';
 
-function NewSectionSegmentPopup(onAddSection, onAddSegment) {
+function NewSectionSegmentPopup(onAddSection) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [value, setValue] = useState(0);
   const [step, setStep] = useState('0');
+  const [change, setChange] = useState(true);
   // const [volInput, setVolInput] = useState('');
   // const [adminName, setAdminName] = useState('');
   // const [adminEmail, setAdminEmail] = useState('');
   // const volHandleChange = event => setVolInput(event.target.value);
   // const adminNameHandleChange = event => setAdminName(event.target.value);
   // const adminEmailHandleChange = event => setAdminEmail(event.target.value);
+  let newSection = '';
   let newSecId = '';
   let newSecName = '';
   let newSecMapLink = '';
@@ -46,18 +48,19 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
     setStep('0');
   };
 
-  // const getSections = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     const res = await w(`${process.env.REACT_APP_API_URL}/sections`);
-  //     setSections(res.data);
-
-  //     setIsLoading(false);
-  //   } catch (err) {
-  //     // eslint-disable-next-line no-console
-  //     console.log(err);
-  //   }
-  // };
+  const addNewSegment = ({ newSegment }) => {
+    axios.post(`${process.env.REACT_APP_API_URL}/segment/`, {
+      deadline: null,
+      section: newSegment.section,
+      segmentId: newSegment.segmentId,
+      name: newSegment.name,
+      streets: newSegment.streets,
+      mapLink: newSegment.mapLink,
+      parking: newSegment.parking,
+      volunteers: [],
+    });
+    setChange(!change);
+  };
 
   return (
     <>
@@ -91,6 +94,12 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
             {step === '2' && (
               <Stack column="vertical">
                 <ModalHeader>Add Segment</ModalHeader>
+                <Text>Section</Text>
+                <Input
+                  onChange={event => {
+                    newSection = event.target.value;
+                  }}
+                />
                 <Text>Segment ID</Text>
                 <Input
                   onChange={event => {
@@ -176,7 +185,15 @@ function NewSectionSegmentPopup(onAddSection, onAddSegment) {
                 color="#F7FAFC"
                 variant="solid"
                 onClick={() => {
-                  onAddSegment(newSegId, newSegName, newSegLocation, newSegLink, newSegParking);
+                  addNewSegment({
+                    section: newSection,
+                    segmentId: newSegId,
+                    name: newSegName,
+                    streets: newSegLocation,
+                    mapLink: newSegLink,
+                    parking: newSegParking,
+                  });
+                  // onAddSegment(newSegId, newSegName, newSegLocation, newSegLink, newSegParking);
                   onClose();
                 }}
               >
