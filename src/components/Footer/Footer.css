@@ -1,0 +1,29 @@
+#footer-content {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-box {
+  border-right: 2px solid white;
+  border-style: dotted;
+}
+
+@media screen and (max-width: 768px) {
+  #footer-flex {
+    align-items: center;
+    height: 170px;
+  }
+  #footer-content {
+    align-items: center;
+    flex-direction: column;
+  }
+  .footer-box {
+    border-right: none;
+  }
+  .icon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
