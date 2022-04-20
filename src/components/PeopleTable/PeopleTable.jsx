@@ -7,7 +7,7 @@ import PeopleTableDescription from './PeopleTableDescription';
 import PeopleTableFilters from './PeopleTableFilters';
 import PeopleTableHeader from './PeopleTableHeader';
 import PeopleTableFooter from './PeopleTableFooter';
-import { PeopleTableRow, NameColumn, SegmentColumn } from './PeopleTableRow';
+import { PeopleTableRow, NameColumn, SegmentAndButtonColumn } from './PeopleTableRow';
 import { RowModalContextProvider } from './RowModalContext';
 
 const rowsPerPageSelect = [6, 10, 20, 30];
@@ -75,11 +75,12 @@ const cellStructure = [
     accessor: d => ({
       segments: d.segments,
       userId: d.id,
+      role: d.role,
       registered: d.registered,
       isActive: d.isActive,
     }),
     filter: 'segmentFilter',
-    Cell: ({ value }) => <SegmentColumn data={value} />,
+    Cell: ({ value }) => <SegmentAndButtonColumn data={value} />,
   },
 ];
 /* eslint-enable react/prop-types */

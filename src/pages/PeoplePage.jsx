@@ -24,8 +24,8 @@ TODO:
   - Three dot menu conditional render
   - Last updated column (sorting)
 - Functionality:
-  - View segment assignment page (design pending)
-  - Backend connection for admin invites
+  - View segment assignment page
+  X Backend connection for admin invites
   - Convert account type modal
   - Delete pending account modal
 - Refactoring:
@@ -50,8 +50,8 @@ const PeoplePage = () => {
     setSegments(segmentsData.data);
 
     // Split admins and volunteers
-    setVolunteerData(users.data.filter(user => user?.role === ADMIN_ROLE));
-    setAdminData(users.data.filter(user => user?.role === VOLUNTEER_ROLE));
+    setVolunteerData(users.data.filter(user => user?.role === VOLUNTEER_ROLE));
+    setAdminData(users.data.filter(user => user?.role === ADMIN_ROLE));
     setIsLoading(false);
   }, []);
 

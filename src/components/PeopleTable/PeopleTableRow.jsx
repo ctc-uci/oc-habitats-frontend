@@ -18,6 +18,10 @@ import {
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { useRowModalContext } from './RowModalContext';
 
+import AUTH_ROLES from '../../common/auth_config';
+
+const { ADMIN_ROLE } = AUTH_ROLES.AUTH_ROLES;
+
 const editAccountInfo = data => {
   // eslint-disable-next-line no-console
   console.log(`Editing account info ${data}`);
@@ -38,22 +42,19 @@ const menuContent = data => {
   if (!data.isActive) {
     return <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>;
   }
-  // if (!data.registered) {
-  //   return (
-  //     <MenuItem color="red.600" onClick={() => openDeletePendingModal(data)}>
-  //       Delete Pending Account
-  //     </MenuItem>
-  //   );
-  // }
+  if (!data.registered) {
+    return (
+      <MenuItem color="red.600" onClick={() => openDeletePendingModal(data)}>
+        Delete Pending Account
+      </MenuItem>
+    );
+  }
   return (
     <>
       <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>
       <MenuItem onClick={() => editSegmentAssignment(data)}>Edit Segment Assignment(s)</MenuItem>
       <MenuItem onClick={() => openConvertAccountModal(data)}>
-        Convert Account to Admin/Volunteer
-      </MenuItem>
-      <MenuItem color="red.600" onClick={() => openDeletePendingModal(data)}>
-        Delete Pending Account
+        Convert Account to {data.role === ADMIN_ROLE ? 'Volunteer' : 'Admin'}
       </MenuItem>
       <MenuItem color="red.600" onClick={() => clearSegmentAssignment(data)}>
         Clear Segment Assignment(s)
@@ -63,9 +64,9 @@ const menuContent = data => {
 };
 
 const badgeContent = data => {
-  // if (!data.registered) {
-  //   return <StyledBadge color="ochBlue" text="Account Pending" />;
-  // }
+  if (!data.registered) {
+    return <StyledBadge bgColor="ochBlueHover" text="Account Pending" />;
+  }
   if (!data.isActive) {
     return <StyledBadge bgColor="gray.300" textColor="black" text="Inactive" />;
   }
@@ -77,10 +78,10 @@ const badgeContent = data => {
 
 const NameColumn = ({ data }) => {
   return (
-    <Flex w="284px" h="72px" gap="12px" alignItems="center">
-      <Avatar size="md" name={data.name} src="something" />
+    <Flex h="72px" gap="12px" alignItems="center">
+      <Avatar size="md" name={data.registered ? data.name : data.email} src="something" />
       <VStack alignItems="flex-start">
-        <Text>{data.name}</Text>
+        <Text>{data.registered ? data.name : null}</Text>
         <Text color="gray.500">{data.email}</Text>
         {badgeContent(data)}
       </VStack>
@@ -103,15 +104,15 @@ const StyledBadge = ({ bgColor, textColor, text }) => (
   </Badge>
 );
 
-const SegmentColumn = ({ data }) => {
+const SegmentAndButtonColumn = ({ data }) => {
   return (
     <HStack w="100%" justifyContent="space-between">
       <VStack align="normal">
         {data?.segments?.map((segment, i) => (
           // eslint-disable-next-line react/no-array-index-key
           <HStack key={i} alignItems="baseline">
-            <Text>{segment.name}</Text>
-            <Text color="gray.500">{segment.description}</Text>
+            <Text>{segment.segmentId}</Text>
+            <Text color="gray.500">{segment.streets}</Text>
           </HStack>
         ))}
       </VStack>
@@ -128,7 +129,7 @@ const RowButton = ({ data }) => {
       <MenuButton>
         <IconButton icon={<BsThreeDotsVertical />} bg="transparent" />
       </MenuButton>
-      <MenuList>{menuContent(data)}</MenuList>
+      <MenuList placement="bottom-start">{menuContent(data)}</MenuList>
     </Menu>
   );
 };
@@ -157,7 +158,7 @@ NameColumn.propTypes = {
   data: PropTypes.string.isRequired,
 };
 
-SegmentColumn.propTypes = {
+SegmentAndButtonColumn.propTypes = {
   data: PropTypes.string.isRequired,
 };
 
@@ -169,4 +170,4 @@ PeopleTableRow.propTypes = {
   row: PropTypes.string.isRequired,
 };
 
-export { PeopleTableRow, NameColumn, SegmentColumn };
+export { PeopleTableRow, NameColumn, SegmentAndButtonColumn };
