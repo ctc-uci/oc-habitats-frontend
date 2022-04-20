@@ -48,8 +48,9 @@ function NewSectionSegmentPopup(onAddSection) {
     setStep('0');
   };
 
-  const addNewSegment = ({ newSegment }) => {
-    axios.post(`${process.env.REACT_APP_API_URL}/segment/`, {
+  const addNewSegment = async newSegment => {
+    console.log(newSegment);
+    await axios.post(`${process.env.REACT_APP_API_URL}/segment/`, {
       deadline: null,
       section: newSegment.section,
       segmentId: newSegment.segmentId,
