@@ -71,23 +71,15 @@ const ApplyBadge = ({ approval }) => {
   return <Text fontSize="xs">{approval}</Text>;
 };
 
-const ApplyTrain = ({ trainee }) => {
-  if (trainee) {
-    return (
-      <Badge variant="solid" colorScheme="orange">
-        IN TRAINING
-      </Badge>
-    );
-  }
-
-  return <Text />;
-};
-
 const VolunteerColumn = ({ data }) => {
   return (
     <HStack>
       <Text>{data.submitter}</Text>
-      {ApplyTrain(data.isSubmittedByTrainee)}
+      {data.isSubmittedByTrainee && (
+        <Badge variant="solid" colorScheme="orange">
+          IN TRAINING
+        </Badge>
+      )}
     </HStack>
   );
 };
@@ -120,10 +112,6 @@ ApplyBadge.propTypes = {
 
 VolunteerColumn.propTypes = {
   data: PropTypes.string.isRequired,
-};
-
-ApplyTrain.propTypes = {
-  trainee: PropTypes.bool.isRequired,
 };
 
 export { DateFormat, Check, AllCheck, ApplyBadge, VolunteerColumn };

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button } from '@chakra-ui/react';
 import { ApplyBadge, DateFormat, Check, AllCheck, VolunteerColumn } from './AdminPageRows';
 
 const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
@@ -44,6 +45,12 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       Header: 'Approval Status',
       accessor: 'status',
       Cell: ({ value }) => <ApplyBadge approval={value} />,
+    },
+    {
+      id: 'review',
+      Header: '',
+      accessor: '_id',
+      Cell: ({ value }) => <Button approval={value}>Review</Button>,
     },
   ];
   return cellStructure;
