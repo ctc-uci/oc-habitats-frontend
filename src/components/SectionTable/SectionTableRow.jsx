@@ -26,6 +26,7 @@ import {
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import axios from 'axios';
+import './SectionTableRow.css';
 
 // Custom component to render Name
 const SegmentNameColumn = ({ data }) => {
@@ -96,7 +97,9 @@ const UpdateSegmentPopupColumn = ({ data }) => {
       console.log('Clicked Delete Segment');
       setChange(change);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
+      // eslint-disable-next-line no-alert
       alert(err);
     }
   };
@@ -108,7 +111,9 @@ const UpdateSegmentPopupColumn = ({ data }) => {
       console.log('Clicked Edit Segment');
       setChange(change);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
+      // eslint-disable-next-line no-alert
       alert(err);
     }
   };

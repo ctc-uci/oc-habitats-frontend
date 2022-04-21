@@ -1,7 +1,9 @@
 @import url('https://rsms.me/inter/inter.css');
+
 html {
   font-family: 'Inter', sans-serif;
 }
+
 @supports (font-variation-settings: normal) {
   html {
     font-family: 'Inter var', sans-serif;
@@ -12,74 +14,19 @@ html {
   position: sticky;
   top: 0;
 }
+
 .table-head th:first-child {
   border-radius: 10px 0 0 0px;
 }
+
 .table-head th:last-child {
   border-radius: 0 10px 0 0;
 }
+
 .footer-container {
   overflow-y: auto;
   min-width: 900px;
   width: 100%;
   max-height: 400px;
   border-radius: 0 0 10px 10px;
-}
-
-.segmentname-container {
-  /*position: absolute;*/
-  /* width: 184px;
-  height: 20px;
-  left: 20%;
-  top: calc(50% - 20px / 2 - 10px); */
-
-  font-family: 'Inter';
-  font-style: normal;
-  /* font-weight: 500;
-  font-size: 14px;
-  line-height: 20px; */
-  /* identical to box height, or 143% */
-
-  display: flex;
-  align-items: center;
-
-  /* gray/700 */
-
-  color: #231f20;
-
-  /* Inside auto layout */
-
-  flex: none;
-  align-self: stretch;
-  flex-grow: 0;
-  margin: 0px 0px;
-}
-
-.location-container {
-  /* position: static; */
-  /* width: 184px;
-  height: 20px;
-  left: calc(50% - 184px / 2);
-  top: calc(50% - 20px / 2 + 10px); */
-
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  /* font-size: 14px;
-  line-height: 20px; */
-  /* identical to box height, or 143% */
-
-  display: flex;
-  align-items: center;
-
-  /* gray/500 */
-
-  color: #718096;
-
-  /* Inside auto layout */
-
-  flex: none;
-  align-self: stretch;
-  flex-grow: 0;
-  margin: 0px 0px;
 }

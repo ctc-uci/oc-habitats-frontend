@@ -21,9 +21,21 @@ const cellStructure = [
       segmentId: d.segmentId,
       segment: d.segment,
       name: d.name,
+      description: d.description,
       streets: d.streets,
     }),
-    Cell: props => <SegmentNameColumn data={props.value} />,
+    Cell:
+      // props => (
+      //   <>
+      //     <VStack>
+      //       <div className="segmentname-container">
+      //         {props.value.segmentId} {props.value.name}
+      //       </div>
+      //       <div className="location-container">{props.value.description}</div>
+      //       <div className="location-container">{props.value.streets}</div>
+      //     </VStack>
+      //   </>)
+      props => <SegmentNameColumn data={props.value} />,
   },
   {
     id: 'map',

@@ -49,7 +49,6 @@ function NewSectionSegmentPopup(onAddSection) {
   };
 
   const addNewSegment = async newSegment => {
-    console.log(newSegment);
     await axios.post(`${process.env.REACT_APP_API_URL}/segment/`, {
       deadline: null,
       section: newSegment.section,
@@ -208,12 +207,11 @@ function NewSectionSegmentPopup(onAddSection) {
   );
 }
 
-const CreateNew = ({ onAddSection, onAddSegment }) => {
-  return <Box align="left">{NewSectionSegmentPopup(onAddSection, onAddSegment)}</Box>;
+const CreateNew = ({ onAddSection }) => {
+  return <Box align="left">{NewSectionSegmentPopup(onAddSection)}</Box>;
 };
 
 CreateNew.propTypes = {
   onAddSection: PropTypes.func.isRequired,
-  onAddSegment: PropTypes.func.isRequired,
 };
 export default CreateNew;
