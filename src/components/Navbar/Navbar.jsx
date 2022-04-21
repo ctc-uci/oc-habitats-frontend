@@ -1,20 +1,15 @@
-import React from 'react';
+import { React } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { HStack, Flex, Button, Image, useMediaQuery } from '@chakra-ui/react';
+import { HStack, Flex, Button, Image, useMediaQuery, useToast } from '@chakra-ui/react';
 import NavbarLink from './NavbarLink';
 import ProfileDropdown from './ProfileDropdown';
 import logo from '../../assets/OCH_Logo_SVG.svg';
+import Toast from '../Toast';
 import NavbarMobile from './NavbarMobile';
 
-const Navbar = ({ isAdmin }) => {
+const Navbar = ({ isAdmin, changesMade }) => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
-  // TO DO: get profile image and name
-  const user = {
-    firstName: 'Dan',
-    lastName: 'Abramov',
-    profilePic: 'https://bit.ly/dan-abramov',
-  };
 
   const admin = [
     { text: 'Monitor Logs', path: '/logs' },
@@ -31,6 +26,17 @@ const Navbar = ({ isAdmin }) => {
     { text: 'Emergency Numbers', path: '/emergency-numbers' },
   ];
 
+  const toast = useToast();
+
+  const handleOnClick = e => {
+    if (changesMade) {
+      e.preventDefault();
+      return Toast(toast, 'unsaved');
+    }
+
+    return {};
+  };
+
   return isMobile ? (
     <NavbarMobile isAdmin />
   ) : (
@@ -45,7 +51,7 @@ const Navbar = ({ isAdmin }) => {
       top={0}
       h="60px"
     >
-      <Link to="/">
+      <Link to="/" onClick={handleOnClick}>
         <Image
           pl={4}
           pr={0}
@@ -59,11 +65,21 @@ const Navbar = ({ isAdmin }) => {
       {/* TO DO: if user is not signed in, only logo */}
       <HStack h="inherit" spacing={6} pr={4}>
         {isAdmin
-          ? admin.map(a => <NavbarLink key={a.text} text={a.text} path={a.path} />)
-          : volunteer.map(v => <NavbarLink key={v.text} text={v.text} path={v.path} />)}
+          ? admin.map(a => (
+              <NavbarLink key={a.text} text={a.text} path={a.path} changesMade={changesMade} />
+            ))
+          : volunteer.map(v => (
+              <NavbarLink key={v.text} text={v.text} path={v.path} changesMade={changesMade} />
+            ))}
         {!isAdmin && (
           <Link to="/create-log">
-            <Button size="sm" bgColor="ochBlue" color="ochBlack" _hover={{ opacity: '0.8' }}>
+            <Button
+              size="sm"
+              bgColor="ochBlue"
+              color="ochBlack"
+              _hover={{ opacity: '0.8' }}
+              onClick={handleOnClick}
+            >
               Start Session
             </Button>
           </Link>
@@ -76,6 +92,7 @@ const Navbar = ({ isAdmin }) => {
 
 Navbar.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
+  changesMade: PropTypes.bool.isRequired,
 };
 
 export default Navbar;
