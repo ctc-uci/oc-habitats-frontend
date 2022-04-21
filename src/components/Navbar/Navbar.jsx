@@ -15,7 +15,7 @@ const Navbar = ({ isAdmin, changesMade }) => {
     lastName: 'Abramov',
     profilePic: 'https://bit.ly/dan-abramov',
   };
-
+  
   const admin = [
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'People', path: '/people' },

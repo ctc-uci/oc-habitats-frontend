@@ -43,8 +43,8 @@ const SexSection = () => {
                 {input}
                 <NumberInput
                   min={0}
-                  onChange={(_, val) => setValue(`sex[${idx}]`, val)}
-                  defaultValue={getValues().sex[idx]}
+                  onChange={(_, val) => setValue(`sex[${idx}]`, val, { shouldDirty: true })}
+                  defaultValue={getValues(`sex[${idx}]`)}
                   max={getMax(idx)}
                 >
                   <NumberInputField />

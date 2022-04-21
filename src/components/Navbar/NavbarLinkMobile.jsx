@@ -1,10 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useLocation, Link } from 'react-router-dom';
 import { MenuItem, Text } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const NavbarLinkMobile = ({ text, path = '/', color }) => {
-  const current = useLocation().pathname;
   return (
     <Link to={path} align="left">
       <MenuItem>
