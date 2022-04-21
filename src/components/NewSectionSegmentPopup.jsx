@@ -16,13 +16,13 @@ import {
   Input,
   Textarea,
   Text,
-  Select,
 } from '@chakra-ui/react';
+import Select from 'react-select';
 import { AddIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
 import axios from 'axios';
 
-function NewSectionSegmentPopup(onAddSection) {
+function NewSectionSegmentPopup(sectionOptions, onAddSection) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [value, setValue] = useState(0);
   const [step, setStep] = useState('0');
@@ -49,17 +49,22 @@ function NewSectionSegmentPopup(onAddSection) {
   };
 
   const addNewSegment = async newSegment => {
-    await axios.post(`${process.env.REACT_APP_API_URL}/segment/`, {
-      deadline: null,
-      section: newSegment.section,
-      segmentId: newSegment.segmentId,
-      name: newSegment.name,
-      streets: newSegment.streets,
-      mapLink: newSegment.mapLink,
-      parking: newSegment.parking,
-      volunteers: [],
-    });
-    setChange(!change);
+    try {
+      // eslint-disable-next-line no-console
+      console.log(newSegment);
+      await axios.post(`${process.env.REACT_APP_API_URL}/segment/`, {
+        section: newSegment.section,
+        segmentId: newSegment.segmentId,
+        name: newSegment.name,
+        streets: newSegment.streets,
+        mapLink: newSegment.mapLink,
+        parking: newSegment.parking,
+      });
+      setChange(!change);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
   };
 
   return (
@@ -95,9 +100,16 @@ function NewSectionSegmentPopup(onAddSection) {
               <Stack column="vertical">
                 <ModalHeader>Add Segment</ModalHeader>
                 <Text>Section</Text>
-                <Input
+                {/* <Input
                   onChange={event => {
                     newSection = event.target.value;
+                  }}
+                /> */}
+
+                <Select
+                  options={sectionOptions}
+                  onChange={event => {
+                    newSection = event.value;
                   }}
                 />
                 <Text>Segment ID</Text>
@@ -106,9 +118,6 @@ function NewSectionSegmentPopup(onAddSection) {
                     newSegId = event.target.value;
                   }}
                 />
-                <Select>
-                  <option value="option1">Option 1</option>
-                </Select>
                 <Text>Segment Name</Text>
                 <Input
                   onChange={event => {
@@ -207,11 +216,13 @@ function NewSectionSegmentPopup(onAddSection) {
   );
 }
 
-const CreateNew = ({ onAddSection }) => {
-  return <Box align="left">{NewSectionSegmentPopup(onAddSection)}</Box>;
+const CreateNew = ({ sectionOptions, onAddSection }) => {
+  return <Box align="left">{NewSectionSegmentPopup(sectionOptions, onAddSection)}</Box>;
 };
 
 CreateNew.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  sectionOptions: PropTypes.array.isRequired,
   onAddSection: PropTypes.func.isRequired,
 };
 export default CreateNew;

@@ -120,7 +120,12 @@ const SectionPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(true);
   const [change, setChange] = useState(true);
+
   // const [change, setChange] = useState(false); // new
+  const sectionOptions = sections.map(section => ({
+    value: section._id,
+    label: section._id,
+  }));
 
   const editSection = async id => {
     try {
@@ -263,6 +268,7 @@ const SectionPage = () => {
                 <TabPanel key={sectionObj._id} padding="0px">
                   <CreateNew
                     key={sectionObj._id}
+                    sectionOptions={sectionOptions}
                     onAddSection={(newSecId, newSecName, newSecMapLink) =>
                       addSection(newSecId, newSecName, newSecMapLink)
                     }
