@@ -186,6 +186,7 @@ const NewSectionSegmentPopup = ({ sectionOptions }) => {
   const [step, setStep] = useState(0);
 
   const handButtonClick = () => {
+    setStep(0);
     onOpen();
   };
 
