@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination } from 'react-table';
 import { Table, Tr, Td, Tbody } from '@chakra-ui/react';

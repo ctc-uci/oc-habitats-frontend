@@ -6,7 +6,7 @@ import ListedSpeciesPopup from './components/ListedSpecies/ListedSpeciesPopup';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import AccountPage from './pages/AccountPage';
-import AdminPage from './pages/AdminPage2'; // monitor-log table
+import AdminPage from './pages/AdminPage'; // monitor-log table
 import HomePage from './pages/HomePage';
 import MonitorLogPage from './pages/MonitorLogPage';
 import PeoplePage from './pages/PeoplePage';
