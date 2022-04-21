@@ -30,6 +30,7 @@ import Toast from '../components/Toast';
 const AccountPage = ({
   changesMade,
   setChangesMade,
+  // TODO: Remove when getting ID from param/props
   id = 'd882dffe-d560-4f24-a3ff-a3dc8eb9ef0d',
 }) => {
   const [isLoading, setLoading] = useState(false);
@@ -107,7 +108,7 @@ const AccountPage = ({
       isTrainee: currUser.isTrainee,
       isActive: currUser.isActive,
       assignedSegments: currUser.segments.toString(),
-      currPassword: currUser.password,
+      // currPassword: currUser.password,
     });
     const base64String = Buffer.from(currUser.profileImage.data.data).toString('base64');
     setImageSource(`data:${currUser.profileImage.contentType};base64,${base64String}`);
@@ -143,9 +144,9 @@ const AccountPage = ({
   const toast = useToast();
   const handleSubmit = async e => {
     e.preventDefault();
-    if (newPassword && currPassword !== user.currPassword) {
-      return Toast(toast, 'password');
-    }
+    // if (newPassword && currPassword !== user.currPassword) {
+    //   return Toast(toast, 'password');
+    // }
     if (currPassword && !newPassword) {
       return Toast(toast, 'empty');
     }
@@ -160,22 +161,22 @@ const AccountPage = ({
       setChangesMade(false);
       setCurrPassword('');
       setNewPassword('');
-      if (newPassword)
-        setUser({
-          ...user,
-          firstName,
-          lastName,
-          email,
-          currPassword: newPassword,
-        });
-      else {
-        setUser({
-          ...user,
-          firstName,
-          lastName,
-          email,
-        });
-      }
+      // if (newPassword)
+      //   setUser({
+      //     ...user,
+      //     firstName,
+      //     lastName,
+      //     email,
+      //     currPassword: newPassword,
+      //   });
+      // else {
+      setUser({
+        ...user,
+        firstName,
+        lastName,
+        email,
+      });
+      // }
 
       return Toast(toast, 'success');
     } catch (err) {
