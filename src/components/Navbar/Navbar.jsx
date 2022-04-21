@@ -60,8 +60,12 @@ const Navbar = ({ isAdmin, changesMade }) => {
       {/* TO DO: if user is not signed in, only logo */}
       <HStack h="inherit" spacing={6} pr={4}>
         {isAdmin
-          ? admin.map(a => <NavbarLink key={a.text} text={a.text} path={a.path} changesMade />)
-          : volunteer.map(v => <NavbarLink key={v.text} text={v.text} path={v.path} changesMade />)}
+          ? admin.map(a => (
+              <NavbarLink key={a.text} text={a.text} path={a.path} changesMade={changesMade} />
+            ))
+          : volunteer.map(v => (
+              <NavbarLink key={v.text} text={v.text} path={v.path} changesMade={changesMade} />
+            ))}
         {!isAdmin && (
           <Link to="/create-log">
             <Button
