@@ -29,7 +29,7 @@ import { React, useEffect, useState } from 'react';
 import axios from 'axios';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 // import Section from '../components/Section';
-import CreateNew from '../components/NewSectionSegmentPopup';
+import NewSectionSegmentPopup from '../components/NewSectionSegmentPopup';
 import SectionTable from '../components/SectionTable/SectionTable';
 
 const tempData = {
@@ -266,7 +266,7 @@ const SectionPage = () => {
             {sections.map(sectionObj => {
               return (
                 <TabPanel key={sectionObj._id} padding="0px">
-                  <CreateNew
+                  <NewSectionSegmentPopup
                     key={sectionObj._id}
                     sectionOptions={sectionOptions}
                     onAddSection={(newSecId, newSecName, newSecMapLink) =>

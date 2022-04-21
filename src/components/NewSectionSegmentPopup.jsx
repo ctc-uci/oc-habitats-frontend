@@ -1,6 +1,5 @@
 import { useState, React } from 'react';
 import {
-  Box,
   Button,
   useDisclosure,
   Modal,
@@ -9,7 +8,6 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
   RadioGroup,
   Radio,
   Stack,
@@ -20,39 +18,171 @@ import {
 import Select from 'react-select';
 import { AddIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
-import axios from 'axios';
+import { OCHBackend } from '../common/utils';
 
-function NewSectionSegmentPopup(sectionOptions, onAddSection) {
+const ModalContentStepOne = ({ step, setStep }) => (
+  <>
+    <ModalHeader>Create New:</ModalHeader>
+    <ModalBody>
+      <Text>User Type</Text>
+      <RadioGroup onChange={setStep} value={step}>
+        <Stack column="vertical">
+          <Radio value="1">Section</Radio>
+          <Radio value="2">Segment</Radio>
+        </Stack>
+      </RadioGroup>
+    </ModalBody>
+  </>
+);
+
+const ModalContentAddSection = ({ newSecId, newSecName, newSecMapLink }) => (
+  <>
+    <ModalHeader>Add Section</ModalHeader>
+    <ModalBody>
+      <Stack column="vertical">
+        <Text>Section Id</Text>
+        <Input
+          onChange={event => {
+            newSecId = event.target.value;
+          }}
+        />
+        <Text>Section Name</Text>
+        <Input
+          onChange={event => {
+            newSecName = event.target.value;
+          }}
+        />
+        <Text>Section Map Link</Text>
+        <Textarea
+          onChange={event => {
+            newSecMapLink = event.target.value;
+          }}
+        />
+      </Stack>
+    </ModalBody>
+  </>
+);
+
+const ModalContentAddSegment = ({
+  sectionOptions,
+  newSection,
+  newSegId,
+  newSegName,
+  newSegLink,
+  newSegLocation,
+  newSegParking,
+}) => (
+  <>
+    <ModalHeader>Add Segment</ModalHeader>
+    <Stack column="vertical">
+      <ModalBody>
+        <Stack column="vertical"></Stack>
+        <Text>Section</Text>
+
+        <Select
+          options={sectionOptions}
+          onChange={event => {
+            newSection = event.value;
+          }}
+        />
+        <Text>Segment ID</Text>
+        <Input
+          onChange={event => {
+            newSegId = event.target.value;
+          }}
+        />
+        <Text>Segment Name</Text>
+        <Input
+          onChange={event => {
+            newSegName = event.target.value;
+          }}
+        />
+        <Text>Section Map Link</Text>
+        <Textarea
+          onChange={event => {
+            newSegLink = event.target.value;
+          }}
+        />
+        <Text>Street Names</Text>
+        <Input
+          onChange={event => {
+            newSegLocation = event.target.value;
+          }}
+        />
+        <Text>Parking Information</Text>
+        <Textarea
+          onChange={event => {
+            newSegParking = event.target.value;
+          }}
+        />
+      </ModalBody>
+    </Stack>
+  </>
+);
+
+const CreateNewSectionButton = ({ onClick }) => (
+  <Button
+    colorScheme="blue"
+    bg="ochBlue"
+    color="ochBlack"
+    variant="solid"
+    onClick={() => onClick()}
+  >
+    Create New Section
+  </Button>
+);
+
+const CreateNewSegmentButton = ({ onClick }) => (
+  <Button
+    colorScheme="blue"
+    bg="ochBlue"
+    color="ochBlack"
+    variant="solid"
+    onClick={() => onClick()}
+  >
+    Create New Segment
+  </Button>
+);
+
+const NewSectionSegmentPopup = ({ sectionOptions, onAddSection }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [value, setValue] = useState(0);
   const [step, setStep] = useState('0');
-  const [change, setChange] = useState(true);
-  // const [volInput, setVolInput] = useState('');
-  // const [adminName, setAdminName] = useState('');
-  // const [adminEmail, setAdminEmail] = useState('');
-  // const volHandleChange = event => setVolInput(event.target.value);
-  // const adminNameHandleChange = event => setAdminName(event.target.value);
-  // const adminEmailHandleChange = event => setAdminEmail(event.target.value);
-  let newSection = '';
-  let newSecId = '';
-  let newSecName = '';
-  let newSecMapLink = '';
-  let newSegId = '';
-  let newSegName = '';
-  let newSegLocation = '';
-  let newSegLink = '';
-  let newSegParking = '';
+  const [newSectionId, setNewSectionId] = useState('');
+  const [newSecName, setNewSecName] = useState('');
+  const [newSecMapLink, setNewSecMapLink] = useState('');
+  const [newSegId, setNewSegId] = useState('');
+  const [newSegName, setNewSegName] = useState('');
+  const [newSegLocation, setNewSegLocation] = useState('');
+  const [newSegLink, setNewSegLink] = useState('');
+  const [newSegParking, setNewSegParking] = useState('');
+
   const handButtonClick = () => {
     onOpen();
     setValue(0);
     setStep('0');
   };
 
+  const addNewSection = async newSection => {
+    try {
+      // eslint-disable-next-line no-console
+      console.log(newSection);
+      await OCHBackend.post('/section/', {
+        _id: newSection._id,
+        name: newSection.name,
+        map: newSection.map,
+      });
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+  };
+
   const addNewSegment = async newSegment => {
     try {
       // eslint-disable-next-line no-console
       console.log(newSegment);
-      await axios.post(`${process.env.REACT_APP_API_URL}/segment/`, {
+      await OCHBackend.post('/segment/', {
         section: newSegment.section,
         segmentId: newSegment.segmentId,
         name: newSegment.name,
@@ -60,11 +190,63 @@ function NewSectionSegmentPopup(sectionOptions, onAddSection) {
         mapLink: newSegment.mapLink,
         parking: newSegment.parking,
       });
-      setChange(!change);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err);
     }
+  };
+
+  const modalSteps = {
+    0: <ModalContentStepOne step={step} setStep={setStep} />,
+    1: (
+      <ModalContentAddSection
+        newSecId={newSectionId}
+        newSecName={newSecName}
+        newSecMapLink={newSecMapLink}
+      />
+    ),
+    2: (
+      <ModalContentAddSegment
+        sectionOptions={sectionOptions}
+        newSection={newSectionId}
+        newSegId={newSegId}
+        newSegName={newSegName}
+        newSegLink={newSegLink}
+        newSegLocation={newSegLocation}
+        newSegParking={newSegParking}
+      />
+    ),
+  };
+
+  const modalFooterButtons = {
+    0: null,
+    1: (
+      <CreateNewSectionButton
+        onClick={() => {
+          addNewSection({
+            _id: newSecId,
+            name: newSecName,
+            map: newSecMapLink,
+          });
+          onClose();
+        }}
+      />
+    ),
+    2: (
+      <CreateNewSegmentButton
+        onClick={() => {
+          addNewSegment({
+            section: newSectionId,
+            segmentId: newSegId,
+            name: newSegName,
+            streets: newSegLocation,
+            mapLink: newSegLink,
+            parking: newSegParking,
+          });
+          onClose();
+        }}
+      />
+    ),
   };
 
   return (
@@ -82,147 +264,53 @@ function NewSectionSegmentPopup(sectionOptions, onAddSection) {
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create New:</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {step === '0' && (
-              <>
-                <Text>User Type</Text>
-                <RadioGroup onChange={setStep} step={value}>
-                  <Stack column="vertical">
-                    <Radio value="1">Section</Radio>
-                    <Radio value="2">Segment</Radio>
-                  </Stack>
-                </RadioGroup>
-              </>
-            )}
-            {step === '2' && (
-              <Stack column="vertical">
-                <ModalHeader>Add Segment</ModalHeader>
-                <Text>Section</Text>
-                {/* <Input
-                  onChange={event => {
-                    newSection = event.target.value;
-                  }}
-                /> */}
-
-                <Select
-                  options={sectionOptions}
-                  onChange={event => {
-                    newSection = event.value;
-                  }}
-                />
-                <Text>Segment ID</Text>
-                <Input
-                  onChange={event => {
-                    newSegId = event.target.value;
-                  }}
-                />
-                <Text>Segment Name</Text>
-                <Input
-                  onChange={event => {
-                    newSegName = event.target.value;
-                  }}
-                />
-                <Text>Section Map Link</Text>
-                <Textarea
-                  onChange={event => {
-                    newSegLink = event.target.value;
-                  }}
-                />
-                <Text>Street Names</Text>
-                <Input
-                  onChange={event => {
-                    newSegLocation = event.target.value;
-                  }}
-                />
-                <Text>Parking Information</Text>
-                <Textarea
-                  onChange={event => {
-                    newSegParking = event.target.value;
-                  }}
-                />
-              </Stack>
-            )}
-            {step === '1' && (
-              <Stack column="vertical">
-                <ModalHeader>Add Section</ModalHeader>
-                <Text>Section Id</Text>
-                <Input
-                  onChange={event => {
-                    newSecId = event.target.value;
-                  }}
-                />
-                <Text>Section Name</Text>
-                <Input
-                  onChange={event => {
-                    newSecName = event.target.value;
-                  }}
-                />
-                <Text>Section Map Link</Text>
-                <Textarea
-                  onChange={event => {
-                    newSecMapLink = event.target.value;
-                  }}
-                />
-              </Stack>
-            )}
-          </ModalBody>
+          {modalSteps[step]}
 
           <ModalFooter>
             <Button colorScheme="gray" mr={3} onClick={onClose}>
               Close
             </Button>
-            {step === '1' && (
-              <Button
-                colorScheme="blue"
-                bg="ochBlue"
-                color="#F7FAFC"
-                variant="solid"
-                onClick={() => {
-                  onAddSection(newSecId, newSecName, newSecMapLink);
-                  onClose();
-                }}
-              >
-                Create New Section
-              </Button>
-            )}
-            {step === '2' && (
-              <Button
-                colorScheme="blue"
-                bg="ochBlue"
-                color="#F7FAFC"
-                variant="solid"
-                onClick={() => {
-                  addNewSegment({
-                    section: newSection,
-                    segmentId: newSegId,
-                    name: newSegName,
-                    streets: newSegLocation,
-                    mapLink: newSegLink,
-                    parking: newSegParking,
-                  });
-                  // onAddSegment(newSegId, newSegName, newSegLocation, newSegLink, newSegParking);
-                  onClose();
-                }}
-              >
-                Create New Segment
-              </Button>
-            )}
+            {modalFooterButtons[step]}
           </ModalFooter>
         </ModalContent>
       </Modal>
     </>
   );
-}
-
-const CreateNew = ({ sectionOptions, onAddSection }) => {
-  return <Box align="left">{NewSectionSegmentPopup(sectionOptions, onAddSection)}</Box>;
 };
 
-CreateNew.propTypes = {
+NewSectionSegmentPopup.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   sectionOptions: PropTypes.array.isRequired,
   onAddSection: PropTypes.func.isRequired,
 };
-export default CreateNew;
+
+ModalContentStepOne.propTypes = {
+  step: PropTypes.number.isRequired,
+  setStep: PropTypes.func.isRequired,
+};
+
+ModalContentAddSection.propTypes = {
+  newSecId: PropTypes.number.isRequired,
+  newSecName: PropTypes.string.isRequired,
+  newSecMapLink: PropTypes.string.isRequired,
+};
+
+ModalContentAddSegment.propTypes = {
+  sectionOptions: PropTypes.array.isRequired,
+  newSection: PropTypes.number.isRequired,
+  newSegId: PropTypes.number.isRequired,
+  newSegName: PropTypes.string.isRequired,
+  newSegLink: PropTypes.string.isRequired,
+  newSegLocation: PropTypes.string.isRequired,
+  newSegParking: PropTypes.string.isRequired,
+};
+
+CreateNewSectionButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
+
+CreateNewSegmentButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
+
+export default NewSectionSegmentPopup;
