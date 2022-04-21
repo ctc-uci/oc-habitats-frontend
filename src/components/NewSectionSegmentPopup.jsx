@@ -1,4 +1,5 @@
 import { useState, React } from 'react';
+import { PropTypes } from 'prop-types';
 import {
   Button,
   useDisclosure,
@@ -14,11 +15,34 @@ import {
   Input,
   Textarea,
   Text,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import { AddIcon } from '@chakra-ui/icons';
-import { PropTypes } from 'prop-types';
+import { useForm, Controller } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { OCHBackend } from '../common/utils';
+
+const addSectionSchema = yup.object({
+  sectionId: yup.string().required('Section Id is required'),
+  sectionName: yup.string().required('Section Name is required'),
+  sectionMapLink: yup.string().required('Section Map Link is required'),
+});
+
+const addSegmentSchema = yup.object({
+  newSection: yup.object({
+    label: yup.string().required('Section is required'),
+    value: yup.string().required('Section is required'),
+  }),
+  newSegId: yup.string().required('Segment Id is required'),
+  newSegName: yup.string().required('Segment Name is required'),
+  newSegLink: yup.string().required('Segment Map Link is required'),
+  newSegLocation: yup.string().required('Segment streets is required'),
+  newSegParking: yup.string().required('Segment Parking is required'),
+});
 
 const ModalContentStepOne = ({ step, setStep }) => (
   <>
@@ -35,132 +59,134 @@ const ModalContentStepOne = ({ step, setStep }) => (
   </>
 );
 
-const ModalContentAddSection = ({ newSecId, newSecName, newSecMapLink }) => (
-  <>
-    <ModalHeader>Add Section</ModalHeader>
-    <ModalBody>
-      <Stack column="vertical">
-        <Text>Section Id</Text>
-        <Input
-          onChange={event => {
-            newSecId = event.target.value;
-          }}
-        />
-        <Text>Section Name</Text>
-        <Input
-          onChange={event => {
-            newSecName = event.target.value;
-          }}
-        />
-        <Text>Section Map Link</Text>
-        <Textarea
-          onChange={event => {
-            newSecMapLink = event.target.value;
-          }}
-        />
-      </Stack>
-    </ModalBody>
-  </>
-);
+const ModalContentAddSection = ({ addNewSection, onClose }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(addSectionSchema),
+    delayError: 750,
+  });
 
-const ModalContentAddSegment = ({
-  sectionOptions,
-  newSection,
-  newSegId,
-  newSegName,
-  newSegLink,
-  newSegLocation,
-  newSegParking,
-}) => (
-  <>
-    <ModalHeader>Add Segment</ModalHeader>
-    <Stack column="vertical">
+  return (
+    <>
+      <ModalHeader>Add Section</ModalHeader>
       <ModalBody>
-        <Stack column="vertical"></Stack>
-        <Text>Section</Text>
+        <form onSubmit={handleSubmit(addNewSection)}>
+          <Stack column="vertical">
+            <FormControl isInvalid={errors?.sectionId}>
+              <FormLabel htmlFor="sectionId">Section Id</FormLabel>
+              <Input id="sectionId" {...register('sectionId')} />
+              <FormErrorMessage>{errors.sectionId?.message}</FormErrorMessage>
+            </FormControl>
 
-        <Select
-          options={sectionOptions}
-          onChange={event => {
-            newSection = event.value;
-          }}
-        />
-        <Text>Segment ID</Text>
-        <Input
-          onChange={event => {
-            newSegId = event.target.value;
-          }}
-        />
-        <Text>Segment Name</Text>
-        <Input
-          onChange={event => {
-            newSegName = event.target.value;
-          }}
-        />
-        <Text>Section Map Link</Text>
-        <Textarea
-          onChange={event => {
-            newSegLink = event.target.value;
-          }}
-        />
-        <Text>Street Names</Text>
-        <Input
-          onChange={event => {
-            newSegLocation = event.target.value;
-          }}
-        />
-        <Text>Parking Information</Text>
-        <Textarea
-          onChange={event => {
-            newSegParking = event.target.value;
-          }}
-        />
+            <FormControl isInvalid={errors?.sectionName}>
+              <FormLabel htmlFor="sectionName">Section Name</FormLabel>
+              <Input id="sectionName" {...register('sectionName')} />
+              <FormErrorMessage>{errors.sectionName?.message}</FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={errors?.sectionMapLink}>
+              <FormLabel htmlFor="sectionMapLink">Section Map Link</FormLabel>
+              <Textarea id="sectionMapLink" {...register('sectionMapLink')} />
+              <FormErrorMessage>{errors.sectionMapLink?.message}</FormErrorMessage>
+            </FormControl>
+          </Stack>
+          <ModalFooter>
+            <Button colorScheme="gray" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button colorScheme="blue" bg="ochBlue" color="ochBlack" variant="solid" type="submit">
+              Create New Section
+            </Button>
+          </ModalFooter>
+        </form>
       </ModalBody>
-    </Stack>
-  </>
-);
+    </>
+  );
+};
 
-const CreateNewSectionButton = ({ onClick }) => (
-  <Button
-    colorScheme="blue"
-    bg="ochBlue"
-    color="ochBlack"
-    variant="solid"
-    onClick={() => onClick()}
-  >
-    Create New Section
-  </Button>
-);
+const ModalContentAddSegment = ({ sectionOptions, addNewSegment, onClose }) => {
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(addSegmentSchema),
+    delayError: 750,
+  });
 
-const CreateNewSegmentButton = ({ onClick }) => (
-  <Button
-    colorScheme="blue"
-    bg="ochBlue"
-    color="ochBlack"
-    variant="solid"
-    onClick={() => onClick()}
-  >
-    Create New Segment
-  </Button>
-);
+  return (
+    <>
+      <ModalHeader>Add Segment</ModalHeader>
+      <ModalBody>
+        <form onSubmit={handleSubmit(addNewSegment)}>
+          <Stack column="vertical">
+            <FormControl isInvalid={errors?.newSection}>
+              <FormLabel htmlFor="newSection">Section</FormLabel>
+              <Controller
+                control={control}
+                name="newSection"
+                // eslint-disable-next-line no-unused-vars
+                render={({ field: { onChange, value, ref } }) => (
+                  <Select options={sectionOptions} value={value} onChange={onChange} />
+                )}
+              />
+              <FormErrorMessage>{errors.newSection?.message}</FormErrorMessage>
+            </FormControl>
 
-const NewSectionSegmentPopup = ({ sectionOptions, onAddSection }) => {
+            <FormControl isInvalid={errors?.newSegId}>
+              <FormLabel htmlFor="newSegId">Segment ID</FormLabel>
+              <Input id="newSegId" {...register('newSegId')} />
+              <FormErrorMessage>{errors.newSegId?.message}</FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={errors?.newSegName}>
+              <FormLabel htmlFor="newSegName">Segment Name</FormLabel>
+              <Input id="newSegName" {...register('newSegName')} />
+              <FormErrorMessage>{errors.newSegName?.message}</FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={errors?.newSegLink}>
+              <FormLabel htmlFor="newSegLink">Section Map Link</FormLabel>
+              <Textarea id="newSegLink" {...register('newSegLink')} />
+              <FormErrorMessage>{errors.newSegLink?.message}</FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={errors?.newSegLocation}>
+              <FormLabel htmlFor="newSegLocation">Street Names</FormLabel>
+              <Input id="newSegLocation" {...register('newSegLocation')} />
+              <FormErrorMessage>{errors.newSegLocation?.message}</FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={errors?.newSegParking}>
+              <FormLabel htmlFor="newSegParking">Parking Information</FormLabel>
+              <Textarea id="newSegParking" {...register('newSegParking')} />
+              <FormErrorMessage>{errors.newSegParking?.message}</FormErrorMessage>
+            </FormControl>
+          </Stack>
+          <ModalFooter>
+            <Button colorScheme="gray" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button colorScheme="blue" bg="ochBlue" color="ochBlack" variant="solid" type="submit">
+              Create New Segment
+            </Button>
+          </ModalFooter>
+        </form>
+      </ModalBody>
+    </>
+  );
+};
+
+const NewSectionSegmentPopup = ({ sectionOptions }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [value, setValue] = useState(0);
-  const [step, setStep] = useState('0');
-  const [newSectionId, setNewSectionId] = useState('');
-  const [newSecName, setNewSecName] = useState('');
-  const [newSecMapLink, setNewSecMapLink] = useState('');
-  const [newSegId, setNewSegId] = useState('');
-  const [newSegName, setNewSegName] = useState('');
-  const [newSegLocation, setNewSegLocation] = useState('');
-  const [newSegLink, setNewSegLink] = useState('');
-  const [newSegParking, setNewSegParking] = useState('');
+  const [step, setStep] = useState(0);
 
   const handButtonClick = () => {
     onOpen();
-    setValue(0);
-    setStep('0');
   };
 
   const addNewSection = async newSection => {
@@ -168,11 +194,15 @@ const NewSectionSegmentPopup = ({ sectionOptions, onAddSection }) => {
       // eslint-disable-next-line no-console
       console.log(newSection);
       await OCHBackend.post('/section/', {
-        _id: newSection._id,
-        name: newSection.name,
-        map: newSection.map,
+        _id: newSection.sectionId,
+        name: newSection.sectionName,
+        map: newSection.sectionMapLink,
       });
+      onClose();
     } catch (err) {
+      // TODO: replace with toast
+      // eslint-disable-next-line no-alert
+      alert(err?.message);
       // eslint-disable-next-line no-console
       console.log(err);
     }
@@ -183,14 +213,18 @@ const NewSectionSegmentPopup = ({ sectionOptions, onAddSection }) => {
       // eslint-disable-next-line no-console
       console.log(newSegment);
       await OCHBackend.post('/segment/', {
-        section: newSegment.section,
-        segmentId: newSegment.segmentId,
-        name: newSegment.name,
-        streets: newSegment.streets,
-        mapLink: newSegment.mapLink,
-        parking: newSegment.parking,
+        section: newSegment.newSection.value,
+        segmentId: newSegment.newSegId,
+        name: newSegment.newSegName,
+        streets: newSegment.newSegLocation,
+        mapLink: newSegment.newSegLink,
+        parking: newSegment.newSegParking,
       });
+      onClose();
     } catch (err) {
+      // TODO: replace with toast
+      // eslint-disable-next-line no-alert
+      alert(err?.message);
       // eslint-disable-next-line no-console
       console.log(err);
     }
@@ -198,53 +232,12 @@ const NewSectionSegmentPopup = ({ sectionOptions, onAddSection }) => {
 
   const modalSteps = {
     0: <ModalContentStepOne step={step} setStep={setStep} />,
-    1: (
-      <ModalContentAddSection
-        newSecId={newSectionId}
-        newSecName={newSecName}
-        newSecMapLink={newSecMapLink}
-      />
-    ),
+    1: <ModalContentAddSection addNewSection={addNewSection} onClose={onClose} />,
     2: (
       <ModalContentAddSegment
         sectionOptions={sectionOptions}
-        newSection={newSectionId}
-        newSegId={newSegId}
-        newSegName={newSegName}
-        newSegLink={newSegLink}
-        newSegLocation={newSegLocation}
-        newSegParking={newSegParking}
-      />
-    ),
-  };
-
-  const modalFooterButtons = {
-    0: null,
-    1: (
-      <CreateNewSectionButton
-        onClick={() => {
-          addNewSection({
-            _id: newSecId,
-            name: newSecName,
-            map: newSecMapLink,
-          });
-          onClose();
-        }}
-      />
-    ),
-    2: (
-      <CreateNewSegmentButton
-        onClick={() => {
-          addNewSegment({
-            section: newSectionId,
-            segmentId: newSegId,
-            name: newSegName,
-            streets: newSegLocation,
-            mapLink: newSegLink,
-            parking: newSegParking,
-          });
-          onClose();
-        }}
+        addNewSegment={addNewSegment}
+        onClose={onClose}
       />
     ),
   };
@@ -261,18 +254,9 @@ const NewSectionSegmentPopup = ({ sectionOptions, onAddSection }) => {
         Create New Section or Segment
       </Button>
 
-      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
-          {modalSteps[step]}
-
-          <ModalFooter>
-            <Button colorScheme="gray" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            {modalFooterButtons[step]}
-          </ModalFooter>
-        </ModalContent>
+        <ModalContent>{modalSteps[step]}</ModalContent>
       </Modal>
     </>
   );
@@ -281,7 +265,6 @@ const NewSectionSegmentPopup = ({ sectionOptions, onAddSection }) => {
 NewSectionSegmentPopup.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   sectionOptions: PropTypes.array.isRequired,
-  onAddSection: PropTypes.func.isRequired,
 };
 
 ModalContentStepOne.propTypes = {
@@ -290,27 +273,15 @@ ModalContentStepOne.propTypes = {
 };
 
 ModalContentAddSection.propTypes = {
-  newSecId: PropTypes.number.isRequired,
-  newSecName: PropTypes.string.isRequired,
-  newSecMapLink: PropTypes.string.isRequired,
+  addNewSection: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 ModalContentAddSegment.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   sectionOptions: PropTypes.array.isRequired,
-  newSection: PropTypes.number.isRequired,
-  newSegId: PropTypes.number.isRequired,
-  newSegName: PropTypes.string.isRequired,
-  newSegLink: PropTypes.string.isRequired,
-  newSegLocation: PropTypes.string.isRequired,
-  newSegParking: PropTypes.string.isRequired,
-};
-
-CreateNewSectionButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
-
-CreateNewSegmentButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  addNewSegment: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default NewSectionSegmentPopup;
