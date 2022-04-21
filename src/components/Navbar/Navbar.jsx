@@ -9,13 +9,7 @@ import Toast from '../Toast';
 
 const Navbar = ({ isAdmin, changesMade }) => {
   const toast = useToast();
-  // TO DO: get profile image and name
-  const user = {
-    firstName: 'Dan',
-    lastName: 'Abramov',
-    profilePic: 'https://bit.ly/dan-abramov',
-  };
-  
+
   const admin = [
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'People', path: '/people' },
