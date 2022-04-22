@@ -11,6 +11,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
   Spacer,
   Tab,
   TabList,
@@ -46,7 +47,7 @@ const MonitorTabButton = props => {
   );
 };
 
-const MonitorLogPage = () => {
+const MonitorLogEditPage = () => {
   const formMethods = useForm({});
 
   const checkInModal = useDisclosure();
@@ -62,15 +63,7 @@ const MonitorLogPage = () => {
   };
   const [user, setUser] = useState(null);
   const [monitorPartners, setMonitorPartners] = useState([]);
-  // const [formQuestions, setFormQuestions] = useState([]);
 
-  // useEffect(getAllQuestions )
-  // const questions = OCHBackend.get('/whateverformwewant', withCredentials: true);
-  // <GeneralInfoTab questions=questions />
-  // (this is inside generalinfotabs code) questions.map((q => {
-  // <p>{q.text}</p>
-  // <Input type="text"></Input>
-  // })
   useEffect(async () => {
     checkInModal.onOpen();
 
@@ -93,23 +86,8 @@ const MonitorLogPage = () => {
     <Flex w="100%" justifyContent="center">
       <Box w="1500px">
         <FormProvider {...formMethods}>
-          <Modal isOpen={checkInModal.isOpen} onClose={checkInModal.onClose}>
-            <ModalOverlay />
-            <ModalContent marginTop="100" rounded="none">
-              <ModalHeader>Have You Checked In Yet?</ModalHeader>
-              <ModalBody>
-                Check in on <b>BetterImpact</b> or Text <b>949.697.8651</b>
-              </ModalBody>
-
-              <ModalFooter>
-                <Button onClick={checkInModal.onClose} colorScheme="cyan">
-                  Yes, I&apos;m Checked In
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
           <Heading ref={topRef} px="32px" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
-            OCH Monitor Log
+            Monitor Log Template
           </Heading>
           <Tabs
             variant="solid-rounded"
@@ -122,13 +100,15 @@ const MonitorLogPage = () => {
           >
             <TabList px="32px" alignItems="center">
               <HStack spacing="24px">
-                <MonitorTabButton>General Info</MonitorTabButton>
-                <MonitorTabButton>Least Tern</MonitorTabButton>
-                <MonitorTabButton>Snowy Plover</MonitorTabButton>
-                <MonitorTabButton>Additional Species</MonitorTabButton>
-                <MonitorTabButton>Predators</MonitorTabButton>
-                <MonitorTabButton>Human Activity</MonitorTabButton>
-                <MonitorTabButton>Review and Submit</MonitorTabButton>
+                <Select placeholder="Select option">
+                  <option value="option1">General Info</option>
+                  <option value="option2">Least Tern</option>
+                  <option value="option3">Snowy Plover</option>
+                  <option value="option4">Additional Species</option>
+                  <option value="option5">Predators</option>
+                  <option value="option6">Human Activity</option>
+                  <option value="option7">Review and Submit</option>
+                </Select>
               </HStack>
             </TabList>
             <TabPanels>
@@ -221,4 +201,4 @@ const MonitorLogPage = () => {
   );
 };
 
-export default MonitorLogPage;
+export default MonitorLogEditPage;

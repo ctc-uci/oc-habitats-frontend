@@ -21,6 +21,7 @@ import HomePage from './pages/HomePage';
 import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
+import MonitorLogEditPage from './pages/MonitorLogEditPage';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
@@ -42,7 +43,7 @@ function App() {
         <Router>
           <Box className="page-container">
             <Box className="content-wrap">
-              <Navbar isAdmin />
+              <Navbar />
               <Routes>
                 {/* Add routes as needed; route names subject to change */}
                 <Route path="/register/:inviteID" element={<InviteLandingPage />} />
@@ -58,6 +59,7 @@ function App() {
                 <Route exact path="/map" />
                 <Route exact path="/logs" element={<AdminPage />} />
                 <Route exact path="/common-table-example" element={<CommonTableExample />} />
+                <Route exact path="/edit-log-template" element={<MonitorLogEditPage />} />
 
                 {/* NEW AUTH ROUTES */}
                 <Route path="/login" element={<Login />} />
