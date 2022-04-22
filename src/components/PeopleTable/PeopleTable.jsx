@@ -197,7 +197,7 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
           <PeopleTableHeader headerGroups={headerGroups} loading={loading} />
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          <RowModalContextProvider>
+          <RowModalContextProvider segmentData={segments}>
             {tableContent(loading, page, prepareRow)}
           </RowModalContextProvider>
         </Tbody>
