@@ -24,13 +24,13 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { EditIcon } from '@chakra-ui/icons';
 import { React, useEffect, useState } from 'react';
 import axios from 'axios';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 // import Section from '../components/Section';
 import NewSectionSegmentPopup from '../components/NewSectionSegmentPopup';
 import SectionTable from '../components/SectionTable/SectionTable';
+import EditDeleteSectionPopup from '../components/SectionTable/EditDeleteSectionPopup';
 
 const tempData = {
   id: 1,
@@ -329,16 +329,7 @@ const SectionPage = () => {
                       </VStack>
                       <VStack>
                         <div>
-                          <Button
-                            size="sm"
-                            bg="#2BC0E3"
-                            variant="solid"
-                            aria-label="Edit Section"
-                            rightIcon={<EditIcon />}
-                            onClick={editSection}
-                          >
-                            Edit Section
-                          </Button>
+                          <EditDeleteSectionPopup section={sectionObj} />
                         </div>
                       </VStack>
                     </HStack>
