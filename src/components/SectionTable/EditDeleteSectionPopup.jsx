@@ -109,6 +109,22 @@ const EditDeleteSectionPopup = ({ section }) => {
       console.log(err);
     }
   };
+  const deleteSection = async () => {
+    try {
+      // eslint-disable-next-line no-console
+      // eslint-disable-next-line no-underscore-dangle
+      console.log(section._id);
+      // eslint-disable-next-line no-underscore-dangle
+      await OCHBackend.delete(`/section/${section._id}`);
+      onClose();
+    } catch (err) {
+      // TODO: replace with toast
+      // eslint-disable-next-line no-alert
+      // alert(err?.message);
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -127,7 +143,9 @@ const EditDeleteSectionPopup = ({ section }) => {
         <MenuList>
           <MenuItem onClick={onOpen}>Edit Section</MenuItem>
           <MenuItem>
-            <Text color="red">Delete Section</Text>
+            <Text color="red" onClick={deleteSection}>
+              Delete Section
+            </Text>
           </MenuItem>
         </MenuList>
       </Menu>

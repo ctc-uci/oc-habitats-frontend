@@ -5,11 +5,16 @@
 /* eslint-disable no-unused-vars */
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Thead, Tbody, Tr, Td, Link, VStack } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Td, Link, Text, Spinner, VStack } from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
 import SectionTableFooter from './SectionTableFooter';
 import SectionTableHeader from './SectionTableHeader';
-import { SegmentNameColumn, ParkingColumn, UpdateSegmentPopupColumn } from './SectionTableRow';
+import {
+  SectionTableRow,
+  SegmentNameColumn,
+  ParkingColumn,
+  UpdateSegmentPopupColumn,
+} from './SectionTableRow';
 
 const rowsPerPageSelect = [6, 10, 20, 30];
 
@@ -62,10 +67,43 @@ const cellStructure = [
     Cell: props => <UpdateSegmentPopupColumn data={props.value} />,
   },
 ];
+const LoadingRow = () => (
+  <Tr>
+    <td colSpan={4}>
+      <VStack justifyContent="center" alignContent="center">
+        <Text fontWeight="bold">Loading</Text>
+        <Spinner size="sm" />
+      </VStack>
+    </td>
+  </Tr>
+);
+
+const EmptyRow = () => (
+  <Tr>
+    <td colSpan={4}>
+      <VStack justifyContent="center" alignContent="center">
+        <Text fontWeight="bold">No segments found</Text>
+      </VStack>
+    </td>
+  </Tr>
+);
+
+const tableContent = (loading, page, prepareRow) => {
+  if (loading) {
+    return <LoadingRow />;
+  }
+  if (page?.length) {
+    return page.map(row => {
+      prepareRow(row);
+      return <SectionTableRow key={row.name} row={row} />;
+    });
+  }
+  return <EmptyRow />;
+};
 
 const SectionTable = ({ sectionId, loading, segments }) => {
   const columns = useMemo(() => cellStructure, []);
-  const data = useMemo(() => segments, []);
+  const data = useMemo(() => segments, [segments, loading]);
   const {
     getTableProps,
     getTableBodyProps,
@@ -104,7 +142,7 @@ const SectionTable = ({ sectionId, loading, segments }) => {
           ))} */}
         </Thead>
         <Tbody>
-          {page.map((row, i) => {
+          {/* {page.map((row, i) => {
             prepareRow(row);
             return (
               <Tr {...row.getRowProps()}>
@@ -113,7 +151,9 @@ const SectionTable = ({ sectionId, loading, segments }) => {
                 })}
               </Tr>
             );
-          })}
+          })} */}
+
+          {tableContent(loading, page, prepareRow)}
         </Tbody>
       </Table>
       <div>

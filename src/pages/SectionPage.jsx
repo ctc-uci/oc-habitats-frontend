@@ -27,10 +27,10 @@ import {
 import { React, useEffect, useState } from 'react';
 import axios from 'axios';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-// import Section from '../components/Section';
 import NewSectionSegmentPopup from '../components/NewSectionSegmentPopup';
 import SectionTable from '../components/SectionTable/SectionTable';
 import EditDeleteSectionPopup from '../components/SectionTable/EditDeleteSectionPopup';
+import { OCHBackend } from '../common/utils';
 
 const tempData = {
   id: 1,
@@ -144,7 +144,7 @@ const SectionPage = () => {
   const getSections = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/sections`);
+      const res = await OCHBackend.get(`${process.env.REACT_APP_API_URL}/sections`);
       setSections(res.data);
 
       setIsLoading(false);
@@ -153,33 +153,6 @@ const SectionPage = () => {
       console.log(err);
     }
   };
-
-  const addSection = (newSecId, newSecName, newSecMapLink) => {
-    const newSection = {
-      id: newSecId,
-      title: newSecName,
-      segments: [],
-    };
-    setSections([...sections, newSection]);
-  };
-
-  // const updateSectionTitle = (sectionId, newSecTitle) => {
-  //   let updatedSection = -1;
-  //   for (let i = 0; i < sections.length; i += 1) {
-  //     if (sections[i].id === sectionId) {
-  //       updatedSection = i;
-  //       break;
-  //     }
-  //   }
-  //   const updatedSecTitle = [...sections];
-  //   updatedSecTitle[updatedSection].title = newSecTitle;
-  //   setSections(updatedSecTitle);
-  // };
-
-  // const deleteSection = sectionId => {
-  //   const updatedSegSections = [...sections].filter(section => section.id !== sectionId);
-  //   setSections(updatedSegSections);
-  // };
 
   const addSegment = (
     sectionId,
@@ -266,29 +239,7 @@ const SectionPage = () => {
             {sections.map(sectionObj => {
               return (
                 <TabPanel key={sectionObj._id} padding="0px">
-                  <NewSectionSegmentPopup
-                    key={sectionObj._id}
-                    sectionOptions={sectionOptions}
-                    onAddSection={(newSecId, newSecName, newSecMapLink) =>
-                      addSection(newSecId, newSecName, newSecMapLink)
-                    }
-                    // onAddSegment={(
-                    //   newSegId,
-                    //   newSegName,
-                    //   newSegDescription,
-                    //   newSegMap,
-                    //   newSegParking,
-                    // ) =>
-                    //   addSegment(
-                    //     sectionObj._id,
-                    //     newSegId,
-                    //     newSegName,
-                    //     newSegDescription,
-                    //     newSegMap,
-                    //     newSegParking,
-                    //   )
-                    // }
-                  />
+                  <NewSectionSegmentPopup key={sectionObj._id} sectionOptions={sectionOptions} />
                 </TabPanel>
               );
             })}
@@ -336,10 +287,6 @@ const SectionPage = () => {
                     <br />
 
                     <SectionTable
-                      // variant="volunteer"
-                      // userData={volunteerData}
-                      // segments={segments}
-                      // loading={isLoading}
                       sectionId={sectionObj.id}
                       loading={false}
                       segments={sectionObj.segments}
@@ -350,10 +297,6 @@ const SectionPage = () => {
             })}
           </TabPanels>
         </Tabs>
-        <Flex justify="space-between">
-          <Box />
-          <Box>{AddSectionPopup(addSection)}</Box>
-        </Flex>
       </Box>
     </>
   );

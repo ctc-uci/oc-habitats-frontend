@@ -119,7 +119,7 @@ const UpdateSegmentPopupColumn = ({ data }) => {
   };
 
   return (
-    <>
+    <div style={{ textAlign: 'right' }}>
       <Menu>
         <MenuButton size="xl">
           <BsThreeDotsVertical color="ochBlack" />
@@ -193,15 +193,27 @@ const UpdateSegmentPopupColumn = ({ data }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </div>
   );
 };
 const SectionTableRow = ({ row }) => {
+  // return (
+  //   <Tr {...row.getRowProps()}>
+  //     {row.cells.map(cell => {
+  //       return (
+  //         <Td fontSize="14px" key={row.id} {...cell.getCellProps()}>
+  //           {cell.render('Cell')}
+  //         </Td>
+  //       );
+  //     })}
+  //   </Tr>
+  // );
+
   return (
     <Tr {...row.getRowProps()}>
       {row.cells.map(cell => {
         return (
-          <Td fontSize="14px" key={row.id} {...cell.getCellProps()}>
+          <Td key={row.id} {...cell.getCellProps()}>
             {cell.render('Cell')}
           </Td>
         );
@@ -209,6 +221,7 @@ const SectionTableRow = ({ row }) => {
     </Tr>
   );
 };
+
 SegmentNameColumn.propTypes = {
   data: PropTypes.string.isRequired,
 };
@@ -227,4 +240,10 @@ UpdateSegmentPopupColumn.propTypes = {
   data: PropTypes.string.isRequired,
 };
 
-export { SegmentNameColumn, MapLinkColumn, ParkingColumn, UpdateSegmentPopupColumn };
+export {
+  SectionTableRow,
+  SegmentNameColumn,
+  MapLinkColumn,
+  ParkingColumn,
+  UpdateSegmentPopupColumn,
+};
