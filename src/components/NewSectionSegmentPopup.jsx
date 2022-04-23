@@ -181,7 +181,7 @@ const ModalContentAddSegment = ({ sectionOptions, addNewSegment, onClose }) => {
   );
 };
 
-const NewSectionSegmentPopup = ({ sectionOptions }) => {
+const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [step, setStep] = useState(0);
 
@@ -199,6 +199,7 @@ const NewSectionSegmentPopup = ({ sectionOptions }) => {
         name: newSection.sectionName,
         map: newSection.sectionMapLink,
       });
+      getSections();
       onClose();
     } catch (err) {
       // TODO: replace with toast
@@ -221,6 +222,7 @@ const NewSectionSegmentPopup = ({ sectionOptions }) => {
         mapLink: newSegment.newSegLink,
         parking: newSegment.newSegParking,
       });
+      getSections();
       onClose();
     } catch (err) {
       // TODO: replace with toast
@@ -266,6 +268,7 @@ const NewSectionSegmentPopup = ({ sectionOptions }) => {
 NewSectionSegmentPopup.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   sectionOptions: PropTypes.array.isRequired,
+  getSections: PropTypes.func.isRequired,
 };
 
 ModalContentStepOne.propTypes = {

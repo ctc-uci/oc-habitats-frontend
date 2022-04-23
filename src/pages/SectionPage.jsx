@@ -1,145 +1,33 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable no-unused-vars */
 import {
   Box,
-  Button,
-  Flex,
   Heading,
   HStack,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  useDisclosure,
   Container,
   Text,
   VStack,
 } from '@chakra-ui/react';
 import { React, useEffect, useState } from 'react';
-import axios from 'axios';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import NewSectionSegmentPopup from '../components/NewSectionSegmentPopup';
 import SectionTable from '../components/SectionTable/SectionTable';
 import EditDeleteSectionPopup from '../components/SectionTable/EditDeleteSectionPopup';
 import { OCHBackend } from '../common/utils';
 
-const tempData = {
-  id: 1,
-  title: 'sdadsdfssdf',
-  segments: [
-    {
-      segment: 'OCH01',
-      name: 'Seal Beach',
-      description: '1st St. - North End of Anaheim Bay',
-      mapLink: 'http://example.com',
-      parking: 'here is how you park',
-    },
-    {
-      segment: 'OCH01',
-      name: 'Seal Beach',
-      description: '1st St. - North End of Anaheim Bay',
-      mapLink: 'http://example.com',
-      parking: 'here is how you park2',
-    },
-    {
-      segment: 'OCH01',
-      name: 'Seal Beach',
-      description: '1st St. - North End of Anaheim Bay',
-      mapLink: 'http://example.com',
-      parking: 'here is how you park2',
-    },
-    {
-      segment: 'OCH01',
-      name: 'Seal Beach',
-      description: '1st St. - North End of Anaheim Bay',
-      mapLink: 'http://example.com',
-      parking: 'here is how you park2',
-    },
-    {
-      segment: 'OCH01',
-      name: 'Seal Beach',
-      description: '1st St. - North End of Anaheim Bay',
-      mapLink: 'http://example.com',
-      parking: 'here is how you park2',
-    },
-  ],
-};
-
-function AddSectionPopup(addSection) {
-  let newSecName = '';
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  return (
-    <>
-      {/* <Button color="#2D3748" colorScheme="white" variant="ghost" fontSize="16px" onClick={onOpen}>
-        + Add a section
-      </Button> */}
-
-      <Modal size="xl" isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Add a Section</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {/* <div>*Add section information here*</div> */}
-            <Input
-              placeholder="Enter section name here"
-              onChange={event => {
-                newSecName = event.target.value;
-              }}
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="blue"
-              mr={3}
-              onClick={() => {
-                addSection(newSecName);
-                onClose();
-              }}
-            >
-              Save
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-}
-
 const SectionPage = () => {
   const [sections, setSections] = useState([]); // sectionsData
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(true);
-  const [change, setChange] = useState(true);
 
   // const [change, setChange] = useState(false); // new
   const sectionOptions = sections.map(section => ({
     value: section._id,
     label: section._id,
   }));
-
-  const editSection = async id => {
-    try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/section/${id}`);
-      // eslint-disable-next-line no-console
-      console.log('Clicked Edit Segment');
-      setChange(!change);
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log(err);
-      // eslint-disable-next-line no-alert
-      alert(err);
-    }
-  };
 
   const getSections = async () => {
     try {
@@ -154,29 +42,29 @@ const SectionPage = () => {
     }
   };
 
-  const addSegment = (
-    sectionId,
-    newSegId,
-    newSegName,
-    newSegDescription,
-    newSegMap,
-    newSegParking,
-  ) => {
-    const newSegment = {
-      segment: newSegId,
-      name: newSegName,
-      description: newSegDescription,
-      map: newSegMap,
-      parking: newSegParking,
-    };
-    const newSegSections = [...sections];
-    const { segments } = newSegSections.filter(section => section.id === sectionId)[0];
-    newSegSections.filter(section => section.id === sectionId)[0].segments = [
-      ...segments,
-      newSegment,
-    ];
-    setSections(newSegSections);
-  };
+  // const addSegment = (
+  //   sectionId,
+  //   newSegId,
+  //   newSegName,
+  //   newSegDescription,
+  //   newSegMap,
+  //   newSegParking,
+  // ) => {
+  //   const newSegment = {
+  //     segment: newSegId,
+  //     name: newSegName,
+  //     description: newSegDescription,
+  //     map: newSegMap,
+  //     parking: newSegParking,
+  //   };
+  //   const newSegSections = [...sections];
+  //   const { segments } = newSegSections.filter(section => section.id === sectionId)[0];
+  //   newSegSections.filter(section => section.id === sectionId)[0].segments = [
+  //     ...segments,
+  //     newSegment,
+  //   ];
+  //   setSections(newSegSections);
+  // };
 
   // const updateSegment = (sectionId, segmentId, updatedSeg, updatedSegName, updatedSegDist) => {
   //   const newSegment = {
@@ -225,7 +113,7 @@ const SectionPage = () => {
 
   useEffect(() => {
     getSections();
-  }, [change]);
+  }, []);
 
   return (
     <>
@@ -239,7 +127,11 @@ const SectionPage = () => {
             {sections.map(sectionObj => {
               return (
                 <TabPanel key={sectionObj._id} padding="0px">
-                  <NewSectionSegmentPopup key={sectionObj._id} sectionOptions={sectionOptions} />
+                  <NewSectionSegmentPopup
+                    key={sectionObj._id}
+                    sectionOptions={sectionOptions}
+                    getSections={getSections}
+                  />
                 </TabPanel>
               );
             })}
@@ -280,7 +172,7 @@ const SectionPage = () => {
                       </VStack>
                       <VStack>
                         <div>
-                          <EditDeleteSectionPopup section={sectionObj} />
+                          <EditDeleteSectionPopup section={sectionObj} getSections={getSections} />
                         </div>
                       </VStack>
                     </HStack>
@@ -288,7 +180,7 @@ const SectionPage = () => {
 
                     <SectionTable
                       sectionId={sectionObj.id}
-                      loading={false}
+                      loading={isLoading}
                       segments={sectionObj.segments}
                     />
                   </Container>

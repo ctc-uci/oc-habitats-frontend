@@ -88,7 +88,7 @@ const ModalContentEditSection = ({ editSection, section, onClose }) => {
   );
 };
 
-const EditDeleteSectionPopup = ({ section }) => {
+const EditDeleteSectionPopup = ({ section, getSections }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const editSection = async newSection => {
@@ -100,6 +100,7 @@ const EditDeleteSectionPopup = ({ section }) => {
         name: newSection.sectionName,
         map: newSection.sectionMapLink,
       });
+      getSections();
       onClose();
     } catch (err) {
       // TODO: replace with toast
@@ -116,6 +117,7 @@ const EditDeleteSectionPopup = ({ section }) => {
       console.log(section._id);
       // eslint-disable-next-line no-underscore-dangle
       await OCHBackend.delete(`/section/${section._id}`);
+      getSections();
       onClose();
     } catch (err) {
       // TODO: replace with toast
@@ -175,5 +177,6 @@ EditDeleteSectionPopup.propTypes = {
     name: PropTypes.string.isRequired,
     map: PropTypes.string.isRequired,
   }).isRequired,
+  getSections: PropTypes.func.isRequired,
 };
 export default EditDeleteSectionPopup;

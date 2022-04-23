@@ -223,7 +223,11 @@ const SectionTableRow = ({ row }) => {
 };
 
 SegmentNameColumn.propTypes = {
-  data: PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    segmentId: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    streets: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 SectionTableRow.propTypes = {
