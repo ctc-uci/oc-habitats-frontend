@@ -48,7 +48,7 @@ const SectionPage = () => {
 
   return (
     <>
-      <Box marginLeft="110px">
+      <Box marginLeft="110px" marginRight="110px">
         <Heading align="left" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
           Sections & Segments
         </Heading>
@@ -67,7 +67,17 @@ const SectionPage = () => {
               );
             })}
           </TabPanels>
-          <TabList paddingTop="32px" alignItems="center">
+          <TabList
+            paddingTop="32px"
+            // alignItems="center"
+            overflowY="hidden"
+            sx={{
+              scrollbarWidth: 'none',
+              '::-webkit-scrollbar': {
+                display: 'none',
+              },
+            }}
+          >
             <HStack spacing="24px">
               {sections.map(sectionObj => {
                 return (

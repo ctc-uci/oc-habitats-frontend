@@ -1,11 +1,8 @@
 /* eslint-disable react/jsx-key */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-unused-vars */
+
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Thead, Tbody, Tr, Td, Link, Text, Spinner, VStack } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Link, Text, Spinner, VStack } from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
 import SectionTableFooter from './SectionTableFooter';
 import SectionTableHeader from './SectionTableHeader';
@@ -18,6 +15,7 @@ import {
 
 const rowsPerPageSelect = [6, 10, 20, 30];
 
+/* eslint-disable react/destructuring-assignment, react/prop-types */
 const cellStructure = [
   {
     id: 'segmentName',
@@ -29,18 +27,7 @@ const cellStructure = [
       description: d.description,
       streets: d.streets,
     }),
-    Cell:
-      // props => (
-      //   <>
-      //     <VStack>
-      //       <div className="segmentname-container">
-      //         {props.value.segmentId} {props.value.name}
-      //       </div>
-      //       <div className="location-container">{props.value.description}</div>
-      //       <div className="location-container">{props.value.streets}</div>
-      //     </VStack>
-      //   </>)
-      props => <SegmentNameColumn data={props.value} />,
+    Cell: props => <SegmentNameColumn data={props.value} />,
   },
   {
     id: 'map',
@@ -101,12 +88,12 @@ const tableContent = (loading, page, prepareRow) => {
   return <EmptyRow />;
 };
 
-const SectionTable = ({ sectionId, loading, segments }) => {
+const SectionTable = ({ loading, segments }) => {
   const columns = useMemo(() => cellStructure, []);
   const data = useMemo(() => segments, [segments, loading]);
   const {
     getTableProps,
-    getTableBodyProps,
+    // getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
@@ -133,28 +120,8 @@ const SectionTable = ({ sectionId, loading, segments }) => {
       <Table variant="striped" {...getTableProps()}>
         <Thead>
           <SectionTableHeader headerGroups={headerGroups} loading={loading} />
-          {/* {headerGroups.map(headerGroup => (
-            <Tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <Th {...column.getHeaderProps()}>{column.render('Header')}</Th>
-              ))}
-            </Tr>
-          ))} */}
         </Thead>
-        <Tbody>
-          {/* {page.map((row, i) => {
-            prepareRow(row);
-            return (
-              <Tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>;
-                })}
-              </Tr>
-            );
-          })} */}
-
-          {tableContent(loading, page, prepareRow)}
-        </Tbody>
+        <Tbody>{tableContent(loading, page, prepareRow)}</Tbody>
       </Table>
       <div>
         <SectionTableFooter
@@ -171,6 +138,16 @@ const SectionTable = ({ sectionId, loading, segments }) => {
 
 SectionTable.propTypes = {
   loading: PropTypes.bool.isRequired,
+  segments: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      segmentId: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      streets: PropTypes.string.isRequired,
+      mapLink: PropTypes.string.isRequired,
+      parking: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default SectionTable;

@@ -279,8 +279,12 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
 };
 
 NewSectionSegmentPopup.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  sectionOptions: PropTypes.array.isRequired,
+  sectionOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
   getSections: PropTypes.func.isRequired,
 };
 
@@ -295,8 +299,12 @@ ModalContentAddSection.propTypes = {
 };
 
 ModalContentAddSegment.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  sectionOptions: PropTypes.array.isRequired,
+  sectionOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
   addNewSegment: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
