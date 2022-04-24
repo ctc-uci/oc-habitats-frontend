@@ -216,6 +216,14 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
 
   const addNewSegment = async newSegment => {
     try {
+      console.log({
+        section: newSegment.newSection.value,
+        segmentId: newSegment.newSegId,
+        name: newSegment.newSegName,
+        streets: newSegment.newSegLocation,
+        mapLink: newSegment.newSegLink,
+        parking: newSegment.newSegParking,
+      });
       await OCHBackend.post('/segment/', {
         section: newSegment.newSection.value,
         segmentId: newSegment.newSegId,
