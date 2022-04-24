@@ -18,6 +18,7 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
+  useToast,
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import { AddIcon } from '@chakra-ui/icons';
@@ -184,6 +185,7 @@ const ModalContentAddSegment = ({ sectionOptions, addNewSegment, onClose }) => {
 const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [step, setStep] = useState(0);
+  const toast = useToast();
 
   const handButtonClick = () => {
     setStep(0);
@@ -192,8 +194,6 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
 
   const addNewSection = async newSection => {
     try {
-      // eslint-disable-next-line no-console
-      console.log(newSection);
       await OCHBackend.post('/section/', {
         _id: newSection.sectionId,
         name: newSection.sectionName,
@@ -202,9 +202,13 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
       getSections();
       onClose();
     } catch (err) {
-      // TODO: replace with toast
-      // eslint-disable-next-line no-alert
-      alert(err?.message);
+      toast({
+        title: 'An Error Occured!',
+        description: err?.message,
+        status: 'error',
+        isClosable: true,
+      });
+
       // eslint-disable-next-line no-console
       console.log(err);
     }
@@ -212,8 +216,6 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
 
   const addNewSegment = async newSegment => {
     try {
-      // eslint-disable-next-line no-console
-      console.log(newSegment);
       await OCHBackend.post('/segment/', {
         section: newSegment.newSection.value,
         segmentId: newSegment.newSegId,
@@ -225,9 +227,12 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
       getSections();
       onClose();
     } catch (err) {
-      // TODO: replace with toast
-      // eslint-disable-next-line no-alert
-      alert(err?.message);
+      toast({
+        title: 'An Error Occured!',
+        description: err?.message,
+        status: 'error',
+        isClosable: true,
+      });
       // eslint-disable-next-line no-console
       console.log(err);
     }

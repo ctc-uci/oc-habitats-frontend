@@ -20,6 +20,7 @@ import {
   MenuList,
   MenuButton,
   MenuItem,
+  useToast,
 } from '@chakra-ui/react';
 import { FiEdit3 } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
@@ -90,11 +91,9 @@ const ModalContentEditSection = ({ editSection, section, onClose }) => {
 
 const EditDeleteSectionPopup = ({ section, getSections }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const toast = useToast();
   const editSection = async newSection => {
     try {
-      // eslint-disable-next-line no-console
-      console.log(newSection);
       await OCHBackend.put(`/section/${newSection.sectionId}`, {
         _id: newSection.sectionId,
         name: newSection.sectionName,
@@ -103,26 +102,29 @@ const EditDeleteSectionPopup = ({ section, getSections }) => {
       getSections();
       onClose();
     } catch (err) {
-      // TODO: replace with toast
-      // eslint-disable-next-line no-alert
-      // alert(err?.message);
+      toast({
+        title: 'An Error Occured!',
+        description: err?.message,
+        status: 'error',
+        isClosable: true,
+      });
       // eslint-disable-next-line no-console
       console.log(err);
     }
   };
   const deleteSection = async () => {
     try {
-      // eslint-disable-next-line no-console
-      // eslint-disable-next-line no-underscore-dangle
-      console.log(section._id);
       // eslint-disable-next-line no-underscore-dangle
       await OCHBackend.delete(`/section/${section._id}`);
       getSections();
       onClose();
     } catch (err) {
-      // TODO: replace with toast
-      // eslint-disable-next-line no-alert
-      // alert(err?.message);
+      toast({
+        title: 'An Error Occured!',
+        description: err?.message,
+        status: 'error',
+        isClosable: true,
+      });
       // eslint-disable-next-line no-console
       console.log(err);
     }
