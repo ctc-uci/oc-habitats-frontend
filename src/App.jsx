@@ -98,10 +98,7 @@ function App() {
               </Routes>
             </Box>
           </Box>
-          <Routes>
-            <Route path="/create-log" />
-            <Route path="/*" element={<Footer />} />
-          </Routes>
+          <Footer />
         </Router>
       </CookiesProvider>
     </ChakraProvider>

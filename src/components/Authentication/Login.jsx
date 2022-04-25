@@ -46,12 +46,11 @@ const Login = ({ cookies }) => {
       <Flex
         bg="rgba(43, 192, 227, .10)"
         borderRadius="6px"
-        w={{ xl: '60%', lg: '70%' }}
+        w={{ xl: '50%', lg: '60%' }}
         justifyContent="center"
         alignItems="center"
-        h="60%"
         mx={{ xl: 'auto', lg: 'auto', md: 'auto' }}
-        my="10%"
+        my="5%"
         direction="column"
         p={{ md: '90px 20px', sm: '45px 10px' }}
       >
