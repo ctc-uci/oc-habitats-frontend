@@ -16,7 +16,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 
-function DeleteNumberModal({ deleteNumber, disclosure }) {
+const DeleteNumberModal = ({ deleteNumber, disclosure }) => {
   const checkInput = () => {
     deleteNumber();
     disclosure.onClose();
@@ -55,7 +55,7 @@ function DeleteNumberModal({ deleteNumber, disclosure }) {
       </ModalContent>
     </Modal>
   );
-}
+};
 
 DeleteNumberModal.defaultProps = {
   deleteNumber: PropTypes.func,

@@ -18,7 +18,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 
-function EditNumberModal({ editNumber, disclosure }) {
+const EditNumberModal = ({ editNumber, disclosure }) => {
   const [name, setName] = useState(null);
   const [number, setNumber] = useState(null);
   const [note, setNote] = useState(null);
@@ -90,7 +90,7 @@ function EditNumberModal({ editNumber, disclosure }) {
       </ModalContent>
     </Modal>
   );
-}
+};
 
 EditNumberModal.defaultProps = {
   editNumber: PropTypes.func,

@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-underscore-dangle */
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Tbody,
@@ -21,23 +22,29 @@ import DeleteNumberModal from './DeleteNumberModal';
 import EditNumberModal from './EditNumberModal';
 
 const EmergencyContactTable = ({ tableData, setTableData }) => {
+  const [numberId, setNumberId] = useState(-1);
   const editModalDisclosure = useDisclosure();
   const deleteModalDisclosure = useDisclosure();
 
+  const openModalWithData = (numId, openFunc) => {
+    setNumberId(numId);
+    openFunc();
+  };
+
   const editNumber = async newNumber => {
-    // await OCHBackend.put('/numbers/update/${number._id}', {
-    const { data } = await OCHBackend.put('/numbers/update/62537c9e2b5f28dd6a4735af', {
+    await OCHBackend.put(`/numbers/update/${numberId}`, {
       name: newNumber.name,
       number: newNumber.number,
       note: newNumber.note,
     });
-    setTableData(data);
+    const res = await OCHBackend.get('/numbers');
+    setTableData(res.data);
   };
 
   const deleteNumber = async () => {
-    // await OCHBackend.delete('/numbers/${number._id}', {
-    const { data } = await OCHBackend.delete('/numbers/625f1909590d9e75a3f0d52d');
-    setTableData(data);
+    await OCHBackend.delete(`/numbers/${numberId}`);
+    const res = await OCHBackend.get('/numbers');
+    setTableData(res.data);
   };
 
   return (
@@ -54,7 +61,7 @@ const EmergencyContactTable = ({ tableData, setTableData }) => {
         </CommonTableHeader>
         <Tbody>
           {tableData.map(row => (
-            <Tr key={row.id}>
+            <Tr key={row._id}>
               <Td fontWeight="500">{row.name}</Td>
               <Td>{row.number}</Td>
               <Td>{row.note}</Td>
@@ -64,8 +71,15 @@ const EmergencyContactTable = ({ tableData, setTableData }) => {
                     <IconButton icon={<BsThreeDotsVertical />} bg="transparent" />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem onClick={editModalDisclosure.onOpen}>Edit Contact</MenuItem>
-                    <MenuItem color="red.600" onClick={deleteModalDisclosure.onOpen}>
+                    <MenuItem
+                      onClick={() => openModalWithData(row._id, editModalDisclosure.onOpen)}
+                    >
+                      Edit Contact
+                    </MenuItem>
+                    <MenuItem
+                      color="red.600"
+                      onClick={() => openModalWithData(row._id, deleteModalDisclosure.onOpen)}
+                    >
                       Delete Contact
                     </MenuItem>
                   </MenuList>
