@@ -1,88 +1,35 @@
-import { PhoneIcon } from '@chakra-ui/icons';
 import React, { useEffect, useState } from 'react';
-import { Button, Box, Stack, Text, VStack, Center, Tbody, Th, Tr, Td } from '@chakra-ui/react';
-import CommonTable from '../common/CommonTable/CommonTable';
-import { CommonTableHeader, CommonTableFooter } from '../common/CommonTable/CommonTableHeader';
+import { Box, Stack, Text, VStack, Center } from '@chakra-ui/react';
+import NewNumberModal from '../components/NumberModals/NewNumberModal';
+import { OCHBackend } from '../common/utils';
+import EmergencyContactTable from '../components/NumberModals/EmergencyContactTable';
 
-const DefaultTable = () => (
-  <CommonTable>
-    <CommonTableHeader>
-      <Th fontWeight="500">Contact Name</Th>
-      <Th>Number</Th>
-    </CommonTableHeader>
-    <Tbody>
-      <Tr>
-        <Td fontWeight="500">Emergency</Td>
-        <Td>911</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">OC Sheriff</Td>
-        <Td>714.628.7170</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">OC Park Ranger</Td>
-        <Td>714.973.6855</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">OC Lifeguards</Td>
-        <Td>949.276.5050</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">CalTip</Td>
-        <Td>888.334.2258</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">Ross Grisworld</Td>
-        <Td>714.262.0352 (Text Only, note your name and OCH)</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">WWCC</Td>
-        <Td>714.374.5587 (Sick or injured birds or terrestrial wildlife)</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">PMMC</Td>
-        <Td>949.494.3050</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">USFWS</Td>
-        <Td>503.231.6125</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">CCC</Td>
-        <Td>562.590.0701</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">CA State Parks</Td>
-        <Td>714.536.1454</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">CA State Park Patrol</Td>
-        <Td>951.943.1582</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">North Co.</Td>
-        <Td>714.647.7000</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">South Co.</Td>
-        <Td>949.770.6011</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">Oiled Bird Network</Td>
-        <Td>877.823.6926</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight="500">Report a Non-Emergency</Td>
-        <Td>
-          Call the non-emergency number for the local police of the segment you are in (e.g. Seal
-          Beach, Huntington Beach, Newport Beach, San Clemente, etc
-        </Td>
-      </Tr>
-    </Tbody>
-  </CommonTable>
-);
+// TODO:
+// - Move components into their own files/out of other components (EmergencyContactTable)
+// - Remove change, numbers state variable
+// - Convert EditAndDeleteModal to arrow function
+// - Replace Popover with Chakra Menu
+// - Clean up modal opening logic
+// - Maybe look into React Hook Form for validation
 
 const Numbers = props => {
+  const [change, setChange] = useState(true);
+  const [tableData, setTableData] = useState([]);
+
+  const addNewNumber = async newNumber => {
+    await OCHBackend.post('/numbers', {
+      name: newNumber.name,
+      number: newNumber.number,
+      note: newNumber.note,
+    });
+    setChange(!change);
+  };
+
+  useEffect(async () => {
+    const res = await OCHBackend.get('/numbers');
+    setTableData(res.data);
+  }, []);
+
   return (
     <Center>
       <Stack w="container.xl" justify-content="center" mb="4em">
@@ -96,21 +43,11 @@ const Numbers = props => {
           </Text>
           <Text>REMEMBER, YOUR SAFETY IS OUR PRIORITY.</Text>
 
-          {/* <VStack spacing={2} align="stretch">
-            <Button
-              rightIcon={<PhoneIcon />}
-              bg="#2BC0E3"
-              color="#231F20"
-              variant="solid"
-              width="200px"
-              height="40px"
-            >
-              Add Contact
-            </Button> 
-
-          </VStack> */}
+          <VStack spacing={2} align="stretch">
+            <NewNumberModal addNewNumber={addNewNumber} />
+          </VStack>
           <Box w="900px">
-            <DefaultTable />
+            <EmergencyContactTable tableData={tableData} setTableData={setTableData} />
           </Box>
         </VStack>
       </Stack>
