@@ -15,7 +15,6 @@ const CloseableTab = React.forwardRef(function CustomTab(props, ref) {
   };
 
   return (
-    // colorScheme="orange" __css={styles.tab} {...tabProps}
     <ButtonGroup isAttached colorScheme="orange">
       <Button {...tabProps} {...buttonStyleProps} mr="-px" borderRightWidth="0">
         {tabProps.children}
