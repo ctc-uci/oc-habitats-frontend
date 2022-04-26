@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
-import React from 'react';
+import { React } from 'react';
+import { PropTypes } from 'prop-types';
 import {
   useTable,
   usePagination,
@@ -14,7 +15,6 @@ import {
   Table,
   Thead,
   Tbody,
-  // Tfoot,
   Tr,
   Th,
   Td,
@@ -35,7 +35,6 @@ import {
   ChevronDownIcon,
 } from '@chakra-ui/icons';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import PropTypes from 'prop-types';
 
 // import makeData from "./makeData";
 import './Table.css';
