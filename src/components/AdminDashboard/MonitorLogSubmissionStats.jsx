@@ -54,8 +54,8 @@ MonitorLogSubmissionStats.propTypes = {
   numSegsUnassigned: PropTypes.number.isRequired,
   statsDataCompleted: PropTypes.arrayOf(
     PropTypes.shape({
-      segId: PropTypes.string.isRequired,
-      peopleAssigned: PropTypes.arrayOf(
+      segmentId: PropTypes.string.isRequired,
+      volunteers: PropTypes.arrayOf(
         PropTypes.shape({
           id: PropTypes.number.isRequired,
           firstName: PropTypes.string.isRequired,
@@ -68,8 +68,8 @@ MonitorLogSubmissionStats.propTypes = {
   ).isRequired,
   statsDataNotCompleted: PropTypes.arrayOf(
     PropTypes.shape({
-      segId: PropTypes.string.isRequired,
-      peopleAssigned: PropTypes.arrayOf(
+      segmentId: PropTypes.string.isRequired,
+      volunteers: PropTypes.arrayOf(
         PropTypes.shape({
           id: PropTypes.number.isRequired,
           firstName: PropTypes.string.isRequired,
@@ -82,8 +82,8 @@ MonitorLogSubmissionStats.propTypes = {
   ).isRequired,
   statsDataUnassigned: PropTypes.arrayOf(
     PropTypes.shape({
-      segId: PropTypes.string.isRequired,
-      peopleAssigned: PropTypes.arrayOf(
+      segmentId: PropTypes.string.isRequired,
+      volunteers: PropTypes.arrayOf(
         PropTypes.shape({
           id: PropTypes.number.isRequired,
           firstName: PropTypes.string.isRequired,

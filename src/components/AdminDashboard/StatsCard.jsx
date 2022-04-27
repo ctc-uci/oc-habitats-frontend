@@ -16,9 +16,9 @@ import {
 import { ExternalLinkIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
 
-function DetailsPopUp(segId, peopleAssigned) {
+function DetailsPopUp(segmentId, volunteers) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const pAssigned = [...peopleAssigned];
+  const pAssigned = [...volunteers];
 
   return (
     <>
@@ -40,7 +40,7 @@ function DetailsPopUp(segId, peopleAssigned) {
             onClick={() => onClose()}
           />
           <ModalHeader fontSize="20px" fontWeight="medium">
-            Monitors Assigned to {segId}
+            Monitors Assigned to {segmentId}
           </ModalHeader>
           <ModalBody>
             {pAssigned.map(data => {
@@ -86,11 +86,11 @@ function StatsPopUp(title, numLogs, statsData) {
               {numLogs}
             </Text>
             {statsData.map(data => {
-              const people = [...data.peopleAssigned];
+              const people = title !== 'Unassigned Segments' ? [...data.volunteers] : [];
               return (
-                <Flex key={data.segId} justify="space-between">
-                  <Text>Segment {data.segId}</Text>
-                  {DetailsPopUp(data.segId, people)}
+                <Flex key={data.segmentId} direction="row" align="center" justify="space-between">
+                  <Text my="5px">Segment {data.segmentId}</Text>
+                  {title !== 'Unassigned Segments' && DetailsPopUp(data.segmentId, people)}
                 </Flex>
               );
             })}
@@ -128,8 +128,8 @@ StatsCard.propTypes = {
   description: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      segId: PropTypes.string.isRequired,
-      peopleAssigned: PropTypes.arrayOf(
+      segmentId: PropTypes.string.isRequired,
+      volunteers: PropTypes.arrayOf(
         PropTypes.shape({
           id: PropTypes.number.isRequired,
           firstName: PropTypes.string.isRequired,
