@@ -12,6 +12,7 @@ import {
   IconButton,
   useDisclosure,
   Button,
+  calc,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
@@ -103,8 +104,8 @@ function StatsPopUp(title, numLogs, statsData) {
 
 const StatsCard = ({ title, numLogs, description, data }) => {
   return (
-    <Box h="228px" maxW="390px" borderWidth="1px" ml="110px" bg="#F7FAFC" borderRadius="12px">
-      <Text ml="24px" mt="24px" fontSize="20px" fontWeight="500">
+    <Box w={{ lg: '33%', sm: '100%' }} py={4} borderWidth="1px" bg="#F7FAFC" borderRadius="12px">
+      <Text ml="24px" fontSize="20px" fontWeight="500">
         {title}
       </Text>
       <Flex flexDirection="row" justify="space-between" height="40px" align="center">
@@ -115,7 +116,7 @@ const StatsCard = ({ title, numLogs, description, data }) => {
         </Box>
         <Box mr="24px">{numLogs ? StatsPopUp(title, numLogs, data) : <></>}</Box>
       </Flex>
-      <Text ml="24px" mr="41px" mt="30px" mb="24px" fontSize="20px">
+      <Text ml="24px" mr="41px" mt="30px" fontSize="20px">
         {description}
       </Text>
     </Box>

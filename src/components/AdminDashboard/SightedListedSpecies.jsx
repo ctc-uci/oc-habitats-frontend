@@ -1,17 +1,17 @@
 import { React } from 'react';
-import { Text, Grid, GridItem } from '@chakra-ui/react';
+import { Text, Grid, GridItem, Box } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
 
 import SightedListedSpeciesTable from './SightedListedSpeciesTable';
 
 const SightedListedSpecies = ({ month, year, speciesData }) => {
   return (
-    <>
-      <Text fontSize="24px" fontWeight="600" ml="110px" mt="64px">
+    <Box>
+      <Text fontSize="24px" fontWeight="600" mt="64px">
         {month} {year} Sighted Listed Species
       </Text>
 
-      <Grid ml="110px" mt="24px" mb="136px" templateColumns="repeat(2, 0.1fr)" gap="40px">
+      <Grid mt="24px" mb="136px" templateColumns="repeat(2, 0.1fr)" gap="40px">
         {speciesData.map(sData => {
           return (
             <GridItem key={sData.id}>
@@ -20,7 +20,7 @@ const SightedListedSpecies = ({ month, year, speciesData }) => {
           );
         })}
       </Grid>
-    </>
+    </Box>
   );
 };
 

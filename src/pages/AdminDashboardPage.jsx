@@ -1,5 +1,5 @@
 import { React } from 'react';
-import { Text } from '@chakra-ui/react';
+import { Text, Box } from '@chakra-ui/react';
 import MonitorLogSubmissionStats from '../components/AdminDashboard/MonitorLogSubmissionStats';
 import SightedListedSpecies from '../components/AdminDashboard/SightedListedSpecies';
 import EmergentIssues from '../components/AdminDashboard/EmergentIssues';
@@ -392,12 +392,12 @@ const statsDataUnassigned = [
 
 const AdminDashboardPage = () => {
   return (
-    <>
-      <Text fontSize="36px" fontWeight="600" ml="110px" mt="40px">
+    <Box mx="100px" my="40px" mb={{ lg: 0, xs: '170px' }}>
+      <Text fontSize="4xl" fontWeight="600">
         Welcome back, {name}!
       </Text>
 
-      <Text fontSize="24px" fontWeight="600" ml="110px" mt="50px">
+      <Text fontSize="24px" fontWeight="600" mt="50px">
         Notifications
       </Text>
 
@@ -413,9 +413,9 @@ const AdminDashboardPage = () => {
         statsDataNotCompleted={statsDataNotCompleted}
         statsDataUnassigned={statsDataUnassigned}
       />
-      <EmergentIssues month={month} year={year} emergentIssuesData={emergentIssuesData} />
-      <SightedListedSpecies month={month} year={year} speciesData={speciesData} />
-    </>
+      {/* <EmergentIssues month={month} year={year} emergentIssuesData={emergentIssuesData} />
+      <SightedListedSpecies month={month} year={year} speciesData={speciesData} /> */}
+    </Box>
   );
 };
 

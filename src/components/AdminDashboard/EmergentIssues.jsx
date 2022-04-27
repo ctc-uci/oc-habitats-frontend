@@ -1,16 +1,16 @@
 import { React } from 'react';
-import { Text, Grid, GridItem } from '@chakra-ui/react';
+import { Text, Grid, GridItem, Box } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
 
 import EmergentIssuesCard from './EmergentIssuesCard';
 
 const EmergentIssues = ({ month, year, emergentIssuesData }) => {
   return (
-    <>
-      <Text fontSize="24px" fontWeight="600" ml="110px" mt="64px">
+    <Box>
+      <Text fontSize="24px" fontWeight="600" mt="64px">
         {month} {year} Emergent Issues
       </Text>
-      <Grid ml="110px" mt="24px" templateColumns="repeat(3, 0.1fr)" gap="24px">
+      <Grid mt="24px" templateColumns="repeat(3, 0.1fr)" gap="24px">
         {emergentIssuesData.map(issuesData => {
           return (
             <GridItem key={issuesData.id}>
@@ -23,7 +23,7 @@ const EmergentIssues = ({ month, year, emergentIssuesData }) => {
           );
         })}
       </Grid>
-    </>
+    </Box>
   );
 };
 

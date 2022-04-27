@@ -6,7 +6,7 @@ import { PropTypes } from 'prop-types';
 
 const LogNotification = ({ numNotifications }) => {
   return (
-    <Box bg="#C6F6D5" h="56px" maxH="56px" ml="110px" mr="110px">
+    <Box bg="#C6F6D5" h="56px" maxH="56px">
       <Flex h="100%" justify="space-between" align="center">
         <CheckCircleIcon ml="18px" mr="14px" color="green" />
         <Text fontSize="16px">
