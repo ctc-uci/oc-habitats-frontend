@@ -1,5 +1,5 @@
 import { React } from 'react';
-import { Text, Box, Button, Spacer, Flex } from '@chakra-ui/react';
+import { Text, Box, Button, Flex } from '@chakra-ui/react';
 import { CheckCircleIcon, ArrowForwardIcon, CloseIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';

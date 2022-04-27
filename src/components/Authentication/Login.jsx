@@ -42,7 +42,7 @@ const Login = ({ cookies }) => {
   };
 
   return (
-    <Box w="100%" px={4}>
+    <Box w="100%" px={4} mb={{ sm: '70px', md: 0 }}>
       <Flex
         bg="rgba(43, 192, 227, .10)"
         borderRadius="6px"

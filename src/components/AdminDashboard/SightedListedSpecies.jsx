@@ -1,5 +1,5 @@
 import { React } from 'react';
-import { Text, Grid, GridItem, Box, Flex } from '@chakra-ui/react';
+import { Text, Box, Flex } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
 
 import SightedListedSpeciesTable from './SightedListedSpeciesTable';

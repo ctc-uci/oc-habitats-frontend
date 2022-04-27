@@ -12,7 +12,6 @@ import {
   IconButton,
   useDisclosure,
   Button,
-  calc,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
