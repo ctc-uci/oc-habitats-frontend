@@ -53,30 +53,23 @@ function StatsPopUp(title, numIssues, issueData) {
 const EmergentIssuesCard = ({ title, numIssues, issueData }) => {
   return (
     <Box
-      w="390px"
-      h="132px"
+      w={{ lg: '32%', sm: '100%' }}
       borderWidth="1px"
       bg="#F7FAFC"
       borderRadius="12px"
       borderColor="#E2E8F0"
+      p={6}
     >
-      <Text ml="24px" mt="24px" fontSize="20px" fontWeight="500">
+      <Text fontSize="20px" fontWeight="500">
         {title}
       </Text>
-      <Flex
-        ml="24px"
-        mt="16px"
-        flexDirection="row"
-        justify="space-between"
-        height="40px"
-        align="center"
-      >
+      <Flex mt="10px" flexDirection="row" justify="space-between" height="40px" align="center">
         <Box>
           <Text fontSize="36px" fontWeight="700">
             {numIssues}
           </Text>
         </Box>
-        <Box mr="24px">{numIssues ? StatsPopUp(title, numIssues, issueData) : <></>}</Box>
+        <Box>{numIssues ? StatsPopUp(title, numIssues, issueData) : <></>}</Box>
       </Flex>
     </Box>
   );

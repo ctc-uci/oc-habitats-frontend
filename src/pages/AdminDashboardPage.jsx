@@ -392,8 +392,8 @@ const statsDataUnassigned = [
 
 const AdminDashboardPage = () => {
   return (
-    <Box mx="100px" my="40px" mb={{ lg: 0, xs: '170px' }}>
-      <Text fontSize="4xl" fontWeight="600">
+    <Box mx={{ lg: '100px', sm: '40px' }} my="40px" mb={{ lg: 0, xs: '170px' }}>
+      <Text fontSize={{ md: '4xl', sm: '2xl' }} fontWeight="600">
         Welcome back, {name}!
       </Text>
 
@@ -413,8 +413,8 @@ const AdminDashboardPage = () => {
         statsDataNotCompleted={statsDataNotCompleted}
         statsDataUnassigned={statsDataUnassigned}
       />
-      {/* <EmergentIssues month={month} year={year} emergentIssuesData={emergentIssuesData} />
-      <SightedListedSpecies month={month} year={year} speciesData={speciesData} /> */}
+      <EmergentIssues month={month} year={year} emergentIssuesData={emergentIssuesData} />
+      <SightedListedSpecies month={month} year={year} speciesData={speciesData} />
     </Box>
   );
 };
