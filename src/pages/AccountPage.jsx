@@ -193,7 +193,7 @@ const AccountPage = ({
     <Box mb={{ lg: '100px' }}>
       <VStack align="left" mx="auto" w="90vw">
         <Heading
-          textAlign="left"
+          textAlign={{ lg: 'left', sm: 'center' }}
           fontSize="3xl"
           py={{ lg: '10', sm: '5' }}
           pl="2%"

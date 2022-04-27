@@ -24,16 +24,16 @@ const SightedListedSpeciesTable = ({ name, speciesData }) => {
         <Table>
           <Thead>
             <Tr bg="ochGrey">
-              <Th fontSize="16px" color="white">
+              <Th textAlign="left" fontSize={{ md: '16px', sm: '12px' }} color="white">
                 Segment
               </Th>
-              <Th fontSize="16px" color="white">
+              <Th textAlign="center" fontSize={{ md: '16px', sm: '12px' }} color="white">
                 Adults
               </Th>
-              <Th fontSize="16px" color="white">
+              <Th textAlign="center" fontSize={{ md: '16px', sm: '12px' }} color="white">
                 Fledges
               </Th>
-              <Th fontSize="16px" color="white">
+              <Th textAlign="center" fontSize={{ md: '16px', sm: '12px' }} color="white">
                 Chicks
               </Th>
             </Tr>
@@ -65,7 +65,7 @@ const SightedListedSpeciesTable = ({ name, speciesData }) => {
           </Tbody>
           <Tfoot bg="ochGrey">
             <Tr>
-              <Th fontSize="16px" color="white">
+              <Th textAlign="left" fontSize={{ md: '16px', sm: '12px' }} color="white">
                 Total
               </Th>
               <Th fontSize="16px" color="white">
