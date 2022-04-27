@@ -28,6 +28,7 @@ import Species from './pages/Species';
 
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 
 import AUTH_ROLES from './common/auth_config';
 
@@ -48,7 +49,7 @@ function App() {
                 {/* Add routes as needed; route names subject to change */}
                 <Route path="/register/:inviteID" element={<InviteLandingPage />} />
                 <Route exact path="/invite" element={<AdminInviteModal />} />
-                <Route exact path="/" element={<HomePage />} />
+                <Route exact path="/" element={<AdminDashboardPage />} />
                 <Route
                   exact
                   path="/account"
