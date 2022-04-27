@@ -1,5 +1,5 @@
 import { React } from 'react';
-import { Text, Grid, GridItem, Box } from '@chakra-ui/react';
+import { Text, Grid, GridItem, Box, Flex } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
 
 import SightedListedSpeciesTable from './SightedListedSpeciesTable';
@@ -11,15 +11,17 @@ const SightedListedSpecies = ({ month, year, speciesData }) => {
         {month} {year} Sighted Listed Species
       </Text>
 
-      <Grid mt="24px" mb="136px" templateColumns="repeat(2, 0.1fr)" gap="40px">
+      <Flex direction={{ lg: 'row', sm: 'column' }} wrap="wrap" mb="136px" gap="24px">
         {speciesData.map(sData => {
           return (
-            <GridItem key={sData.id}>
-              <SightedListedSpeciesTable name={sData.speciesName} speciesData={sData.data} />
-            </GridItem>
+            <SightedListedSpeciesTable
+              key={sData.id}
+              name={sData.speciesName}
+              speciesData={sData.data}
+            />
           );
         })}
-      </Grid>
+      </Flex>
     </Box>
   );
 };

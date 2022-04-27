@@ -132,6 +132,35 @@ const speciesData = [
       },
     ],
   },
+  {
+    id: 4,
+    speciesName: 'California Least Terns',
+    data: [
+      {
+        segment: 'OC01',
+        adults: 6,
+        fledges: 3,
+        chicks: 1,
+      },
+      {
+        segment: 'OC09a',
+        adults: 4,
+        fledges: 2,
+        chicks: 0,
+      },
+      {
+        segment: 'OC09b',
+        adults: 2,
+        fledges: 1,
+        chicks: 0,
+      },
+    ],
+  },
+  {
+    id: 3,
+    speciesName: 'New Listed',
+    data: [],
+  },
 ];
 
 const statsDataCompleted = [
