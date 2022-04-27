@@ -111,39 +111,46 @@ const SegmentDropdown = ({ allSegments, selectedSegments, setSelectedSegments })
   );
 };
 
-const AssignedSegmentsTags = ({ segments }) => (
-  <Box>
-    <Text mb="8px">Assigned Segment(s)</Text>
-    <VStack
-      bgColor="gray.100"
-      p="10px"
-      w="fit-content"
-      minW="100%"
-      minH="40px"
-      borderRadius="6px"
-      alignItems="flex-start"
-    >
-      {segments?.map(segment => (
-        <Tag
-          key={segment}
-          size="lg"
-          display="flex"
-          justifyContent="space-between"
-          variant="solid"
-          bgColor="white"
-          borderRadius="6px"
-          boxShadow="0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)"
-          padding="0 20px"
-        >
-          <TagLabel color="ochBlack" mr="20px">
-            {segment.label}
-          </TagLabel>
-          <TagCloseButton color="ochBlack" />
-        </Tag>
-      ))}
-    </VStack>
-  </Box>
-);
+const AssignedSegmentsTags = ({ segments, setSelectedSegments }) => {
+  const removeSegment = segment => {
+    const filteredSegments = segments.filter(seg => seg.value !== segment.value);
+    setSelectedSegments(filteredSegments);
+  };
+
+  return (
+    <Box>
+      <Text mb="8px">Assigned Segment(s)</Text>
+      <VStack
+        bgColor="gray.100"
+        p="10px"
+        w="fit-content"
+        minW="100%"
+        minH="40px"
+        borderRadius="6px"
+        alignItems="flex-start"
+      >
+        {segments?.map(segment => (
+          <Tag
+            key={segment}
+            size="lg"
+            display="flex"
+            justifyContent="space-between"
+            variant="solid"
+            bgColor="white"
+            borderRadius="6px"
+            boxShadow="0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)"
+            padding="0 20px"
+          >
+            <TagLabel color="ochBlack" mr="20px">
+              {segment.label}
+            </TagLabel>
+            <TagCloseButton onClick={() => removeSegment(segment)} color="ochBlack" />
+          </Tag>
+        ))}
+      </VStack>
+    </Box>
+  );
+};
 
 const SegmentDetails = ({ segments }) => (
   <Box>
@@ -203,7 +210,10 @@ const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
               selectedSegments={selectedSegments}
               setSelectedSegments={setSelectedSegments}
             />
-            <AssignedSegmentsTags segments={selectedSegments} />
+            <AssignedSegmentsTags
+              segments={selectedSegments}
+              setSelectedSegments={setSelectedSegments}
+            />
           </HStack>
           <SegmentDetails segments={selectedSegments} />
         </ModalBody>
@@ -228,6 +238,7 @@ SegmentDropdown.propTypes = {
 
 AssignedSegmentsTags.propTypes = {
   segments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  setSelectedSegments: PropTypes.func.isRequired,
 };
 
 SegmentDetails.propTypes = {
