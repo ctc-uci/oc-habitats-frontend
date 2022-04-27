@@ -86,7 +86,7 @@ function StatsPopUp(title, numLogs, statsData) {
               {numLogs}
             </Text>
             {statsData.map(data => {
-              const people = title !== 'Unassigned Segments' ? [...data.volunteers] : [];
+              const people = [...data.volunteers];
               return (
                 <Flex key={data.segmentId} direction="row" align="center" justify="space-between">
                   <Text my="5px">Segment {data.segmentId}</Text>
