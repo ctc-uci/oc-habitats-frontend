@@ -186,6 +186,7 @@ const formatOptions = options =>
 
 const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
   const [selectedSegments, setSelectedSegments] = useState([]);
+  const [dirty, setDirty] = useState(false);
   const allSegments = formatOptions(segmentData);
 
   const closeWrapper = () => {
@@ -196,7 +197,15 @@ const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
   useEffect(() => {
     // TODO
     setSelectedSegments(formatOptions(userData.segments));
+    setDirty(false);
   }, [userData, isOpen]);
+
+  // Check if data changed
+  useEffect(() => {
+    if (JSON.stringify(formatOptions(userData.segments)) !== JSON.stringify(selectedSegments)) {
+      setDirty(true);
+    }
+  }, [selectedSegments]);
 
   return (
     <Modal isOpen={isOpen} onClose={closeWrapper} size="lg" scrollBehavior="inside" isCentered>
@@ -216,12 +225,13 @@ const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
             />
           </HStack>
           <SegmentDetails segments={selectedSegments} />
+          {JSON.stringify(segmentData, null, 2)}
         </ModalBody>
         <ModalFooter>
           <Button w="120px" colorScheme="gray" mr="12px" onClick={closeWrapper}>
             Cancel
           </Button>
-          <Button variant="solid" bg="ochBlue" isDisabled>
+          <Button variant="solid" bg="ochBlue" isDisabled={!dirty}>
             Save Changes
           </Button>
         </ModalFooter>
