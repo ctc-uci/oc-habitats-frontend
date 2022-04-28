@@ -75,6 +75,7 @@ PeopleTableFilters.propTypes = {
   segments: PropTypes.object.isRequired,
   setNameFilter: PropTypes.func.isRequired,
   setSegmentFilter: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   sortOptions: PropTypes.objectOf(PropTypes.array).isRequired,
   setSortBy: PropTypes.func.isRequired,
 };

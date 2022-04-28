@@ -11,7 +11,7 @@ import {
 import PropTypes from 'prop-types';
 import { React } from 'react';
 
-const CollapsibleSection = ({ title, children, limitWidth }) => {
+const CollapsibleSection = ({ title, children, limitWidth, rightElement }) => {
   return (
     <VStack w="100%" align="start" spacing="2em" maxW={limitWidth ? '900px' : ''}>
       <Accordion allowMultiple="true" defaultIndex={[0]} width="100%">
@@ -27,6 +27,7 @@ const CollapsibleSection = ({ title, children, limitWidth }) => {
               </Heading>
               <AccordionIcon />
             </AccordionButton>
+            {rightElement}
           </HStack>
 
           <AccordionPanel padding="0" width="100%">
@@ -40,11 +41,13 @@ const CollapsibleSection = ({ title, children, limitWidth }) => {
 
 CollapsibleSection.defaultProps = {
   limitWidth: true,
+  rightElement: null,
 };
 
 CollapsibleSection.propTypes = {
   title: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   limitWidth: PropTypes.bool,
+  rightElement: PropTypes.node,
 };
 export default CollapsibleSection;
