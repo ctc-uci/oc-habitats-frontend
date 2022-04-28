@@ -19,17 +19,17 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-function NewSpeciesModal({ addNewSpecies }) {
+function NewPredatorModal({ addNewPredator }) {
   const [isToggled, setIsToggled] = useState(false);
   const [speciesName, setSpeciesName] = useState(null);
   const [speciesCode, setSpeciesCode] = useState(null);
   const [speciesGroup, setSpeciesGroup] = useState(null);
-  const [speciesPredator, setSpeciesPredator] = useState(null);
+  const [speciesPredator] = useState(null);
   const [isValid, setIsValid] = useState(true);
 
   const checkInput = () => {
     if (speciesName && speciesCode && speciesGroup) {
-      addNewSpecies({
+      addNewPredator({
         name: speciesName,
         code: speciesCode,
         group: speciesGroup,
@@ -43,21 +43,21 @@ function NewSpeciesModal({ addNewSpecies }) {
   return (
     <>
       <Button
-        bg="#6B46C1"
-        color="white"
+        bg="#F49923"
+        color="ochBlack"
         onClick={e => {
           e.preventDefault();
           setIsToggled(!isToggled);
           setIsValid(true);
         }}
       >
-        + New Species
+        + New Predator
       </Button>
       <Modal isOpen={isToggled} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader align="left" fontWeight={650} fontSize="28px">
-            Add a New Species
+            Add a New Predator
           </ModalHeader>
 
           <ModalCloseButton
@@ -71,51 +71,30 @@ function NewSpeciesModal({ addNewSpecies }) {
               <InputGroup>
                 <VStack w="100%" align="left">
                   <Text fontWeight={550} fontSize="18px">
-                    Species Name
+                    Predator Name
                   </Text>
                   <Input placeholder="Enter Name" onChange={e => setSpeciesName(e.target.value)} />
                   <Text fontWeight={550} fontSize="18px">
-                    Species Id
+                    Predator Id
                   </Text>
                   <Input placeholder="Enter Code" onChange={e => setSpeciesCode(e.target.value)} />
                 </VStack>
               </InputGroup>
-              <Text fontWeight={550} fontSize="18px">
-                Species Type
+              <Text fontWeight={400} fontSize="16px" color="#718096">
+                If this Predator is also a Non-Listed Species, please provide an appropriate
+                4-letter Id.
               </Text>
-              <RadioGroup
-                defaultValue=""
-                onChange={val => setSpeciesGroup(val)}
-                as={HStack}
-                spacing={10}
-              >
-                <Radio color="#3182CE" value="nonListed">
-                  <Text fontWeight={475}>Non-Listed</Text>
-                </Radio>
+              <Text fontWeight={550} fontSize="18px">
+                Is also Non-Listed
+              </Text>
+              <RadioGroup onChange={val => setSpeciesGroup(val)} as={HStack} spacing={10}>
                 <Radio color="#3182CE" value="listed">
-                  <Text fontWeight={475}>Listed</Text>
+                  <Text fontWeight={475}>No</Text>
+                </Radio>
+                <Radio color="#3182CE" value="nonListed">
+                  <Text fontWeight={475}>Yes</Text>
                 </Radio>
               </RadioGroup>
-              {speciesGroup === 'nonListed' && (
-                <>
-                  <Text fontWeight={550} fontSize="18px">
-                    Is a Predator
-                  </Text>
-                  <RadioGroup
-                    defaultValue=""
-                    onChange={val => setSpeciesPredator(val)}
-                    as={HStack}
-                    spacing={10}
-                  >
-                    <Radio color="#3182CE" value="No">
-                      <Text fontWeight={475}>No</Text>
-                    </Radio>
-                    <Radio color="#3182CE" value="Yes">
-                      <Text fontWeight={475}>Yes</Text>
-                    </Radio>
-                  </RadioGroup>
-                </>
-              )}
             </VStack>
           </ModalBody>
           <ModalFooter>
@@ -143,7 +122,7 @@ function NewSpeciesModal({ addNewSpecies }) {
                   Cancel
                 </Button>
                 <Button bgColor="ochBlue" color="ochGrey" variant="solid" onClick={checkInput}>
-                  Add Species
+                  Add Predator
                 </Button>
               </HStack>
             </VStack>
@@ -154,8 +133,8 @@ function NewSpeciesModal({ addNewSpecies }) {
   );
 }
 
-NewSpeciesModal.propTypes = {
-  addNewSpecies: PropTypes.func.isRequired,
+NewPredatorModal.propTypes = {
+  addNewPredator: PropTypes.func.isRequired,
 };
 
-export default NewSpeciesModal;
+export default NewPredatorModal;
