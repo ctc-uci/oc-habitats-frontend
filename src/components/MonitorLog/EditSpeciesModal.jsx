@@ -45,7 +45,7 @@ const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDelete, setIsDelete] = useState(false);
   const [specieName, setSpecieName] = useState(specie.name);
-  const [totalSighted, setTotalSighted] = useState(specie.total);
+  const [totalSighted, setTotalSighted] = useState(specie.count);
   const [notes, setNotes] = useState(specie.notes);
 
   const updateSpecies = () => {

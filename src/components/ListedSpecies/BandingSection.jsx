@@ -31,7 +31,12 @@ import generateBandingCode from '../../common/bandingCodeUtil';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import CloseableTab from './CloseableTab';
 
-const BAND_POSITIONS = ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'];
+const BAND_POSITIONS = [
+  { label: 'Top Left', value: 'topLeft' },
+  { label: 'Top Right', value: 'topRight' },
+  { label: 'Bottom Left', value: 'bottomLeft' },
+  { label: 'Bottom Right', value: 'bottomRight' },
+];
 
 const BandingSection = () => {
   const { register, watch, control } = useFormContext();
@@ -48,7 +53,7 @@ const BandingSection = () => {
   // keep track of current active tab
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   // watch the 4 bands on the current tab so we can generate the band code
-  const currentBandTab = [0, 1, 2, 3].map(idx => watch(`bandTabs.${activeTabIndex}.${idx}`));
+  const currentBandTab = watch(`bandTabs.${activeTabIndex}`);
   const currentBandTabCode = generateBandingCode(currentBandTab);
 
   const addBirdBandTab = () => {
@@ -163,7 +168,7 @@ const BandingSection = () => {
           {birdBandTabs.map((birdBandTab, tabIndex) => (
             <TabPanel bgColor="gray.50" key={birdBandTab.id} padding={4} marginTop={2} rounded="md">
               <Grid templateColumns={['repeat(1,1fr)', '', 'repeat(2, 1fr)']} gap="2em">
-                {BAND_POSITIONS.map((bandPosition, idx) => (
+                {BAND_POSITIONS.map(({ label: bandPosition, value: bandPositionValue }) => (
                   <GridItem key={bandPosition}>
                     <Text fontWeight="semibold" fontSize="md" mb="2">
                       {bandPosition} Band
@@ -194,16 +199,18 @@ const BandingSection = () => {
                             <ChakraSelect
                               placeholder="Select..."
                               bgColor="white"
-                              {...register(`bandTabs.${tabIndex}.${idx}.verticalPosition`)}
+                              {...register(
+                                `bandTabs.${tabIndex}.${bandPositionValue}.verticalPosition`,
+                              )}
                             >
-                              <option value="above">Above ankle</option>
-                              <option value="below">Below ankle</option>
+                              <option value="ABOVE">Above ankle</option>
+                              <option value="BELOW">Below ankle</option>
                             </ChakraSelect>
                           </Td>
                           <Td p="0" pr="4" verticalAlign="top">
                             <Box bgColor="white">
                               <Controller
-                                name={`bandTabs.${tabIndex}.${idx}.colors`}
+                                name={`bandTabs.${tabIndex}.${bandPositionValue}.colors`}
                                 control={control}
                                 render={({ field }) => (
                                   <Select
@@ -220,13 +227,17 @@ const BandingSection = () => {
                           <Td p="0" verticalAlign="top">
                             <Input
                               bgColor="white"
-                              {...register(`bandTabs.${tabIndex}.${idx}.alphanumeric`)}
+                              {...register(
+                                `bandTabs.${tabIndex}.${bandPositionValue}.alphanumeric`,
+                              )}
                             />
                           </Td>
                         </Tr>
                         <Tr>
                           <Td px="0" py="2" colSpan={3}>
-                            <Checkbox {...register(`bandTabs.${tabIndex}.${idx}.flag`)}>
+                            <Checkbox
+                              {...register(`bandTabs.${tabIndex}.${bandPositionValue}.flag`)}
+                            >
                               Is an Alphanumeric Flag
                             </Checkbox>
                           </Td>
