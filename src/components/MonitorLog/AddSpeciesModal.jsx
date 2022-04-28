@@ -45,7 +45,7 @@ const AddSpeciesModal = ({ addNewRow }) => {
   const [notes, setNotes] = useState(null);
 
   const addNewSpecie = () => {
-    addNewRow({ name: specieName, total: totalSighted, notes });
+    addNewRow({ species: specieName, count: totalSighted, notes });
     onClose();
   };
 

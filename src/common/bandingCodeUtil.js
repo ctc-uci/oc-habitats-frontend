@@ -1,12 +1,12 @@
 const generateSingleBandCode = band => {
-  if (!band.verticalPosition || !band.colors || band.colors.length === 0) return '';
+  if (!band || !band.verticalPosition || !band.colors || band.colors.length === 0) return '';
   let color;
   if (band.colors.length === 1) {
     color = band.colors[0].realValue;
   } else {
     color = `(${band.colors.map(c => c.realValue).join('/')})`;
   }
-  if (band.verticalPosition === 'below') {
+  if (band.verticalPosition === 'BELOW') {
     color = color.toLowerCase();
   }
   if (band.alphanumeric && band.alphanumeric !== '') {
@@ -19,10 +19,10 @@ const generateBandingCode = bands => {
   if (!bands || !bands[0]) {
     return 'invalid';
   }
-  const [topLeft, topRight, bottomLeft, bottomRight] = bands;
+  const { topLeft, topRight, bottomLeft, bottomRight } = bands;
   if (
-    (topLeft.verticalPosition === 'below' && bottomLeft.verticalPosition === 'above') ||
-    (topRight.verticalPosition === 'below' && bottomRight.verticalPosition === 'above')
+    (topLeft?.verticalPosition === 'BELOW' && bottomLeft?.verticalPosition === 'ABOVE') ||
+    (topRight?.verticalPosition === 'BELOW' && bottomRight?.verticalPosition === 'ABOVE')
   ) {
     return 'Top band must be above bottom band';
   }

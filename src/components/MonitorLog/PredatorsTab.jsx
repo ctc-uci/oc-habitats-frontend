@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-const FORM_PREFIX = 'predators.';
+const FORM_PREFIX = 'predators';
 
 const PREDATORS = [
   ['Corvid: American Crow', 'crow'],
@@ -30,7 +30,7 @@ const PREDATORS = [
   ['Cat', 'cat'],
 ];
 
-const PredatorField = ({ predatorName, predatorId, isDisabled }) => {
+const PredatorField = ({ predatorName, predatorId, isDisabled, predatorIndex }) => {
   const { setValue, getValues } = useFormContext();
 
   return (
@@ -42,8 +42,10 @@ const PredatorField = ({ predatorName, predatorId, isDisabled }) => {
         <NumberInput
           min={0}
           isDisabled={isDisabled}
-          onChange={(_, val) => setValue(FORM_PREFIX + predatorId, val)}
-          defaultValue={getValues(FORM_PREFIX + predatorId) || 0}
+          onChange={(_, val) =>
+            setValue(`${FORM_PREFIX}[${predatorIndex}]`, { species: predatorId, count: val })
+          }
+          defaultValue={getValues(`${FORM_PREFIX}[${predatorIndex}]`)?.count || 0}
         >
           <NumberInputField />
           <NumberInputStepper>
@@ -59,6 +61,7 @@ const PredatorField = ({ predatorName, predatorId, isDisabled }) => {
 PredatorField.propTypes = {
   predatorName: PropTypes.string.isRequired,
   predatorId: PropTypes.string.isRequired,
+  predatorIndex: PropTypes.number.isRequired,
   isDisabled: PropTypes.bool.isRequired,
 };
 
@@ -72,9 +75,10 @@ const PredatorsTab = ({ showHeader, isDisabled }) => {
         </Text>
       )}
       <SimpleGrid columns={4} spacingX="64px" spacingY="68px">
-        {PREDATORS.map(([name, value]) => (
+        {PREDATORS.map(([name, value], num) => (
           <PredatorField
             key={value}
+            predatorIndex={num}
             predatorName={name}
             predatorId={value}
             isDisabled={isDisabled}
@@ -95,7 +99,7 @@ const PredatorsTab = ({ showHeader, isDisabled }) => {
             <InfoIcon />
           </Tooltip>
         </HStack>
-        <Textarea width="536px" placeholder="Type here..." {...register(`${FORM_PREFIX}other`)} />
+        <Textarea width="536px" placeholder="Type here..." {...register(`${FORM_PREFIX}Other`)} />
         <Spacer />
         <Spacer />
       </VStack>

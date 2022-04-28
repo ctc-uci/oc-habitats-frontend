@@ -33,10 +33,10 @@ const FORM_PREFIX = 'additionalSpecies.';
 
 const AdditionalSpeciesTab = ({ showHeader, isDisabled }) => {
   const { getValues, setValue } = useFormContext();
-  const [species, setSpecies] = useState(getValues(`${FORM_PREFIX}data`) || []);
+  const [species, setSpecies] = useState(getValues(`${FORM_PREFIX}entries`) || []);
 
   useEffect(() => {
-    setValue(`${FORM_PREFIX}data`, species);
+    setValue(`${FORM_PREFIX}entries`, species);
   }, [species]);
 
   const handleAddRow = newSpecie => {

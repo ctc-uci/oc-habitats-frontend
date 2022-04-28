@@ -46,16 +46,21 @@ import { useFormContext } from 'react-hook-form';
 import { FiEdit3 } from 'react-icons/fi';
 import ListedSpeciesPopup from '../ListedSpecies/ListedSpeciesPopup';
 
-const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisabled }) => {
-  const formPrefix = `listedSpecies.${tab}.`;
+const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader, isDisabled }) => {
+  const formPrefix = `listedSpecies[${tab}].`;
   const { isOpen, onOpen: openPopup, onClose } = useDisclosure();
   const { setValue, getValues } = useFormContext();
   const confirmDeleteModal = useDisclosure();
-  const [data, setData] = useState(getValues(`${formPrefix}data`) || []);
+  const [data, setData] = useState(getValues(`${formPrefix}entries`) || []);
   const [rowToEdit, setRowToEdit] = useState(undefined);
   const [rowToDelete, setRowToDelete] = useState(undefined);
   const [totals, setTotals] = useState([0, 0, 0]);
   const toast = useToast();
+
+  useEffect(() => {
+    // TODO: speciesId
+    setValue(`${formPrefix}species`, speciesId);
+  }, []);
 
   useEffect(() => {
     setTotals(
@@ -63,7 +68,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisable
         .map(row => [row.totalAdults, row.totalFledges, row.totalChicks])
         .reduce((l, r) => [l[0] + r[0], l[1] + r[1], l[2] + r[2]], [0, 0, 0]),
     );
-    setValue(`${formPrefix}data`, data);
+    setValue(`${formPrefix}entries`, data);
   }, [data]);
 
   const addRow = formData => {
@@ -111,7 +116,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisable
 
   const createBirdInfo = row => {
     const birdInfo = [
-      ['Time', row.time + row.meridiem],
+      ['Time', row.time],
       ['Map #', row.map],
       [
         'GPS',
@@ -352,6 +357,7 @@ ListedSpeciesTab.propTypes = {
   tab: PropTypes.number.isRequired,
   speciesName: PropTypes.string.isRequired,
   speciesCode: PropTypes.string.isRequired,
+  speciesId: PropTypes.string.isRequired,
   showHeader: PropTypes.bool,
   isDisabled: PropTypes.bool,
 };

@@ -24,7 +24,7 @@ EditSectionButton.propTypes = {
   jumpToTab: PropTypes.func.isRequired,
 };
 
-const ReviewSubmitTab = ({ jumpToTab }) => {
+const ReviewSubmitTab = ({ jumpToTab, assignedSegments, monitorPartners }) => {
   const parentForm = useFormContext();
   const nestedForm = useForm({ defaultValues: parentForm.getValues() });
 
@@ -40,7 +40,13 @@ const ReviewSubmitTab = ({ jumpToTab }) => {
         rightElement={createJumpButton(0)}
       >
         <Box mb="10">
-          <GeneralInfoTab ochUsers={[]} showHeader={false} isDisabled />
+          <GeneralInfoTab
+            ochUsers={[]}
+            showHeader={false}
+            isDisabled
+            assignedSegments={assignedSegments}
+            monitorPartners={monitorPartners}
+          />
         </Box>
       </CollapsibleSection>
       <CollapsibleSection title="Least Tern" limitWidth={false} rightElement={createJumpButton(1)}>
@@ -95,6 +101,21 @@ const ReviewSubmitTab = ({ jumpToTab }) => {
 
 ReviewSubmitTab.propTypes = {
   jumpToTab: PropTypes.func.isRequired,
+  assignedSegments: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      segmentId: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ),
+  monitorPartners: PropTypes.arrayOf(
+    PropTypes.shape({
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      _id: PropTypes.string.isRequired,
+    }),
+  ),
 };
 
 export default ReviewSubmitTab;

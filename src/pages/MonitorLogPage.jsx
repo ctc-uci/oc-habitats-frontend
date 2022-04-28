@@ -79,6 +79,14 @@ const MonitorLogPage = () => {
     }
   }, []);
 
+  const submitForm = async e => {
+    console.log(formMethods.getValues());
+    const res = await OCHBackend.post('submission', formMethods.getValues(), {
+      withCredentials: true,
+    });
+    console.log(res.data);
+  };
+
   const assignedSegments = useMemo(() => user?.segments || [], [user]);
 
   return (
@@ -134,12 +142,22 @@ const MonitorLogPage = () => {
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <ListedSpeciesTab tab={0} speciesName="Least Tern" speciesCode="LETE" />
+                  <ListedSpeciesTab
+                    tab={0}
+                    speciesName="Least Tern"
+                    speciesCode="LETE"
+                    speciesId="625f3e3781fa433b5d2efa4c"
+                  />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <ListedSpeciesTab tab={1} speciesName="Snowy Plover" speciesCode="WSPL" />
+                  <ListedSpeciesTab
+                    tab={1}
+                    speciesName="Snowy Plover"
+                    speciesCode="SNPL"
+                    speciesId="625f3e2b81fa433b5d2efa49"
+                  />
                 </Container>
               </TabPanel>
               <TabPanel>
@@ -159,7 +177,11 @@ const MonitorLogPage = () => {
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <ReviewSubmitTab jumpToTab={setActiveTab} />
+                  <ReviewSubmitTab
+                    jumpToTab={setActiveTab}
+                    assignedSegments={assignedSegments}
+                    monitorPartners={monitorPartners}
+                  />
                 </Container>
               </TabPanel>
             </TabPanels>
@@ -196,11 +218,7 @@ const MonitorLogPage = () => {
                 </Button>
               )}
               {activeTab === totalTabs - 1 && (
-                <Button
-                  colorScheme="green"
-                  type="submit"
-                  //  onClick={handleSubmit}
-                >
+                <Button colorScheme="green" type="submit" onClick={submitForm}>
                   {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
                   Submit Log <FiCheck style={{ marginLeft: '4px' }} />
                 </Button>
