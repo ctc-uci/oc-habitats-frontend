@@ -17,7 +17,7 @@ import EmailAction from './components/Authentication/EmailAction';
 
 import CommonTableExample from './pages/CommonTableExample';
 import AdminPage from '../src/pages/AdminPage';
-import HomePage from './pages/HomePage';
+import VolunteerDashboardPage from './pages/VolunteerDashboardPage';
 import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
@@ -50,6 +50,7 @@ function App() {
                 <Route path="/register/:inviteID" element={<InviteLandingPage />} />
                 <Route exact path="/invite" element={<AdminInviteModal />} />
                 <Route exact path="/" element={<AdminDashboardPage />} />
+                <Route exact path="/volunteerhome" element={<VolunteerDashboardPage />} />
                 <Route
                   exact
                   path="/account"
