@@ -116,6 +116,7 @@ const AdminPageFilters = ({
 };
 
 AdminPageFilters.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   segments: PropTypes.arrayOf(PropTypes.object).isRequired,
   setSegmentFilter: PropTypes.func.isRequired,
   setDateFilter: PropTypes.func.isRequired,
