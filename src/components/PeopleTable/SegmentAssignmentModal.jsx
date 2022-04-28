@@ -152,41 +152,66 @@ const AssignedSegmentsTags = ({ segments, setSelectedSegments }) => {
   );
 };
 
-const SegmentDetails = ({ segments }) => (
-  <Box>
-    <Text mb="8px">Segment Details</Text>
-    <VStack w="100%">
-      {segments?.map(segment => (
-        <HStack
-          key={segment}
-          w="100%"
-          padding="auto 0"
-          borderTop="1.5px solid"
-          borderRight="1.5px solid"
-          borderBottom="1.5px solid"
-          borderColor="gray.200"
-          borderRadius="6px"
-        >
-          <Box bgColor="red.600" borderRadius="6px 0 0 6px" w="8px">
-            ...
-          </Box>
-          <Box>Text Here</Box>
-        </HStack>
-      ))}
-    </VStack>
-  </Box>
-);
+const SegmentCards = ({ allSegments, selectedSegments }) => {
+  // Use allSegments to populate selectedSegments with additional user information
+  const populatedSelectedSegments = allSegments.filter(
+    (
+      set => a =>
+        set.has(a.id)
+    )(new Set(selectedSegments.map(b => b.id))),
+  );
+
+  const alsoAssigned = segment => {
+    const currentSegment = populatedSelectedSegments.find(seg => seg.id === segment.id);
+    return currentSegment?.volunteerData.map(user => (
+      <p key={user.firstName}>
+        {user.firstName} {user.lastName},
+      </p>
+    ));
+  };
+  return (
+    <Box>
+      <Text mb="8px">Segment Details</Text>
+      <VStack w="100%">
+        {selectedSegments?.map(segment => (
+          <HStack
+            key={segment}
+            w="100%"
+            padding="auto 0"
+            borderTop="1.5px solid"
+            borderRight="1.5px solid"
+            borderBottom="1.5px solid"
+            borderColor="gray.200"
+            borderRadius="6px"
+          >
+            <Box bgColor="red.600" borderRadius="6px 0 0 6px" w="8px">
+              ...
+            </Box>
+            <VStack alignItems="flex-start">
+              <Text>{segment.label}</Text>
+              <Text color="gray.500">Last Updated: XX-XX-XXXX</Text>
+              <Text color="gray.500" display="inline-flex">
+                Also Assigned: {alsoAssigned(segment)}
+              </Text>
+            </VStack>
+          </HStack>
+        ))}
+      </VStack>
+    </Box>
+  );
+};
 
 const formatOptions = options =>
   options?.map(segment => ({
     label: `${segment.segmentId} - ${segment.name}`,
     // eslint-disable-next-line no-underscore-dangle
-    value: segment._id,
+    value: segment.id,
+    ...segment,
   }));
 
 const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
-  const [selectedSegments, setSelectedSegments] = useState([]);
   const [dirty, setDirty] = useState(false);
+  const [selectedSegments, setSelectedSegments] = useState([]);
   const allSegments = formatOptions(segmentData);
 
   const closeWrapper = () => {
@@ -195,14 +220,16 @@ const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
   };
 
   useEffect(() => {
-    // TODO
     setSelectedSegments(formatOptions(userData.segments));
     setDirty(false);
   }, [userData, isOpen]);
 
   // Check if data changed
   useEffect(() => {
-    if (JSON.stringify(formatOptions(userData.segments)) !== JSON.stringify(selectedSegments)) {
+    if (
+      !dirty &&
+      JSON.stringify(formatOptions(userData.segments)) !== JSON.stringify(selectedSegments)
+    ) {
       setDirty(true);
     }
   }, [selectedSegments]);
@@ -224,8 +251,8 @@ const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
               setSelectedSegments={setSelectedSegments}
             />
           </HStack>
-          <SegmentDetails segments={selectedSegments} />
-          {JSON.stringify(segmentData, null, 2)}
+          <SegmentCards allSegments={allSegments} selectedSegments={selectedSegments} />
+          {/* {JSON.stringify(segmentData, null, 2)} */}
         </ModalBody>
         <ModalFooter>
           <Button w="120px" colorScheme="gray" mr="12px" onClick={closeWrapper}>
@@ -251,8 +278,9 @@ AssignedSegmentsTags.propTypes = {
   setSelectedSegments: PropTypes.func.isRequired,
 };
 
-SegmentDetails.propTypes = {
-  segments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+SegmentCards.propTypes = {
+  allSegments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  selectedSegments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 };
 
 SegmentAssignmentModal.propTypes = {

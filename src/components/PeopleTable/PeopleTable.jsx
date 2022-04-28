@@ -182,7 +182,6 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
 
   return (
     <>
-      {/* <pre>{JSON.safeStringify(rows)}</pre> */}
       <PeopleTableDescription variant={variant} />
       <PeopleTableFilters
         variant={variant}
