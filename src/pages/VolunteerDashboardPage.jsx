@@ -134,13 +134,15 @@ const RecentlySubmittedLog = props => {
 };
 
 // GET BACKEND DATA
-const HomePage = props => {
+const VolunteerDashboardPage = () => {
   const [userData, setUserData] = useState(null);
   useEffect(async () => {
     try {
       const res = await OCHBackend.get('users/me', { withCredentials: true });
       setUserData(res.data);
     } catch (err) {
+      // TODO: handle error
+      // eslint-disable-next-line no-console
       console.log(err);
     }
   }, []);
@@ -274,4 +276,4 @@ const HomePage = props => {
   );
 };
 
-export default HomePage;
+export default VolunteerDashboardPage;
