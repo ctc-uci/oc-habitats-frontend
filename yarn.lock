@@ -1302,39 +1302,10 @@
   dependencies:
     "@chakra-ui/utils" "1.10.4"
 
-<<<<<<< HEAD
-"@chakra-ui/core@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/core/-/core-0.8.0.tgz#a377286becd86008448ec8cf29ceb8fc301ac2dc"
-  integrity sha512-il1I1nEWOmWJSspnC+WyArLHbHvs82hvKTNDd24wr6spa/7v2jaXFZeWDNenY35ay1NHV7Ya2StcBwQRGHMWYA==
-  dependencies:
-    "@reach/auto-id" "0.10.2"
-    "@styled-system/css" "5.1.5"
-    "@styled-system/should-forward-prop" "5.1.5"
-    "@types/styled-system" "5.1.9"
-    aria-hidden "^1.1.1"
-    body-scroll-lock "^3.0.1"
-    color "3.1.2"
-    copy-to-clipboard "3.3.1"
-    exenv "^1.2.2"
-    popper.js "^1.15.0"
-    react-animate-height "2.0.21"
-    react-focus-lock "^2.2.1"
-    react-spring "^8.0.27"
-    styled-system "5.1.5"
-    toasted-notes "3.2.0"
-    use-dark-mode "2.3.1"
-
-"@chakra-ui/counter@1.2.7":
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/counter/-/counter-1.2.7.tgz#24a541d42a82b444cff09bf11bf7098a3fa62d44"
-  integrity sha512-ajFkBvQl+jm6SOQ8WVkdRyO9q0kytN9P5K4P9sdNu2XGqQ0FlTzSjvB++fHCybTr1T2WCkUDtvxId0apnkWc6A==
-=======
 "@chakra-ui/counter@1.2.10":
   version "1.2.10"
   resolved "https://registry.yarnpkg.com/@chakra-ui/counter/-/counter-1.2.10.tgz#544de1f53b783e8577cc74208ae1b0ca74385834"
   integrity sha512-HQd09IuJ4z8M8vWajH+99jBWWSHDesQZmnN95jUg3HKOuNleLaipf2JFdrqbO1uWQyHobn2PM6u+B+JCAh2nig==
->>>>>>> dev
   dependencies:
     "@chakra-ui/hooks" "1.9.1"
     "@chakra-ui/utils" "1.10.4"
@@ -7087,22 +7058,10 @@ csstype@^2.5.7:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.20.tgz#9229c65ea0b260cf4d3d997cb06288e36a8d6dda"
   integrity sha512-/WwNkdXfckNgw6S5R125rrW8ez139lBHWouiBvX8dfMFtcn6V81REDqnH7+CRpRipfYlyU1CmOnOxrmGcFOjeA==
 
-<<<<<<< HEAD
-csstype@^2.6.9:
-  version "2.6.20"
-  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.20.tgz#9229c65ea0b260cf4d3d997cb06288e36a8d6dda"
-  integrity sha512-/WwNkdXfckNgw6S5R125rrW8ez139lBHWouiBvX8dfMFtcn6V81REDqnH7+CRpRipfYlyU1CmOnOxrmGcFOjeA==
-
-csstype@^3.0.2, csstype@^3.0.9:
-  version "3.0.10"
-  resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.10.tgz#2ad3a7bed70f35b965707c092e5f30b327c290e5"
-  integrity sha512-2u44ZG2OcNUO9HDp/Jl8C07x6pU/eTR3ncV91SiK3dhG9TWvRVsCoJw14Ckx5DgWkzGA3waZWO3d7pgqpUI/XA==
-=======
 csstype@^3.0.2:
   version "3.0.11"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.11.tgz#d66700c5eacfac1940deb4e3ee5642792d85cd33"
   integrity sha512-sa6P2wJ+CAbgyy4KFssIb/JNMLxFvKF1pCYCSXS8ZMuqZnMsrxqI2E5sPyoTpxoPU/gVZMzr2zjOfg8GIZOMsw==
->>>>>>> dev
 
 cyclist@^1.0.1:
   version "1.0.1"
@@ -13432,11 +13391,7 @@ prompts@^2.0.1, prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-<<<<<<< HEAD
-prop-types@^15.0.0, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
-=======
 prop-types@^15.0.0, prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
->>>>>>> dev
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -16471,20 +16426,10 @@ use-composed-ref@^1.0.0:
   resolved "https://registry.yarnpkg.com/use-composed-ref/-/use-composed-ref-1.2.1.tgz#9bdcb5ccd894289105da2325e1210079f56bf849"
   integrity sha512-6+X1FLlIcjvFMAeAD/hcxDT8tmyrWnbSPMU0EnxQuDLIxokuFzWliXBiYZuGIx+mrAMLBw0WFfCkaPw8ebzAhw==
 
-<<<<<<< HEAD
-use-dark-mode@2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/use-dark-mode/-/use-dark-mode-2.3.1.tgz#d506349c7b7e09e9977cb8a6ab4470896aa3779a"
-  integrity sha512-hmcdJR96tTustRQdaQwe6jMrZHnmPqXBxgy4jaQ4gsfhwajsCpjECuq9prgDe9XxMx/f9r96o2/md6O4Lwhwjg==
-  dependencies:
-    "@use-it/event-listener" "^0.1.2"
-    use-persisted-state "^0.3.0"
-=======
 use-force-update@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/use-force-update/-/use-force-update-1.0.7.tgz#f5e672633f5a398b25c33b2287150918bcb3526b"
   integrity sha512-k5dppYhO+I5X/cd7ildbrzeMZJkWwdAh5adaIk0qKN2euh7J0h2GBGBcB4QZ385eyHHnp7LIygvebdRx3XKdwA==
->>>>>>> dev
 
 use-isomorphic-layout-effect@^1.0.0:
   version "1.1.2"
