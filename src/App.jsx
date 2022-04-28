@@ -50,6 +50,7 @@ function App() {
                 <Route path="/register/:inviteID" element={<InviteLandingPage />} />
                 <Route exact path="/invite" element={<AdminInviteModal />} />
                 <Route exact path="/" element={<AdminDashboardPage />} />
+                <Route exact path="/volunteerhome" element={<HomePage />} />
                 <Route
                   exact
                   path="/account"

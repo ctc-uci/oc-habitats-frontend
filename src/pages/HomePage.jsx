@@ -145,14 +145,11 @@ const HomePage = props => {
     }
   }, []);
 
-  console.log(userData);
-  console.log(userData?.segments);
-
   return (
     <div>
       <Container maxW="90vw">
         <Heading size="lg" py="10">
-          Welcome Back, Peter!
+          Welcome Back, {userData?.firstName}!
         </Heading>
         <Heading size="md" py="1">
           Notifications
@@ -205,18 +202,6 @@ const HomePage = props => {
                 description={segment.parking}
               />
             ))}
-          <SegAssignment
-            title="OC09 &nbsp;&nbsp;&nbsp; Huntington State Beach State Beach 1"
-            place="Beach Blvd to Magnolia"
-            description="Park in Huntington State Beach if you have a pass, or park on Seashore Drive at Orange
-         Street in Newport Beach."
-          />
-          <SegAssignment
-            title="OC01 &nbsp;&nbsp;&nbsp; Huntington State Beach State Beach 1"
-            place="Magnolia to Santa Ana River/Least Tern Preserve"
-            description="Park in Huntington State Beach if you have a pass, or park on Seashore Drive at Orange
-         Street in Newport Beach."
-          />
         </HStack>
         <Heading size="md" py="5">
           Unsubmitted Log Drafts
