@@ -52,15 +52,7 @@ const Navbar = ({ isAdmin, changesMade }) => {
       h="60px"
     >
       <Link to="/" onClick={handleOnClick}>
-        <Image
-          pl={4}
-          pr={0}
-          maxW="50%"
-          maxH="100"
-          src={logo}
-          alt="logo"
-          _hover={{ opacity: '0.8' }}
-        />
+        <Image pl={4} pr={0} maxH="50px" src={logo} alt="logo" _hover={{ opacity: '0.8' }} />
       </Link>
       {/* TO DO: if user is not signed in, only logo */}
       <HStack h="inherit" spacing={6} pr={4}>

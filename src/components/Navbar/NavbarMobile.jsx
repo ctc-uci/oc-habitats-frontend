@@ -61,15 +61,7 @@ const NavbarMobile = ({ isAdmin }) => {
       h="60px"
     >
       <Link to="/">
-        <Image
-          pl={4}
-          pr={0}
-          maxW="50%"
-          maxH="100"
-          src={logo}
-          alt="logo"
-          _hover={{ opacity: '0.8' }}
-        />
+        <Image pl={4} pr={0} maxH="50px" src={logo} alt="logo" _hover={{ opacity: '0.8' }} />
       </Link>
       <Spacer />
       <Menu>
