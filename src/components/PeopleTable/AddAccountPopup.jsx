@@ -24,12 +24,14 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
+import { initiateInviteProcess } from '../../common/auth_utils';
+
 const schema = yup.object({
-  userType: yup.string('User type is required').required('User type is required'),
+  role: yup.string('User type is required').required('User type is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
 });
 
-const userTypes = {
+const roles = {
   volunteer: 'Volunteer',
   admin: 'Admin',
 };
@@ -57,18 +59,29 @@ const AddAccountPopup = () => {
     // eslint-disable-next-line no-alert
     alert(JSON.stringify(data, null, 2));
 
-    // TODO: send user request
-    // await initiateInviteProcess(email, role);
-    toast({
-      title: 'Sign Up Link Sent!',
-      description: `
-        A one-time use ${userTypes[data.userType]} sign up link
-        was successfully sent to ${data.email}!
-      `,
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
-    });
+    try {
+      await initiateInviteProcess(data.email, data.role);
+      toast({
+        title: 'Sign Up Link Sent!',
+        description: `
+          A one-time use ${roles[data.role]} sign up link
+          was successfully sent to ${data.email}!
+        `,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: 'Sign Up Invite Failed!',
+        description: `
+          The following error occurred when inviting a user: ${err}
+        `,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
 
     // Close modal
     onClose();
@@ -93,19 +106,19 @@ const AddAccountPopup = () => {
           <ModalCloseButton />
           <form onSubmit={handleSubmit(onSubmit)}>
             <ModalBody>
-              <FormControl isInvalid={errors?.userType}>
+              <FormControl isInvalid={errors?.role}>
                 <Text mb="10px">User Type</Text>
                 <Controller
                   control={control}
-                  name="userType"
+                  name="role"
                   // eslint-disable-next-line no-unused-vars
                   render={({ field: { onChange, value, ref } }) => (
                     <RadioGroup selected={value} onChange={onChange}>
                       <Stack column="vertical">
-                        {Object.keys(userTypes).map(key => {
+                        {Object.keys(roles).map(key => {
                           return (
                             <Radio value={key} key={key}>
-                              {userTypes[key]}
+                              {roles[key]}
                             </Radio>
                           );
                         })}
