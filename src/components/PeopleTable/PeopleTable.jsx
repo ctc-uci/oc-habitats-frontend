@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Thead, Tbody, Tr, Text, Spinner, VStack } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Box, Text, Spinner, VStack } from '@chakra-ui/react';
 
 import { useTable, usePagination, useFilters, useSortBy } from 'react-table';
 import PeopleTableDescription from './PeopleTableDescription';
@@ -191,23 +191,25 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
         sortOptions={sortOptions}
         setSortBy={setSortBy}
       />
-      <Table variant="striped" {...getTableProps()}>
-        <Thead>
-          <PeopleTableHeader headerGroups={headerGroups} loading={loading} />
-        </Thead>
-        <Tbody {...getTableBodyProps()}>
-          <RowModalContextProvider segmentData={segments}>
-            {tableContent(loading, page, prepareRow)}
-          </RowModalContextProvider>
-        </Tbody>
-      </Table>
-      <PeopleTableFooter
-        rowCount={rows.length}
-        pageIndex={pageIndex}
-        rowsPerPageSelect={rowsPerPageSelect}
-        pageSize={pageSize}
-        pageControl={{ setPageSize, nextPage, previousPage, canNextPage, canPreviousPage }}
-      />
+      <Box>
+        <Table variant="striped" {...getTableProps()}>
+          <Thead>
+            <PeopleTableHeader headerGroups={headerGroups} loading={loading} />
+          </Thead>
+          <Tbody {...getTableBodyProps()}>
+            <RowModalContextProvider segmentData={segments}>
+              {tableContent(loading, page, prepareRow)}
+            </RowModalContextProvider>
+          </Tbody>
+        </Table>
+        <PeopleTableFooter
+          rowCount={rows.length}
+          pageIndex={pageIndex}
+          rowsPerPageSelect={rowsPerPageSelect}
+          pageSize={pageSize}
+          pageControl={{ setPageSize, nextPage, previousPage, canNextPage, canPreviousPage }}
+        />
+      </Box>
     </>
   );
 };

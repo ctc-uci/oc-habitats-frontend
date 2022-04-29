@@ -56,25 +56,24 @@ const PeoplePage = () => {
   }, []);
 
   return (
-    <Container maxW="container.xl">
+    <Container
+      maxW={{ md: 'container.xl', base: 'container.sm' }}
+      // bgColor={{ md: 'transparent', base: 'red.100' }}
+    >
       <Heading fontWeight="600" fontSize="36px" mb="40px" mt="40px" align="left">
         People
       </Heading>
-      <Flex justifyContent="flex-start" gap="40px">
+      <Flex justifyContent="flex-start" gap={{ md: '40px', base: '20px' }} wrap="wrap">
         <AddAccountPopup />
-        <Flex>
-          <Spacer />
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <Button
-              rightIcon={<AiOutlineUnorderedList />}
-              bg="ochOrange"
-              color="ochBlack"
-              variant="solidNoHover"
-            >
-              View Segment Assignments
-            </Button>
-          </Link>
-        </Flex>
+        <Button
+          rightIcon={<AiOutlineUnorderedList />}
+          bg="ochOrange"
+          color="ochBlack"
+          variant="solidNoHover"
+          w={{ md: 'auto', base: '100%' }}
+        >
+          View Segment Assignments
+        </Button>
       </Flex>
       {/* <pre>{JSON.stringify(volunteerData, null, 2)}</pre> */}
       <PeopleTable

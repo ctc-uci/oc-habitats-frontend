@@ -19,16 +19,22 @@ const PeopleTableFilters = ({
   }, 200);
 
   return (
-    <Flex direction="row" justifyContent="space-between" m="20px 0 30px">
-      <Box>
+    <Flex
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+      m="20px 0 0"
+      wrap="wrap"
+    >
+      <Box borderBottom="16px solid transparent">
         <InputGroup>
           <InputLeftElement pointerEvents="none">
             <Search2Icon color="ochGrey" />
           </InputLeftElement>
           <Input
             placeholder={`Search ${variant}s...`}
-            htmlSize={30}
-            width="auto"
+            maxW="320px"
+            w="100%"
             value={filterValue}
             onChange={e => {
               setFilterValue(e.target.value);
@@ -37,13 +43,18 @@ const PeopleTableFilters = ({
           />
         </InputGroup>
       </Box>
-      <Flex direction="row">
+      <Flex direction="row" gap="15px" wrap="wrap" borderBottom="16px solid transparent">
         {variant === 'volunteer' ? (
-          <Flex flexDir="row" justifyItems="center" mr="30px">
-            <Text fontWeight="bold" color="ochGrey" mr="15px" alignSelf="center">
+          <Flex flexDir="row" gap="15px">
+            <Text fontWeight="bold" color="ochGrey" alignSelf="center">
               FILTER BY SEGMENT
             </Text>
-            <Select placeholder="All" w={40} onChange={e => setSegmentFilter(e.target.value)}>
+            <Select
+              placeholder="All"
+              w={40}
+              flexShrink="1"
+              onChange={e => setSegmentFilter(e.target.value)}
+            >
               {segments.map(segment => {
                 return (
                   <option key={segment.id} value={segment.id}>
@@ -54,8 +65,8 @@ const PeopleTableFilters = ({
             </Select>
           </Flex>
         ) : null}
-        <Flex flexDir="row" justifyItems="center">
-          <Text fontWeight="bold" color="ochGrey" mr="15px" alignSelf="center">
+        <Flex flexDir="row" justifyItems="center" gap="15px">
+          <Text fontWeight="bold" color="ochGrey" alignSelf="center">
             SORT BY
           </Text>
           <Select w={40} onChange={e => setSortBy(sortOptions[e.target.value])}>

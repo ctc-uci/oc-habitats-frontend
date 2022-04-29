@@ -95,6 +95,7 @@ const AddAccountPopup = () => {
         color="ochBlack"
         variant="solidNoHover"
         rightIcon={<AddIcon />}
+        w={{ md: 'auto', base: '100%' }}
       >
         Create New Account
       </Button>
