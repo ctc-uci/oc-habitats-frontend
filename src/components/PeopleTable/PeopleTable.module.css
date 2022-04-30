@@ -9,15 +9,11 @@ html { font-family: 'Inter', sans-serif; }
   top: 0;
 }
 .table-head th:first-child {
-  border-radius: 10px 0 0 0px;
+  border-radius: 10px 0 0 0;
 }
 .table-head th:last-child {
   border-radius:0 10px 0 0;
 }
-.footer-container {
-  overflow-y: auto;
-  min-width: 900px;
-  width: 100%;
-  max-height: 400px;
-  border-radius:0 0 10px 10px;
+.table-head th:only-child {
+  border-radius: 10px 10px 0 0;
 }

@@ -1,6 +1,16 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Thead, Tbody, Tr, Box, Text, Spinner, VStack } from '@chakra-ui/react';
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Box,
+  Text,
+  Spinner,
+  VStack,
+  useMediaQuery,
+} from '@chakra-ui/react';
 
 import { useTable, usePagination, useFilters, useSortBy } from 'react-table';
 import PeopleTableDescription from './PeopleTableDescription';
@@ -58,10 +68,11 @@ const cellStructure = [
       registered: d.registered,
       isTrainee: d.isTrainee,
       isActive: d.isActive,
+      ...d,
     }),
     filter: 'nameFilter',
     sortType: nameSortFn,
-    Cell: ({ value }) => <NameColumn data={value} />,
+    Cell: ({ value, isMobile }) => <NameColumn data={value} isMobile={isMobile} />,
   },
   {
     id: 'lastUpdated',
@@ -108,14 +119,14 @@ const EmptyRow = () => (
   </Tr>
 );
 
-const tableContent = (loading, page, prepareRow) => {
+const tableContent = (loading, page, prepareRow, isMobile) => {
   if (loading) {
     return <LoadingRow />;
   }
   if (page?.length) {
     return page.map(row => {
       prepareRow(row);
-      return <PeopleTableRow key={row.name} row={row} />;
+      return <PeopleTableRow key={row.name} row={row} isMobile={isMobile} />;
     });
   }
   return <EmptyRow />;
@@ -140,6 +151,7 @@ JSON.safeStringify = (obj, indent = 2) => {
 };
 
 const PeopleTable = ({ variant, userData, segments, loading }) => {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const columns = useMemo(() => cellStructure, []);
   const data = useMemo(() => userData, [loading]);
   const filterTypes = useMemo(
@@ -164,6 +176,7 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
     canPreviousPage,
     setFilter,
     setSortBy,
+    setHiddenColumns,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -179,6 +192,11 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
     useSortBy,
     usePagination,
   );
+
+  // Hide columns on mobile
+  useEffect(() => {
+    setHiddenColumns(isMobile ? ['lastUpdated', 'assignedSegments'] : []);
+  }, [isMobile]);
 
   return (
     <>
@@ -198,7 +216,7 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
           </Thead>
           <Tbody {...getTableBodyProps()}>
             <RowModalContextProvider segmentData={segments}>
-              {tableContent(loading, page, prepareRow)}
+              {tableContent(loading, page, prepareRow, isMobile)}
             </RowModalContextProvider>
           </Tbody>
         </Table>
@@ -208,6 +226,7 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
           rowsPerPageSelect={rowsPerPageSelect}
           pageSize={pageSize}
           pageControl={{ setPageSize, nextPage, previousPage, canNextPage, canPreviousPage }}
+          isMobile={isMobile}
         />
       </Box>
     </>

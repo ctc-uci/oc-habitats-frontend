@@ -74,16 +74,23 @@ const badgeContent = data => {
   return null;
 };
 
-const NameColumn = ({ data }) => {
+const NameColumn = ({ data, isMobile }) => {
   return (
-    <Flex h="72px" gap="12px" alignItems="center">
-      <Avatar size="md" name={data.registered ? data.name : data.email} src="something" />
-      <VStack alignItems="flex-start">
-        <Text>{data.registered ? data.name : null}</Text>
-        <Text color="gray.500">{data.email}</Text>
-        {badgeContent(data)}
-      </VStack>
-    </Flex>
+    <HStack w="100%" justifyContent="space-between">
+      <Flex h="72px" gap="12px" alignItems="center">
+        <Avatar size="md" name={data.registered ? data.name : data.email} src="something" />
+        <VStack alignItems="flex-start">
+          <Text>{data.registered ? data.name : null}</Text>
+          <Text color="gray.500">{data.email}</Text>
+          {badgeContent(data)}
+        </VStack>
+      </Flex>
+      {isMobile && (
+        <VStack justify="right">
+          <RowButton data={data} />
+        </VStack>
+      )}
+    </HStack>
   );
 };
 
@@ -132,13 +139,13 @@ const RowButton = ({ data }) => {
   );
 };
 
-const PeopleTableRow = ({ row }) => {
+const PeopleTableRow = ({ row, isMobile }) => {
   return (
     <Tr {...row.getRowProps()}>
       {row.cells.map(cell => {
         return (
           <Td fontSize="14px" key={row.id} {...cell.getCellProps()}>
-            {cell.render('Cell')}
+            {cell.render('Cell', { isMobile })}
           </Td>
         );
       })}
@@ -154,6 +161,7 @@ StyledBadge.propTypes = {
 
 NameColumn.propTypes = {
   data: PropTypes.string.isRequired,
+  isMobile: PropTypes.bool.isRequired,
 };
 
 SegmentAndButtonColumn.propTypes = {
@@ -166,6 +174,7 @@ RowButton.propTypes = {
 
 PeopleTableRow.propTypes = {
   row: PropTypes.string.isRequired,
+  isMobile: PropTypes.bool.isRequired,
 };
 
 export { PeopleTableRow, NameColumn, SegmentAndButtonColumn };

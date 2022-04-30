@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Heading, Button, Flex, Spacer } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Container, Heading, Button, Flex } from '@chakra-ui/react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { OCHBackend } from '../common/utils';
 import { PeopleTable, AddAccountPopup } from '../components/PeopleTable';
@@ -60,7 +59,7 @@ const PeoplePage = () => {
       maxW={{ md: 'container.xl', base: 'container.sm' }}
       // bgColor={{ md: 'transparent', base: 'red.100' }}
     >
-      <Heading fontWeight="600" fontSize="36px" mb="40px" mt="40px" align="left">
+      <Heading fontWeight="600" fontSize="36px" m="30px 0" align="left">
         People
       </Heading>
       <Flex justifyContent="flex-start" gap={{ md: '40px', base: '20px' }} wrap="wrap">
