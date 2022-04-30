@@ -55,10 +55,7 @@ const PeoplePage = () => {
   }, []);
 
   return (
-    <Container
-      maxW={{ md: 'container.xl', base: 'container.sm' }}
-      // bgColor={{ md: 'transparent', base: 'red.100' }}
-    >
+    <Container maxW={{ md: 'container.xl', base: 'container.sm' }} mb={{ md: '0', base: '5em' }}>
       <Heading fontWeight="600" fontSize="36px" m="30px 0" align="left">
         People
       </Heading>

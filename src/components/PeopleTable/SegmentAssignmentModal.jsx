@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  chakra,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -17,11 +16,13 @@ import {
   Tag,
   TagLabel,
   TagCloseButton,
+  Tooltip,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { chakraComponents, Select } from 'chakra-react-select';
 
-const util = require('util');
+// const util = require('util');
 // import { OCHBackend } from '../../common/utils';
 
 // eslint-disable-next-line no-unused-vars
@@ -50,7 +51,7 @@ const SegmentDropdown = ({ allSegments, selectedSegments, setSelectedSegments })
               borderColor: 'gray.100',
               color: 'red.600',
             },
-            onClick: e => {
+            onClick: () => {
               setSelectedSegments([]);
             },
             ...props.innerProps,
@@ -89,7 +90,7 @@ const SegmentDropdown = ({ allSegments, selectedSegments, setSelectedSegments })
   return (
     <Box>
       <Text mb="8px">Segments</Text>
-      <Box w="400px">
+      <Box w="320px">
         <Select
           placeholder={
             selectedSegments && selectedSegments.length !== 0
@@ -123,29 +124,30 @@ const AssignedSegmentsTags = ({ segments, setSelectedSegments }) => {
       <VStack
         bgColor="gray.100"
         p="10px"
-        w="fit-content"
-        minW="100%"
+        maxW="95%"
         minH="40px"
         borderRadius="6px"
         alignItems="flex-start"
       >
         {segments?.map(segment => (
-          <Tag
-            key={segment}
-            size="lg"
-            display="flex"
-            justifyContent="space-between"
-            variant="solid"
-            bgColor="white"
-            borderRadius="6px"
-            boxShadow="0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)"
-            padding="0 20px"
-          >
-            <TagLabel color="ochBlack" mr="20px">
-              {segment.label}
-            </TagLabel>
-            <TagCloseButton onClick={() => removeSegment(segment)} color="ochBlack" />
-          </Tag>
+          <Tooltip key={segment} label={segment.label}>
+            <Tag
+              size="lg"
+              display="flex"
+              justifyContent="space-between"
+              variant="solid"
+              bgColor="white"
+              borderRadius="6px"
+              boxShadow="0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)"
+              padding="0 20px"
+              alt={segment.label}
+            >
+              <TagLabel color="ochBlack" mr="20px">
+                {segment.label}
+              </TagLabel>
+              <TagCloseButton onClick={() => removeSegment(segment)} color="ochBlack" />
+            </Tag>
+          </Tooltip>
         ))}
       </VStack>
     </Box>
@@ -158,7 +160,7 @@ const SegmentCards = ({ allSegments, selectedSegments }) => {
     (
       set => a =>
         set.has(a.id)
-    )(new Set(selectedSegments.map(b => b.id))),
+    )(new Set(selectedSegments?.map(b => b.id))),
   );
 
   const alsoAssigned = segment => {
@@ -210,6 +212,8 @@ const formatOptions = options =>
   }));
 
 const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
+  // Workaround for responsive modal sizes
+  const modalSizes = useBreakpointValue({ base: 'sm', md: 'lg' });
   const [dirty, setDirty] = useState(false);
   const [selectedSegments, setSelectedSegments] = useState([]);
   const allSegments = formatOptions(segmentData);
@@ -235,22 +239,37 @@ const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
   }, [selectedSegments]);
 
   return (
-    <Modal isOpen={isOpen} onClose={closeWrapper} size="lg" scrollBehavior="inside" isCentered>
+    <Modal
+      isOpen={isOpen}
+      onClose={closeWrapper}
+      size={modalSizes}
+      scrollBehavior="inside"
+      isCentered
+    >
       <ModalOverlay />
-      <ModalContent maxW="1000px" minH="600px">
+      <ModalContent maxW={{ base: '95%', md: '1000px' }} minH={{ base: '100px', md: '600px' }}>
         <ModalHeader>{userData.name}&apos;s Segments</ModalHeader>
         <ModalBody>
-          <HStack gap="80px" mb="32px" alignItems="flex-start" w="100%">
+          <Flex
+            flexDir="row"
+            columnGap="80px"
+            rowGap="24px"
+            w="100%"
+            wrap="wrap"
+            alignItems="flex-start"
+            mb="32px"
+          >
             <SegmentDropdown
               allSegments={allSegments}
               selectedSegments={selectedSegments}
               setSelectedSegments={setSelectedSegments}
             />
+
             <AssignedSegmentsTags
               segments={selectedSegments}
               setSelectedSegments={setSelectedSegments}
             />
-          </HStack>
+          </Flex>
           <SegmentCards allSegments={allSegments} selectedSegments={selectedSegments} />
           {/* {JSON.stringify(segmentData, null, 2)} */}
         </ModalBody>

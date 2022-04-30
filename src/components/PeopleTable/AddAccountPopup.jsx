@@ -21,6 +21,7 @@ import {
   FormErrorMessage,
   FormControl,
   useToast,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
@@ -39,6 +40,8 @@ const roles = {
 const AddAccountPopup = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  // Workaround for responsive modal sizes
+  const modalSizes = useBreakpointValue({ base: 'sm', md: 'md' });
 
   const {
     register,
@@ -100,7 +103,7 @@ const AddAccountPopup = () => {
         Create New Account
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isOpen={isOpen} onClose={onClose} size={modalSizes} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create New User</ModalHeader>

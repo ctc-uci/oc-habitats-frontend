@@ -10,14 +10,17 @@ import {
   ModalCloseButton,
   Text,
   Button,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import AUTH_ROLES from '../../common/auth_config';
 
 const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 const DeletePendingAccountModal = ({ userData, isOpen, onClose }) => {
+  // Workaround for responsive modal sizes
+  const size = useBreakpointValue({ base: 'sm', md: 'md' });
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} size={size} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Delete Pending Account</ModalHeader>
@@ -44,6 +47,8 @@ const DeletePendingAccountModal = ({ userData, isOpen, onClose }) => {
 };
 
 const ConvertAccountTypeModal = ({ userData, isOpen, onClose }) => {
+  // Workaround for responsive modal sizes
+  const modalSizes = useBreakpointValue({ base: 'sm', md: 'md' });
   const modalText = {
     [ADMIN_ROLE]: (
       <>
@@ -57,7 +62,7 @@ const ConvertAccountTypeModal = ({ userData, isOpen, onClose }) => {
     ),
   };
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} size={modalSizes} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Convert Account Type</ModalHeader>
