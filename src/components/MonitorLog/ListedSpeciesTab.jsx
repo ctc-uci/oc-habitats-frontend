@@ -6,10 +6,12 @@ import {
   AccordionItem,
   Box,
   Button,
+  Center,
   Collapse,
   FormControl,
   Grid,
   GridItem,
+  HStack,
   Icon,
   IconButton,
   Menu,
@@ -31,6 +33,7 @@ import {
   Tbody,
   Td,
   Text,
+  Textarea,
   Tfoot,
   Th,
   Thead,
@@ -42,11 +45,19 @@ import {
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { FiEdit3 } from 'react-icons/fi';
+import { useFormContext, useForm } from 'react-hook-form';
+import { FiEdit3, FiExternalLink } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import ListedSpeciesPopup from '../ListedSpecies/ListedSpeciesPopup';
+import GeneralListedInformation from '../ListedSpecies/GeneralListedInformation';
+import Location from '../ListedSpecies/Location';
+import SexSection from '../ListedSpecies/SexSection';
+import BandingSection from '../ListedSpecies/BandingSection';
+import BehaviorsSection from '../ListedSpecies/BehaviorsSection';
+import options from '../ListedSpecies/DropdownOptions';
+import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 
-const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisabled }) => {
+const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplate }) => {
   const formPrefix = `listedSpecies.${tab}.`;
   const { isOpen, onOpen: openPopup, onClose } = useDisclosure();
   const { setValue, getValues } = useFormContext();
@@ -55,7 +66,31 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisable
   const [rowToEdit, setRowToEdit] = useState(undefined);
   const [rowToDelete, setRowToDelete] = useState(undefined);
   const [totals, setTotals] = useState([0, 0, 0]);
+  const [listedSpeciesList, setListedSpeciesList] = useState([]);
+
   const toast = useToast();
+
+  const formMethods = useForm({
+    defaultValues: {
+      totalAdults: 1,
+      totalFledges: 0,
+      totalChicks: 0,
+      time: '07:00',
+      meridiem: 'AM',
+      map: '1',
+      habitat: '',
+      sex: [0, 0, 0, 0, 0, 0],
+      nesting: [],
+      behaviors: [],
+      gps: [
+        { longitude: '', latitude: '' },
+        { longitude: '', latitude: '' },
+        { longitude: '', latitude: '' },
+        { longitude: '', latitude: '' },
+      ],
+      bandTabs: [],
+    },
+  });
 
   useEffect(() => {
     setTotals(
@@ -64,6 +99,12 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisable
         .reduce((l, r) => [l[0] + r[0], l[1] + r[1], l[2] + r[2]], [0, 0, 0]),
     );
     setValue(`${formPrefix}data`, data);
+
+    // TODO: BACKEND API CALL TO GET ALL LISTED SPECIES FROM SPECIES CATALOG
+    setListedSpeciesList([
+      'Plover: Western Snowy (SNPL/WSPL)',
+      'Tern: California Least (CLTE/LETE)',
+    ]);
   }, [data]);
 
   const addRow = formData => {
@@ -166,11 +207,72 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisable
 
   return (
     <>
-      {showHeader && (
+      {isTemplate ? (
+        <Text fontWeight="600" fontSize="2xl" mt="30px" mb="5px">
+          Listed Species
+        </Text>
+      ) : (
+        // {showHeader && (
         <Text fontWeight="600" fontSize="2xl">
           {speciesName}s
         </Text>
+        // )}
       )}
+      {isTemplate && (
+        <>
+          {/* TODO: UPDATE SPECIES CATALOG LINK BEFORE HANDING OFF THE PROJECT */}
+          <Text mt="30px" color="ochPurple" fontWeight="500">
+            The following listed species are tracked in their own section of the monitor log.
+          </Text>
+          <HStack>
+            <Text color="ochPurple" fontWeight="500">
+              To view or edit the current catalogue of Listed Species,
+            </Text>
+            <Link to="/species">
+              <Text color="#2B6CB0" fontWeight="500" maxW="100vw">
+                Open Species Catalog
+              </Text>
+            </Link>
+            <Link to="/species">
+              <Text color="#2B6CB0" fontWeight="500" maxW="100vw">
+                <FiExternalLink />
+              </Text>
+            </Link>
+          </HStack>
+          <HStack mt="10px" bgColor="ochLightGrey" borderRadius="6px" pl="20px" w="100%" h="70px">
+            {listedSpeciesList.map(e => {
+              return (
+                <Center
+                  w="375px"
+                  h="40px"
+                  bgColor="white"
+                  mr="10px"
+                  my="auto"
+                  border="1px solid #CBD5E0"
+                  borderRadius="6px"
+                >
+                  <Text>{e}</Text>
+                </Center>
+              );
+            })}
+          </HStack>
+          <Text mt="35px" color="ochPurple" fontWeight="500">
+            In the &quot;General Information&quot; portion, &quot;Non-Static&quot; questions can be
+            added, edited, and/or deleted.
+          </Text>
+          <Text mb="25px" color="ochPurple" fontWeight="500">
+            Static questions can&apos;t be deleted or edited. You can only Add, Edit, or Remove
+            Tooltips for &quot;Static&quot; questions.
+          </Text>
+          <Text fontWeight="600" fontSize="2xl" mt="30px" mb="5px">
+            Aggregated [Listed Species] Data
+          </Text>
+          <Text fontWeight="600" fontSize="xl" mt="30px">
+            [Listed Species] Tracker
+          </Text>
+        </>
+      )}
+
       <Grid marginTop="20px" minH="200px" templateColumns="repeat(6, 1fr)" gap="150">
         <GridItem colSpan="3">
           <Box overflow="hidden" border="1px solid darkgray" rounded="md">
@@ -293,7 +395,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisable
           {!isDisabled && (
             <>
               <Button onClick={openPopup} width="100%" marginTop="10px" colorScheme="cyan">
-                Add Sighted {speciesCode} +
+                {isTemplate ? 'Add New Row +' : `Add Sighted ${speciesCode} +`}
               </Button>
               <Modal size="full" isOpen={isOpen} closeOnEsc={false}>
                 <ModalOverlay />
@@ -312,7 +414,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisable
         <GridItem colSpan="2">
           <VStack alignItems="start">
             <Text fontWeight="600" fontSize="xl">
-              Injured {speciesName}s
+              Injured [Listed Species]
             </Text>
             <Text>To report a sick or injured bird, contact the WWCC at 714.374.5587</Text>
             <FormControl>
@@ -339,6 +441,28 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisable
           </VStack>
         </GridItem>
       </Grid>
+      {isTemplate && (
+        <>
+          <Text mt="120px" mb="30px" fontWeight="500">
+            The questions below are shown when a new row is added to the monitor log species
+            tracker.
+          </Text>
+          <VStack align="start" spacing="4em">
+            <GeneralListedInformation />
+            <Location />
+            <SexSection />
+            <BehaviorsSection behaviorOptions={options.behavior} nestingOptions={options.nesting} />
+            <BandingSection />
+            <CollapsibleSection title="Additional Notes (Optional)">
+              <Textarea
+                h="10em"
+                placeholder="Type Here..."
+                {...formMethods.register('additionalNotes')}
+              />
+            </CollapsibleSection>
+          </VStack>
+        </>
+      )}
     </>
   );
 };
@@ -346,6 +470,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, showHeader, isDisable
 ListedSpeciesTab.defaultProps = {
   showHeader: true,
   isDisabled: false,
+  isTemplate: false,
 };
 
 ListedSpeciesTab.propTypes = {
@@ -354,6 +479,7 @@ ListedSpeciesTab.propTypes = {
   speciesCode: PropTypes.string.isRequired,
   showHeader: PropTypes.bool,
   isDisabled: PropTypes.bool,
+  isTemplate: PropTypes.bool,
 };
 
 export default ListedSpeciesTab;

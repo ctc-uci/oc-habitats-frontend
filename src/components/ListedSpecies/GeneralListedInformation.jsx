@@ -12,6 +12,7 @@ import {
   NumberInputStepper,
   Select,
   Stack,
+  Text,
   Tooltip,
 } from '@chakra-ui/react';
 import { React } from 'react';
@@ -21,7 +22,7 @@ import options from './DropdownOptions';
 import footNotes from './FootNotes';
 
 // component/section name not final
-const GeneralListedInformation = () => {
+const GeneralListedInformation = isTemplate => {
   const { register, setValue, getValues } = useFormContext();
 
   const createOptions = () => {
@@ -52,8 +53,8 @@ const GeneralListedInformation = () => {
               </NumberInputStepper>
             </NumberInput>
           </FormLabel>
+          {isTemplate && <Text color="#718096">Static</Text>}
         </FormControl>
-
         <FormControl>
           <FormLabel>
             <Flex justify="space-between" align="center">
@@ -74,6 +75,7 @@ const GeneralListedInformation = () => {
               </NumberInputStepper>
             </NumberInput>
           </FormLabel>
+          {isTemplate && <Text color="#718096">Static</Text>}
         </FormControl>
 
         <FormControl>
@@ -91,6 +93,7 @@ const GeneralListedInformation = () => {
               </NumberInputStepper>
             </NumberInput>
           </FormLabel>
+          {isTemplate && <Text color="#718096">Static</Text>}
         </FormControl>
       </Stack>
 
@@ -104,6 +107,7 @@ const GeneralListedInformation = () => {
               <Input type="time" {...register('time')} />
             </InputGroup>
           </FormLabel>
+          {isTemplate && <Text color="#718096">Static</Text>}
         </FormControl>
 
         <FormControl>
@@ -111,6 +115,7 @@ const GeneralListedInformation = () => {
             Map #
             <Input disabled placeholder="None" {...register('map')} />
           </FormLabel>
+          {isTemplate && <Text color="#718096">Static</Text>}
         </FormControl>
         <FormControl>
           <FormLabel>
@@ -124,6 +129,7 @@ const GeneralListedInformation = () => {
               {createOptions()}
             </Select>
           </FormLabel>
+          {isTemplate && <Text color="#718096">Static</Text>}
         </FormControl>
       </Stack>
     </CollapsibleSection>

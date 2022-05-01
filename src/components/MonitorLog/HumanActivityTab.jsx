@@ -38,7 +38,7 @@ const HUMAN_ACTIVITIES = [
   ['[On Leash] Domestic Animals', 'Dogs, Cats, Other', 'onLeashAnimals'],
 ];
 
-const HumanActivityField = ({ activityName, activityDesc, activityId, isDisabled }) => {
+const HumanActivityField = ({ activityName, activityDesc, activityId, isDisabled, isTemplate }) => {
   const { setValue, getValues } = useFormContext();
 
   return (
@@ -71,6 +71,7 @@ const HumanActivityField = ({ activityName, activityDesc, activityId, isDisabled
             <NumberDecrementStepper />
           </NumberInputStepper>
         </NumberInput>
+        {isTemplate && <Text color="#718096">Static</Text>}
       </VStack>
     </GridItem>
   );
@@ -83,70 +84,92 @@ HumanActivityField.propTypes = {
   isDisabled: PropTypes.bool.isRequired,
 };
 
-const HumanActivityTab = ({ showHeader, isDisabled }) => {
+const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
   const { register } = useFormContext();
 
   return (
-    <VStack spacing="23px" align="left">
-      {showHeader && (
-        <Text fontWeight="600" fontSize="2xl">
-          Human Activity
-        </Text>
-      )}
-      <SimpleGrid columns={3} spacingX="64px" spacingY="68px">
-        {HUMAN_ACTIVITIES.map(([name, desc, value]) => (
-          <HumanActivityField
-            key={value}
-            activityName={name}
-            activityDesc={desc}
-            activityId={value}
-            isDisabled={isDisabled}
-          />
-        ))}
-      </SimpleGrid>
-      <Spacer />
-      <VStack spacing="8px" align="left">
-        <Flex>
-          <Text fontWeight="500" fontSize="md">
-            Outreach
+    <>
+      {isTemplate && (
+        <>
+          <Text mt="30px" color="ochPurple" fontWeight="500">
+            &quot;Static&quot; questions cannot be edited.
           </Text>
+          <Text mb="20px" color="ochPurple" fontWeight="500">
+            &quot;Non-static&quot; questions can be added, edited, and/or deleted.
+          </Text>
+        </>
+      )}
+      <VStack spacing="23px" align="left">
+        {showHeader && (
+          <Text fontWeight="600" fontSize="2xl">
+            Human Activity
+          </Text>
+        )}
+        <SimpleGrid columns={3} spacingX="64px" spacingY="68px">
+          {HUMAN_ACTIVITIES.map(([name, desc, value]) => (
+            <HumanActivityField
+              key={value}
+              activityName={name}
+              activityDesc={desc}
+              activityId={value}
+              isDisabled={isDisabled}
+              isTemplate={isTemplate}
+            />
+          ))}
+        </SimpleGrid>
+        <Spacer />
+        <VStack spacing="8px" align="left">
+          <Flex>
+            <Text fontWeight="500" fontSize="md">
+              Outreach
+            </Text>
+            <Spacer />
+            <Tooltip label="Tooltip" placement="top">
+              <InfoIcon />
+            </Tooltip>
+          </Flex>
+          <Textarea
+            disabled={isDisabled}
+            placeholder="Type here..."
+            {...register(`${FORM_PREFIX}outreach`)}
+          />
           <Spacer />
-          <Tooltip label="Tooltip" placement="top">
-            <InfoIcon />
-          </Tooltip>
-        </Flex>
-        <Textarea
-          disabled={isDisabled}
-          placeholder="Type here..."
-          {...register(`${FORM_PREFIX}outreach`)}
-        />
-        <Spacer />
-        <Spacer />
+          <Spacer />
+        </VStack>
+        <VStack spacing="8px" align="left">
+          <Text fontWeight="500" fontSize="md">
+            Other Notes
+          </Text>
+          <Textarea
+            disabled={isDisabled}
+            placeholder="Type here..."
+            {...register(`${FORM_PREFIX}otherNotes`)}
+          />
+          <Spacer />
+          <Spacer />
+        </VStack>
       </VStack>
-      <VStack spacing="8px" align="left">
-        <Text fontWeight="500" fontSize="md">
-          Other Notes
-        </Text>
-        <Textarea
-          disabled={isDisabled}
-          placeholder="Type here..."
-          {...register(`${FORM_PREFIX}otherNotes`)}
-        />
-        <Spacer />
-        <Spacer />
-      </VStack>
-    </VStack>
+    </>
   );
 };
 
 HumanActivityTab.defaultProps = {
   isDisabled: false,
   showHeader: true,
+  isTemplate: false,
 };
 
 HumanActivityTab.propTypes = {
   isDisabled: PropTypes.bool,
   showHeader: PropTypes.bool,
+  isTemplate: PropTypes.bool,
+};
+
+HumanActivityField.defaultProps = {
+  isTemplate: false,
+};
+HumanActivityField.propTypes = {
+  isTemplate: PropTypes.bool,
 };
 
 export default HumanActivityTab;

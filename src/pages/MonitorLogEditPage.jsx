@@ -1,54 +1,25 @@
 import {
   Box,
   Button,
-  Container,
   Flex,
   Heading,
   HStack,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
+  Link,
   Select,
   Spacer,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
   Tabs,
   useDisclosure,
 } from '@chakra-ui/react';
-import { React, useEffect, useMemo, useRef, useState } from 'react';
+import { React, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp, FiCheck } from 'react-icons/fi';
-import { OCHBackend } from '../common/utils';
-import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
-import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
-import HumanActivity from '../components/MonitorLog/HumanActivityTab';
-import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
-import PredatorsTab from '../components/MonitorLog/PredatorsTab';
-import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
-
-const MonitorTabButton = props => {
-  // eslint-disable-next-line react/prop-types
-  const { children } = props;
-  return (
-    <Tab
-      height="40px"
-      borderColor="ochBlack"
-      borderWidth="1px"
-      _selected={{ borderColor: 'ochOrange', color: 'ochBlack', bg: 'ochOrange' }}
-      {...props}
-    >
-      {children}
-    </Tab>
-  );
-};
+// import { OCHBackend } from '../common/utils';
+import LogTemplateSwitcher from '../components/LogTemplateSwitcher';
 
 const MonitorLogEditPage = () => {
   const formMethods = useForm({});
+  const navigate = useNavigate();
 
   const checkInModal = useDisclosure();
 
@@ -61,26 +32,27 @@ const MonitorLogEditPage = () => {
   const returnToTop = () => {
     topRef.current.scrollIntoView({ behavior: 'smooth' });
   };
-  const [user, setUser] = useState(null);
-  const [monitorPartners, setMonitorPartners] = useState([]);
+  const [currentTemplate, setCurrentTemplate] = useState('general');
 
   useEffect(async () => {
     checkInModal.onOpen();
 
     try {
-      const [userData, monitorPartnersData] = await Promise.all([
-        OCHBackend.get('users/me', { withCredentials: true }),
-        OCHBackend.get('users/monitorPartners', { withCredentials: true }),
-      ]);
-      setUser(userData.data);
-      setMonitorPartners(monitorPartnersData.data);
+      // const [userData, monitorPartnersData] = await Promise.all([
+      //  OCHBackend.get('users/me', { withCredentials: true }),
+      //  OCHBackend.get('users/monitorPartners', { withCredentials: true }),
+      // ]);
+      // setUser(userData.data);
+      // setMonitorPartners(monitorPartnersData.data);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err.message);
     }
   }, []);
 
-  const assignedSegments = useMemo(() => user?.segments || [], [user]);
+  const openPopup = () => {
+    navigate('/new-question');
+  };
 
   return (
     <Flex w="100%" justifyContent="center">
@@ -98,59 +70,33 @@ const MonitorLogEditPage = () => {
             onChange={setActiveTab}
             isLazy
           >
-            <TabList px="32px" alignItems="center">
-              <HStack spacing="24px">
-                <Select placeholder="Select option">
-                  <option value="option1">General Info</option>
-                  <option value="option2">Least Tern</option>
-                  <option value="option3">Snowy Plover</option>
-                  <option value="option4">Additional Species</option>
-                  <option value="option5">Predators</option>
-                  <option value="option6">Human Activity</option>
-                  <option value="option7">Review and Submit</option>
-                </Select>
-              </HStack>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <Container maxW="100vw">
-                  <GeneralInfoTab
-                    assignedSegments={assignedSegments}
-                    monitorPartners={monitorPartners}
-                  />
-                </Container>
-              </TabPanel>
-              <TabPanel>
-                <Container maxW="100vw">
-                  <ListedSpeciesTab tab={0} speciesName="Least Tern" speciesCode="LETE" />
-                </Container>
-              </TabPanel>
-              <TabPanel>
-                <Container maxW="100vw">
-                  <ListedSpeciesTab tab={1} speciesName="Snowy Plover" speciesCode="WSPL" />
-                </Container>
-              </TabPanel>
-              <TabPanel>
-                <Container maxW="100vw">
-                  <AdditionalSpeciesTab />
-                </Container>
-              </TabPanel>
-              <TabPanel>
-                <Container maxW="100vw">
-                  <PredatorsTab />
-                </Container>
-              </TabPanel>
-              <TabPanel>
-                <Container maxW="100vw">
-                  <HumanActivity />
-                </Container>
-              </TabPanel>
-              <TabPanel>
-                <Container maxW="100vw">
-                  <ReviewSubmitTab jumpToTab={setActiveTab} />
-                </Container>
-              </TabPanel>
-            </TabPanels>
+            <HStack>
+              <Select
+                placeholder="Select option"
+                maxW="300px"
+                value={currentTemplate}
+                onChange={e => setCurrentTemplate(e.target.value)}
+              >
+                <option value="general">General Information </option>
+                <option value="listed-species">Listed Species</option>
+                <option value="non-listed">Non-Listed Species</option>
+                <option value="predator">Predators</option>
+                <option value="human-activity">Human Activity</option>
+              </Select>
+              <Spacer />
+              {currentTemplate !== 'non-listed' && currentTemplate !== 'predator' && (
+                <Link to="/new-question">
+                  <Button
+                    bgColor="ochOrange"
+                    // type="submit"
+                    onClick={openPopup}
+                  >
+                    + Add Question
+                  </Button>
+                </Link>
+              )}
+            </HStack>
+            <LogTemplateSwitcher type={currentTemplate} />
           </Tabs>
           <Flex
             alignItems="center"

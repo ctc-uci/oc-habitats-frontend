@@ -18,7 +18,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, useFormContext } from 'react-hook-form';
 import './GeneralInfoTab.css';
 
-function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHeader }) {
+function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHeader, isTemplate }) {
   const { control, register } = useFormContext();
 
   const partnerSelectOptions = monitorPartners.map(user => ({
@@ -29,8 +29,18 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
 
   return (
     <div>
+      {isTemplate && (
+        <>
+          <Text mt="30px" color="ochPurple" fontWeight="500">
+            &quot;Static&quot; questions cannot be edited.
+          </Text>
+          <Text mb="20px" color="ochPurple" fontWeight="500">
+            &quot;Non-static&quot; questions can be added, edited, and/or deleted.
+          </Text>
+        </>
+      )}
       {showHeader && (
-        <Text fontWeight="600" fontSize="2xl">
+        <Text mb="20px" fontWeight="600" fontSize="2xl">
           General Information
         </Text>
       )}
@@ -48,6 +58,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                   </option>
                 ))}
               </Select>
+              {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
           <GridItem colSpan={1} rowSpan={1}>
@@ -66,6 +77,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                   />
                 )}
               />
+              {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
           <GridItem colSpan={1} rowSpan={1}>
@@ -74,6 +86,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                 Survey Start Time
               </Text>
               <Input disabled={isDisabled} type="time" {...register('startTime')} />
+              {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
           <GridItem colSpan={1} rowSpan={1}>
@@ -82,6 +95,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                 Survey End Time
               </Text>
               <Input disabled={isDisabled} type="time" {...register('endTime')} />
+              {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
           <GridItem colSpan={1} rowSpan={1}>
@@ -90,6 +104,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                 Temperature (F)
               </Text>
               <Input disabled={isDisabled} {...register('temperature')} />
+              {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
           <GridItem colSpan={1} rowSpan={1}>
@@ -103,6 +118,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                 <option value="66">66</option>
                 <option value="100">100</option>
               </Select>
+              {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
           <GridItem colSpan={1} rowSpan={1}>
@@ -116,6 +132,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                 <option value="drizzle">Drizzle</option>
                 <option value="rain">Rain</option>
               </Select>
+              {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
           <GridItem colSpan={1} rowSpan={1}>
@@ -140,6 +157,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                   </Select>
                 </GridItem>
               </SimpleGrid>
+              {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
           <GridItem colSpan={1} rowSpan={1}>
@@ -148,6 +166,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                 Tides (ft)
               </Text>
               <Input disabled={isDisabled} placeholder="00.00" {...register('tides')} />
+              {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
           <GridItem colSpan={1} rowSpan={1}>
@@ -173,6 +192,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                 <option value="stone/cobble">Stone/cobble</option>
                 <option value="rocky/outcroppings">Rocky/outcroppings</option>
               </Select>
+              {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
           <GridItem colSpan={1} rowSpan={1}>
@@ -187,6 +207,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                 <option value="100-300">100-300</option>
                 <option value="300+">300+</option>
               </Select>
+              {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
         </SimpleGrid>
@@ -226,6 +247,7 @@ GeneralInfoTab.defaultProps = {
   showHeader: true,
   assignedSegments: [],
   monitorPartners: [],
+  isTemplate: false,
 };
 
 GeneralInfoTab.propTypes = {
@@ -245,6 +267,7 @@ GeneralInfoTab.propTypes = {
   ),
   isDisabled: PropTypes.bool,
   showHeader: PropTypes.bool,
+  isTemplate: PropTypes.bool,
 };
 
 export default GeneralInfoTab;
