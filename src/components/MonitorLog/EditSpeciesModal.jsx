@@ -41,8 +41,6 @@ const EditSpeciesModal = ({ speciesRow, editRow, deleteRow, speciesOptions }) =>
   const [totalSighted, setTotalSighted] = useState(speciesRow.count);
   const [notes, setNotes] = useState(speciesRow.notes);
 
-  console.log('speciesRow: ', speciesRow);
-
   const updateSpecies = () => {
     editRow({
       oldId: speciesRow.species,

@@ -16,7 +16,6 @@ const generateSingleBandCode = band => {
 };
 
 const generateBandingCode = bands => {
-  console.log(bands);
   if (!bands || !bands.topLeft || !bands.topRight || !bands.bottomLeft || !bands.bottomRight) {
     return 'invalid';
   }

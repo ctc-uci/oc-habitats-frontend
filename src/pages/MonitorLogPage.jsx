@@ -63,7 +63,6 @@ const MonitorLogPage = () => {
   };
   const [user, setUser] = useState(null);
   const [monitorPartners, setMonitorPartners] = useState([]);
-  const [species, setSpecies] = useState([]);
   const [predators, setPredators] = useState([]);
   const [listedSpecies, setListedSpecies] = useState([]);
   const [additionalSpecies, setAdditionalSpecies] = useState([]);
@@ -78,7 +77,6 @@ const MonitorLogPage = () => {
       ]);
       setUser(userData.data);
       setMonitorPartners(monitorPartnersData.data);
-      setSpecies(speciesData.data);
       setPredators(
         speciesData.data
           .filter(s => s.isPredator && (!s.isListed || s.isNeither))
@@ -111,16 +109,13 @@ const MonitorLogPage = () => {
     }
   }, []);
 
-  console.log(species);
-  console.log(predators);
-  console.log('listed', listedSpecies);
-  console.log('additional', additionalSpecies);
-
-  const submitForm = async e => {
+  const submitForm = async () => {
+    // eslint-disable-next-line no-console
     console.log(formMethods.getValues());
     const res = await OCHBackend.post('submission', formMethods.getValues(), {
       withCredentials: true,
     });
+    // eslint-disable-next-line no-console
     console.log(res.data);
   };
 

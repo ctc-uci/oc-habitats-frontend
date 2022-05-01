@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  chakra,
   Checkbox,
   Code,
   FormLabel,
@@ -21,9 +20,8 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { Select } from 'chakra-react-select';
 import React, { useState } from 'react';
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import generateBandingCode from '../../common/bandingCodeUtil';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import BandingColorSelect from './BandingColorSelect';
@@ -56,7 +54,7 @@ const BandingSection = () => {
 
   const addBirdBandTab = () => {
     const newTab = {};
-    BAND_POSITIONS.forEach(({ value }, idx) => {
+    BAND_POSITIONS.forEach(({ value }) => {
       newTab[value] = {
         colors: [],
         flag: false,

@@ -99,7 +99,6 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
   };
 
   const createTable = data => {
-    console.log(data);
     return data.map((row, n) => (
       // eslint-disable-next-line react/no-array-index-key
       <AccordionItem key={n} as={Tbody}>

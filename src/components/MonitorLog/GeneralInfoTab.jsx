@@ -19,7 +19,7 @@ import ReactHookFormSelect from '../../common/ReactHookFormSelect';
 import './GeneralInfoTab.css';
 
 function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHeader }) {
-  const { control, register, watch } = useFormContext();
+  const { control, register } = useFormContext();
 
   const partnerSelectOptions = monitorPartners.map(user => ({
     ...user,
@@ -31,10 +31,6 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
     value: segment.id,
     label: `${segment.segmentId} - ${segment.name}`,
   }));
-
-  console.log(assignedSegments);
-
-  console.log('partners', watch('partners'));
 
   return (
     <div>
