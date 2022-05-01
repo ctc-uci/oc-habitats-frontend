@@ -154,7 +154,7 @@ const AssignedSegmentsTags = ({ segments, setSelectedSegments }) => {
   );
 };
 
-const SegmentCards = ({ allSegments, selectedSegments }) => {
+const SegmentCards = ({ allSegments, selectedSegments, currUserId }) => {
   // Use allSegments to populate selectedSegments with additional user information
   const populatedSelectedSegments = allSegments.filter(
     (
@@ -165,12 +165,16 @@ const SegmentCards = ({ allSegments, selectedSegments }) => {
 
   const alsoAssigned = segment => {
     const currentSegment = populatedSelectedSegments.find(seg => seg.id === segment.id);
-    return currentSegment?.volunteerData.map(user => (
-      <p key={user.firstName}>
-        {user.firstName} {user.lastName},
-      </p>
-    ));
+    const otherAssignedUsers = currentSegment?.volunteerData.reduce((result, user) => {
+      if (user.id !== currUserId) {
+        result.push(`${user.firstName} ${user.lastName}`);
+      }
+      return result;
+    }, []);
+
+    return otherAssignedUsers.join(', ');
   };
+
   return (
     <Box>
       <Text mb="8px">Segment Details</Text>
@@ -270,8 +274,11 @@ const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
               setSelectedSegments={setSelectedSegments}
             />
           </Flex>
-          <SegmentCards allSegments={allSegments} selectedSegments={selectedSegments} />
-          {/* {JSON.stringify(segmentData, null, 2)} */}
+          <SegmentCards
+            allSegments={allSegments}
+            selectedSegments={selectedSegments}
+            currUserId={userData?.userId}
+          />
         </ModalBody>
         <ModalFooter>
           <Button w="120px" colorScheme="gray" mr="12px" onClick={closeWrapper}>
@@ -300,6 +307,7 @@ AssignedSegmentsTags.propTypes = {
 SegmentCards.propTypes = {
   allSegments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   selectedSegments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  currUserId: PropTypes.string.isRequired,
 };
 
 SegmentAssignmentModal.propTypes = {
