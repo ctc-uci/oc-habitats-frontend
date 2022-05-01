@@ -1,14 +1,15 @@
 import { React } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { HStack, Flex, Button, Image, useToast } from '@chakra-ui/react';
+import { HStack, Flex, Button, Image, useMediaQuery, useToast } from '@chakra-ui/react';
 import NavbarLink from './NavbarLink';
 import ProfileDropdown from './ProfileDropdown';
-import logo from '../../assets/OCHlogo.png';
+import logo from '../../assets/OCH_Logo_SVG.svg';
 import Toast from '../Toast';
+import NavbarMobile from './NavbarMobile';
 
 const Navbar = ({ isAdmin, changesMade }) => {
-  const toast = useToast();
+  const [isMobile] = useMediaQuery('(max-width: 1024px)');
 
   const admin = [
     { text: 'Monitor Logs', path: '/logs' },
@@ -25,6 +26,8 @@ const Navbar = ({ isAdmin, changesMade }) => {
     { text: 'Emergency Numbers', path: '/emergency-numbers' },
   ];
 
+  const toast = useToast();
+
   const handleOnClick = e => {
     if (changesMade) {
       e.preventDefault();
@@ -34,7 +37,9 @@ const Navbar = ({ isAdmin, changesMade }) => {
     return {};
   };
 
-  return (
+  return isMobile ? (
+    <NavbarMobile isAdmin />
+  ) : (
     <Flex
       as="nav"
       bgColor="ochGrey"
@@ -47,15 +52,7 @@ const Navbar = ({ isAdmin, changesMade }) => {
       h="60px"
     >
       <Link to="/" onClick={handleOnClick}>
-        <Image
-          pl={4}
-          pr={0}
-          maxW="50%"
-          maxH="100"
-          src={logo}
-          alt="logo"
-          _hover={{ opacity: '0.8' }}
-        />
+        <Image pl={4} pr={0} maxH="50px" src={logo} alt="logo" _hover={{ opacity: '0.8' }} />
       </Link>
       {/* TO DO: if user is not signed in, only logo */}
       <HStack h="inherit" spacing={6} pr={4}>
