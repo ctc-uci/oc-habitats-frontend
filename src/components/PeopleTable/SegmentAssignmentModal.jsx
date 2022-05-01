@@ -155,6 +155,17 @@ const AssignedSegmentsTags = ({ segments, setSelectedSegments }) => {
 };
 
 const SegmentCards = ({ allSegments, selectedSegments, currUserId }) => {
+  const cardColor = userCount => {
+    switch (userCount) {
+      case 0:
+      case 1:
+        return 'green.600';
+      case 2:
+        return 'yellow.400';
+      default:
+        return 'red.600';
+    }
+  };
   // Use allSegments to populate selectedSegments with additional user information
   const populatedSelectedSegments = allSegments.filter(
     (
@@ -163,9 +174,10 @@ const SegmentCards = ({ allSegments, selectedSegments, currUserId }) => {
     )(new Set(selectedSegments?.map(b => b.id))),
   );
 
+  const currentSegment = segmentId => populatedSelectedSegments.find(seg => seg.id === segmentId);
+
   const alsoAssigned = segment => {
-    const currentSegment = populatedSelectedSegments.find(seg => seg.id === segment.id);
-    const otherAssignedUsers = currentSegment?.volunteerData.reduce((result, user) => {
+    const otherAssignedUsers = currentSegment(segment.id)?.volunteerData.reduce((result, user) => {
       if (user.id !== currUserId) {
         result.push(`${user.firstName} ${user.lastName}`);
       }
@@ -183,16 +195,15 @@ const SegmentCards = ({ allSegments, selectedSegments, currUserId }) => {
           <HStack
             key={segment}
             w="100%"
-            padding="auto 0"
+            padding="12px"
             borderTop="1.5px solid"
             borderRight="1.5px solid"
             borderBottom="1.5px solid"
+            borderLeft="8px solid"
             borderColor="gray.200"
+            borderLeftColor={cardColor(currentSegment(segment.id)?.volunteerData?.length)}
             borderRadius="6px"
           >
-            <Box bgColor="red.600" borderRadius="6px 0 0 6px" w="8px">
-              ...
-            </Box>
             <VStack alignItems="flex-start">
               <Text>{segment.label}</Text>
               <Text color="gray.500">Last Updated: XX-XX-XXXX</Text>
