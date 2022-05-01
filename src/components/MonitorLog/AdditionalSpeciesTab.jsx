@@ -24,52 +24,82 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import AddSpeciesModal from './AddSpeciesModal';
 import EditSpeciesModal from './EditSpeciesModal';
 
 const FORM_PREFIX = 'additionalSpecies.';
 
-const AdditionalSpeciesTab = ({ showHeader, isDisabled }) => {
+const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
   const { getValues, setValue } = useFormContext();
-  const [species, setSpecies] = useState(getValues(`${FORM_PREFIX}entries`) || []);
+  const [speciesEntries, setSpeciesEntries] = useState(getValues(`${FORM_PREFIX}entries`) || []);
 
   useEffect(() => {
-    setValue(`${FORM_PREFIX}entries`, species);
-  }, [species]);
+    setValue(`${FORM_PREFIX}entries`, speciesEntries);
+  }, [speciesEntries]);
 
-  const handleAddRow = newSpecie => {
-    setSpecies(prevSpecies => {
-      return [...prevSpecies, newSpecie];
+  const speciesOptions = useMemo(
+    () =>
+      species.map(s => ({
+        value: s._id,
+        label: `${s.name} (${s.code})`,
+      })),
+    [species],
+  );
+
+  const getSpeciesLabel = speciesId => speciesOptions.find(s => s.value === speciesId)?.label;
+
+  const handleAddRow = newSpecies => {
+    setSpeciesEntries(prevSpecies => {
+      const existingIndex = speciesEntries.findIndex(s => newSpecies.species === s.species);
+      if (existingIndex !== -1) {
+        const newEntries = [...speciesEntries];
+        newEntries[existingIndex].count += newSpecies.count;
+        if (newSpecies.notes !== '') {
+          if (newEntries[existingIndex].notes !== '') {
+            newEntries[existingIndex].notes += `\n${newSpecies.notes}`;
+          } else {
+            newEntries[existingIndex].notes = newSpecies.notes;
+          }
+        }
+        return newEntries;
+      }
+      return [...prevSpecies, newSpecies];
     });
   };
 
-  const handleEditRow = updatedSpecie => {
-    const oldSpecieIndex = species.findIndex(specie => {
-      return updatedSpecie.oldName === specie.name;
-    });
-    const newRows = [...species];
-    const updated = updatedSpecie;
-    delete updated.oldName;
-    newRows[oldSpecieIndex] = updated;
-
-    setSpecies(newRows);
+  const handleDeleteRow = speciesId => {
+    setSpeciesEntries(entries => entries.filter(s => s.species !== speciesId));
   };
 
-  const handleDeleteRows = specieName => {
-    const newRows = species.filter(specie => specie.name !== specieName);
-    setSpecies(newRows);
-  };
-
-  const getSpecie = name => {
-    const specie = species.filter(currSpecie => {
-      return currSpecie.name === name;
+  const handleEditRow = newSpecies => {
+    // delete and add the row in case the new species ID is in table already]
+    const { oldId } = newSpecies;
+    const newRow = newSpecies;
+    delete newRow.oldId;
+    const indexToModify = speciesEntries.findIndex(s => oldId === s.species);
+    setSpeciesEntries(prevSpecies => {
+      let newEntries = [...prevSpecies];
+      if (oldId !== newRow.species) {
+        // if we're changing the species ID, check if the new species is already in the table
+        const newSpeciesIndex = prevSpecies.findIndex(s => newRow.species === s.species);
+        if (newSpeciesIndex !== -1) {
+          // if it is, merge the two rows
+          newRow.count += prevSpecies[newSpeciesIndex].count;
+          if (prevSpecies[newSpeciesIndex].notes) {
+            newRow.notes += `\n${prevSpecies[newSpeciesIndex].notes}`;
+          }
+          newEntries = newEntries.filter(s => s.species !== newRow.species);
+        }
+      }
+      newEntries[indexToModify] = newRow;
+      return newEntries;
     });
-    return specie[0];
   };
 
   const createTable = data => {
+    console.log(data);
     return data.map((row, n) => (
       // eslint-disable-next-line react/no-array-index-key
       <AccordionItem key={n} as={Tbody}>
@@ -79,19 +109,20 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled }) => {
               <Td border="none">
                 {!isDisabled && (
                   <EditSpeciesModal
-                    specie={getSpecie(row.name)}
+                    speciesRow={row}
                     editRow={handleEditRow}
-                    deleteRow={handleDeleteRows}
+                    deleteRow={handleDeleteRow}
+                    speciesOptions={speciesOptions}
                   />
                 )}
               </Td>
               <Td border="none">
                 <Text fontSize="1.05em" color="#2D3748" fontWeight={450}>
-                  {row.name}
+                  {getSpeciesLabel(row.species)}
                 </Text>
               </Td>
               <Td border="none" color="#2D3748" fontWeight={450}>
-                {row.total}
+                {row.count}
               </Td>
               <Td border="none">
                 <Flex justifyContent="flex-end">
@@ -163,7 +194,7 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled }) => {
                     <Th />
                   </Tr>
                 </Thead>
-                {species.length === 0 && (
+                {speciesEntries.length === 0 && (
                   <Tbody>
                     <Tr>
                       <Td colSpan={4} textAlign="center">
@@ -172,10 +203,12 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled }) => {
                     </Tr>
                   </Tbody>
                 )}
-                {createTable(species)}
+                {createTable(speciesEntries)}
               </Accordion>
             </Box>
-            {!isDisabled && <AddSpeciesModal addNewRow={handleAddRow} />}
+            {!isDisabled && (
+              <AddSpeciesModal addNewRow={handleAddRow} speciesOptions={speciesOptions} />
+            )}
           </GridItem>
           <GridItem colSpan="2">
             <VStack alignItems="start">
@@ -233,6 +266,12 @@ AdditionalSpeciesTab.defaultProps = {
 AdditionalSpeciesTab.propTypes = {
   isDisabled: PropTypes.bool,
   showHeader: PropTypes.bool,
+  species: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      _id: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default AdditionalSpeciesTab;

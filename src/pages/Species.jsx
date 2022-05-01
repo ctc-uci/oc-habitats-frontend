@@ -68,19 +68,21 @@ const Species = () => {
           id: 'listed',
           title: 'Listed Species',
           text: 'Note: Adding a listed species will create a new section on the monitor log.',
-          speciesIds: res.data.filter(specie => specie.isListed),
+          speciesIds: res.data.filter(specie => specie.isListed && !specie.isPredator),
         },
         predators: {
           id: 'predators',
           title: 'Predators',
           text: 'Note: To mark a tracked non-listed species as a predator, click on the species, select "Edit", and select "Yes" on the "Is a Predator" field.',
-          speciesIds: res.data.filter(specie => !specie.isListed && specie.isPredator),
+          speciesIds: res.data.filter(
+            specie => specie.isPredator && (!specie.isListed || specie.isNeither),
+          ),
         },
         nonListed: {
           id: 'nonListed',
           title: 'Non-Listed Species',
           text: '',
-          speciesIds: res.data.filter(specie => !specie.isNeither),
+          speciesIds: res.data.filter(specie => !specie.isListed && !specie.isNeither),
         },
       };
       Object.entries(formattedData).forEach(column => {

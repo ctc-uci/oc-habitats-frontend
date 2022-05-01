@@ -17,7 +17,7 @@ import { AiFillDelete } from 'react-icons/ai';
 
 import PropTypes from 'prop-types';
 
-const DeleteSpeciesModal = ({ species, setIsShowing, deleteSpecie }) => {
+const DeleteSpeciesModal = ({ speciesName, setIsShowing, deleteSpecie }) => {
   const onClose = () => {
     setIsShowing(false);
   };
@@ -59,7 +59,7 @@ const DeleteSpeciesModal = ({ species, setIsShowing, deleteSpecie }) => {
               </Text>
               the{' '}
               <Text fontSize="14.5px" fontWeight={500} display="inline">
-                {species}
+                {speciesName}
               </Text>{' '}
               row? This action cannot be undone.
             </Text>
@@ -95,16 +95,10 @@ const DeleteSpeciesModal = ({ species, setIsShowing, deleteSpecie }) => {
   );
 };
 
-DeleteSpeciesModal.defaultProps = {
-  species: PropTypes.string,
-  setIsShowing: PropTypes.func,
-  deleteSpecie: PropTypes.func,
-};
-
 DeleteSpeciesModal.propTypes = {
-  species: PropTypes.string,
-  setIsShowing: PropTypes.func,
-  deleteSpecie: PropTypes.func,
+  speciesName: PropTypes.string.isRequired,
+  setIsShowing: PropTypes.func.isRequired,
+  deleteSpecie: PropTypes.func.isRequired,
 };
 
 export default DeleteSpeciesModal;

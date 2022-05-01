@@ -3,9 +3,11 @@ import React from 'react';
 import { Select } from 'chakra-react-select';
 import { Controller, useFormContext } from 'react-hook-form';
 
+/* wrapper component that makes it easier to store just a value in the form context rather than the value + label object */
 const ReactHookFormSelect = props => {
   const { control, getValues } = useFormContext();
   const { name, options, optionKey, isMulti } = props;
+
   return (
     <Controller
       name={name}

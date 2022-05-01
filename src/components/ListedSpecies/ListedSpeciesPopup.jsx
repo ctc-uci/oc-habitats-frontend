@@ -77,7 +77,6 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
     let valid = true;
     for (let i = 0; i < formData.bandTabs.length; i += 1) {
       const row = formData.bandTabs[i];
-      console.log(row);
       const code = generateBandingCode(row);
       formData.bandTabs[i].code = code;
       if (code === 'invalid' || code === 'Top band must be above bottom band') {

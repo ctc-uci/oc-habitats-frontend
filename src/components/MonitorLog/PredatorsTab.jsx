@@ -20,16 +20,6 @@ import { useFormContext } from 'react-hook-form';
 
 const FORM_PREFIX = 'predators';
 
-const PREDATORS = [
-  ['Corvid: American Crow', 'crow'],
-  ['Corvid: Common Raven', 'raven'],
-  ['Raptor', 'raptor'],
-  ['Horse', 'horse'],
-  ['Coyote', 'coyote'],
-  ['Fox', 'fox'],
-  ['Cat', 'cat'],
-];
-
 const PredatorField = ({ predatorName, predatorId, isDisabled, predatorIndex }) => {
   const { setValue, getValues } = useFormContext();
 
@@ -65,7 +55,7 @@ PredatorField.propTypes = {
   isDisabled: PropTypes.bool.isRequired,
 };
 
-const PredatorsTab = ({ showHeader, isDisabled }) => {
+const PredatorsTab = ({ showHeader, isDisabled, predators }) => {
   const { register } = useFormContext();
   return (
     <VStack spacing="23px" align="left">
@@ -75,12 +65,12 @@ const PredatorsTab = ({ showHeader, isDisabled }) => {
         </Text>
       )}
       <SimpleGrid columns={4} spacingX="64px" spacingY="68px">
-        {PREDATORS.map(([name, value], num) => (
+        {predators.map(({ name: predatorName, _id }, num) => (
           <PredatorField
-            key={value}
+            key={_id}
             predatorIndex={num}
-            predatorName={name}
-            predatorId={value}
+            predatorName={predatorName}
+            predatorId={_id}
             isDisabled={isDisabled}
           />
         ))}
@@ -115,6 +105,12 @@ PredatorsTab.defaultProps = {
 PredatorsTab.propTypes = {
   isDisabled: PropTypes.bool,
   showHeader: PropTypes.bool,
+  predators: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      _id: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default PredatorsTab;

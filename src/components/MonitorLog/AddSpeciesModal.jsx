@@ -23,30 +23,34 @@ import {
   Container,
   Flex,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import { CloseIcon, InfoIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import { RiSaveFill } from 'react-icons/ri';
 import DropdownSearch from '../DropdownSearch';
 
-const options = [
-  { value: 'Plover: Snowy (WSPL)', label: 'Plover: Snowy (WSPL)' },
-  { value: 'end2', label: 'end2' },
-  { value: 'end3', label: 'end3' },
-  { value: 'add1', label: 'add1' },
-  { value: 'add2', label: 'add2' },
-  { value: 'add3', label: 'add3' },
-];
-
-const AddSpeciesModal = ({ addNewRow }) => {
+const AddSpeciesModal = ({ addNewRow, speciesOptions }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [specieName, setSpecieName] = useState(null);
+  const [selectedSpecies, setSelectedSpecies] = useState(null);
   const [totalSighted, setTotalSighted] = useState(1);
-  const [notes, setNotes] = useState(null);
+  const [notes, setNotes] = useState('');
+  const toast = useToast();
 
   const addNewSpecie = () => {
-    addNewRow({ species: specieName, count: totalSighted, notes });
+    if (selectedSpecies === null) {
+      toast({
+        title: 'You must select a species',
+        status: 'warning',
+        duration: 1000,
+      });
+      return;
+    }
+    addNewRow({ species: selectedSpecies.value, count: parseInt(totalSighted, 10), notes });
     onClose();
+    setSelectedSpecies(null);
+    setTotalSighted(1);
+    setNotes('');
   };
 
   return (
@@ -54,7 +58,7 @@ const AddSpeciesModal = ({ addNewRow }) => {
       <Button onClick={onOpen} bgColor="#2BC0E3" width="100%" height="48px">
         Add New Row +
       </Button>
-      <Modal isOpen={isOpen} isCentered size="md">
+      <Modal isOpen={isOpen} isCentered size="md" onClose={onClose}>
         <ModalOverlay />
         <ModalContent bgColor="#FBFBFB">
           <HStack ml="1em" mt="1em">
@@ -102,9 +106,9 @@ const AddSpeciesModal = ({ addNewRow }) => {
                     </FormLabel>
                     <VStack w="full" h="100%" position="relative" alignItems>
                       <DropdownSearch
-                        options={options}
+                        options={speciesOptions}
                         value={null}
-                        handleSelectedValue={setSpecieName}
+                        handleSelectedValue={setSelectedSpecies}
                       />
                     </VStack>
                   </GridItem>
@@ -173,6 +177,12 @@ AddSpeciesModal.defaultProps = {
 
 AddSpeciesModal.propTypes = {
   addNewRow: PropTypes.func,
+  speciesOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default AddSpeciesModal;
