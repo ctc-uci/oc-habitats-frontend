@@ -2,9 +2,9 @@ const generateSingleBandCode = band => {
   if (!band || !band.verticalPosition || !band.colors || band.colors.length === 0) return '';
   let color;
   if (band.colors.length === 1) {
-    color = band.colors[0].realValue;
+    [color] = band.colors;
   } else {
-    color = `(${band.colors.map(c => c.realValue).join('/')})`;
+    color = `(${band.colors.join('/')})`;
   }
   if (band.verticalPosition === 'BELOW') {
     color = color.toLowerCase();
@@ -16,7 +16,8 @@ const generateSingleBandCode = band => {
 };
 
 const generateBandingCode = bands => {
-  if (!bands || !bands[0]) {
+  console.log(bands);
+  if (!bands || !bands.topLeft || !bands.topRight || !bands.bottomLeft || !bands.bottomRight) {
     return 'invalid';
   }
   const { topLeft, topRight, bottomLeft, bottomRight } = bands;

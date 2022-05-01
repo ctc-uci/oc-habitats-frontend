@@ -21,14 +21,12 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { chakraComponents, Select } from 'chakra-react-select';
+import { Select } from 'chakra-react-select';
 import React, { useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import { IconContext } from 'react-icons';
-import { BsFillCircleFill } from 'react-icons/bs';
-import BandColors from '../../common/BandColors';
 import generateBandingCode from '../../common/bandingCodeUtil';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
+import BandingColorSelect from './BandingColorSelect';
 import CloseableTab from './CloseableTab';
 
 const BAND_POSITIONS = [
@@ -58,8 +56,8 @@ const BandingSection = () => {
 
   const addBirdBandTab = () => {
     const newTab = {};
-    [...Array(4)].forEach((_, idx) => {
-      newTab[idx] = {
+    BAND_POSITIONS.forEach(({ value }, idx) => {
+      newTab[value] = {
         colors: [],
         flag: false,
         verticalPosition: null,
@@ -72,38 +70,6 @@ const BandingSection = () => {
   const removeBirdBandTab = idx => {
     remove(idx);
   };
-
-  // setup custom rendering to show the band color in color select dropdown
-  const customComponents = {
-    // eslint-disable-next-line react/prop-types
-    Option: ({ children, ...props }) => (
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      <chakraComponents.Option {...props}>
-        {/* eslint-disable-next-line react/prop-types */}
-        <chakra.span
-          marginRight={2}
-          borderWidth="1px"
-          // eslint-disable-next-line react/prop-types
-          borderColor={props.data.value === 'W' ? 'gray.600' : props.data.realColor}
-          borderRadius="3xl"
-        >
-          {/* eslint-disable-next-line react/prop-types */}
-          <IconContext.Provider value={{ color: props.data.realColor }}>
-            <BsFillCircleFill />
-          </IconContext.Provider>
-        </chakra.span>{' '}
-        {children}
-      </chakraComponents.Option>
-    ),
-  };
-
-  const mappedColorOptions = BandColors.map(option => ({
-    ...option,
-    colorScheme: option.selectColor,
-    realValue: option.value,
-    // trick react-select into thinking nothing gets selected so we can have duplicate colors
-    value: Math.random(),
-  }));
 
   const addTabs = () => {
     return birdBandTabs.map((d, i) => {
@@ -209,18 +175,8 @@ const BandingSection = () => {
                           </Td>
                           <Td p="0" pr="4" verticalAlign="top">
                             <Box bgColor="white">
-                              <Controller
+                              <BandingColorSelect
                                 name={`bandTabs.${tabIndex}.${bandPositionValue}.colors`}
-                                control={control}
-                                render={({ field }) => (
-                                  <Select
-                                    {...field}
-                                    isMulti
-                                    options={mappedColorOptions}
-                                    closeMenuOnSelect={false}
-                                    components={customComponents}
-                                  />
-                                )}
                               />
                             </Box>
                           </Td>
