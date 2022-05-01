@@ -12,15 +12,16 @@ import {
   AlertTitle,
   CloseButton,
   Button,
-  Badge,
   Text,
-  Link,
 } from '@chakra-ui/react';
 import { ArrowForwardIcon, InfoIcon } from '@chakra-ui/icons';
-import { FiMapPin, FiImage } from 'react-icons/fi';
+import SegmentAssignment from '../components/VolunteerDashboard/SegmentAssignment';
+import UnsubmittedLogDraft from '../components/VolunteerDashboard/UnsubmittedLogDraft';
+import RecentlySubmittedLog from '../components/VolunteerDashboard/RecentlySubmittedLog';
 import { OCHBackend } from '../common/utils';
 
-// COMPONENTS
+// temporary (?) notification component until notification system is written
+// TODO: replace notification
 const Toast = props => {
   const [closed, setClosed] = useState();
   const { title, description, status, variant, closeButton, goToLogButton } = props;
@@ -45,94 +46,6 @@ const Toast = props => {
   );
 };
 
-const SegAssignment = props => {
-  const { title, place, description } = props;
-  return (
-    <Box w="400px">
-      <Text fontSize="16px" color="#231F20">
-        {title}
-      </Text>
-      <Text fontSize="16px" color="#4A5568">
-        {place}
-      </Text>
-      <FiMapPin color="#156071" style={{ display: 'inline' }} />
-      <Text marginLeft="3" as="u" fontSize="16px" color="#156071">
-        <Link href="https://www.google.com/maps" isExternal>
-          Google Maps Link
-        </Link>
-      </Text>
-      <Text />
-      <FiImage color="#156071" style={{ display: 'inline' }} />
-      <Text marginLeft="3" as="u" fontSize="16px" color="#156071">
-        <Link href="https://www.google.com/maps" isExternal>
-          Map Image
-        </Link>
-      </Text>
-      <Text fontSize="16px" color="#4A5568">
-        {description}
-      </Text>
-    </Box>
-  );
-};
-
-const UnsubmittedLogDraft = props => {
-  const { title, timeDescription } = props;
-  return (
-    <Box align="center" border="2px" borderRadius="md" borderColor="lightgray" w="400px" h="125px">
-      <Box w="400px" h="15px" />
-      <Text fontSize="16px" pl="6" textAlign="left">
-        {title}
-      </Text>
-      <Text fontSize="16px" pl="6" textAlign="left" color="#4A5568">
-        {timeDescription}
-      </Text>
-      <Box w="400px" h="10px" />
-      <Button w="350px" bgColor="#2BC0E3" size="sm" rightIcon={<ArrowForwardIcon />}>
-        Go to Log
-      </Button>
-    </Box>
-  );
-};
-
-const RecentlySubmittedLog = props => {
-  const {
-    title,
-    timeDescription,
-    badgeColor,
-    badgeDescription,
-    borderColor,
-    goToLogButton,
-    marginAmt,
-  } = props;
-  return (
-    <Box
-      align="center"
-      border="2px"
-      borderRadius="md"
-      borderColor={borderColor}
-      w="400px"
-      h="155px"
-    >
-      <Box w="400px" h="15px" />
-      <Text fontSize="16px" pl="6" textAlign="left">
-        {title}
-      </Text>
-      <Text fontSize="16px" pl="6" textAlign="left" color="#4A5568">
-        {timeDescription}
-      </Text>
-      <Badge marginRight={marginAmt} bg={badgeColor} textColor="white">
-        {badgeDescription}
-      </Badge>
-      <Box w="400px" h="15px" />
-      {goToLogButton && (
-        <Button w="350px" bgColor="#2BC0E3" size="sm" rightIcon={<ArrowForwardIcon />}>
-          Go to Log
-        </Button>
-      )}
-    </Box>
-  );
-};
-
 // GET BACKEND DATA
 const VolunteerDashboardPage = () => {
   const [userData, setUserData] = useState(null);
@@ -146,6 +59,26 @@ const VolunteerDashboardPage = () => {
       console.log(err);
     }
   }, []);
+
+  const Segments = () => {
+    if (userData.segments.length === 0) {
+      return (
+        <Text>
+          You have not been assigned any segments this month. If you believe this is a mistake,
+          please contact ochabitats@ochabitats.org.
+        </Text>
+      );
+    }
+    return userData.segments.map(segment => (
+      <SegmentAssignment
+        key={segment.segmentID}
+        title={`${segment.segmentId} — ${segment.name}`}
+        place={segment.streets}
+        mapLink={segment.mapLink}
+        description={segment.parking}
+      />
+    ));
+  };
 
   return (
     <div>
@@ -194,16 +127,8 @@ const VolunteerDashboardPage = () => {
           Note on Parking: If you pay for parking (not to exceed $6 without approval), please submit
           your receipts for reimbursement with your name and segment.
         </Text>
-        <HStack spacing="50px">
-          {userData != null &&
-            userData.segments.map(segment => (
-              <SegAssignment
-                key={segment.segmentID}
-                title={`${segment.name} - ${segment.segmentId}`}
-                place={segment.streets}
-                description={segment.parking}
-              />
-            ))}
+        <HStack spacing="50px" align="flex-start">
+          {userData != null && Segments()}
         </HStack>
         <Heading size="md" py="5">
           Unsubmitted Log Drafts
