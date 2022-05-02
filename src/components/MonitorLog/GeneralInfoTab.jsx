@@ -35,7 +35,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
             &quot;Static&quot; questions cannot be edited.
           </Text>
           <Text mb="20px" color="ochPurple" fontWeight="500">
-            &quot;Non-static&quot; questions can be added, edited, and/or deleted.
+            &quot;Non-Static&quot; questions can be added, edited, and/or deleted.
           </Text>
         </>
       )}

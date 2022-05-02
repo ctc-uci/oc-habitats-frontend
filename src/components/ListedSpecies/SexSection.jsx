@@ -8,9 +8,11 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Text,
 } from '@chakra-ui/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { PropTypes } from 'prop-types';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 
 const TOTAL_FIELDS = ['totalAdults', 'totalFledges', 'totalChicks'];
@@ -24,7 +26,7 @@ const inputs = [
   '# of Female Chicks',
 ];
 
-const SexSection = () => {
+const SexSection = ({ isTemplate }) => {
   const { watch, setValue, getValues } = useFormContext();
 
   const getMax = idx => {
@@ -54,6 +56,7 @@ const SexSection = () => {
                   </NumberInputStepper>
                 </NumberInput>
               </FormLabel>
+              {isTemplate && <Text color="#718096">Static</Text>}
             </FormControl>
           </GridItem>
         ))}
@@ -61,5 +64,10 @@ const SexSection = () => {
     </CollapsibleSection>
   );
 };
-
+SexSection.defaultProps = {
+  isTemplate: false,
+};
+SexSection.propTypes = {
+  isTemplate: PropTypes.bool,
+};
 export default SexSection;

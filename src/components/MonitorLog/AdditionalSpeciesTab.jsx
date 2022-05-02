@@ -139,7 +139,7 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate }) => {
           </Text>
           <HStack mb="30px">
             <Text color="ochPurple" fontWeight="500">
-              To view or edit the current catalogue of Listed Species,
+              To view or edit the current catalogue of Non-Listed Species,
             </Text>
             <Link to="/species">
               <Text color="#2B6CB0" fontWeight="500" maxW="100vw">

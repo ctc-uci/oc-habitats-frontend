@@ -71,11 +71,11 @@ const PredatorsTab = ({ showHeader, isDisabled, isTemplate }) => {
       {isTemplate && (
         <>
           <Text mt="30px" color="ochPurple" fontWeight="500">
-            The Non-Listed Species section of the Monitor Log Template cannot be edited.
+            The Predators section of the Monitor Log Template cannot be edited.
           </Text>
           <HStack mb="30px">
             <Text color="ochPurple" fontWeight="500">
-              To view or edit the current catalogue of Listed Species,
+              To view or edit the current catalogue of Predators,
             </Text>
             <Link to="/species">
               <Text color="#2B6CB0" fontWeight="500" maxW="100vw">

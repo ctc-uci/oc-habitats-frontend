@@ -261,8 +261,8 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
             added, edited, and/or deleted.
           </Text>
           <Text mb="25px" color="ochPurple" fontWeight="500">
-            Static questions can&apos;t be deleted or edited. You can only Add, Edit, or Remove
-            Tooltips for &quot;Static&quot; questions.
+            &quot;Static&quot; questions can&apos;t be deleted or edited. You can only Add, Edit, or
+            Remove Tooltips for &quot;Static&quot; questions.
           </Text>
           <Text fontWeight="600" fontSize="2xl" mt="30px" mb="5px">
             Aggregated [Listed Species] Data
@@ -413,9 +413,16 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
         </GridItem>
         <GridItem colSpan="2">
           <VStack alignItems="start">
-            <Text fontWeight="600" fontSize="xl">
-              Injured [Listed Species]
-            </Text>
+            {isTemplate ? (
+              <Text fontWeight="600" fontSize="xl">
+                Injured [Listed Species]
+              </Text>
+            ) : (
+              <Text fontWeight="600" fontSize="xl">
+                Injured {speciesName}s
+              </Text>
+            )}
+
             <Text>To report a sick or injured bird, contact the WWCC at 714.374.5587</Text>
             <FormControl>
               <NumberInput
@@ -448,10 +455,14 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
             tracker.
           </Text>
           <VStack align="start" spacing="4em">
-            <GeneralListedInformation />
-            <Location />
-            <SexSection />
-            <BehaviorsSection behaviorOptions={options.behavior} nestingOptions={options.nesting} />
+            <GeneralListedInformation isTemplate />
+            <Location isTemplate />
+            <SexSection isTemplate />
+            <BehaviorsSection
+              behaviorOptions={options.behavior}
+              nestingOptions={options.nesting}
+              isTemplate
+            />
             <BandingSection />
             <CollapsibleSection title="Additional Notes (Optional)">
               <Textarea

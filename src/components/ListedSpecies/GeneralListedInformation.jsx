@@ -17,12 +17,13 @@ import {
 } from '@chakra-ui/react';
 import { React } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { PropTypes } from 'prop-types';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import options from './DropdownOptions';
 import footNotes from './FootNotes';
 
 // component/section name not final
-const GeneralListedInformation = isTemplate => {
+const GeneralListedInformation = ({ isTemplate }) => {
   const { register, setValue, getValues } = useFormContext();
 
   const createOptions = () => {
@@ -134,6 +135,13 @@ const GeneralListedInformation = isTemplate => {
       </Stack>
     </CollapsibleSection>
   );
+};
+
+GeneralListedInformation.defaultProps = {
+  isTemplate: false,
+};
+GeneralListedInformation.propTypes = {
+  isTemplate: PropTypes.bool,
 };
 
 export default GeneralListedInformation;
