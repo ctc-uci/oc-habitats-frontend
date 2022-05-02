@@ -51,14 +51,13 @@ const Toast = props => {
   );
 };
 
-// GET BACKEND DATA
 const VolunteerDashboardPage = () => {
   const [userData, setUserData] = useState(null);
   const [userSubmissions, setUserSubmissions] = useState([]);
 
+  // Get data from backend
   useEffect(async () => {
     try {
-      // const res = await OCHBackend.get('users/me', { withCredentials: true });
       const [userRes, submissionRes] = await Promise.all([
         OCHBackend.get('/users/me', { withCredentials: true }),
         OCHBackend.get('/users/userSubmissions', { withCredentials: true }),
@@ -82,16 +81,18 @@ const VolunteerDashboardPage = () => {
       );
     }
 
-    return userData.segments.map(segment => (
-      <SegmentAssignment
-        key={segment.segmentID}
-        segment={segment.segmentId}
-        name={segment.name}
-        place={segment.streets}
-        mapLink={segment.mapLink}
-        description={segment.parking}
-      />
-    ));
+    return userData.segments
+      .sort((a, b) => a.segmentId.localeCompare(b.segmentId))
+      .map(segment => (
+        <SegmentAssignment
+          key={segment.segmentId}
+          segment={segment.segmentId}
+          name={segment.name}
+          place={segment.streets}
+          mapLink={segment.mapLink}
+          description={segment.parking}
+        />
+      ));
   };
 
   const Unsubmitted = () => {
@@ -101,15 +102,17 @@ const VolunteerDashboardPage = () => {
       return <Text>You do not have any unsubmitted log drafts.</Text>;
     }
 
-    return userDrafts.map((draft, idx) => (
-      <UnsubmittedLogDraft
-        // eslint-disable-next-line react/no-array-index-key
-        key={idx}
-        segment={draft.segment.segmentId}
-        date={draft.date}
-        lastSaved={draft.submittedAt}
-      />
-    ));
+    return userDrafts
+      .sort((a, b) => b.lastEditedAt.localeCompare(a.lastEditedAt))
+      .map((draft, idx) => (
+        <UnsubmittedLogDraft
+          // eslint-disable-next-line react/no-array-index-key
+          key={idx}
+          segment={draft.segment.segmentId}
+          date={draft.date}
+          lastSaved={draft.lastEditedAt}
+        />
+      ));
   };
 
   const Recents = () => {
@@ -118,12 +121,12 @@ const VolunteerDashboardPage = () => {
         submission =>
           submission.status === 'EDITS_REQUESTED' || submission.status === 'UNDER_REVIEW',
       )
-      .sort((a, b) => b.submittedAt - a.submittedAt)
-      .sort((a, b) => a.status - b.status);
+      .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
+      .sort((a, b) => a.status.localeCompare(b.status));
 
     const recents = notApproved.concat(
       userSubmissions
-        .sort((a, b) => a.submittedAt - b.submittedAt)
+        .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
         .filter(submission => submission.status === 'APPROVED')
         .slice(0, 6 - notApproved.length),
     );
