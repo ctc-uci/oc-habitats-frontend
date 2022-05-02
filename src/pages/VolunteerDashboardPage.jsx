@@ -22,6 +22,7 @@ import RecentlySubmittedLog from '../components/VolunteerDashboard/RecentlySubmi
 import { OCHBackend } from '../common/utils';
 
 // TODO: go to log button functionality
+// TODO: format date and time
 
 // temporary (?) notification component until notification system is written
 // TODO: replace notification
@@ -79,6 +80,7 @@ const VolunteerDashboardPage = () => {
         </Text>
       );
     }
+
     return userData.segments.map(segment => (
       <SegmentAssignment
         key={segment.segmentID}
@@ -108,10 +110,20 @@ const VolunteerDashboardPage = () => {
   };
 
   const Recents = () => {
-    const recents = userSubmissions
+    const notApproved = userSubmissions
+      .filter(
+        submission =>
+          submission.status === 'EDITS_REQUESTED' || submission.status === 'UNDER_REVIEW',
+      )
       .sort((a, b) => b.submittedAt - a.submittedAt)
-      .filter(submission => submission.status !== 'UNSUBMITTED')
-      .slice(0, 6);
+      .sort((a, b) => a.status - b.status);
+
+    const recents = notApproved.concat(
+      userSubmissions
+        .sort((a, b) => a.submittedAt - b.submittedAt)
+        .filter(submission => submission.status === 'APPROVED')
+        .slice(0, 6 - notApproved.length),
+    );
 
     if (recents.length === 0) {
       return <Text>You do not have any recently submitted logs.</Text>;
@@ -169,7 +181,7 @@ const VolunteerDashboardPage = () => {
             goToLogButton
           />
         </VStack>
-        <Box w="1200px" h="60px" />
+        <br />
         <Heading size="md">Segment Assignment(s)</Heading>
         <Text py="3" fontSize="16px" color="#4A5568">
           Note on Parking: If you pay for parking (not to exceed $6 without approval), please submit

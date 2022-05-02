@@ -1,43 +1,61 @@
 import React from 'react';
-import { Box, Button, Badge, Text } from '@chakra-ui/react';
+import { Flex, Button, Badge, Text } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 
-const RecentlySubmittedLog = props => {
-  const { title, timeDescription, status } = props;
+const setDetails = status => {
+  if (status === 'EDITS_REQUESTED') {
+    return {
+      borderColor: 'red',
+      badge: 'EDITS REQUESTED',
+      badgeColor: '#C53030',
+      goToLogButton: true,
+    };
+  }
+  if (status === 'UNDER_REVIEW') {
+    return {
+      borderColor: 'lightgray',
+      badge: 'UNDER REVIEW',
+      badgeColor: '#3182CE',
+      goToLogButton: false,
+    };
+  }
+  return {
+    borderColor: 'lightgray',
+    badge: 'APPROVED',
+    badgeColor: '#38A169',
+    goToLogButton: false,
+  };
+};
 
-  // badge color, description, borderColor, button, and margin all depend on status
-  const borderColor = status === 'EDITS_REQUESTED' ? 'red' : 'lightgray';
-  const badgeColor = status === 'EDITS_REQUESTED' ? '#C53030' : '#38A169';
-  const marginAmt = status === 'EDITS_REQUESTED' ? '230' : '275';
-  const goToLogButton = status === 'EDITS_REQUESTED';
+const RecentlySubmittedLog = ({ title, timeDescription, status }) => {
+  const details = setDetails(status);
 
   return (
-    <Box
-      align="center"
+    <Flex
+      direction="column"
+      align="flex-start"
       border="2px"
       borderRadius="md"
-      borderColor={borderColor}
+      borderColor={details.borderColor}
       w="400px"
       h="155px"
+      px={5}
+      py={4}
     >
-      <Box w="400px" h="15px" />
-      <Text fontSize="16px" pl="6" textAlign="left">
-        {title}
-      </Text>
-      <Text fontSize="16px" pl="6" textAlign="left" color="#4A5568">
+      <Text fontSize="16px">{title}</Text>
+      <Text fontSize="16px" color="#4A5568">
         Submitted: {timeDescription}
       </Text>
-      <Badge marginRight={marginAmt} bg={badgeColor} textColor="white">
-        {status}
+      <Badge mt={1} bg={details.badgeColor} textColor="white">
+        {details.badge}
       </Badge>
-      <Box w="400px" h="15px" />
-      {goToLogButton && (
-        <Button w="350px" bgColor="#2BC0E3" size="sm" rightIcon={<ArrowForwardIcon />}>
+      {details.goToLogButton && (
+        <Button w="100%" bgColor="#2BC0E3" size="sm" mt={3} rightIcon={<ArrowForwardIcon />}>
           Go to Log
         </Button>
       )}
-    </Box>
+    </Flex>
   );
 };
 
