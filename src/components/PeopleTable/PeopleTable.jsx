@@ -66,7 +66,7 @@ const cellStructure = [
       userId: d.id,
       name: `${d.firstName} ${d.lastName}`,
       email: d.email,
-      registered: d.registered,
+      registered: d.registered ?? false,
       isTrainee: d.isTrainee,
       isActive: d.isActive,
       ...d,

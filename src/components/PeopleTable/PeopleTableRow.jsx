@@ -24,7 +24,7 @@ const { ADMIN_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 const editAccountInfo = data => {
   // eslint-disable-next-line no-console
-  console.log(`Editing account info ${data}`);
+  console.log(`Editing account info ${JSON.stringify(data, null, 2)}`);
 };
 
 const menuContent = data => {
@@ -34,15 +34,15 @@ const menuContent = data => {
     openConvertAccountModal,
     openClearSegmentsModal,
   } = useRowModalContext();
-  if (!data.isActive) {
-    return <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>;
-  }
   if (!data.registered) {
     return (
       <MenuItem color="red.600" onClick={() => openDeletePendingModal(data)}>
         Delete Pending Account
       </MenuItem>
     );
+  }
+  if (!data.isActive) {
+    return <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>;
   }
   return (
     <>

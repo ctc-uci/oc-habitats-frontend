@@ -17,9 +17,19 @@ import AUTH_ROLES from '../../common/auth_config';
 
 const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
-const DeletePendingAccountModal = ({ userData, isOpen, onClose }) => {
+const DeletePendingAccountModal = ({ userData, refreshData, isOpen, onClose }) => {
   // Workaround for responsive modal sizes
   const size = useBreakpointValue({ base: 'sm', md: 'md' });
+
+  const deletePendingAccount = async () => {
+    await OCHBackend.delete(`/adminInvite/${userData?.email}`, {
+      profileId: userData?.userId,
+      segmentIds: [],
+    });
+    await refreshData();
+    onClose();
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={size} isCentered>
       <ModalOverlay />
@@ -38,7 +48,13 @@ const DeletePendingAccountModal = ({ userData, isOpen, onClose }) => {
           <Button w="120px" colorScheme="gray" mr="12px" onClick={onClose}>
             No
           </Button>
-          <Button w="120px" variant="solid" bg="red.600" color="white">
+          <Button
+            w="120px"
+            variant="solid"
+            bg="red.600"
+            color="white"
+            onClick={deletePendingAccount}
+          >
             Yes, Delete
           </Button>
         </ModalFooter>
@@ -143,6 +159,7 @@ const ConvertAccountTypeModal = ({ userData, refreshData, isOpen, onClose }) => 
 DeletePendingAccountModal.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   userData: PropTypes.object.isRequired,
+  refreshData: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };

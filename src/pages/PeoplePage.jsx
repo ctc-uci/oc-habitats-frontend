@@ -8,25 +8,13 @@ import AUTH_ROLES from '../common/auth_config';
 const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 /*
-Using backend branch 32-add-user-router
-
 TODO:
 - Styling:
   - Long names + badge looks bad
   - Segments column needs to be fixed width
   - More than 2 assigned segments
-  - Wide toast variant that can be used elsewhere
-  - Mobile
-- Update to new schema:
-  X Fetching/filtering users
-  - Registered badge
-  - Three dot menu conditional render
-  - Last updated column (sorting)
 - Functionality:
   - View segment assignment page
-  X Backend connection for admin invites
-  - Convert account type modal
-  - Delete pending account modal
 - Refactoring:
   - One common util file for all backend request functions
 */
@@ -38,8 +26,9 @@ const PeoplePage = () => {
   const [segments, setSegments] = useState([]);
 
   const fetchTableData = async () => {
-    const [users, segmentsData] = await Promise.all([
+    const [users, pendingUsers, segmentsData] = await Promise.all([
       OCHBackend.get('users/'),
+      OCHBackend.get('adminInvite/'),
       OCHBackend.get('segments/'),
     ]).catch(err => {
       // eslint-disable-next-line no-console
@@ -49,8 +38,14 @@ const PeoplePage = () => {
     setSegments(segmentsData.data);
 
     // Split admins and volunteers
-    setVolunteerData(users.data.filter(user => user?.role === VOLUNTEER_ROLE));
-    setAdminData(users.data.filter(user => user?.role === ADMIN_ROLE));
+    setVolunteerData([
+      ...users.data.filter(user => user?.role === VOLUNTEER_ROLE),
+      ...pendingUsers.data.filter(user => user?.role === VOLUNTEER_ROLE),
+    ]);
+    setAdminData([
+      ...users.data.filter(user => user?.role === ADMIN_ROLE),
+      ...pendingUsers.data.filter(user => user?.role === ADMIN_ROLE),
+    ]);
     setIsLoading(false);
   };
 
