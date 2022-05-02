@@ -11,6 +11,7 @@ const PeopleTableFilters = ({
   setSegmentFilter,
   sortOptions,
   setSortBy,
+  isMobile,
 }) => {
   const [filterValue, setFilterValue] = useState('');
 
@@ -44,7 +45,7 @@ const PeopleTableFilters = ({
         </InputGroup>
       </Box>
       <Flex direction="row" gap="15px" wrap="wrap" borderBottom="16px solid transparent">
-        {variant === 'volunteer' ? (
+        {!isMobile && (
           <Flex flexDir="row" gap="15px">
             <Text fontWeight="bold" color="ochGrey" alignSelf="center">
               FILTER BY SEGMENT
@@ -64,7 +65,7 @@ const PeopleTableFilters = ({
               })}
             </Select>
           </Flex>
-        ) : null}
+        )}
         <Flex flexDir="row" justifyItems="center" gap="15px">
           <Text fontWeight="bold" color="ochGrey" alignSelf="center">
             SORT BY
@@ -89,6 +90,7 @@ PeopleTableFilters.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   sortOptions: PropTypes.objectOf(PropTypes.array).isRequired,
   setSortBy: PropTypes.func.isRequired,
+  isMobile: PropTypes.bool.isRequired,
 };
 
 export default PeopleTableFilters;

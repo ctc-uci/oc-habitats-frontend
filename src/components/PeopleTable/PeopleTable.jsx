@@ -209,6 +209,7 @@ const PeopleTable = ({ variant, userData, segments, loading, refreshData }) => {
         setSegmentFilter={value => setFilter('assignedSegments', value)}
         sortOptions={sortOptions}
         setSortBy={setSortBy}
+        isMobile={isMobile}
       />
       <Box>
         <Table variant="striped" {...getTableProps()}>
