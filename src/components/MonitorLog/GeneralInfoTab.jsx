@@ -204,22 +204,6 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
             form.
             {/* Added Partners will be notified when this monitor log is submitted for review. */}
           </Text>
-          {/* <Controller
-            name="partners"
-            control={control}
-            render={({ field }) => (
-              <ReactSelect
-                {...field}
-                isDisabled={isDisabled}
-                isMulti
-                options={partnerSelectOptions}
-                placeholder="Search for member by name or email..."
-                closeMenuOnSelect={false}
-                size="md"
-                menuPosition="fixed"
-              />
-            )}
-          /> */}
           <ReactHookFormSelect
             name="partners"
             options={partnerSelectOptions}

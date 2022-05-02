@@ -74,7 +74,6 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
   };
 
   const handleEditRow = newSpecies => {
-    // delete and add the row in case the new species ID is in table already]
     const { oldId } = newSpecies;
     const newRow = newSpecies;
     delete newRow.oldId;
@@ -99,9 +98,8 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
   };
 
   const createTable = data => {
-    return data.map((row, n) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <AccordionItem key={n} as={Tbody}>
+    return data.map(row => (
+      <AccordionItem key={row.species} as={Tbody}>
         {({ isExpanded }) => (
           <>
             <Tr>

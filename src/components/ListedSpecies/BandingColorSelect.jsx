@@ -8,20 +8,16 @@ import PropTypes from 'prop-types';
 import BandColors from '../../common/BandColors';
 
 // setup custom rendering to show the band color in color select dropdown
+/* eslint-disable react/prop-types, react/jsx-props-no-spreading */
 const customComponents = {
-  // eslint-disable-next-line react/prop-types
   Option: ({ children, ...props }) => (
-    // eslint-disable-next-line react/jsx-props-no-spreading
     <chakraComponents.Option {...props}>
-      {/* eslint-disable-next-line react/prop-types */}
       <chakra.span
         marginRight={2}
         borderWidth="1px"
-        // eslint-disable-next-line react/prop-types
         borderColor={props.data.value === 'W' ? 'gray.600' : props.data.realColor}
         borderRadius="3xl"
       >
-        {/* eslint-disable-next-line react/prop-types */}
         <IconContext.Provider value={{ color: props.data.realColor }}>
           <BsFillCircleFill />
         </IconContext.Provider>
@@ -30,10 +26,11 @@ const customComponents = {
     </chakraComponents.Option>
   ),
 };
+/* eslint-enable react/prop-types, react/jsx-props-no-spreading */
 
-const BandingColorSelect = props => {
+// component for selecting banding colors that handles custom rendering, storing just value in form context, and allowing multiple of any color
+const BandingColorSelect = ({ name }) => {
   const { setValue, getValues } = useFormContext();
-  const { name } = props;
 
   const getSelectObject = colorId => {
     const option = BandColors[colorId];
@@ -65,7 +62,6 @@ const BandingColorSelect = props => {
       closeMenuOnSelect={false}
       components={customComponents}
       value={selectedColors}
-      {...props}
     />
   );
 };

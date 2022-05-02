@@ -58,7 +58,6 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
   const toast = useToast();
 
   useEffect(() => {
-    // TODO: speciesId
     setValue(`${formPrefix}species`, speciesId);
   }, []);
 
