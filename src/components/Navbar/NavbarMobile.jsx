@@ -15,7 +15,7 @@ import {
 import NavbarLinkMobile from './NavbarLinkMobile';
 import ProfileDropdown from './ProfileDropdown';
 
-import logo from '../../assets/OCHlogo.png';
+import logo from '../../assets/OCH_Logo_SVG.svg';
 
 const NavbarMobile = ({ isAdmin }) => {
   // TO DO: get profile image and name
@@ -61,15 +61,7 @@ const NavbarMobile = ({ isAdmin }) => {
       h="60px"
     >
       <Link to="/">
-        <Image
-          pl={4}
-          pr={0}
-          maxW="50%"
-          maxH="100"
-          src={logo}
-          alt="logo"
-          _hover={{ opacity: '0.8' }}
-        />
+        <Image pl={4} pr={0} maxH="50px" src={logo} alt="logo" _hover={{ opacity: '0.8' }} />
       </Link>
       <Spacer />
       <Menu>

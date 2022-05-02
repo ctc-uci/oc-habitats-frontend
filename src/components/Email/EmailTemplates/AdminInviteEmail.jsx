@@ -1,19 +1,15 @@
 /* eslint-disable global-require */
 /* eslint-disable react/jsx-no-target-blank */
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Email, Item } from 'react-html-email';
-import { Image } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
-
-import OCHLogo from '../../../assets/OCHlogo.png';
 
 const AdminInviteEmail = ({ role, url }) => {
   return (
     <div>
       <Email title="">
         <img
-          src={require('../../../assets/OCHlogo.png').default}
+          src={require('../../../assets/OCH_Logo_SVG.svg').default}
           w="346px"
           h="105px"
           alt="OC Habitats Logo"

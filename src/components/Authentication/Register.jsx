@@ -1,24 +1,24 @@
 /* eslint-disable no-console */
 /* eslint-disable react/no-children-prop */
-import React, { useState } from 'react';
-import { string } from 'prop-types';
-import { Link, useNavigate } from 'react-router-dom';
 import {
+  Button,
+  Center,
+  Flex,
   FormControl,
   FormLabel,
-  InputGroup,
-  Input,
-  Select,
   Heading,
+  Input,
+  InputGroup,
   InputRightAddon,
-  Button,
-  Flex,
-  VStack,
-  Center,
+  Select,
   Text,
+  VStack,
 } from '@chakra-ui/react';
-import { withCookies } from '../../common/cookie_utils';
+import { string } from 'prop-types';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { registerWithEmailAndPassword } from '../../common/auth_utils';
+import { withCookies } from '../../common/cookie_utils';
 
 const Register = ({ inviteEmail, inviteRole }) => {
   const [errorMessage, setErrorMessage] = useState();
@@ -117,7 +117,7 @@ const Register = ({ inviteEmail, inviteRole }) => {
               bg="white"
               onChange={({ target }) => setEmail(target.value)}
               size="md"
-              value={inviteEmail}
+              value={email}
             />
           </FormControl>
           <FormControl>

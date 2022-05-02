@@ -11,7 +11,6 @@ const InviteLandingPage = () => {
   const { inviteID } = useParams();
 
   const checkInviteValidity = async id => {
-    console.log('getting invite from backend in InviteLandingPage');
     const foundInvite = await OCHBackend.get(`/adminInvite/${id}`);
     setInvite(foundInvite.data);
     if (!inviteID || !foundInvite || !foundInvite.data) {

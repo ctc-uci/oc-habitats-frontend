@@ -13,6 +13,14 @@ const theme = extendTheme({
     ochBlack: '#231F20',
     ochRed: '#C53030',
     ochLightGrey: '#EDF2F7',
+    ochBluePress: '#156071',
+  },
+  breakpoints: {
+    sm: '320px',
+    md: '768px',
+    lg: '960px',
+    xl: '1200px',
+    '2xl': '1536px',
   },
   components: {
     Badge: {

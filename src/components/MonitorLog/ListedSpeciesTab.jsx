@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   Collapse,
-  Container,
   FormControl,
   Grid,
   GridItem,
@@ -47,16 +46,20 @@ import { useFormContext } from 'react-hook-form';
 import { FiEdit3 } from 'react-icons/fi';
 import ListedSpeciesPopup from '../ListedSpecies/ListedSpeciesPopup';
 
-const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
+const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader, isDisabled }) => {
+  const formPrefix = `listedSpecies[${tab}].`;
   const { isOpen, onOpen: openPopup, onClose } = useDisclosure();
+  const { setValue, getValues } = useFormContext();
   const confirmDeleteModal = useDisclosure();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(getValues(`${formPrefix}entries`) || []);
   const [rowToEdit, setRowToEdit] = useState(undefined);
   const [rowToDelete, setRowToDelete] = useState(undefined);
   const [totals, setTotals] = useState([0, 0, 0]);
-  const { setValue } = useFormContext();
   const toast = useToast();
-  const formPrefix = `listedSpecies.${tab}.`;
+
+  useEffect(() => {
+    setValue(`${formPrefix}species`, speciesId);
+  }, []);
 
   useEffect(() => {
     setTotals(
@@ -64,6 +67,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
         .map(row => [row.totalAdults, row.totalFledges, row.totalChicks])
         .reduce((l, r) => [l[0] + r[0], l[1] + r[1], l[2] + r[2]], [0, 0, 0]),
     );
+    setValue(`${formPrefix}entries`, data);
   }, [data]);
 
   const addRow = formData => {
@@ -111,12 +115,13 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
 
   const createBirdInfo = row => {
     const birdInfo = [
-      ['Time', row.time + row.meridiem],
+      ['Time', row.time],
       ['Map #', row.map],
       [
         'GPS',
-        row.gps.map(gps => (
-          <div key={gps.latitude + gps.longitude}>
+        row.gps.map((gps, idx) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <div key={idx}>
             {gps.latitude || 'n/a'}, {gps.longitude || 'n/a'}
           </div>
         )),
@@ -147,7 +152,8 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
           ))}
         </div>,
       ],
-      ['Nest & Eggs', row.nesting.map(nest => nest.value).join(', ') || 'None'],
+      ['Bands Observed', row.bandTabs.map(bandTab => bandTab.code).join(', ') || 'None'],
+      [('Nest & Eggs', row.nesting.map(nest => nest.value).join(', ') || 'None')],
       ['Behaviors Observed', row.behaviors.map(nest => nest.value).join(', ') || 'None'],
     ];
     return birdInfo.map(([title, content]) => (
@@ -163,10 +169,12 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
   };
 
   return (
-    <Container maxW="100vw">
-      <Text fontWeight="600" fontSize="2xl">
-        {speciesName}s
-      </Text>
+    <>
+      {showHeader && (
+        <Text fontWeight="600" fontSize="2xl">
+          {speciesName}s
+        </Text>
+      )}
       <Grid marginTop="20px" minH="200px" templateColumns="repeat(6, 1fr)" gap="150">
         <GridItem colSpan="3">
           <Box overflow="hidden" border="1px solid darkgray" rounded="md">
@@ -185,7 +193,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                 <Tbody>
                   <Tr>
                     <Td colSpan={6} textAlign="center">
-                      No birds added yet
+                      No birds added
                     </Td>
                   </Tr>
                 </Tbody>
@@ -226,20 +234,22 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
                     <>
                       <Tr>
                         <Td width="0" borderBottomWidth="0">
-                          <Menu>
-                            <MenuButton
-                              as={IconButton}
-                              icon={<Icon as={FiEdit3} w="1.5em" h="1.5em" />}
-                            />
-                            <MenuList>
-                              <MenuItem onClick={() => editRow(row, n)}>
-                                Edit Sighted {speciesCode} #{n + 1}
-                              </MenuItem>
-                              <MenuItem color="red" onClick={() => showConfirmDeleteModal(n)}>
-                                Delete Sighted {speciesCode} #{n + 1}
-                              </MenuItem>
-                            </MenuList>
-                          </Menu>
+                          {!isDisabled && (
+                            <Menu>
+                              <MenuButton
+                                as={IconButton}
+                                icon={<Icon as={FiEdit3} w="1.5em" h="1.5em" />}
+                              />
+                              <MenuList>
+                                <MenuItem onClick={() => editRow(row, n)}>
+                                  Edit Sighted {speciesCode} #{n + 1}
+                                </MenuItem>
+                                <MenuItem color="red" onClick={() => showConfirmDeleteModal(n)}>
+                                  Delete Sighted {speciesCode} #{n + 1}
+                                </MenuItem>
+                              </MenuList>
+                            </Menu>
+                          )}
                         </Td>
                         <Td borderBottomWidth="0">{n + 1}</Td>
                         <Td borderBottomWidth="0">{row.totalAdults}</Td>
@@ -284,20 +294,24 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
               </Tfoot>
             </Accordion>
           </Box>
-          <Button onClick={openPopup} width="100%" marginTop="10px" colorScheme="cyan">
-            Add Sighted {speciesCode} +
-          </Button>
-          <Modal size="full" isOpen={isOpen} closeOnEsc={false}>
-            <ModalOverlay />
-            <ModalContent margin={0} rounded="none">
-              <ListedSpeciesPopup
-                closeModal={onClose}
-                adultName={speciesName}
-                addRow={addRow}
-                prefilledData={rowToEdit}
-              />
-            </ModalContent>
-          </Modal>
+          {!isDisabled && (
+            <>
+              <Button onClick={openPopup} width="100%" marginTop="10px" colorScheme="cyan">
+                Add Sighted {speciesCode} +
+              </Button>
+              <Modal size="full" isOpen={isOpen} closeOnEsc={false}>
+                <ModalOverlay />
+                <ModalContent margin={0} rounded="none">
+                  <ListedSpeciesPopup
+                    closeModal={onClose}
+                    adultName={speciesName}
+                    addRow={addRow}
+                    prefilledData={rowToEdit}
+                  />
+                </ModalContent>
+              </Modal>
+            </>
+          )}
         </GridItem>
         <GridItem colSpan="2">
           <VStack alignItems="start">
@@ -307,9 +321,10 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
             <Text>To report a sick or injured bird, contact the WWCC at 714.374.5587</Text>
             <FormControl>
               <NumberInput
+                isDisabled={isDisabled}
                 min={0}
                 onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}
-                defaultValue={0}
+                defaultValue={getValues(`${formPrefix}injuredCount`) || 0}
               >
                 <NumberInputField />
                 <NumberInputStepper>
@@ -328,14 +343,22 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode }) => {
           </VStack>
         </GridItem>
       </Grid>
-    </Container>
+    </>
   );
+};
+
+ListedSpeciesTab.defaultProps = {
+  showHeader: true,
+  isDisabled: false,
 };
 
 ListedSpeciesTab.propTypes = {
   tab: PropTypes.number.isRequired,
   speciesName: PropTypes.string.isRequired,
   speciesCode: PropTypes.string.isRequired,
+  speciesId: PropTypes.string.isRequired,
+  showHeader: PropTypes.bool,
+  isDisabled: PropTypes.bool,
 };
 
 export default ListedSpeciesTab;
