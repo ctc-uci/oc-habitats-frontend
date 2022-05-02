@@ -3,11 +3,11 @@ import { VStack, Text, Link, Box } from '@chakra-ui/react';
 import { FiMapPin } from 'react-icons/fi';
 import { PropTypes } from 'prop-types';
 
-const SegmentAssignment = ({ title, place, mapLink, description }) => {
+const SegmentAssignment = ({ segment, name, place, mapLink, description }) => {
   return (
     <VStack w={{ md: '400px', sm: '100%' }} spacing={1} align="flex-start">
       <Text fontSize="16px" color="#231F20">
-        {title}
+        {segment} &nbsp;&nbsp; {name}
       </Text>
       <Text fontSize="16px" color="#4A5568">
         {place}
@@ -29,7 +29,8 @@ const SegmentAssignment = ({ title, place, mapLink, description }) => {
 };
 
 SegmentAssignment.propTypes = {
-  title: PropTypes.string.isRequired,
+  segment: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   place: PropTypes.string.isRequired,
   mapLink: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,

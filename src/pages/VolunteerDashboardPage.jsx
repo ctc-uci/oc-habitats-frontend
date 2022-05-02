@@ -86,7 +86,8 @@ const VolunteerDashboardPage = () => {
     return userData.segments.map(segment => (
       <SegmentAssignment
         key={segment.segmentID}
-        title={`${segment.segmentId} — ${segment.name}`}
+        segment={segment.segmentId}
+        name={segment.name}
         place={segment.streets}
         mapLink={segment.mapLink}
         description={segment.parking}
@@ -144,7 +145,7 @@ const VolunteerDashboardPage = () => {
 
   return (
     <Container maxW="90vw" pb={{ sm: '100px', lg: '0px' }}>
-      <Heading size="lg" py="10">
+      <Heading size="xl" py="10">
         Welcome Back, {userData?.firstName}!
       </Heading>
       <Heading size="md" py="1">
