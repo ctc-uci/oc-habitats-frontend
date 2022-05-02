@@ -5,7 +5,8 @@ import {
   Heading,
   Box,
   VStack,
-  HStack,
+  Stack,
+  Wrap,
   Alert,
   AlertIcon,
   AlertDescription,
@@ -19,6 +20,8 @@ import SegmentAssignment from '../components/VolunteerDashboard/SegmentAssignmen
 import UnsubmittedLogDraft from '../components/VolunteerDashboard/UnsubmittedLogDraft';
 import RecentlySubmittedLog from '../components/VolunteerDashboard/RecentlySubmittedLog';
 import { OCHBackend } from '../common/utils';
+
+// TODO: go to log button functionality
 
 // temporary (?) notification component until notification system is written
 // TODO: replace notification
@@ -49,10 +52,17 @@ const Toast = props => {
 // GET BACKEND DATA
 const VolunteerDashboardPage = () => {
   const [userData, setUserData] = useState(null);
+  const [userSubmissions, setUserSubmissions] = useState([]);
+
   useEffect(async () => {
     try {
-      const res = await OCHBackend.get('users/me', { withCredentials: true });
-      setUserData(res.data);
+      // const res = await OCHBackend.get('users/me', { withCredentials: true });
+      const [userRes, submissionRes] = await Promise.all([
+        OCHBackend.get('/users/me', { withCredentials: true }),
+        OCHBackend.get('/users/userSubmissions', { withCredentials: true }),
+      ]);
+      setUserData(userRes.data);
+      setUserSubmissions(submissionRes.data);
     } catch (err) {
       // TODO: handle error
       // eslint-disable-next-line no-console
@@ -76,6 +86,44 @@ const VolunteerDashboardPage = () => {
         place={segment.streets}
         mapLink={segment.mapLink}
         description={segment.parking}
+      />
+    ));
+  };
+
+  const Unsubmitted = () => {
+    const userDrafts = userSubmissions.filter(submission => submission.status === 'UNSUBMITTED');
+
+    if (userDrafts.length === 0) {
+      return <Text>You do not have any unsubmitted log drafts.</Text>;
+    }
+
+    return userDrafts.map((draft, idx) => (
+      <UnsubmittedLogDraft
+        // eslint-disable-next-line react/no-array-index-key
+        key={idx}
+        title={`${draft.segment.segmentId} — ${draft.date}`}
+        timeDescription={draft.submittedAt}
+      />
+    ));
+  };
+
+  const Recents = () => {
+    const recents = userSubmissions
+      .sort((a, b) => b.submittedAt - a.submittedAt)
+      .filter(submission => submission.status !== 'UNSUBMITTED')
+      .slice(0, 6);
+
+    if (recents.length === 0) {
+      return <Text>You do not have any recently submitted logs.</Text>;
+    }
+
+    return recents.map((recent, idx) => (
+      <RecentlySubmittedLog
+        // eslint-disable-next-line react/no-array-index-key
+        key={idx}
+        title={`${recent.segment.segmentId} — ${recent.date}`}
+        timeDescription={recent.submittedAt}
+        status={recent.status}
       />
     ));
   };
@@ -127,75 +175,21 @@ const VolunteerDashboardPage = () => {
           Note on Parking: If you pay for parking (not to exceed $6 without approval), please submit
           your receipts for reimbursement with your name and segment.
         </Text>
-        <HStack spacing="50px" align="flex-start">
+        <Stack direction={{ md: 'row', sm: 'column' }} spacing="50px" align="flex-start">
           {userData != null && Segments()}
-        </HStack>
+        </Stack>
         <Heading size="md" py="5">
           Unsubmitted Log Drafts
         </Heading>
-        <UnsubmittedLogDraft
-          title="OC01 - 02/22/2022"
-          timeDescription="Last Saved: 02/23/2022 @ 07:34 PM"
-        />
+        <Stack direction={{ md: 'row', sm: 'column' }} spacing="20px" align="flex-start">
+          {Unsubmitted()}
+        </Stack>
         <Heading size="md" pt="50">
           Recently Submitted Logs &nbsp;&nbsp;
           <InfoIcon w={6} h={6} color="#156071" />
         </Heading>
         <Box w="400px" h="20px" />
-        <HStack spacing="10px">
-          <RecentlySubmittedLog
-            title="OC09b - 02/16/2022"
-            timeDescription="Submitted: 02/17/2022 @ 01:27 PM"
-            badgeColor="#C53030"
-            badgeDescription="EDITS REQUESTED"
-            borderColor="red"
-            goToLogButton
-            marginAmt="230"
-          />
-          <RecentlySubmittedLog
-            title="OC09a - 02/16/2022"
-            timeDescription="Submitted: 02/17/2022 @ 11:56 PM"
-            badgeColor="#38A169"
-            badgeDescription="APPROVED"
-            borderColor="lightgray"
-            marginAmt="275"
-          />
-          <RecentlySubmittedLog
-            title="OC13 - 01/24/2022"
-            timeDescription="Submitted: 01/26/2022 @ 12:35 PM"
-            badgeColor="#38A169"
-            badgeDescription="APPROVED"
-            borderColor="lightgray"
-            marginAmt="275"
-          />
-        </HStack>
-        <Box w="400px" h="10px" />
-        <HStack spacing="10px">
-          <RecentlySubmittedLog
-            title="OC12 - 01/24/2022"
-            timeDescription="Submitted: 01/26/2022 @ 12:35 PM"
-            badgeColor="#38A169"
-            badgeDescription="APPROVED"
-            borderColor="lightgray"
-            marginAmt="275"
-          />
-          <RecentlySubmittedLog
-            title="OC11 - 01/24/2022"
-            timeDescription="Submitted: 01/26/2022 @ 12:35 PM"
-            badgeColor="#38A169"
-            badgeDescription="APPROVED"
-            borderColor="lightgray"
-            marginAmt="275"
-          />
-          <RecentlySubmittedLog
-            title="OC10 - 01/24/2022"
-            timeDescription="Submitted: 01/26/2022 @ 12:35 PM"
-            badgeColor="#38A169"
-            badgeDescription="APPROVED"
-            borderColor="lightgray"
-            marginAmt="275"
-          />
-        </HStack>
+        <Wrap spacing="20px">{Recents()}</Wrap>
       </Container>
     </div>
   );

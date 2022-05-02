@@ -11,7 +11,7 @@ const UnsubmittedLogDraft = ({ title, timeDescription }) => {
         {title}
       </Text>
       <Text fontSize="16px" pl="6" textAlign="left" color="#4A5568">
-        {timeDescription}
+        Last Saved: {timeDescription}
       </Text>
       <Box w="400px" h="10px" />
       <Button w="350px" bgColor="#2BC0E3" size="sm" rightIcon={<ArrowForwardIcon />}>

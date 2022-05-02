@@ -4,15 +4,14 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 
 const RecentlySubmittedLog = props => {
-  const {
-    title,
-    timeDescription,
-    badgeColor,
-    badgeDescription,
-    borderColor,
-    goToLogButton,
-    marginAmt,
-  } = props;
+  const { title, timeDescription, status } = props;
+
+  // badge color, description, borderColor, button, and margin all depend on status
+  const borderColor = status === 'EDITS_REQUESTED' ? 'red' : 'lightgray';
+  const badgeColor = status === 'EDITS_REQUESTED' ? '#C53030' : '#38A169';
+  const marginAmt = status === 'EDITS_REQUESTED' ? '230' : '275';
+  const goToLogButton = status === 'EDITS_REQUESTED';
+
   return (
     <Box
       align="center"
@@ -27,10 +26,10 @@ const RecentlySubmittedLog = props => {
         {title}
       </Text>
       <Text fontSize="16px" pl="6" textAlign="left" color="#4A5568">
-        {timeDescription}
+        Submitted: {timeDescription}
       </Text>
       <Badge marginRight={marginAmt} bg={badgeColor} textColor="white">
-        {badgeDescription}
+        {status}
       </Badge>
       <Box w="400px" h="15px" />
       {goToLogButton && (
@@ -42,18 +41,10 @@ const RecentlySubmittedLog = props => {
   );
 };
 
-RecentlySubmittedLog.defaultProps = {
-  goToLogButton: false,
-};
-
 RecentlySubmittedLog.propTypes = {
   title: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
-  badgeColor: PropTypes.string.isRequired,
-  badgeDescription: PropTypes.string.isRequired,
-  borderColor: PropTypes.string.isRequired,
-  goToLogButton: PropTypes.bool,
-  marginAmt: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
 };
 
 export default RecentlySubmittedLog;
