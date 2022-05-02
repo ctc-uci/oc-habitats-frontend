@@ -84,7 +84,7 @@ const PeopleTableFilters = ({
 PeopleTableFilters.propTypes = {
   variant: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  segments: PropTypes.object.isRequired,
+  segments: PropTypes.array.isRequired,
   setNameFilter: PropTypes.func.isRequired,
   setSegmentFilter: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types

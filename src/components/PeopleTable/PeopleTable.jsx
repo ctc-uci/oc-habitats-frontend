@@ -103,7 +103,7 @@ const LoadingRow = () => (
   <Tr>
     <td colSpan={3}>
       <VStack justifyContent="center" alignContent="center" margin="50px">
-        <Text fontWeight="bold">Loading</Text>
+        <Text fontWeight="bold">Loading</Text>name
         <Spinner size="sm" />
       </VStack>
     </td>
@@ -127,7 +127,7 @@ const tableContent = (loading, page, prepareRow, isMobile) => {
   if (page?.length) {
     return page.map(row => {
       prepareRow(row);
-      return <PeopleTableRow key={row.name} row={row} isMobile={isMobile} />;
+      return <PeopleTableRow key={row.id} row={row} isMobile={isMobile} />;
     });
   }
   return <EmptyRow />;
@@ -239,9 +239,9 @@ PeopleTable.propTypes = {
   variant: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  userData: PropTypes.object.isRequired,
+  userData: PropTypes.array.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  segments: PropTypes.object.isRequired,
+  segments: PropTypes.array.isRequired,
   refreshData: PropTypes.func.isRequired,
 };
 

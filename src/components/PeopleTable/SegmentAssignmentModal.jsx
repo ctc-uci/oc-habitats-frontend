@@ -310,31 +310,45 @@ const SegmentAssignmentModal = ({ userData, segmentData, refreshData, isOpen, on
   );
 };
 
+/* eslint-disable react/forbid-prop-types */
+SegmentDropdown.defaultProps = {
+  selectedSegments: [],
+};
+
 SegmentDropdown.propTypes = {
-  allSegments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  selectedSegments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  allSegments: PropTypes.array.isRequired,
+  selectedSegments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
   setSelectedSegments: PropTypes.func.isRequired,
+};
+
+AssignedSegmentsTags.defaultProps = {
+  segments: [],
 };
 
 AssignedSegmentsTags.propTypes = {
-  segments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  segments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
   setSelectedSegments: PropTypes.func.isRequired,
 };
 
+SegmentCards.defaultProps = {
+  currUserId: '',
+  selectedSegments: [],
+};
+
 SegmentCards.propTypes = {
-  allSegments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  selectedSegments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  currUserId: PropTypes.string.isRequired,
+  allSegments: PropTypes.array.isRequired,
+  selectedSegments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+  currUserId: PropTypes.string,
 };
 
 SegmentAssignmentModal.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  segmentData: PropTypes.object.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
+  segmentData: PropTypes.array.isRequired,
   userData: PropTypes.object.isRequired,
   refreshData: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
+
+/* eslint-enable react/forbid-prop-types */
 
 export default SegmentAssignmentModal;

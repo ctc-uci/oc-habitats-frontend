@@ -105,7 +105,8 @@ const RowModalContextProvider = ({ children, segmentData, refreshData }) => {
 
 RowModalContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
-  segmentData: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  segmentData: PropTypes.array.isRequired,
   refreshData: PropTypes.func.isRequired,
 };
 

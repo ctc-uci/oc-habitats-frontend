@@ -152,28 +152,36 @@ const PeopleTableRow = ({ row, isMobile }) => {
   );
 };
 
+/* eslint-disable react/forbid-prop-types */
+StyledBadge.defaultProps = {
+  bgColor: 'white',
+  textColor: 'black',
+};
+
 StyledBadge.propTypes = {
-  bgColor: PropTypes.string.isRequired,
-  textColor: PropTypes.string.isRequired,
+  bgColor: PropTypes.string,
+  textColor: PropTypes.string,
   text: PropTypes.string.isRequired,
 };
 
 NameColumn.propTypes = {
-  data: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
   isMobile: PropTypes.bool.isRequired,
 };
 
 SegmentAndButtonColumn.propTypes = {
-  data: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 RowButton.propTypes = {
-  data: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 PeopleTableRow.propTypes = {
-  row: PropTypes.string.isRequired,
+  row: PropTypes.object.isRequired,
   isMobile: PropTypes.bool.isRequired,
 };
+
+/* eslint-enable react/forbid-prop-types */
 
 export { PeopleTableRow, NameColumn, SegmentAndButtonColumn };
