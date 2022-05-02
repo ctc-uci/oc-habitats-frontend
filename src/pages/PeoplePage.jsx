@@ -83,7 +83,13 @@ const PeoplePage = () => {
         loading={isLoading}
         refreshData={fetchTableData}
       />
-      <PeopleTable variant="admin" userData={adminData} segments={segments} loading={isLoading} />
+      <PeopleTable
+        variant="admin"
+        userData={adminData}
+        segments={segments}
+        loading={isLoading}
+        refreshData={fetchTableData}
+      />
     </Container>
   );
 };

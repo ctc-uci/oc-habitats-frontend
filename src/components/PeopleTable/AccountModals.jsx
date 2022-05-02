@@ -47,7 +47,7 @@ const DeletePendingAccountModal = ({ userData, isOpen, onClose }) => {
   );
 };
 
-const ClearSegmentModal = ({ userData, isOpen, onClose, refreshData }) => {
+const ClearSegmentModal = ({ userData, refreshData, isOpen, onClose }) => {
   // Workaround for responsive modal sizes
   const size = useBreakpointValue({ base: 'sm', md: 'md' });
 
@@ -88,7 +88,7 @@ const ClearSegmentModal = ({ userData, isOpen, onClose, refreshData }) => {
   );
 };
 
-const ConvertAccountTypeModal = ({ userData, isOpen, onClose }) => {
+const ConvertAccountTypeModal = ({ userData, refreshData, isOpen, onClose }) => {
   // Workaround for responsive modal sizes
   const modalSizes = useBreakpointValue({ base: 'sm', md: 'md' });
   const modalText = {
@@ -102,6 +102,15 @@ const ConvertAccountTypeModal = ({ userData, isOpen, onClose }) => {
         Volunteer account to an <Text as="b">Admin account</Text>?{' '}
       </>
     ),
+  };
+
+  const convertAccount = async () => {
+    const newRole = userData?.role === VOLUNTEER_ROLE ? ADMIN_ROLE : VOLUNTEER_ROLE;
+    await OCHBackend.put(`/users/update/${userData?.userId}`, {
+      role: newRole,
+    });
+    await refreshData();
+    onClose();
   };
 
   return (
@@ -122,7 +131,7 @@ const ConvertAccountTypeModal = ({ userData, isOpen, onClose }) => {
           <Button w="120px" colorScheme="gray" mr="12px" onClick={onClose}>
             No
           </Button>
-          <Button w="200px" variant="solid" bg="green.500" color="white">
+          <Button w="200px" variant="solid" bg="green.500" color="white" onClick={convertAccount}>
             Yes, Convert Account
           </Button>
         </ModalFooter>
@@ -149,6 +158,7 @@ ClearSegmentModal.propTypes = {
 ConvertAccountTypeModal.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   userData: PropTypes.object.isRequired,
+  refreshData: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
