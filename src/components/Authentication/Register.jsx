@@ -117,7 +117,7 @@ const Register = ({ inviteEmail, inviteRole }) => {
               bg="white"
               onChange={({ target }) => setEmail(target.value)}
               size="md"
-              value={inviteEmail}
+              value={email}
             />
           </FormControl>
           <FormControl>

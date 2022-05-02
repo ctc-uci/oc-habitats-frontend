@@ -1,13 +1,10 @@
 import { FormControl, FormLabel, Grid, GridItem } from '@chakra-ui/react';
-import { Select } from 'chakra-react-select';
 import { PropTypes } from 'prop-types';
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import ReactHookFormSelect from '../../common/ReactHookFormSelect';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 
 const BehaviorsSection = ({ behaviorOptions, nestingOptions }) => {
-  const { control } = useFormContext();
-
   const behaviorDropdown = behaviorOptions.map(behavior => ({
     label: behavior,
     value: behavior,
@@ -25,12 +22,12 @@ const BehaviorsSection = ({ behaviorOptions, nestingOptions }) => {
           <FormControl>
             <FormLabel>
               Nesting
-              <Controller
+              <ReactHookFormSelect
                 name="nesting"
-                control={control}
-                render={({ field }) => (
-                  <Select {...field} isMulti options={nestingDropdown} closeMenuOnSelect={false} />
-                )}
+                options={nestingDropdown}
+                optionKey="value"
+                isMulti
+                closeMenuOnSelect={false}
               />
             </FormLabel>
           </FormControl>
@@ -39,12 +36,12 @@ const BehaviorsSection = ({ behaviorOptions, nestingOptions }) => {
           <FormControl>
             <FormLabel>
               Behaviors
-              <Controller
+              <ReactHookFormSelect
                 name="behaviors"
-                control={control}
-                render={({ field }) => (
-                  <Select {...field} isMulti options={behaviorDropdown} closeMenuOnSelect={false} />
-                )}
+                options={behaviorDropdown}
+                optionKey="value"
+                isMulti
+                closeMenuOnSelect={false}
               />
             </FormLabel>
           </FormControl>
@@ -56,11 +53,7 @@ const BehaviorsSection = ({ behaviorOptions, nestingOptions }) => {
 
 BehaviorsSection.propTypes = {
   behaviorOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
-  behaviors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setBehaviors: PropTypes.func.isRequired,
   nestingOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
-  nesting: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setNesting: PropTypes.func.isRequired,
 };
 
 export default BehaviorsSection;
