@@ -21,23 +21,27 @@ import {
   FormErrorMessage,
   FormControl,
   useToast,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
+import { initiateInviteProcess } from '../../common/auth_utils';
+
 const schema = yup.object({
-  userType: yup.string('User type is required').required('User type is required'),
+  role: yup.string('User type is required').required('User type is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
 });
 
-const userTypes = {
+const roles = {
   volunteer: 'Volunteer',
   admin: 'Admin',
-  superAdmin: 'Super Admin',
 };
 
 const AddAccountPopup = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  // Workaround for responsive modal sizes
+  const modalSizes = useBreakpointValue({ base: 'sm', md: 'md' });
 
   const {
     register,
@@ -58,18 +62,29 @@ const AddAccountPopup = () => {
     // eslint-disable-next-line no-alert
     alert(JSON.stringify(data, null, 2));
 
-    // TODO: send user request
-
-    toast({
-      title: 'Sign Up Link Sent!',
-      description: `
-        A one-time use ${userTypes[data.userType]} sign up link
-        was successfully sent to ${data.email}!
-      `,
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
-    });
+    try {
+      await initiateInviteProcess(data.email, data.role);
+      toast({
+        title: 'Sign Up Link Sent!',
+        description: `
+          A one-time use ${roles[data.role]} sign up link
+          was successfully sent to ${data.email}!
+        `,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: 'Sign Up Invite Failed!',
+        description: `
+          The following error occurred when inviting a user: ${err}
+        `,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
 
     // Close modal
     onClose();
@@ -83,30 +98,31 @@ const AddAccountPopup = () => {
         color="ochBlack"
         variant="solidNoHover"
         rightIcon={<AddIcon />}
+        w={{ md: 'auto', base: '100%' }}
       >
         Create New Account
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isOpen={isOpen} onClose={onClose} size={modalSizes} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create New User</ModalHeader>
           <ModalCloseButton />
           <form onSubmit={handleSubmit(onSubmit)}>
             <ModalBody>
-              <FormControl isInvalid={errors?.userType}>
+              <FormControl isInvalid={errors?.role}>
                 <Text mb="10px">User Type</Text>
                 <Controller
                   control={control}
-                  name="userType"
+                  name="role"
                   // eslint-disable-next-line no-unused-vars
                   render={({ field: { onChange, value, ref } }) => (
                     <RadioGroup selected={value} onChange={onChange}>
                       <Stack column="vertical">
-                        {Object.keys(userTypes).map(key => {
+                        {Object.keys(roles).map(key => {
                           return (
                             <Radio value={key} key={key}>
-                              {userTypes[key]}
+                              {roles[key]}
                             </Radio>
                           );
                         })}

@@ -38,6 +38,7 @@ const MonitorTabButton = props => {
       height="40px"
       borderColor="ochBlack"
       borderWidth="1px"
+      whiteSpace="nowrap"
       _selected={{ borderColor: 'ochOrange', color: 'ochBlack', bg: 'ochOrange' }}
       {...props}
     >
@@ -62,22 +63,61 @@ const MonitorLogPage = () => {
   };
   const [user, setUser] = useState(null);
   const [monitorPartners, setMonitorPartners] = useState([]);
+  const [predators, setPredators] = useState([]);
+  const [listedSpecies, setListedSpecies] = useState([]);
+  const [additionalSpecies, setAdditionalSpecies] = useState([]);
 
   useEffect(async () => {
     checkInModal.onOpen();
-
     try {
-      const [userData, monitorPartnersData] = await Promise.all([
+      const [userData, monitorPartnersData, speciesData] = await Promise.all([
         OCHBackend.get('users/me', { withCredentials: true }),
         OCHBackend.get('users/monitorPartners', { withCredentials: true }),
+        OCHBackend.get('species', { withCredentials: true }),
       ]);
       setUser(userData.data);
       setMonitorPartners(monitorPartnersData.data);
+      setPredators(
+        speciesData.data
+          .filter(s => s.isPredator && (!s.isListed || s.isNeither))
+          .map(s => ({
+            name: s.name,
+            _id: s._id,
+          })),
+      );
+      setListedSpecies(
+        speciesData.data
+          .filter(s => s.isListed && !s.isPredator)
+          .map(s => ({
+            name: s.name,
+            code: s.code,
+            _id: s._id,
+          })),
+      );
+      setAdditionalSpecies(
+        speciesData.data
+          .filter(s => !s.isListed && !s.isPredator)
+          .map(s => ({
+            name: s.name,
+            code: s.code,
+            _id: s._id,
+          })),
+      );
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err.message);
     }
   }, []);
+
+  const submitForm = async () => {
+    // eslint-disable-next-line no-console
+    console.log(formMethods.getValues());
+    const res = await OCHBackend.post('submission', formMethods.getValues(), {
+      withCredentials: true,
+    });
+    // eslint-disable-next-line no-console
+    console.log(res.data);
+  };
 
   const assignedSegments = useMemo(() => user?.segments || [], [user]);
 
@@ -115,8 +155,9 @@ const MonitorLogPage = () => {
             <TabList px="32px" alignItems="center">
               <HStack spacing="24px">
                 <MonitorTabButton>General Info</MonitorTabButton>
-                <MonitorTabButton>Least Tern</MonitorTabButton>
-                <MonitorTabButton>Snowy Plover</MonitorTabButton>
+                {listedSpecies.map(s => (
+                  <MonitorTabButton key={s._id}>{s.name}</MonitorTabButton>
+                ))}
                 <MonitorTabButton>Additional Species</MonitorTabButton>
                 <MonitorTabButton>Predators</MonitorTabButton>
                 <MonitorTabButton>Human Activity</MonitorTabButton>
@@ -132,24 +173,26 @@ const MonitorLogPage = () => {
                   />
                 </Container>
               </TabPanel>
+              {listedSpecies.map((s, idx) => (
+                <TabPanel key={s._id}>
+                  <Container maxW="100vw">
+                    <ListedSpeciesTab
+                      tab={idx}
+                      speciesName={s.name}
+                      speciesCode={s.code}
+                      speciesId={s._id}
+                    />
+                  </Container>
+                </TabPanel>
+              ))}
               <TabPanel>
                 <Container maxW="100vw">
-                  <ListedSpeciesTab tab={0} speciesName="Least Tern" speciesCode="LETE" />
+                  <AdditionalSpeciesTab species={additionalSpecies} />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <ListedSpeciesTab tab={1} speciesName="Snowy Plover" speciesCode="WSPL" />
-                </Container>
-              </TabPanel>
-              <TabPanel>
-                <Container maxW="100vw">
-                  <AdditionalSpeciesTab />
-                </Container>
-              </TabPanel>
-              <TabPanel>
-                <Container maxW="100vw">
-                  <PredatorsTab />
+                  <PredatorsTab predators={predators} />
                 </Container>
               </TabPanel>
               <TabPanel>
@@ -159,7 +202,14 @@ const MonitorLogPage = () => {
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <ReviewSubmitTab jumpToTab={setActiveTab} />
+                  <ReviewSubmitTab
+                    jumpToTab={setActiveTab}
+                    assignedSegments={assignedSegments}
+                    monitorPartners={monitorPartners}
+                    predators={predators}
+                    listedSpecies={listedSpecies}
+                    additionalSpecies={additionalSpecies}
+                  />
                 </Container>
               </TabPanel>
             </TabPanels>
@@ -196,11 +246,7 @@ const MonitorLogPage = () => {
                 </Button>
               )}
               {activeTab === totalTabs - 1 && (
-                <Button
-                  colorScheme="green"
-                  type="submit"
-                  //  onClick={handleSubmit}
-                >
+                <Button colorScheme="green" type="submit" onClick={submitForm}>
                   {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
                   Submit Log <FiCheck style={{ marginLeft: '4px' }} />
                 </Button>

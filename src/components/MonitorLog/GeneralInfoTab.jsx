@@ -10,12 +10,12 @@ import {
   Tooltip,
   VStack,
 } from '@chakra-ui/react';
-import { Select as ReactSelect } from 'chakra-react-select';
 import PropTypes from 'prop-types';
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, useFormContext } from 'react-hook-form';
+import ReactHookFormSelect from '../../common/ReactHookFormSelect';
 import './GeneralInfoTab.css';
 
 function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHeader }) {
@@ -23,8 +23,13 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
 
   const partnerSelectOptions = monitorPartners.map(user => ({
     ...user,
-    value: user.firebaseId,
+    value: user._id,
     label: `${user.firstName} ${user.lastName} (${user.email})`,
+  }));
+
+  const segmentOptions = assignedSegments.map(segment => ({
+    value: segment.id,
+    label: `${segment.segmentId} - ${segment.name}`,
   }));
 
   return (
@@ -41,13 +46,13 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
               <Text fontWeight="500" fontSize="md">
                 Survey Segment
               </Text>
-              <Select disabled={isDisabled} {...register('segment')}>
-                {assignedSegments.map(segment => (
-                  <option value={segment.segmentId} key={segment.segmentId}>
-                    {segment.segmentId} - {segment.name}
-                  </option>
-                ))}
-              </Select>
+              <ReactHookFormSelect
+                name="segment"
+                options={segmentOptions}
+                optionKey="value"
+                isDisabled={isDisabled}
+                size="md"
+              />
             </VStack>
           </GridItem>
           <GridItem colSpan={1} rowSpan={1}>
@@ -57,7 +62,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
               </Text>
               <Controller
                 control={control}
-                name="surveyDate"
+                name="date"
                 render={({ field }) => (
                   <DatePicker
                     disabled={isDisabled}
@@ -181,7 +186,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                 Habitat Width (ft)
               </Text>
               <Select disabled={isDisabled} {...register('habitatWidth')}>
-                <option value="0=10">0-10</option>
+                <option value="0-10">0-10</option>
                 <option value="10-50">10-50</option>
                 <option value="50-100">50-100</option>
                 <option value="100-300">100-300</option>
@@ -199,21 +204,16 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
             form.
             {/* Added Partners will be notified when this monitor log is submitted for review. */}
           </Text>
-          <Controller
+          <ReactHookFormSelect
             name="partners"
-            control={control}
-            render={({ field }) => (
-              <ReactSelect
-                {...field}
-                isDisabled={isDisabled}
-                isMulti
-                options={partnerSelectOptions}
-                placeholder="Search for member by name or email..."
-                closeMenuOnSelect={false}
-                size="md"
-                menuPosition="fixed"
-              />
-            )}
+            options={partnerSelectOptions}
+            optionKey="_id"
+            isDisabled={isDisabled}
+            isMulti
+            placeholder="Search for member by name or email..."
+            closeMenuOnSelect={false}
+            size="md"
+            menuPosition="fixed"
           />
         </VStack>
       </VStack>
@@ -231,6 +231,7 @@ GeneralInfoTab.defaultProps = {
 GeneralInfoTab.propTypes = {
   assignedSegments: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.string.isRequired,
       segmentId: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
@@ -240,7 +241,7 @@ GeneralInfoTab.propTypes = {
       firstName: PropTypes.string.isRequired,
       lastName: PropTypes.string.isRequired,
       email: PropTypes.string.isRequired,
-      firebaseId: PropTypes.string.isRequired,
+      _id: PropTypes.string.isRequired,
     }),
   ),
   isDisabled: PropTypes.bool,

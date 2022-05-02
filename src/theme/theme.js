@@ -7,6 +7,7 @@ const theme = extendTheme({
   },
   colors: {
     ochBlue: '#2BC0E3',
+    ochBlueHover: '#1E879F',
     ochGrey: '#4E4E4E',
     ochOrange: '#F49923',
     ochBlack: '#231F20',

@@ -2,29 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Flex, Select, Text, Tooltip, IconButton, Box } from '@chakra-ui/react';
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
-import styles from './PeopleTable.module.css';
 
-const PeopleTableFooter = ({ rowCount, pageIndex, rowsPerPageSelect, pageSize, pageControl }) => {
+const PeopleTableFooter = ({
+  rowCount,
+  pageIndex,
+  rowsPerPageSelect,
+  pageSize,
+  pageControl,
+  isMobile,
+}) => {
   const rowText = () => {
     const left = pageIndex === 0 ? 1 : pageIndex * pageSize + 1;
     const right = Math.min(rowCount, pageSize * (pageIndex + 1));
     return rowCount === 0 ? `0` : `${left}-${right}`;
   };
   return (
-    <Box
-      className={styles['footer-container']}
-      backgroundColor="ochGrey"
-      color="white"
-      style={{ margin: 0 }}
-    >
-      <Flex justifyContent="space-between" m={4} alignItems="center">
+    <Box backgroundColor="ochGrey" color="white" p="8px 1em" w="100%" borderRadius="0 0 10px 10px">
+      <Flex justifyContent="space-between" alignItems="center">
         <Flex alignItems="center">
-          <Text flexShrink="0">Show rows per page: </Text>{' '}
+          <Text flexShrink="0">Show rows per page</Text>
           <Select
             backgroundColor="white"
             color="ochGrey"
             ml={2}
-            w={32}
+            w="auto"
             value={pageSize}
             onChange={e => {
               pageControl.setPageSize(Number(e.target.value));
@@ -37,15 +38,17 @@ const PeopleTableFooter = ({ rowCount, pageIndex, rowsPerPageSelect, pageSize, p
             ))}
           </Select>
         </Flex>
-
         <Flex alignItems="center">
-          <Text flexShrink="0" mr={8}>
-            <Text as="span">{rowText()}</Text>
-            <Text as="span" color="gray.300">
-              {' '}
-              of {rowCount}
+          {!isMobile && (
+            <Text flexShrink="0" mr={8}>
+              <Text as="span">{rowText()}</Text>
+              <Text as="span" color="gray.300">
+                {' '}
+                of {rowCount}
+              </Text>
             </Text>
-          </Text>
+          )}
+
           <Tooltip label="Previous Page">
             <IconButton
               background="transparent"
@@ -85,6 +88,7 @@ PeopleTableFooter.propTypes = {
     canNextPage: PropTypes.bool,
     canPreviousPage: PropTypes.bool,
   }).isRequired,
+  isMobile: PropTypes.bool.isRequired,
 };
 
 export default PeopleTableFooter;

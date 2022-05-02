@@ -42,7 +42,6 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
       totalFledges: 0,
       totalChicks: 0,
       time: '07:00',
-      meridiem: 'AM',
       map: '1',
       habitat: '',
       sex: [0, 0, 0, 0, 0, 0],
@@ -77,7 +76,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
     const formData = formMethods.getValues();
     let valid = true;
     for (let i = 0; i < formData.bandTabs.length; i += 1) {
-      const row = [...Array(4)].map((_, n) => formData.bandTabs[i][n]);
+      const row = formData.bandTabs[i];
       const code = generateBandingCode(row);
       formData.bandTabs[i].code = code;
       if (code === 'invalid' || code === 'Top band must be above bottom band') {
