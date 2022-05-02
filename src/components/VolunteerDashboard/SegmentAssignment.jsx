@@ -5,7 +5,7 @@ import { PropTypes } from 'prop-types';
 
 const SegmentAssignment = ({ title, place, mapLink, description }) => {
   return (
-    <VStack w="400px" spacing={1} align="flex-start">
+    <VStack w={{ md: '400px', sm: '100%' }} spacing={1} align="flex-start">
       <Text fontSize="16px" color="#231F20">
         {title}
       </Text>

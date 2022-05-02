@@ -1,23 +1,29 @@
 import React from 'react';
-import { Box, Button, Text } from '@chakra-ui/react';
+import { Flex, Box, Button, Text } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 
 const UnsubmittedLogDraft = ({ title, timeDescription }) => {
   return (
-    <Box align="center" border="2px" borderRadius="md" borderColor="lightgray" w="400px" h="125px">
-      <Box w="400px" h="15px" />
-      <Text fontSize="16px" pl="6" textAlign="left">
-        {title}
-      </Text>
-      <Text fontSize="16px" pl="6" textAlign="left" color="#4A5568">
+    <Flex
+      direction="column"
+      align="flex-start"
+      border="2px"
+      borderRadius="md"
+      borderColor="lightgray"
+      w={{ lg: '420px', md: '310px', sm: '100%' }}
+      h={{ lg: '125px', md: '175px' }}
+      px={5}
+      py={4}
+    >
+      <Text fontSize="16px">{title}</Text>
+      <Text fontSize="16px" color="#4A5568">
         Last Saved: {timeDescription}
       </Text>
-      <Box w="400px" h="10px" />
-      <Button w="350px" bgColor="#2BC0E3" size="sm" rightIcon={<ArrowForwardIcon />}>
+      <Button w="100%" bgColor="#2BC0E3" size="sm" mt={2} rightIcon={<ArrowForwardIcon />}>
         Go to Log
       </Button>
-    </Box>
+    </Flex>
   );
 };
 

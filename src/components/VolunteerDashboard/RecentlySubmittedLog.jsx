@@ -38,8 +38,8 @@ const RecentlySubmittedLog = ({ title, timeDescription, status }) => {
       border="2px"
       borderRadius="md"
       borderColor={details.borderColor}
-      w="400px"
-      h="155px"
+      w={{ lg: '420px', md: '310px', sm: '100%' }}
+      h={{ lg: '155px', md: '200px' }}
       px={5}
       py={4}
     >
