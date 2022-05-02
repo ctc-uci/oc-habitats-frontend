@@ -2,7 +2,11 @@ import React, { createContext, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useDisclosure } from '@chakra-ui/react';
 import SegmentAssignmentModal from './SegmentAssignmentModal';
-import { DeletePendingAccountModal, ConvertAccountTypeModal } from './AccountModals';
+import {
+  DeletePendingAccountModal,
+  ClearSegmentModal,
+  ConvertAccountTypeModal,
+} from './AccountModals';
 
 // Creating a context that allows any row to call
 // a function that opens the given modal with data
@@ -22,6 +26,7 @@ function useRowModalContext() {
 const RowModalContextProvider = ({ children, segmentData, refreshData }) => {
   // Data state variables for each modal
   const [segAssignData, setSegAssignData] = useState({});
+  const [clearSegAssignData, setClearSegAssignData] = useState({});
   const [deletePendingData, setDeletePendingData] = useState({});
   const [convertAccountData, setConvertAccountData] = useState({});
 
@@ -31,6 +36,11 @@ const RowModalContextProvider = ({ children, segmentData, refreshData }) => {
     onOpen: segAssignOnOpen,
     onClose: segAssignOnClose,
   } = useDisclosure();
+  const {
+    isOpen: clearSegAssignIsOpen,
+    onOpen: clearSegAssignOnOpen,
+    onClose: clearSegAssignOnClose,
+  } = useDisclosure();
   const { isOpen: delPenIsOpen, onOpen: delPenOnOpen, onClose: delPenOnClose } = useDisclosure();
   const { isOpen: convAccIsOpen, onOpen: convAccOnOpen, onClose: convAccOnClose } = useDisclosure();
 
@@ -38,6 +48,10 @@ const RowModalContextProvider = ({ children, segmentData, refreshData }) => {
   const openSegmentAssignmentWithData = data => {
     setSegAssignData(data);
     segAssignOnOpen();
+  };
+  const openClearSegmentsWithData = data => {
+    setClearSegAssignData(data);
+    clearSegAssignOnOpen();
   };
   const openDeletePendingWithData = data => {
     setDeletePendingData(data);
@@ -51,6 +65,7 @@ const RowModalContextProvider = ({ children, segmentData, refreshData }) => {
   // Set functions for context
   const modalFunctions = {
     openSegmentAssignmentModal: openSegmentAssignmentWithData,
+    openClearSegmentsModal: openClearSegmentsWithData,
     openDeletePendingModal: openDeletePendingWithData,
     openConvertAccountModal: openConvertAccountWithData,
   };
@@ -64,6 +79,12 @@ const RowModalContextProvider = ({ children, segmentData, refreshData }) => {
         refreshData={refreshData}
         isOpen={segAssignIsOpen}
         onClose={segAssignOnClose}
+      />
+      <ClearSegmentModal
+        userData={clearSegAssignData}
+        refreshData={refreshData}
+        isOpen={clearSegAssignIsOpen}
+        onClose={clearSegAssignOnClose}
       />
       <DeletePendingAccountModal
         userData={deletePendingData}

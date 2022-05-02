@@ -27,14 +27,13 @@ const editAccountInfo = data => {
   console.log(`Editing account info ${data}`);
 };
 
-const clearSegmentAssignment = data => {
-  // eslint-disable-next-line no-console
-  console.log(`Clearing segment assignment ${data}`);
-};
-
 const menuContent = data => {
-  const { openSegmentAssignmentModal, openDeletePendingModal, openConvertAccountModal } =
-    useRowModalContext();
+  const {
+    openSegmentAssignmentModal,
+    openDeletePendingModal,
+    openConvertAccountModal,
+    openClearSegmentsModal,
+  } = useRowModalContext();
   if (!data.isActive) {
     return <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>;
   }
@@ -54,7 +53,7 @@ const menuContent = data => {
       <MenuItem onClick={() => openConvertAccountModal(data)}>
         Convert Account to {data.role === ADMIN_ROLE ? 'Volunteer' : 'Admin'}
       </MenuItem>
-      <MenuItem color="red.600" onClick={() => clearSegmentAssignment(data)}>
+      <MenuItem color="red.600" onClick={() => openClearSegmentsModal(data)}>
         Clear Segment Assignment(s)
       </MenuItem>
     </>
