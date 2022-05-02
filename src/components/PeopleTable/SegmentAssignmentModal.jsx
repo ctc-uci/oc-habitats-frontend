@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { chakraComponents, Select } from 'chakra-react-select';
-// import { OCHBackend } from '../../common/utils';
+import { OCHBackend } from '../../common/utils';
 
 const SegmentDropdown = ({ allSegments, selectedSegments, setSelectedSegments }) => {
   const customSelectComponents = {
@@ -235,8 +235,11 @@ const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
     onClose();
   };
 
-  const handleSubmit = () => {
-    console.log(selectedSegments);
+  const handleSubmit = async () => {
+    await OCHBackend.put('/users/setSegmentAssignments', {
+      profileId: userData?.userId,
+      segmentIds: selectedSegments.map(segment => segment.id),
+    });
     closeWrapper();
   };
 
