@@ -62,7 +62,7 @@ const menuContent = data => {
 
 const badgeContent = data => {
   if (!data.registered) {
-    return <StyledBadge bgColor="ochBlueHover" text="Account Pending" />;
+    return <StyledBadge bgColor="ochBlueHover" textColor="white" text="Account Pending" />;
   }
   if (!data.isActive) {
     return <StyledBadge bgColor="gray.300" textColor="black" text="Inactive" />;
