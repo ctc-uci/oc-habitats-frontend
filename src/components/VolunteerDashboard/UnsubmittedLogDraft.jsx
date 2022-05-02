@@ -1,9 +1,14 @@
 import React from 'react';
-import { Flex, Box, Button, Text } from '@chakra-ui/react';
+import { Flex, Button, Text } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
+import { formatDate, formatTime } from '../../common/dateUtils';
 
-const UnsubmittedLogDraft = ({ title, timeDescription }) => {
+const UnsubmittedLogDraft = ({ segment, date, lastSaved }) => {
+  const formattedDate = formatDate(date);
+  const formattedSaveDate = formatDate(lastSaved);
+  const formattedSaveTime = formatTime(lastSaved);
+
   return (
     <Flex
       direction="column"
@@ -16,9 +21,11 @@ const UnsubmittedLogDraft = ({ title, timeDescription }) => {
       px={5}
       py={4}
     >
-      <Text fontSize="16px">{title}</Text>
+      <Text fontSize="16px">
+        {segment} — {formattedDate}
+      </Text>
       <Text fontSize="16px" color="#4A5568">
-        Last Saved: {timeDescription}
+        Last Saved: {formattedSaveDate} @ {formattedSaveTime}
       </Text>
       <Button w="100%" bgColor="#2BC0E3" size="sm" mt={2} rightIcon={<ArrowForwardIcon />}>
         Go to Log
@@ -28,8 +35,9 @@ const UnsubmittedLogDraft = ({ title, timeDescription }) => {
 };
 
 UnsubmittedLogDraft.propTypes = {
-  title: PropTypes.string.isRequired,
-  timeDescription: PropTypes.string.isRequired,
+  segment: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  lastSaved: PropTypes.string.isRequired,
 };
 
 export default UnsubmittedLogDraft;

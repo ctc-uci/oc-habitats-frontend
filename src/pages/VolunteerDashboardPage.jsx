@@ -24,7 +24,6 @@ import RecentlySubmittedLog from '../components/VolunteerDashboard/RecentlySubmi
 import { OCHBackend } from '../common/utils';
 
 // TODO: go to log button functionality
-// TODO: format date and time
 
 // temporary (?) notification component until notification system is written
 // TODO: replace notification
@@ -106,8 +105,9 @@ const VolunteerDashboardPage = () => {
       <UnsubmittedLogDraft
         // eslint-disable-next-line react/no-array-index-key
         key={idx}
-        title={`${draft.segment.segmentId} — ${draft.date}`}
-        timeDescription={draft.submittedAt}
+        segment={draft.segment.segmentId}
+        date={draft.date}
+        lastSaved={draft.submittedAt}
       />
     ));
   };
@@ -136,7 +136,8 @@ const VolunteerDashboardPage = () => {
       <RecentlySubmittedLog
         // eslint-disable-next-line react/no-array-index-key
         key={idx}
-        title={`${recent.segment.segmentId} — ${recent.date}`}
+        segment={recent.segment.segmentId}
+        date={recent.date}
         timeDescription={recent.submittedAt}
         status={recent.status}
       />

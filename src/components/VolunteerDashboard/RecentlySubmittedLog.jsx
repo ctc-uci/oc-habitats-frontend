@@ -2,6 +2,7 @@ import React from 'react';
 import { Flex, Button, Badge, Text } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
+import { formatDate, formatTime } from '../../common/dateUtils';
 
 const setDetails = status => {
   if (status === 'EDITS_REQUESTED') {
@@ -28,8 +29,11 @@ const setDetails = status => {
   };
 };
 
-const RecentlySubmittedLog = ({ title, timeDescription, status }) => {
+const RecentlySubmittedLog = ({ segment, date, timeDescription, status }) => {
   const details = setDetails(status);
+  const formattedDate = formatDate(date);
+  const submissionDate = formatDate(timeDescription);
+  const formattedTime = formatTime(timeDescription);
 
   return (
     <Flex
@@ -43,9 +47,11 @@ const RecentlySubmittedLog = ({ title, timeDescription, status }) => {
       px={5}
       py={4}
     >
-      <Text fontSize="16px">{title}</Text>
+      <Text fontSize="16px">
+        {segment} — {formattedDate}
+      </Text>
       <Text fontSize="16px" color="#4A5568">
-        Submitted: {timeDescription}
+        Submitted: {submissionDate} @ {formattedTime}
       </Text>
       <Badge mt={1} bg={details.badgeColor} textColor="white">
         {details.badge}
@@ -60,7 +66,8 @@ const RecentlySubmittedLog = ({ title, timeDescription, status }) => {
 };
 
 RecentlySubmittedLog.propTypes = {
-  title: PropTypes.string.isRequired,
+  segment: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
 };
