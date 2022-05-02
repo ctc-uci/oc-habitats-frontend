@@ -21,11 +21,8 @@ import {
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { chakraComponents, Select } from 'chakra-react-select';
-
-// const util = require('util');
 // import { OCHBackend } from '../../common/utils';
 
-// eslint-disable-next-line no-unused-vars
 const SegmentDropdown = ({ allSegments, selectedSegments, setSelectedSegments }) => {
   const customSelectComponents = {
     /* eslint-disable react/prop-types, react/jsx-props-no-spreading */
@@ -188,14 +185,13 @@ const SegmentCards = ({ allSegments, selectedSegments, currUserId }) => {
   };
 
   return (
-    <Box>
+    <Box fontSize="14px">
       <Text mb="8px">Segment Details</Text>
       <VStack w="100%">
         {selectedSegments?.map(segment => (
           <HStack
             key={segment}
             w="100%"
-            padding="12px"
             borderTop="1.5px solid"
             borderRight="1.5px solid"
             borderBottom="1.5px solid"
@@ -203,8 +199,9 @@ const SegmentCards = ({ allSegments, selectedSegments, currUserId }) => {
             borderColor="gray.200"
             borderLeftColor={cardColor(currentSegment(segment.id)?.volunteerData?.length)}
             borderRadius="6px"
+            padding="12px"
           >
-            <VStack alignItems="flex-start">
+            <VStack alignItems="flex-start" spacing="2px">
               <Text>{segment.label}</Text>
               <Text color="gray.500">Last Updated: XX-XX-XXXX</Text>
               <Text color="gray.500" display="inline-flex">
@@ -236,6 +233,11 @@ const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
   const closeWrapper = () => {
     setSelectedSegments([]);
     onClose();
+  };
+
+  const handleSubmit = () => {
+    console.log(selectedSegments);
+    closeWrapper();
   };
 
   useEffect(() => {
@@ -295,7 +297,7 @@ const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
           <Button w="120px" colorScheme="gray" mr="12px" onClick={closeWrapper}>
             Cancel
           </Button>
-          <Button variant="solid" bg="ochBlue" isDisabled={!dirty}>
+          <Button variant="solid" bg="ochBlue" isDisabled={!dirty} onClick={handleSubmit}>
             Save Changes
           </Button>
         </ModalFooter>
