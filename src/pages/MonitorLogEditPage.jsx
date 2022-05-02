@@ -1,3 +1,4 @@
+/* eslint-disable react/self-closing-comp */
 import {
   Box,
   Button,
@@ -5,6 +6,13 @@ import {
   Heading,
   HStack,
   Link,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
   Select,
   Spacer,
   Tabs,
@@ -16,12 +24,14 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp, FiCheck } from 'react-icons/fi';
 // import { OCHBackend } from '../common/utils';
 import LogTemplateSwitcher from '../components/LogTemplateSwitcher';
+import NewQuestionModal from '../components/NewQuestionModal';
 
 const MonitorLogEditPage = () => {
   const formMethods = useForm({});
   const navigate = useNavigate();
 
   const checkInModal = useDisclosure();
+  const AddQuestionModal = useDisclosure();
 
   const [activeTab, setActiveTab] = useState(0);
   // tab # will be dynamic with dynamic listed species
@@ -85,15 +95,21 @@ const MonitorLogEditPage = () => {
               </Select>
               <Spacer />
               {currentTemplate !== 'non-listed' && currentTemplate !== 'predator' && (
-                <Link to="/new-question">
+                <>
                   <Button
                     bgColor="ochOrange"
                     // type="submit"
-                    onClick={openPopup}
+                    onClick={AddQuestionModal.onOpen}
                   >
                     + Add Question
                   </Button>
-                </Link>
+
+                  <Modal isOpen={AddQuestionModal.isOpen} onClose={AddQuestionModal.onClose}>
+                    <ModalBody>
+                      <NewQuestionModal />
+                    </ModalBody>
+                  </Modal>
+                </>
               )}
             </HStack>
             <LogTemplateSwitcher type={currentTemplate} />
