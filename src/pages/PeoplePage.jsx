@@ -37,7 +37,7 @@ const PeoplePage = () => {
   const [adminData, setAdminData] = useState([]);
   const [segments, setSegments] = useState([]);
 
-  useEffect(async () => {
+  const fetchTableData = async () => {
     const [users, segmentsData] = await Promise.all([
       OCHBackend.get('users/'),
       OCHBackend.get('segments/'),
@@ -52,6 +52,10 @@ const PeoplePage = () => {
     setVolunteerData(users.data.filter(user => user?.role === VOLUNTEER_ROLE));
     setAdminData(users.data.filter(user => user?.role === ADMIN_ROLE));
     setIsLoading(false);
+  };
+
+  useEffect(async () => {
+    await fetchTableData();
   }, []);
 
   return (
@@ -77,6 +81,7 @@ const PeoplePage = () => {
         userData={volunteerData}
         segments={segments}
         loading={isLoading}
+        refreshData={fetchTableData}
       />
       <PeopleTable variant="admin" userData={adminData} segments={segments} loading={isLoading} />
     </Container>

@@ -223,7 +223,7 @@ const formatOptions = options =>
     ...segment,
   }));
 
-const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
+const SegmentAssignmentModal = ({ userData, segmentData, refreshData, isOpen, onClose }) => {
   // Workaround for responsive modal sizes
   const modalSizes = useBreakpointValue({ base: 'sm', md: 'lg' });
   const [dirty, setDirty] = useState(false);
@@ -240,6 +240,7 @@ const SegmentAssignmentModal = ({ userData, segmentData, isOpen, onClose }) => {
       profileId: userData?.userId,
       segmentIds: selectedSegments.map(segment => segment.id),
     });
+    await refreshData();
     closeWrapper();
   };
 
@@ -331,6 +332,7 @@ SegmentAssignmentModal.propTypes = {
   segmentData: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   userData: PropTypes.object.isRequired,
+  refreshData: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };

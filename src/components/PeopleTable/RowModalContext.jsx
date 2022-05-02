@@ -19,7 +19,7 @@ function useRowModalContext() {
 
 // Allows any row in the PeopleTable to open modals
 // with the data from that row
-const RowModalContextProvider = ({ children, segmentData }) => {
+const RowModalContextProvider = ({ children, segmentData, refreshData }) => {
   // Data state variables for each modal
   const [segAssignData, setSegAssignData] = useState({});
   const [deletePendingData, setDeletePendingData] = useState({});
@@ -61,16 +61,19 @@ const RowModalContextProvider = ({ children, segmentData }) => {
       <SegmentAssignmentModal
         userData={segAssignData}
         segmentData={segmentData}
+        refreshData={refreshData}
         isOpen={segAssignIsOpen}
         onClose={segAssignOnClose}
       />
       <DeletePendingAccountModal
         userData={deletePendingData}
+        refreshData={refreshData}
         isOpen={delPenIsOpen}
         onClose={delPenOnClose}
       />
       <ConvertAccountTypeModal
         userData={convertAccountData}
+        refreshData={refreshData}
         isOpen={convAccIsOpen}
         onClose={convAccOnClose}
       />
@@ -82,6 +85,7 @@ const RowModalContextProvider = ({ children, segmentData }) => {
 RowModalContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
   segmentData: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  refreshData: PropTypes.func.isRequired,
 };
 
 export { useRowModalContext, RowModalContextProvider };

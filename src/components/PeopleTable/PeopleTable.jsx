@@ -63,6 +63,7 @@ const cellStructure = [
     id: 'name',
     Header: 'Name',
     accessor: d => ({
+      userId: d.id,
       name: `${d.firstName} ${d.lastName}`,
       email: d.email,
       registered: d.registered,
@@ -150,10 +151,10 @@ JSON.safeStringify = (obj, indent = 2) => {
   return retVal;
 };
 
-const PeopleTable = ({ variant, userData, segments, loading }) => {
+const PeopleTable = ({ variant, userData, segments, loading, refreshData }) => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const columns = useMemo(() => cellStructure, []);
-  const data = useMemo(() => userData, [loading]);
+  const data = useMemo(() => userData, [userData]);
   const filterTypes = useMemo(
     () => ({
       nameFilter: nameFilterFn,
@@ -215,7 +216,7 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
             <PeopleTableHeader headerGroups={headerGroups} loading={loading} />
           </Thead>
           <Tbody {...getTableBodyProps()}>
-            <RowModalContextProvider segmentData={segments}>
+            <RowModalContextProvider segmentData={segments} refreshData={refreshData}>
               {tableContent(loading, page, prepareRow, isMobile)}
             </RowModalContextProvider>
           </Tbody>
@@ -240,6 +241,7 @@ PeopleTable.propTypes = {
   userData: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   segments: PropTypes.object.isRequired,
+  refreshData: PropTypes.func.isRequired,
 };
 
 export default PeopleTable;
