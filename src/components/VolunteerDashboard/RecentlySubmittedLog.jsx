@@ -4,33 +4,28 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import { formatDate, formatTime } from '../../common/dateUtils';
 
-const setDetails = status => {
-  if (status === 'EDITS_REQUESTED') {
-    return {
-      borderColor: 'red',
-      badge: 'EDITS REQUESTED',
-      badgeColor: '#C53030',
-      goToLogButton: true,
-    };
-  }
-  if (status === 'UNDER_REVIEW') {
-    return {
-      borderColor: 'lightgray',
-      badge: 'UNDER REVIEW',
-      badgeColor: '#3182CE',
-      goToLogButton: false,
-    };
-  }
-  return {
+const details = {
+  EDITS_REQUESTED: {
+    borderColor: 'red',
+    badge: 'EDITS REQUESTED',
+    badgeColor: '#C53030',
+    goToLogButton: true,
+  },
+  UNDER_REVIEW: {
+    borderColor: 'lightgray',
+    badge: 'UNDER REVIEW',
+    badgeColor: '#3182CE',
+    goToLogButton: false,
+  },
+  APPROVED: {
     borderColor: 'lightgray',
     badge: 'APPROVED',
     badgeColor: '#38A169',
     goToLogButton: false,
-  };
+  },
 };
 
 const RecentlySubmittedLog = ({ segment, date, timeDescription, status }) => {
-  const details = setDetails(status);
   const formattedDate = formatDate(date);
   const submissionDate = formatDate(timeDescription);
   const formattedTime = formatTime(timeDescription);
@@ -41,7 +36,7 @@ const RecentlySubmittedLog = ({ segment, date, timeDescription, status }) => {
       align="flex-start"
       border="2px"
       borderRadius="md"
-      borderColor={details.borderColor}
+      borderColor={details[status].borderColor}
       w={{ lg: '100%', sm: '100%' }}
       maxW={{ md: '420px' }}
       h={{ lg: '155px', md: '170px', base: 'fit-content' }}
@@ -54,10 +49,10 @@ const RecentlySubmittedLog = ({ segment, date, timeDescription, status }) => {
       <Text fontSize="16px" color="#4A5568">
         Submitted: {submissionDate} @ {formattedTime}
       </Text>
-      <Badge mt={1} bg={details.badgeColor} textColor="white">
-        {details.badge}
+      <Badge mt={1} bg={details[status].badgeColor} textColor="white">
+        {details[status].badge}
       </Badge>
-      {details.goToLogButton && (
+      {details[status].goToLogButton && (
         <Button w="100%" bgColor="#2BC0E3" size="sm" mt={3} rightIcon={<ArrowForwardIcon />}>
           Go to Log
         </Button>
