@@ -74,7 +74,7 @@ const VolunteerDashboardPage = () => {
   const Segments = () => {
     if (userData.segments.length === 0) {
       return (
-        <Text>
+        <Text fontSize={{ md: '16px', sm: '14px' }}>
           You have not been assigned any segments this month. If you believe this is a mistake,
           please contact ochabitats@ochabitats.org.
         </Text>
@@ -99,7 +99,11 @@ const VolunteerDashboardPage = () => {
     const userDrafts = userSubmissions.filter(submission => submission.status === 'UNSUBMITTED');
 
     if (userDrafts.length === 0) {
-      return <Text>You do not have any unsubmitted log drafts.</Text>;
+      return (
+        <Text fontSize={{ md: '16px', sm: '14px' }}>
+          You do not have any unsubmitted log drafts.
+        </Text>
+      );
     }
 
     return userDrafts
@@ -132,7 +136,11 @@ const VolunteerDashboardPage = () => {
     );
 
     if (recents.length === 0) {
-      return <Text>You do not have any recently submitted logs.</Text>;
+      return (
+        <Text fontSize={{ md: '16px', sm: '14px' }}>
+          You do not have any recently submitted logs.
+        </Text>
+      );
     }
 
     return recents.map((recent, idx) => (
@@ -189,7 +197,7 @@ const VolunteerDashboardPage = () => {
       </VStack>
       <br />
       <Heading size="md">Segment Assignment(s)</Heading>
-      <Text py="3" fontSize="16px" color="#4A5568">
+      <Text py="3" fontSize={{ md: '16px', sm: '14px' }} color="#4A5568">
         Note on Parking: If you pay for parking (not to exceed $6 without approval), please submit
         your receipts for reimbursement with your name and segment.
       </Text>
