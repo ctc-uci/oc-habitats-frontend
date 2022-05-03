@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/self-closing-comp */
 import {
   Box,
@@ -31,6 +32,8 @@ import { FiArrowUp, FiCheck } from 'react-icons/fi';
 import LogTemplateSwitcher from '../components/LogTemplateSwitcher';
 import NewQuestionModal from '../components/NewQuestionModal';
 
+import { OCHBackend } from '../common/utils';
+
 const MonitorLogEditPage = () => {
   const formMethods = useForm({});
   const navigate = useNavigate();
@@ -54,6 +57,20 @@ const MonitorLogEditPage = () => {
   const [title, setTitle] = useState();
   const [type, setType] = useState();
   const [tooltip, setTooltip] = useState();
+
+  const addQuestion = async () => {
+    const form = await OCHBackend.put(`/forms/update/${currentTemplate}`, {
+      newField: {
+        title,
+        fieldType: type,
+        static: true,
+        tooltip,
+      },
+    });
+
+    console.log(form);
+    addQuestionModal.onClose();
+  };
 
   useEffect(async () => {
     checkInModal.onOpen();
@@ -175,7 +192,7 @@ const MonitorLogEditPage = () => {
                           bgColor="ochBlue"
                           w="412px"
                           h="40px"
-                          onClick={addQuestionModal.onClose}
+                          onClick={addQuestion}
                         >
                           Add Question
                         </Button>
