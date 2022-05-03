@@ -3,9 +3,11 @@ import {
   Box,
   Button,
   Flex,
+  FormControl,
+  Input,
+  FormLabel,
   Heading,
   HStack,
-  Link,
   Modal,
   ModalContent,
   ModalOverlay,
@@ -13,9 +15,12 @@ import {
   ModalBody,
   ModalFooter,
   ModalCloseButton,
+  Radio,
+  RadioGroup,
   Select,
   Spacer,
   Tabs,
+  Textarea,
   useDisclosure,
 } from '@chakra-ui/react';
 import { React, useEffect, useRef, useState } from 'react';
@@ -31,7 +36,7 @@ const MonitorLogEditPage = () => {
   const navigate = useNavigate();
 
   const checkInModal = useDisclosure();
-  const AddQuestionModal = useDisclosure();
+  const addQuestionModal = useDisclosure();
 
   const [activeTab, setActiveTab] = useState(0);
   // tab # will be dynamic with dynamic listed species
@@ -42,7 +47,13 @@ const MonitorLogEditPage = () => {
   const returnToTop = () => {
     topRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+  // state for tab switcher
   const [currentTemplate, setCurrentTemplate] = useState('general');
+
+  // state for form in add question popup
+  const [title, setTitle] = useState();
+  const [type, setType] = useState();
+  const [tooltip, setTooltip] = useState();
 
   useEffect(async () => {
     checkInModal.onOpen();
@@ -59,10 +70,6 @@ const MonitorLogEditPage = () => {
       console.error(err.message);
     }
   }, []);
-
-  const openPopup = () => {
-    navigate('/new-question');
-  };
 
   return (
     <Flex w="100%" justifyContent="center">
@@ -99,15 +106,81 @@ const MonitorLogEditPage = () => {
                   <Button
                     bgColor="ochOrange"
                     // type="submit"
-                    onClick={AddQuestionModal.onOpen}
+                    onClick={addQuestionModal.onOpen}
                   >
                     + Add Question
                   </Button>
 
-                  <Modal isOpen={AddQuestionModal.isOpen} onClose={AddQuestionModal.onClose}>
-                    <ModalBody>
-                      <NewQuestionModal />
-                    </ModalBody>
+                  <Modal
+                    w="460px"
+                    h="512px"
+                    bgColor="rgba(253, 253, 253, 1)"
+                    px="15px"
+                    py="10px"
+                    isOpen={addQuestionModal.isOpen}
+                    onClose={addQuestionModal.onClose}
+                  >
+                    <ModalContent>
+                      <ModalHeader>Add Question</ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <Box>
+                          <FormControl>
+                            <FormControl>
+                              <FormLabel htmlFor="title">Question Title</FormLabel>
+                              <Input
+                                id="title"
+                                type="text"
+                                value={title}
+                                placeholder="Title"
+                                onChange={({ target }) => setTitle(target.value)}
+                                w="412px"
+                                mb="20px"
+                              />
+                            </FormControl>
+                            <FormControl>
+                              <FormLabel htmlFor="type">Question Type</FormLabel>
+                              <RadioGroup
+                                id="type"
+                                onChange={e => setType(e)}
+                                value={type}
+                                maxW="700px"
+                                defaultValue="TEXT"
+                              >
+                                <HStack spacing="2px" mb="10px">
+                                  <Radio value="TEXT" mr="10px">
+                                    Text Input
+                                  </Radio>
+                                  <Radio value="NUMBER">Number Input</Radio>
+                                </HStack>
+                              </RadioGroup>
+                              <FormControl>
+                                <FormLabel>Tooltip (optional)</FormLabel>
+                                <Textarea
+                                  value={tooltip}
+                                  onChange={({ target }) => setTooltip(target.value)}
+                                  placeholder="Type here..."
+                                  w="412px"
+                                  h="128px"
+                                  mb="20px"
+                                />
+                              </FormControl>
+                            </FormControl>
+                          </FormControl>
+                        </Box>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          type="submit"
+                          bgColor="ochBlue"
+                          w="412px"
+                          h="40px"
+                          onClick={addQuestionModal.onClose}
+                        >
+                          Add Question
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
                   </Modal>
                 </>
               )}
