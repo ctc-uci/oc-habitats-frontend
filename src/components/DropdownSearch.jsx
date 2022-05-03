@@ -7,8 +7,8 @@ const DropdownSearch = ({ options, value, handleSelectedValue }) => {
 
   const getSelected = e => {
     if (e) {
-      setSelected(e.value);
-      handleSelectedValue(e.value);
+      setSelected(e);
+      handleSelectedValue(e);
     } else {
       setSelected(null);
       handleSelectedValue(null);
@@ -20,10 +20,14 @@ const DropdownSearch = ({ options, value, handleSelectedValue }) => {
       placeholder="Enter species name..."
       options={options}
       onChange={getSelected}
-      value={{ value: selected, label: selected }}
+      value={selected}
       isClearable
     />
   );
+};
+
+DropdownSearch.defaultProps = {
+  value: null,
 };
 
 DropdownSearch.propTypes = {
@@ -34,7 +38,7 @@ DropdownSearch.propTypes = {
     }),
   ).isRequired,
   handleSelectedValue: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
 };
 
 export default DropdownSearch;
