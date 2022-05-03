@@ -5,22 +5,28 @@ import {
   Heading,
   Box,
   VStack,
-  HStack,
+  Stack,
   Alert,
   AlertIcon,
   AlertDescription,
   AlertTitle,
   CloseButton,
   Button,
-  Badge,
   Text,
-  Link,
+  Tooltip,
+  Flex,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import { ArrowForwardIcon, InfoIcon } from '@chakra-ui/icons';
-import { FiMapPin, FiImage } from 'react-icons/fi';
+import SegmentAssignment from '../components/VolunteerDashboard/SegmentAssignment';
+import UnsubmittedLogDraft from '../components/VolunteerDashboard/UnsubmittedLogDraft';
+import RecentlySubmittedLog from '../components/VolunteerDashboard/RecentlySubmittedLog';
 import { OCHBackend } from '../common/utils';
 
-// COMPONENTS
+// TODO: go to log button functionality
+
+// temporary (?) notification component until notification system is written
+// TODO: replace notification
 const Toast = props => {
   const [closed, setClosed] = useState();
   const { title, description, status, variant, closeButton, goToLogButton } = props;
@@ -45,101 +51,19 @@ const Toast = props => {
   );
 };
 
-const SegAssignment = props => {
-  const { title, place, description } = props;
-  return (
-    <Box w="400px">
-      <Text fontSize="16px" color="#231F20">
-        {title}
-      </Text>
-      <Text fontSize="16px" color="#4A5568">
-        {place}
-      </Text>
-      <FiMapPin color="#156071" style={{ display: 'inline' }} />
-      <Text marginLeft="3" as="u" fontSize="16px" color="#156071">
-        <Link href="https://www.google.com/maps" isExternal>
-          Google Maps Link
-        </Link>
-      </Text>
-      <Text />
-      <FiImage color="#156071" style={{ display: 'inline' }} />
-      <Text marginLeft="3" as="u" fontSize="16px" color="#156071">
-        <Link href="https://www.google.com/maps" isExternal>
-          Map Image
-        </Link>
-      </Text>
-      <Text fontSize="16px" color="#4A5568">
-        {description}
-      </Text>
-    </Box>
-  );
-};
-
-const UnsubmittedLogDraft = props => {
-  const { title, timeDescription } = props;
-  return (
-    <Box align="center" border="2px" borderRadius="md" borderColor="lightgray" w="400px" h="125px">
-      <Box w="400px" h="15px" />
-      <Text fontSize="16px" pl="6" textAlign="left">
-        {title}
-      </Text>
-      <Text fontSize="16px" pl="6" textAlign="left" color="#4A5568">
-        {timeDescription}
-      </Text>
-      <Box w="400px" h="10px" />
-      <Button w="350px" bgColor="#2BC0E3" size="sm" rightIcon={<ArrowForwardIcon />}>
-        Go to Log
-      </Button>
-    </Box>
-  );
-};
-
-const RecentlySubmittedLog = props => {
-  const {
-    title,
-    timeDescription,
-    badgeColor,
-    badgeDescription,
-    borderColor,
-    goToLogButton,
-    marginAmt,
-  } = props;
-  return (
-    <Box
-      align="center"
-      border="2px"
-      borderRadius="md"
-      borderColor={borderColor}
-      w="400px"
-      h="155px"
-    >
-      <Box w="400px" h="15px" />
-      <Text fontSize="16px" pl="6" textAlign="left">
-        {title}
-      </Text>
-      <Text fontSize="16px" pl="6" textAlign="left" color="#4A5568">
-        {timeDescription}
-      </Text>
-      <Badge marginRight={marginAmt} bg={badgeColor} textColor="white">
-        {badgeDescription}
-      </Badge>
-      <Box w="400px" h="15px" />
-      {goToLogButton && (
-        <Button w="350px" bgColor="#2BC0E3" size="sm" rightIcon={<ArrowForwardIcon />}>
-          Go to Log
-        </Button>
-      )}
-    </Box>
-  );
-};
-
-// GET BACKEND DATA
 const VolunteerDashboardPage = () => {
   const [userData, setUserData] = useState(null);
+  const [userSubmissions, setUserSubmissions] = useState([]);
+
+  // Get data from backend
   useEffect(async () => {
     try {
-      const res = await OCHBackend.get('users/me', { withCredentials: true });
-      setUserData(res.data);
+      const [userRes, submissionRes] = await Promise.all([
+        OCHBackend.get('/users/me', { withCredentials: true }),
+        OCHBackend.get('/users/userSubmissions', { withCredentials: true }),
+      ]);
+      setUserData(userRes.data);
+      setUserSubmissions(submissionRes.data);
     } catch (err) {
       // TODO: handle error
       // eslint-disable-next-line no-console
@@ -147,132 +71,169 @@ const VolunteerDashboardPage = () => {
     }
   }, []);
 
+  const Segments = () => {
+    if (userData.segments.length === 0) {
+      return (
+        <Text fontSize={{ md: '16px', sm: '14px' }}>
+          You have not been assigned any segments this month. If you believe this is a mistake,
+          please contact ochabitats@ochabitats.org.
+        </Text>
+      );
+    }
+
+    return userData.segments
+      .sort((a, b) => a.segmentId.localeCompare(b.segmentId))
+      .map(segment => (
+        <SegmentAssignment
+          key={segment.segmentId}
+          segment={segment.segmentId}
+          name={segment.name}
+          place={segment.streets}
+          mapLink={segment.mapLink}
+          description={segment.parking}
+        />
+      ));
+  };
+
+  const Unsubmitted = () => {
+    const userDrafts = userSubmissions.filter(submission => submission.status === 'UNSUBMITTED');
+
+    if (userDrafts.length === 0) {
+      return (
+        <Text fontSize={{ md: '16px', sm: '14px' }}>
+          You do not have any unsubmitted log drafts.
+        </Text>
+      );
+    }
+
+    return userDrafts
+      .sort((a, b) => b.lastEditedAt.localeCompare(a.lastEditedAt))
+      .map((draft, idx) => (
+        <UnsubmittedLogDraft
+          // eslint-disable-next-line react/no-array-index-key
+          key={idx}
+          segment={draft.segment.segmentId}
+          date={draft.date}
+          lastSaved={draft.lastEditedAt}
+        />
+      ));
+  };
+
+  const Recents = () => {
+    const notApproved = userSubmissions
+      .filter(
+        submission =>
+          submission.status === 'EDITS_REQUESTED' || submission.status === 'UNDER_REVIEW',
+      )
+      .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
+      .sort((a, b) => a.status.localeCompare(b.status));
+
+    const recents = notApproved.concat(
+      userSubmissions
+        .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
+        .filter(submission => submission.status === 'APPROVED')
+        .slice(0, 6 - notApproved.length),
+    );
+
+    if (recents.length === 0) {
+      return (
+        <Text fontSize={{ md: '16px', sm: '14px' }}>
+          You do not have any recently submitted logs.
+        </Text>
+      );
+    }
+
+    return recents.map((recent, idx) => (
+      <RecentlySubmittedLog
+        // eslint-disable-next-line react/no-array-index-key
+        key={idx}
+        segment={recent.segment.segmentId}
+        date={recent.date}
+        timeDescription={recent.submittedAt}
+        status={recent.status}
+      />
+    ));
+  };
+
   return (
-    <div>
-      <Container maxW="90vw">
-        <Heading size="lg" py="10">
-          Welcome Back, {userData?.firstName}!
-        </Heading>
-        <Heading size="md" py="1">
-          Notifications
-        </Heading>
-        <VStack spacing="5px" align="left">
-          <Toast
-            title="You have submitted a log for: OC09c, OC09b"
-            description="You have not submitted a log for: OC01"
-            status="info"
-            variant="left-accent"
-            closeButton={false}
-          />
-          <Toast
-            title="Your monitor log for OC09a on 02-16-2022 has been approved!"
-            description="Thank you for your hard work, keep it up!"
-            status="success"
-            variant="left-accent"
-            closeButton
-          />
-          <Toast
-            title="Monitor logs for segment(s) OC01 have not been submitted yet."
-            description="Please submit these logs by 02-28-2022 at 12:00PM."
-            status="warning"
-            variant="left-accent"
-            closeButton
-          />
-          <Toast
-            title="Edits have been requested for your OC09b log on 02-16-2022"
-            description="Request Reason: [Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    <Container maxW="90vw" pb={{ sm: '100px', lg: '0px' }}>
+      <Heading size="xl" py="10">
+        Welcome Back, {userData?.firstName}!
+      </Heading>
+      <Heading size="md" py="1">
+        Notifications
+      </Heading>
+      <VStack spacing="5px" align="left">
+        <Toast
+          title="You have submitted a log for: OC09c, OC09b"
+          description="You have not submitted a log for: OC01"
+          status="info"
+          variant="left-accent"
+          closeButton={false}
+        />
+        <Toast
+          title="Your monitor log for OC09a on 02-16-2022 has been approved!"
+          description="Thank you for your hard work, keep it up!"
+          status="success"
+          variant="left-accent"
+          closeButton
+        />
+        <Toast
+          title="Monitor logs for segment(s) OC01 have not been submitted yet."
+          description="Please submit these logs by 02-28-2022 at 12:00PM."
+          status="warning"
+          variant="left-accent"
+          closeButton
+        />
+        <Toast
+          title="Edits have been requested for your OC09b log on 02-16-2022"
+          description="Request Reason: [Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
            eiusmod tempor incididunt ut labore et dolore magna aliqua. Diam volutpat commodo
            sed egestas egestas fringilla.]"
-            status="error"
-            variant="left-accent"
-            goToLogButton
-          />
-        </VStack>
-        <Box w="1200px" h="60px" />
-        <Heading size="md">Segment Assignment(s)</Heading>
-        <Text py="3" fontSize="16px" color="#4A5568">
-          Note on Parking: If you pay for parking (not to exceed $6 without approval), please submit
-          your receipts for reimbursement with your name and segment.
-        </Text>
-        <HStack spacing="50px">
-          {userData != null &&
-            userData.segments.map(segment => (
-              <SegAssignment
-                key={segment.segmentID}
-                title={`${segment.name} - ${segment.segmentId}`}
-                place={segment.streets}
-                description={segment.parking}
-              />
-            ))}
-        </HStack>
-        <Heading size="md" py="5">
-          Unsubmitted Log Drafts
-        </Heading>
-        <UnsubmittedLogDraft
-          title="OC01 - 02/22/2022"
-          timeDescription="Last Saved: 02/23/2022 @ 07:34 PM"
+          status="error"
+          variant="left-accent"
+          goToLogButton
         />
-        <Heading size="md" pt="50">
-          Recently Submitted Logs &nbsp;&nbsp;
-          <InfoIcon w={6} h={6} color="#156071" />
-        </Heading>
-        <Box w="400px" h="20px" />
-        <HStack spacing="10px">
-          <RecentlySubmittedLog
-            title="OC09b - 02/16/2022"
-            timeDescription="Submitted: 02/17/2022 @ 01:27 PM"
-            badgeColor="#C53030"
-            badgeDescription="EDITS REQUESTED"
-            borderColor="red"
-            goToLogButton
-            marginAmt="230"
-          />
-          <RecentlySubmittedLog
-            title="OC09a - 02/16/2022"
-            timeDescription="Submitted: 02/17/2022 @ 11:56 PM"
-            badgeColor="#38A169"
-            badgeDescription="APPROVED"
-            borderColor="lightgray"
-            marginAmt="275"
-          />
-          <RecentlySubmittedLog
-            title="OC13 - 01/24/2022"
-            timeDescription="Submitted: 01/26/2022 @ 12:35 PM"
-            badgeColor="#38A169"
-            badgeDescription="APPROVED"
-            borderColor="lightgray"
-            marginAmt="275"
-          />
-        </HStack>
-        <Box w="400px" h="10px" />
-        <HStack spacing="10px">
-          <RecentlySubmittedLog
-            title="OC12 - 01/24/2022"
-            timeDescription="Submitted: 01/26/2022 @ 12:35 PM"
-            badgeColor="#38A169"
-            badgeDescription="APPROVED"
-            borderColor="lightgray"
-            marginAmt="275"
-          />
-          <RecentlySubmittedLog
-            title="OC11 - 01/24/2022"
-            timeDescription="Submitted: 01/26/2022 @ 12:35 PM"
-            badgeColor="#38A169"
-            badgeDescription="APPROVED"
-            borderColor="lightgray"
-            marginAmt="275"
-          />
-          <RecentlySubmittedLog
-            title="OC10 - 01/24/2022"
-            timeDescription="Submitted: 01/26/2022 @ 12:35 PM"
-            badgeColor="#38A169"
-            badgeDescription="APPROVED"
-            borderColor="lightgray"
-            marginAmt="275"
-          />
-        </HStack>
-      </Container>
-    </div>
+      </VStack>
+      <br />
+      <Heading size="md">Segment Assignment(s)</Heading>
+      <Text py="3" fontSize={{ md: '16px', sm: '14px' }} color="#4A5568">
+        Note on Parking: If you pay for parking (not to exceed $6 without approval), please submit
+        your receipts for reimbursement with your name and segment.
+      </Text>
+      <Stack
+        direction={{ md: 'row', sm: 'column' }}
+        spacing={{ md: '50px', sm: '20px' }}
+        align="flex-start"
+      >
+        {userData != null && Segments()}
+      </Stack>
+      <Heading size="md" py="5" mt={4}>
+        Unsubmitted Log Drafts
+      </Heading>
+      <Stack direction={{ md: 'row', sm: 'column' }} spacing="20px">
+        {Unsubmitted()}
+      </Stack>
+      <Flex direction="row" align="center" pt="50">
+        <Heading size="md">Recently Submitted Logs &nbsp;&nbsp;</Heading>
+        <Tooltip
+          hasArrow
+          bg="black"
+          label="Submitted monitor logs can be edited and resubmitted if they haven't been approved yet."
+        >
+          <InfoIcon w={5} h={5} color="ochBluePress" />
+        </Tooltip>
+      </Flex>
+      <SimpleGrid
+        row={{ md: 2, sm: 1 }}
+        columns={{ md: 3, sm: 1 }}
+        mt={4}
+        spacing="20px"
+        maxW="1300px"
+      >
+        {Recents()}
+      </SimpleGrid>
+    </Container>
   );
 };
 

@@ -52,14 +52,7 @@ function StatsPopUp(title, numIssues, issueData) {
 
 const EmergentIssuesCard = ({ title, numIssues, issueData }) => {
   return (
-    <Box
-      w={{ lg: '32%', sm: '100%' }}
-      borderWidth="1px"
-      bg="#F7FAFC"
-      borderRadius="12px"
-      borderColor="#E2E8F0"
-      p={6}
-    >
+    <Box w="100%" borderWidth="1px" bg="#F7FAFC" borderRadius="12px" borderColor="#E2E8F0" p={6}>
       <Text fontSize="20px" fontWeight="500">
         {title}
       </Text>
