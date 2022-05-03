@@ -6,7 +6,6 @@ import {
   Box,
   VStack,
   Stack,
-  Wrap,
   Alert,
   AlertIcon,
   AlertDescription,
@@ -16,6 +15,7 @@ import {
   Text,
   Tooltip,
   Flex,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import { ArrowForwardIcon, InfoIcon } from '@chakra-ui/icons';
 import SegmentAssignment from '../components/VolunteerDashboard/SegmentAssignment';
@@ -203,7 +203,9 @@ const VolunteerDashboardPage = () => {
       <Heading size="md" py="5" mt={4}>
         Unsubmitted Log Drafts
       </Heading>
-      <Wrap spacing="20px">{Unsubmitted()}</Wrap>
+      <Stack direction={{ md: 'row', sm: 'column' }} spacing="20px">
+        {Unsubmitted()}
+      </Stack>
       <Flex direction="row" align="center" pt="50">
         <Heading size="md">Recently Submitted Logs &nbsp;&nbsp;</Heading>
         <Tooltip
@@ -214,9 +216,15 @@ const VolunteerDashboardPage = () => {
           <InfoIcon w={5} h={5} color="ochBluePress" />
         </Tooltip>
       </Flex>
-      <Wrap mt={4} spacing="20px">
+      <SimpleGrid
+        row={{ md: 2, sm: 1 }}
+        columns={{ md: 3, sm: 1 }}
+        mt={4}
+        spacing="20px"
+        maxW="1300px"
+      >
         {Recents()}
-      </Wrap>
+      </SimpleGrid>
     </Container>
   );
 };

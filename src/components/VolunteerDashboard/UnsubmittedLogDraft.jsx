@@ -16,8 +16,8 @@ const UnsubmittedLogDraft = ({ segment, date, lastSaved }) => {
       border="2px"
       borderRadius="md"
       borderColor="lightgray"
-      w={{ lg: '420px', md: '310px', sm: '100%' }}
-      h={{ lg: '125px', md: '175px' }}
+      w={{ lg: '420px', sm: '100%' }}
+      h={{ lg: '125px', base: 'fit-content' }}
       px={5}
       py={4}
     >

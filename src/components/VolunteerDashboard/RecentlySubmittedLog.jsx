@@ -42,8 +42,9 @@ const RecentlySubmittedLog = ({ segment, date, timeDescription, status }) => {
       border="2px"
       borderRadius="md"
       borderColor={details.borderColor}
-      w={{ lg: '420px', md: '310px', sm: '100%' }}
-      h={{ lg: '155px', md: '200px' }}
+      w={{ lg: '100%', sm: '100%' }}
+      maxW={{ md: '420px' }}
+      h={{ lg: '155px', md: '170px', base: 'fit-content' }}
       px={5}
       py={4}
     >
