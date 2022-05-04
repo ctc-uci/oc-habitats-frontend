@@ -23,10 +23,12 @@ import {
   Textarea,
   useDisclosure,
   Link,
+  Select,
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import axios from 'axios';
 import './SectionTableRow.css';
+// import UpdateDeleteSegmentMenu from './SectionTableEditDeleteMenu';
 
 // Custom component to render Name
 const SegmentNameColumn = ({ data }) => {
@@ -68,34 +70,24 @@ const MapLinkColumn = ({ data }) => {
   );
 };
 
-const UpdateSegmentPopupColumn = ({ data }) => {
+const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSection }) => {
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
-  const [segId, setSegId] = useState('');
-  const [segName, setSegName] = useState('');
-  const [segLocation, setSegLocation] = useState('');
-  const [segLink, setSegLink] = useState('');
-  const [segParking, setSegParking] = useState('');
-  const [change, setChange] = useState(false); // new
+  const [sectionID, setSectionID] = useState(currentSection);
+  const [segId, setSegId] = useState(data.segmentId);
+  const [segName, setSegName] = useState(data.name);
+  const [segLocation, setSegLocation] = useState(data.streets);
+  const [segLink, setSegLink] = useState(data.mapLink);
+  const [segParking, setSegParking] = useState(data.parking);
+  console.log('DATA', sectionID);
 
-  // const addNewSpecies = async newSpecies => {
-  //   await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
-  //     name: newSpecies.name,
-  //     code: newSpecies.code,
-  //     isEndangered: newSpecies.group === 'endangered',
-  //     isAssigned: false,
-  //   });
-  //   setChange(change);
-  // };
-
-  // fixme this is editing a segment?
-
-  const deleteSegment = async id => {
+  const deleteSegment = async () => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/segment/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/segment/${data._id}`);
       // eslint-disable-next-line no-console
       console.log('Clicked Delete Segment');
-      setChange(change);
+      updateSections();
+      onCloseEdit();
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err);
@@ -104,12 +96,22 @@ const UpdateSegmentPopupColumn = ({ data }) => {
     }
   };
 
-  const editSegment = async id => {
+  const editSegment = async () => {
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/segment/${id}`);
+      const putData = {
+        section: sectionID, // FIXME
+        segmentId: segId,
+        name: segName,
+        streets: segLocation,
+        mapLink: segLink,
+        parking: segParking,
+      };
+      console.log(putData);
+      await axios.put(`${process.env.REACT_APP_API_URL}/segment/${data._id}`, putData);
       // eslint-disable-next-line no-console
       console.log('Clicked Edit Segment');
-      setChange(change);
+      updateSections();
+      onCloseEdit();
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err);
@@ -133,12 +135,24 @@ const UpdateSegmentPopupColumn = ({ data }) => {
         </MenuList>
       </Menu>
 
-      <Modal size="xl" isOpen={isOpenEdit} onClose={editSegment}>
+      <Modal size="xl" isOpen={isOpenEdit} onClose={onCloseEdit}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit Segment</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Text>Section</Text>
+            <Select
+              value={sectionID}
+              defaultValue={sectionID}
+              onChange={e => setSectionID(e.target.value)}
+            >
+              {allSections?.map(section => (
+                <option key={section._id} value={section._id}>
+                  {section.name}
+                </option>
+              ))}
+            </Select>
             <Text>Segment ID</Text>
             <Input
               value={segId}
@@ -176,11 +190,14 @@ const UpdateSegmentPopupColumn = ({ data }) => {
             />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="gray" mr={3} onClick={editSegment}>
-              Close
+            <Button colorScheme="gray" mr={3} onClick={onCloseEdit}>
+              Cancel
             </Button>
             <Button
               colorScheme="blue"
+              bg="ochBlue"
+              color="ochBlack"
+              variant="solid"
               mr={3}
               onClick={editSegment}
               // onClick={() => {
@@ -188,7 +205,7 @@ const UpdateSegmentPopupColumn = ({ data }) => {
               //   editSegment;
               // }}
             >
-              Save
+              Save Changes
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -208,7 +225,6 @@ const SectionTableRow = ({ row }) => {
   //     })}
   //   </Tr>
   // );
-
   return (
     <Tr {...row.getRowProps()}>
       {row.cells.map(cell => {
@@ -242,6 +258,17 @@ ParkingColumn.propTypes = {
 
 UpdateSegmentPopupColumn.propTypes = {
   data: PropTypes.string.isRequired,
+  allSections: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  updateSections: PropTypes.func.isRequired,
+  currentSection: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export {

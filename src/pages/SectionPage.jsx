@@ -120,9 +120,11 @@ const SectionPage = () => {
                     <br />
 
                     <SectionTable
-                      sectionId={sectionObj.id}
+                      sectionId={sectionObj._id}
                       loading={isLoading}
                       segments={sectionObj.segments}
+                      allSections={sections}
+                      updateSections={getSections}
                     />
                   </Container>
                 </TabPanel>

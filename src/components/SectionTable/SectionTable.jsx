@@ -16,44 +16,6 @@ import {
 const rowsPerPageSelect = [6, 10, 20, 30];
 
 /* eslint-disable react/destructuring-assignment, react/prop-types */
-const cellStructure = [
-  {
-    id: 'segmentName',
-    Header: 'Segment Name',
-    accessor: d => ({
-      segmentId: d.segmentId,
-      segment: d.segment,
-      name: d.name,
-      description: d.description,
-      streets: d.streets,
-    }),
-    Cell: props => <SegmentNameColumn data={props.value} />,
-  },
-  {
-    id: 'map',
-    accessor: 'map',
-    Header: 'Map',
-    Cell: props => (
-      <div>
-        <Link href={`${props.value}`} isExternal>
-          <u>Link</u>
-        </Link>
-      </div>
-    ),
-  },
-  {
-    id: 'parking',
-    accessor: 'parking',
-    Header: 'Parking',
-    Cell: props => <ParkingColumn data={props.value} />,
-  },
-  {
-    id: 'delete',
-    accessor: 'id',
-    Header: '',
-    Cell: props => <UpdateSegmentPopupColumn data={props.value} />,
-  },
-];
 const LoadingRow = () => (
   <Tr>
     <td colSpan={4}>
@@ -88,8 +50,55 @@ const tableContent = (loading, page, prepareRow) => {
   return <EmptyRow />;
 };
 
-const SectionTable = ({ loading, segments }) => {
-  const columns = useMemo(() => cellStructure, []);
+const SectionTable = ({ loading, segments, allSections, updateSections, sectionId }) => {
+  const columns = useMemo(
+    () => [
+      {
+        id: 'segmentName',
+        Header: 'Segment Name',
+        accessor: d => ({
+          segmentId: d.segmentId,
+          segment: d.segment,
+          name: d.name,
+          description: d.description,
+          streets: d.streets,
+        }),
+        Cell: props => <SegmentNameColumn data={props.value} />,
+      },
+      {
+        id: 'map',
+        accessor: 'map',
+        Header: 'Map',
+        Cell: props => (
+          <div>
+            <Link href={`${props.value}`} isExternal>
+              <u>Link</u>
+            </Link>
+          </div>
+        ),
+      },
+      {
+        id: 'parking',
+        accessor: 'parking',
+        Header: 'Parking',
+        Cell: props => <ParkingColumn data={props.value} />,
+      },
+      {
+        id: 'delete',
+        accessor: d => d,
+        Header: '',
+        Cell: props => (
+          <UpdateSegmentPopupColumn
+            data={props.value}
+            allSections={allSections}
+            updateSections={updateSections}
+            currentSection={sectionId}
+          />
+        ),
+      },
+    ],
+    [allSections],
+  );
   const data = useMemo(() => segments, [segments, loading]);
   const {
     getTableProps,
@@ -148,6 +157,13 @@ SectionTable.propTypes = {
       parking: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  allSections: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  updateSections: PropTypes.func.isRequired,
 };
 
 export default SectionTable;
