@@ -1,7 +1,7 @@
+import { useState, useEffect, React } from 'react';
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/no-useless-path-segments */
-import React from 'react';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import { Box, ChakraProvider } from '@chakra-ui/react';
 import { CookiesProvider } from 'react-cookie';
@@ -17,7 +17,7 @@ import EmailAction from './components/Authentication/EmailAction';
 
 import CommonTableExample from './pages/CommonTableExample';
 import AdminPage from '../src/pages/AdminPage';
-import HomePage from './pages/HomePage';
+import VolunteerDashboardPage from './pages/VolunteerDashboardPage';
 import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
@@ -28,27 +28,52 @@ import Species from './pages/Species';
 
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 
 import AUTH_ROLES from './common/auth_config';
+import { OCHBackend } from '../common/utils';
 
 const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 // TO-DO: Navbar based on screen width
 
+// Load userData into App, get from backend
+const [userData, setUserData] = useState(null);
+useEffect(async () => {
+  try {
+    const res = await Promise.all([
+      OCHBackend.get('/users/me', { withCredentials: true }),
+      OCHBackend.get('/users/userSubmissions', { withCredentials: true }),
+    ]);
+    setUserData(res.data);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+}, []);
+
 function App() {
+  const [accMadeChanges, setAccMadeChanges] = useState(false);
   return (
     <ChakraProvider theme={theme}>
       <CookiesProvider>
         <Router>
           <Box className="page-container">
             <Box className="content-wrap">
-              <Navbar isAdmin />
+              <Navbar isAdmin changesMade={accMadeChanges} />
               <Routes>
                 {/* Add routes as needed; route names subject to change */}
                 <Route path="/register/:inviteID" element={<InviteLandingPage />} />
                 <Route exact path="/invite" element={<AdminInviteModal />} />
-                <Route exact path="/" element={<HomePage />} />
-                <Route exact path="/account" element={<AccountPage />} />
+                <Route exact path="/" element={<AdminDashboardPage />} />
+                <Route exact path="/volunteerhome" element={<VolunteerDashboardPage />} />
+                <Route
+                  exact
+                  path="/account"
+                  element={
+                    <AccountPage changesMade={accMadeChanges} setChangesMade={setAccMadeChanges} />
+                  }
+                />
                 <Route exact path="/create-log" element={<MonitorLogPage />} />
                 <Route exact path="/sections" element={<SectionPage />} />
                 <Route exact path="/species" element={<Species />} />
