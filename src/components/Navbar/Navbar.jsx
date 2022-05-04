@@ -22,10 +22,11 @@ import logo from '../../assets/OCH_Logo_SVG.svg';
 import Toast from '../Toast';
 import NavbarMobile from './NavbarMobile';
 
-const Navbar = ({ isAdmin, changesMade }) => {
+const Navbar = ({ isAdmin, onAdminPortal, setOnAdminPortal, changesMade }) => {
   const [adminPortal, setAdminPortal] = useState(true);
   const [isMobile] = useMediaQuery('(max-width: 1024px)');
 
+  console.log(typeof setOnAdminPortal);
   const user = {
     firstName: 'Dan',
     lastName: 'Abramov',
@@ -67,7 +68,7 @@ const Navbar = ({ isAdmin, changesMade }) => {
   };
 
   return isMobile ? (
-    <NavbarMobile isAdmin />
+    <NavbarMobile isAdmin={isAdmin} />
   ) : (
     <Flex
       as="nav"
@@ -85,10 +86,16 @@ const Navbar = ({ isAdmin, changesMade }) => {
       </Link>
       {/* TO DO: if user is not signed in, only logo */}
       <HStack h="inherit" spacing={6} pr={4}>
-        {isAdmin && adminPortal
+        {isAdmin && onAdminPortal
           ? admin.map(a => <NavbarLink key={a.text} text={a.text} path={a.path} />)
           : volunteer.map(v => <NavbarLink key={v.text} text={v.text} path={v.path} />)}
-        {(!isAdmin || (isAdmin && !adminPortal)) && (
+        <ProfileDropdown
+          isAdmin={isAdmin}
+          onAdminPortal={onAdminPortal}
+          setOnAdminPortal={setOnAdminPortal}
+        />
+      </HStack>
+      {/* {(!isAdmin || (isAdmin && !adminPortal)) && (
           <Link to="/create-log">
             <Button
               size="sm"
@@ -142,15 +149,15 @@ const Navbar = ({ isAdmin, changesMade }) => {
               </MenuItem>
             </MenuList>
           </Menu>
-        )}
-        <ProfileDropdown />
-      </HStack>
+        )} */}
     </Flex>
   );
 };
 
 Navbar.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
+  onAdminPortal: PropTypes.bool.isRequired,
+  setOnAdminPortal: PropTypes.func.isRequired,
   changesMade: PropTypes.bool.isRequired,
 };
 

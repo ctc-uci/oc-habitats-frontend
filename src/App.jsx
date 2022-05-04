@@ -38,19 +38,36 @@ const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 function App() {
   const [accMadeChanges, setAccMadeChanges] = useState(false);
+  const isAdmin = false;
+  const [onAdminPortal, setOnAdminPortal] = useState(isAdmin);
+
+  console.log(isAdmin);
+  console.log(onAdminPortal);
+
   return (
     <ChakraProvider theme={theme}>
       <CookiesProvider>
         <Router>
           <Box className="page-container">
             <Box className="content-wrap">
-              <Navbar isAdmin changesMade={accMadeChanges} />
+              <Navbar
+                isAdmin
+                onAdminPortal
+                setOnAdminPortal={setOnAdminPortal}
+                changesMade={accMadeChanges}
+              />
               <Routes>
                 {/* Add routes as needed; route names subject to change */}
                 <Route path="/register/:inviteID" element={<InviteLandingPage />} />
                 <Route exact path="/invite" element={<AdminInviteModal />} />
-                <Route exact path="/" element={<AdminDashboardPage />} />
-                <Route exact path="/volunteerhome" element={<VolunteerDashboardPage />} />
+                <Route
+                  exact
+                  path="/"
+                  element={
+                    isAdmin && onAdminPortal ? <AdminDashboardPage /> : <VolunteerDashboardPage />
+                  }
+                />
+                <Route exact path="/volunteer" element={<VolunteerDashboardPage />} />
                 <Route
                   exact
                   path="/account"

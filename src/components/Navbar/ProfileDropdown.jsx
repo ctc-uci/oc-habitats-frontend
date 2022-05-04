@@ -11,7 +11,9 @@ import {
   MenuItem,
   MenuDivider,
   Text,
+  Button,
 } from '@chakra-ui/react';
+import { FaSignOutAlt } from 'react-icons/fa';
 import NavbarLinkMobile from './NavbarLinkMobile';
 
 const user = {
@@ -19,7 +21,13 @@ const user = {
   lastName: 'Abramov',
   profilePic: 'https://bit.ly/dan-abramov',
 };
-const ProfileDropdown = ({ isAdmin }) => {
+const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal }) => {
+  // console.log(typeof setOnAdminPortal);
+
+  const handleOnClick = bool => {
+    setOnAdminPortal(bool);
+  };
+
   return (
     <Menu>
       <MenuButton
@@ -33,7 +41,18 @@ const ProfileDropdown = ({ isAdmin }) => {
       <MenuList>
         <NavbarLinkMobile text="Account" path="/account" />
         <MenuDivider />
-        {isAdmin ? <NavbarLinkMobile text="Admin Portal" path="/admin-portal" /> : null}
+        {/* {isAdmin && !onAdminPortal ? <NavbarLinkMobile text="Admin Portal" path="/" /> : null}
+        {isAdmin && onAdminPortal ? <NavbarLinkMobile text="Volunteer Portal" path="/" /> : null} */}
+        {isAdmin && onAdminPortal && (
+          <MenuItem color="black" fontFamily="Inter" href="/" onClick={handleOnClick(false)}>
+            Volunteer Portal
+          </MenuItem>
+        )}
+        {isAdmin && !onAdminPortal && (
+          <MenuItem color="black" fontFamily="Inter" href="/" onClick={handleOnClick(true)}>
+            Admin Portal
+          </MenuItem>
+        )}
         {isAdmin ? <MenuDivider /> : null}
         <Link to="/sign-out">
           <MenuItem>
@@ -50,6 +69,8 @@ const ProfileDropdown = ({ isAdmin }) => {
 
 ProfileDropdown.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
+  onAdminPortal: PropTypes.bool.isRequired,
+  setOnAdminPortal: PropTypes.func.isRequired,
 };
 
 export default ProfileDropdown;
