@@ -41,11 +41,11 @@ const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 const [userData, setUserData] = useState(null);
 useEffect(async () => {
   try {
-    const res = await Promise.all([
+    const userRes = await Promise.all([
       OCHBackend.get('/users/me', { withCredentials: true }),
       OCHBackend.get('/users/userSubmissions', { withCredentials: true }),
     ]);
-    setUserData(res.data);
+    setUserData(userRes.data);
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
