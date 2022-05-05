@@ -25,6 +25,7 @@ import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
+import Numbers from './pages/EmergencyNumbers';
 
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
@@ -63,7 +64,7 @@ function App() {
                 <Route exact path="/species" element={<Species />} />
                 {/* Admin only routes (TO DO, make admin only) */}
                 <Route exact path="/people" element={<PeoplePage />} />
-                <Route exact path="/contacts" />
+                <Route exact path="/numbers" element={<Numbers />} />
                 <Route exact path="/map" />
                 <Route exact path="/logs" element={<AdminPage />} />
                 <Route exact path="/common-table-example" element={<CommonTableExample />} />
@@ -93,7 +94,6 @@ function App() {
                   }
                 />
                 {/* <Route path="/new-user" element={<NewUser />} /> */}
-                <Route exact path="/contacts" />
                 <Route exact path="/map" />
                 <Route exact path="/logs" element={<AdminPage />} />
                 <Route exact path="/common-table-example" element={<CommonTableExample />} />
