@@ -22,12 +22,18 @@ const SegmentNameCol = ({ segment }) => {
   );
 };
 
-const SegmentAssignmentsTable = ({ segmentData }) => {
+const VolunteerCol = ({ volunteers }) => (
+  <Text>
+    {volunteers?.map(volunteer => `${volunteer.firstName} ${volunteer.lastName}`).join(', ')}
+  </Text>
+);
+
+const SegmentAssignmentsTable = ({ segmentData, isLoading }) => {
   return (
     <CommonTable>
       <CommonTableHeader>
         <Th fontSize="12px" maxW="420px" minW="420px">
-          Segment Name
+          Segment Name {isLoading}
         </Th>
         <Th fontSize="12px" maxW="135px" minW="135px">
           Last Updated
@@ -47,8 +53,12 @@ const SegmentAssignmentsTable = ({ segmentData }) => {
               <Td>
                 <SegmentNameCol segment={segment} />
               </Td>
-              <Td>XX-XX-20XX</Td>
-              <Td>{segment.volunteers}</Td>
+              <Td>
+                <Text as="i">XX-XX-20XX</Text>
+              </Td>
+              <Td>
+                <VolunteerCol volunteers={segment.volunteerData} />
+              </Td>
             </Tr>
           ))
         )}
@@ -62,8 +72,14 @@ SegmentNameCol.propTypes = {
   segment: PropTypes.object.isRequired,
 };
 
+VolunteerCol.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  volunteers: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
 SegmentAssignmentsTable.propTypes = {
   segmentData: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default SegmentAssignmentsTable;
