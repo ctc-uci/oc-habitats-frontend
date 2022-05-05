@@ -23,16 +23,18 @@ import EditNumberModal from './EditNumberModal';
 
 const EmergencyContactTable = ({ tableData, setTableData }) => {
   const [numberId, setNumberId] = useState(-1);
+  const [rowData, setRowData] = useState({});
   const editModalDisclosure = useDisclosure();
   const deleteModalDisclosure = useDisclosure();
 
-  const openModalWithData = (numId, openFunc) => {
-    setNumberId(numId);
+  const openModalWithData = (dataRow, openFunc) => {
+    setNumberId(dataRow._id);
+    setRowData(dataRow);
     openFunc();
   };
 
   const editNumber = async newNumber => {
-    await OCHBackend.put(`/numbers/update/${numberId}`, {
+    await OCHBackend.put(`/numbers/${numberId}`, {
       name: newNumber.name,
       number: newNumber.number,
       note: newNumber.note,
@@ -49,7 +51,11 @@ const EmergencyContactTable = ({ tableData, setTableData }) => {
 
   return (
     <>
-      <EditNumberModal editNumber={editNumber} disclosure={editModalDisclosure} />
+      <EditNumberModal
+        numberData={rowData}
+        editNumber={editNumber}
+        disclosure={editModalDisclosure}
+      />
       <DeleteNumberModal deleteNumber={deleteNumber} disclosure={deleteModalDisclosure} />
 
       <CommonTable>
@@ -71,14 +77,12 @@ const EmergencyContactTable = ({ tableData, setTableData }) => {
                     <IconButton icon={<BsThreeDotsVertical />} bg="transparent" />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem
-                      onClick={() => openModalWithData(row._id, editModalDisclosure.onOpen)}
-                    >
+                    <MenuItem onClick={() => openModalWithData(row, editModalDisclosure.onOpen)}>
                       Edit Contact
                     </MenuItem>
                     <MenuItem
                       color="red.600"
-                      onClick={() => openModalWithData(row._id, deleteModalDisclosure.onOpen)}
+                      onClick={() => openModalWithData(row, deleteModalDisclosure.onOpen)}
                     >
                       Delete Contact
                     </MenuItem>
