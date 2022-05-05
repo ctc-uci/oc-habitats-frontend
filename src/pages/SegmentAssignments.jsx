@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Heading } from '@chakra-ui/react';
+import { Container, Heading, IconButton } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Link } from 'react-router-dom';
 import { OCHBackend } from '../common/utils';
 
 import { SectionSelector, SegmentAssignmentTable } from '../components/SegmentAssignmentsTable';
@@ -39,7 +41,16 @@ const SegmentAssignments = () => {
 
   return (
     <Container maxW={{ md: 'container.xl', base: 'container.sm' }} mb={{ md: '0', base: '5em' }}>
-      <Heading fontWeight="600" fontSize="36px" m="30px 0" align="left">
+      <Link to="/people">
+        <IconButton
+          variant="ghost"
+          colorScheme="white"
+          m="15px 0"
+          aria-label="Back to People Page"
+          icon={<ArrowBackIcon w="35px" h="35px" />}
+        />
+      </Link>
+      <Heading fontWeight="600" fontSize="36px" mb="30px" align="left">
         All Segment Assignments
       </Heading>
       <SectionSelector

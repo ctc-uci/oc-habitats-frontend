@@ -6,15 +6,17 @@ const SegmentSelector = ({ sectionList, selectedSectionIndex, setSelectedSection
   return (
     <Tabs
       variant="soft-rounded"
-      colorScheme="orange"
       index={selectedSectionIndex}
       onChange={setSelectedSectionIndex}
+      w="100%"
       mb="20px"
     >
-      <TabList>
+      <TabList gap="10px">
         {sectionList?.map((section, i) => (
           // eslint-disable-next-line react/no-array-index-key
-          <Tab key={i}>{section}</Tab>
+          <Tab key={i} bgColor="ochOrange" color="ochBlack">
+            {section}
+          </Tab>
         ))}
       </TabList>
     </Tabs>

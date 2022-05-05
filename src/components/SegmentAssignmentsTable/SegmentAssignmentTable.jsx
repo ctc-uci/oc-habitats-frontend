@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Tbody, Th, Tr, Td, VStack, Box, Text } from '@chakra-ui/react';
-import { CommonTable, CommonTableHeader, CommonRowFiller } from '../../common/CommonTable';
+import {
+  CommonTable,
+  CommonTableHeader,
+  CommonRowFiller,
+  CommonLoadingRow,
+} from '../../common/CommonTable';
 
 const EmptySection = () => (
   <Text fontWeight="600" fontSize="16px">
@@ -28,10 +33,36 @@ const VolunteerCol = ({ volunteers }) => (
   </Text>
 );
 
+const tableContent = (segmentData, isLoading) => {
+  if (isLoading) {
+    return <CommonLoadingRow colCount={3} />;
+  }
+  if (segmentData?.length === 0) {
+    return (
+      <CommonRowFiller colCount={3}>
+        <EmptySection />
+      </CommonRowFiller>
+    );
+  }
+  return segmentData?.map(segment => (
+    <Tr key={segment.segmentId} fontSize="14px">
+      <Td>
+        <SegmentNameCol segment={segment} />
+      </Td>
+      <Td>
+        <Text as="i">XX-XX-20XX</Text>
+      </Td>
+      <Td>
+        <VolunteerCol volunteers={segment.volunteerData} />
+      </Td>
+    </Tr>
+  ));
+};
+
 const SegmentAssignmentsTable = ({ segmentData, isLoading }) => {
   return (
     <CommonTable>
-      <CommonTableHeader>
+      <CommonTableHeader loading={isLoading}>
         <Th fontSize="12px" maxW="420px" minW="420px">
           Segment Name {isLoading}
         </Th>
@@ -42,27 +73,7 @@ const SegmentAssignmentsTable = ({ segmentData, isLoading }) => {
           Assigned Volunteer(s)
         </Th>
       </CommonTableHeader>
-      <Tbody>
-        {segmentData?.length === 0 ? (
-          <CommonRowFiller colCount={3}>
-            <EmptySection />
-          </CommonRowFiller>
-        ) : (
-          segmentData?.map(segment => (
-            <Tr key={segment.segmentId} fontSize="14px">
-              <Td>
-                <SegmentNameCol segment={segment} />
-              </Td>
-              <Td>
-                <Text as="i">XX-XX-20XX</Text>
-              </Td>
-              <Td>
-                <VolunteerCol volunteers={segment.volunteerData} />
-              </Td>
-            </Tr>
-          ))
-        )}
-      </Tbody>
+      <Tbody>{tableContent(segmentData, isLoading)}</Tbody>
     </CommonTable>
   );
 };
