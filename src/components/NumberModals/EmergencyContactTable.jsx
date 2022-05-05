@@ -98,6 +98,7 @@ const EmergencyContactTable = ({ tableData, setTableData }) => {
 };
 
 EmergencyContactTable.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   tableData: PropTypes.arrayOf(PropTypes.object).isRequired,
   setTableData: PropTypes.func.isRequired,
 };
