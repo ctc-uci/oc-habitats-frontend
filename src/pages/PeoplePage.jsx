@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Heading, Button, Flex } from '@chakra-ui/react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 import { OCHBackend } from '../common/utils';
 import { PeopleTable, AddAccountPopup } from '../components/PeopleTable';
 import AUTH_ROLES from '../common/auth_config';
@@ -60,15 +61,17 @@ const PeoplePage = () => {
       </Heading>
       <Flex justifyContent="flex-start" gap={{ md: '40px', base: '20px' }} wrap="wrap">
         <AddAccountPopup />
-        <Button
-          rightIcon={<AiOutlineUnorderedList />}
-          bg="ochOrange"
-          color="ochBlack"
-          variant="solidNoHover"
-          w={{ md: 'auto', base: '100%' }}
-        >
-          View Segment Assignments
-        </Button>
+        <Link to="/segment-assignments">
+          <Button
+            rightIcon={<AiOutlineUnorderedList />}
+            bg="ochOrange"
+            color="ochBlack"
+            variant="solidNoHover"
+            w={{ md: 'auto', base: '100%' }}
+          >
+            View Segment Assignments
+          </Button>
+        </Link>
       </Flex>
       {/* <pre>{JSON.stringify(volunteerData, null, 2)}</pre> */}
       <PeopleTable

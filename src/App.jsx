@@ -24,6 +24,7 @@ import MonitorLogPage from './pages/MonitorLogPage';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
+import SegmentAssignments from './pages/SegmentAssignments';
 import Species from './pages/Species';
 import Numbers from './pages/EmergencyNumbers';
 
@@ -64,6 +65,7 @@ function App() {
                 <Route exact path="/species" element={<Species />} />
                 {/* Admin only routes (TO DO, make admin only) */}
                 <Route exact path="/people" element={<PeoplePage />} />
+                <Route exact path="/segment-assignments" element={<SegmentAssignments />} />
                 <Route exact path="/numbers" element={<Numbers />} />
                 <Route exact path="/map" />
                 <Route exact path="/logs" element={<AdminPage />} />
