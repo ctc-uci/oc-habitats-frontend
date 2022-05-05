@@ -140,7 +140,14 @@ const MonitorLogPage = () => {
               </ModalFooter>
             </ModalContent>
           </Modal>
-          <Heading ref={topRef} px="32px" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
+          <Heading
+            ref={topRef}
+            px="32px"
+            fontWeight="600"
+            fontSize={{ md: '4xl', sm: '3xl' }}
+            mb="40px"
+            mt="40px"
+          >
             OCH Monitor Log
           </Heading>
           <Tabs
@@ -152,7 +159,7 @@ const MonitorLogPage = () => {
             onChange={setActiveTab}
             isLazy
           >
-            <TabList px="32px" alignItems="center">
+            <TabList px="32px" maxW="100vw" alignItems="center" overflowX="scroll">
               <HStack spacing="24px">
                 <MonitorTabButton>General Info</MonitorTabButton>
                 {listedSpecies.map(s => (
