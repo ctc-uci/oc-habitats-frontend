@@ -8,6 +8,9 @@
 .table-head th:last-child {
   border-radius: 0 10px 0 0;
 }
+.table-head th:only-child {
+  border-radius: 10px 10px 0 0;
+}
 
 .table-foot {
   position: sticky;
@@ -19,3 +22,7 @@
 .table-foot th:last-child {
   border-radius: 0 0 10px 0;
 }
+.table-foot th:only-child {
+  border-radius: 0 0 10px 10px;
+}
+
