@@ -22,6 +22,10 @@ import {
 import { React, useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp, FiCheck } from 'react-icons/fi';
+import { WarningIcon } from '@chakra-ui/icons';
+import MuiAlert from '@material-ui/lab/Alert';
+import MuiAlertTitle from '@material-ui/lab/AlertTitle';
+import PropTypes from 'prop-types';
 import { OCHBackend } from '../common/utils';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
 import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
@@ -46,8 +50,25 @@ const MonitorTabButton = props => {
   );
 };
 
-const MonitorLogPage = () => {
-  const formMethods = useForm({});
+// // https://localhost:3000/edit-log/625f3e335b6cf2f2ad34dfc1
+// const EditLogPage = () => {
+//   submisison = getIdfromurlsomehow();
+//   return <MonitorLogPage submission={submission}
+// }
+
+const MonitorLogPage = props => {
+  // const { displayMode, id } = props;
+  const formMethods = useForm({
+    defaultValues: {
+      temperature: '10',
+    },
+  });
+
+  useEffect(async () => {
+    const res = await OCHBackend.get('submission/625f3e335b6cf2f2ad34dfc1');
+    console.log(res.data);
+    formMethods.reset(res.data);
+  }, []);
 
   const checkInModal = useDisclosure();
 
@@ -62,6 +83,8 @@ const MonitorLogPage = () => {
   };
   const [user, setUser] = useState(null);
   const [monitorPartners, setMonitorPartners] = useState([]);
+  const [editMode, setEditMode] = useState(false);
+  const [requested, setRequested] = useState(true);
 
   useEffect(async () => {
     checkInModal.onOpen();
@@ -80,6 +103,23 @@ const MonitorLogPage = () => {
   }, []);
 
   const assignedSegments = useMemo(() => user?.segments || [], [user]);
+
+  const request = () => {
+    if (requested) {
+      return (
+        <>
+          <MuiAlert severity="error" icon={<WarningIcon />}>
+            <MuiAlertTitle>
+              <strong>Edits have been requested</strong>
+            </MuiAlertTitle>{' '}
+            Request Reason{' '}
+          </MuiAlert>
+          <br />
+        </>
+      );
+    }
+    return null;
+  };
 
   return (
     <Flex w="100%" justifyContent="center">
@@ -103,6 +143,8 @@ const MonitorLogPage = () => {
           <Heading ref={topRef} px="32px" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
             OCH Monitor Log
           </Heading>
+          {request()}
+
           <Tabs
             variant="solid-rounded"
             size="lg"
@@ -129,37 +171,48 @@ const MonitorLogPage = () => {
                   <GeneralInfoTab
                     assignedSegments={assignedSegments}
                     monitorPartners={monitorPartners}
+                    isDisabled={editMode}
                   />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <ListedSpeciesTab tab={0} speciesName="Least Tern" speciesCode="LETE" />
+                  <ListedSpeciesTab
+                    tab={0}
+                    speciesName="Least Tern"
+                    speciesCode="LETE"
+                    isDisabled={editMode}
+                  />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <ListedSpeciesTab tab={1} speciesName="Snowy Plover" speciesCode="WSPL" />
+                  <ListedSpeciesTab
+                    tab={1}
+                    speciesName="Snowy Plover"
+                    speciesCode="WSPL"
+                    isDisabled={editMode}
+                  />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <AdditionalSpeciesTab />
+                  <AdditionalSpeciesTab isDisabled={editMode} />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <PredatorsTab />
+                  <PredatorsTab isDisabled={editMode} />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <HumanActivity />
+                  <HumanActivity isDisabled={editMode} />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <ReviewSubmitTab jumpToTab={setActiveTab} />
+                  <ReviewSubmitTab jumpToTab={setActiveTab} isDisabled={editMode} />
                 </Container>
               </TabPanel>
             </TabPanels>
