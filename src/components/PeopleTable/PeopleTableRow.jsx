@@ -16,18 +16,15 @@ import {
   MenuItem,
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
 import { useRowModalContext } from './RowModalContext';
 
 import AUTH_ROLES from '../../common/auth_config';
 
 const { ADMIN_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
-const editAccountInfo = data => {
-  // eslint-disable-next-line no-console
-  console.log(`Editing account info ${JSON.stringify(data, null, 2)}`);
-};
-
 const menuContent = data => {
+  const navigate = useNavigate();
   const {
     openSegmentAssignmentModal,
     openDeletePendingModal,
@@ -42,11 +39,17 @@ const menuContent = data => {
     );
   }
   if (!data.isActive) {
-    return <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>;
+    return (
+      <MenuItem onClick={() => navigate(`/people/user-info/${data.userId}`)}>
+        Edit Account Info
+      </MenuItem>
+    );
   }
   return (
     <>
-      <MenuItem onClick={() => editAccountInfo(data)}>Edit Account Info</MenuItem>
+      <MenuItem onClick={() => navigate(`/people/user-info/${data.userId}`)}>
+        Edit Account Info
+      </MenuItem>
       <MenuItem onClick={() => openSegmentAssignmentModal(data)}>
         Edit Segment Assignment(s)
       </MenuItem>

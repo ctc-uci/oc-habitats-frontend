@@ -69,7 +69,7 @@ const PeoplePage = () => {
           color="ochBlack"
           variant="solidNoHover"
           w={{ md: 'auto', base: '100%' }}
-          onClick={() => navigate('/segment-assignments')}
+          onClick={() => navigate('/people/segment-assignments')}
         >
           View Segment Assignments
         </Button>
