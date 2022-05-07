@@ -11,9 +11,7 @@ import {
   MenuItem,
   MenuDivider,
   Text,
-  Button,
 } from '@chakra-ui/react';
-import { FaSignOutAlt } from 'react-icons/fa';
 import NavbarLinkMobile from './NavbarLinkMobile';
 
 const user = {
@@ -22,10 +20,8 @@ const user = {
   profilePic: 'https://bit.ly/dan-abramov',
 };
 const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal }) => {
-  // console.log(typeof setOnAdminPortal);
-
-  const handleOnClick = bool => {
-    setOnAdminPortal(bool);
+  const handleOnClick = () => {
+    setOnAdminPortal(!onAdminPortal);
   };
 
   return (
@@ -41,15 +37,25 @@ const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal }) => {
       <MenuList>
         <NavbarLinkMobile text="Account" path="/account" />
         <MenuDivider />
-        {/* {isAdmin && !onAdminPortal ? <NavbarLinkMobile text="Admin Portal" path="/" /> : null}
-        {isAdmin && onAdminPortal ? <NavbarLinkMobile text="Volunteer Portal" path="/" /> : null} */}
         {isAdmin && onAdminPortal && (
-          <MenuItem color="black" fontFamily="Inter" href="/" onClick={handleOnClick(false)}>
+          <MenuItem
+            color="black"
+            fontFamily="Inter"
+            fontWeight="600"
+            href="/"
+            onClick={handleOnClick}
+          >
             Volunteer Portal
           </MenuItem>
         )}
         {isAdmin && !onAdminPortal && (
-          <MenuItem color="black" fontFamily="Inter" href="/" onClick={handleOnClick(true)}>
+          <MenuItem
+            color="black"
+            fontFamily="Inter"
+            fontWeight="600"
+            href="/"
+            onClick={handleOnClick}
+          >
             Admin Portal
           </MenuItem>
         )}

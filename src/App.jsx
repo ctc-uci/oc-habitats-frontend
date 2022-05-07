@@ -17,7 +17,6 @@ import EmailAction from './components/Authentication/EmailAction';
 
 import CommonTableExample from './pages/CommonTableExample';
 import AdminPage from '../src/pages/AdminPage';
-import VolunteerDashboardPage from './pages/VolunteerDashboardPage';
 import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
@@ -28,9 +27,10 @@ import Species from './pages/Species';
 
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
-import AdminDashboardPage from './pages/AdminDashboardPage';
 
 import AUTH_ROLES from './common/auth_config';
+
+import HomePage from './HomePage';
 
 const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
@@ -38,11 +38,8 @@ const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 function App() {
   const [accMadeChanges, setAccMadeChanges] = useState(false);
-  const isAdmin = false;
-  const [onAdminPortal, setOnAdminPortal] = useState(isAdmin);
-
-  console.log(isAdmin);
-  console.log(onAdminPortal);
+  const isAdmin = true;
+  const [onAdminPortal, setOnAdminPortal] = useState(true);
 
   return (
     <ChakraProvider theme={theme}>
@@ -51,8 +48,8 @@ function App() {
           <Box className="page-container">
             <Box className="content-wrap">
               <Navbar
-                isAdmin
-                onAdminPortal
+                isAdmin={isAdmin}
+                onAdminPortal={onAdminPortal}
                 setOnAdminPortal={setOnAdminPortal}
                 changesMade={accMadeChanges}
               />
@@ -63,11 +60,8 @@ function App() {
                 <Route
                   exact
                   path="/"
-                  element={
-                    isAdmin && onAdminPortal ? <AdminDashboardPage /> : <VolunteerDashboardPage />
-                  }
+                  element={<HomePage isAdmin={isAdmin} onAdminPortal={onAdminPortal} />}
                 />
-                <Route exact path="/volunteer" element={<VolunteerDashboardPage />} />
                 <Route
                   exact
                   path="/account"

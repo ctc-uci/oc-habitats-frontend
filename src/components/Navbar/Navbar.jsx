@@ -1,21 +1,7 @@
-import { useState, React } from 'react';
+import { React } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import {
-  HStack,
-  Flex,
-  Button,
-  Avatar,
-  Image,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text,
-  useMediaQuery,
-  useToast,
-} from '@chakra-ui/react';
-import { FaSignOutAlt } from 'react-icons/fa';
+import { HStack, Flex, Image, useMediaQuery, useToast, Button } from '@chakra-ui/react';
 import NavbarLink from './NavbarLink';
 import ProfileDropdown from './ProfileDropdown';
 import logo from '../../assets/OCH_Logo_SVG.svg';
@@ -23,15 +9,14 @@ import Toast from '../Toast';
 import NavbarMobile from './NavbarMobile';
 
 const Navbar = ({ isAdmin, onAdminPortal, setOnAdminPortal, changesMade }) => {
-  const [adminPortal, setAdminPortal] = useState(true);
+  // const [adminPortal, setAdminPortal] = useState(true);
   const [isMobile] = useMediaQuery('(max-width: 1024px)');
 
-  console.log(typeof setOnAdminPortal);
-  const user = {
-    firstName: 'Dan',
-    lastName: 'Abramov',
-    profilePic: 'https://bit.ly/dan-abramov',
-  };
+  // const user = {
+  //   firstName: 'Dan',
+  //   lastName: 'Abramov',
+  //   profilePic: 'https://bit.ly/dan-abramov',
+  // };
 
   const admin = [
     { text: 'Monitor Logs', path: '/logs' },
@@ -48,13 +33,13 @@ const Navbar = ({ isAdmin, onAdminPortal, setOnAdminPortal, changesMade }) => {
     { text: 'Emergency Numbers', path: '/emergency-numbers' },
   ];
 
-  const togglePortal = () => {
-    if (adminPortal) {
-      setAdminPortal(false);
-    } else {
-      setAdminPortal(true);
-    }
-  };
+  // const togglePortal = () => {
+  //   if (adminPortal) {
+  //     setAdminPortal(false);
+  //   } else {
+  //     setAdminPortal(true);
+  //   }
+  // };
 
   const toast = useToast();
 
@@ -68,7 +53,11 @@ const Navbar = ({ isAdmin, onAdminPortal, setOnAdminPortal, changesMade }) => {
   };
 
   return isMobile ? (
-    <NavbarMobile isAdmin={isAdmin} />
+    <NavbarMobile
+      isAdmin={isAdmin}
+      onAdminPortal={onAdminPortal}
+      setOnAdminPortal={setOnAdminPortal}
+    />
   ) : (
     <Flex
       as="nav"
@@ -89,13 +78,7 @@ const Navbar = ({ isAdmin, onAdminPortal, setOnAdminPortal, changesMade }) => {
         {isAdmin && onAdminPortal
           ? admin.map(a => <NavbarLink key={a.text} text={a.text} path={a.path} />)
           : volunteer.map(v => <NavbarLink key={v.text} text={v.text} path={v.path} />)}
-        <ProfileDropdown
-          isAdmin={isAdmin}
-          onAdminPortal={onAdminPortal}
-          setOnAdminPortal={setOnAdminPortal}
-        />
-      </HStack>
-      {/* {(!isAdmin || (isAdmin && !adminPortal)) && (
+        {(!isAdmin || (isAdmin && !onAdminPortal)) && (
           <Link to="/create-log">
             <Button
               size="sm"
@@ -108,48 +91,12 @@ const Navbar = ({ isAdmin, onAdminPortal, setOnAdminPortal, changesMade }) => {
             </Button>
           </Link>
         )}
-        {!isAdmin && (
-          <Menu placement="right-start">
-            <MenuButton>
-              <Avatar m={1} name={user.firstName + user.lastName} src={user.profilePic} />
-            </MenuButton>
-            <MenuList>
-              <MenuItem as="a" href="/account" color="black" fontFamily="Inter">
-                Account
-              </MenuItem>
-              <MenuItem color="red" fontFamily="Inter">
-                <Text marginRight="5px">Sign Out</Text>
-                <FaSignOutAlt style={{ display: 'inline' }} />
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        )}
-        {isAdmin && (
-          <Menu placement="right-start">
-            <MenuButton>
-              <Avatar m={1} name={user.firstName + user.lastName} src={user.profilePic} />
-            </MenuButton>
-            <MenuList>
-              <MenuItem as="a" href="/account" color="black" fontFamily="Inter">
-                Account
-              </MenuItem>
-              {adminPortal && (
-                <MenuItem color="black" fontFamily="Inter" onClick={togglePortal}>
-                  Volunteer Portal
-                </MenuItem>
-              )}
-              {!adminPortal && (
-                <MenuItem color="black" fontFamily="Inter" onClick={togglePortal}>
-                  Admin Portal
-                </MenuItem>
-              )}
-              <MenuItem color="red" fontFamily="Inter">
-                <Text marginRight="5px">Sign Out</Text>
-                <FaSignOutAlt style={{ display: 'inline' }} />
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        )} */}
+        <ProfileDropdown
+          isAdmin={isAdmin}
+          onAdminPortal={onAdminPortal}
+          setOnAdminPortal={setOnAdminPortal}
+        />
+      </HStack>
     </Flex>
   );
 };
