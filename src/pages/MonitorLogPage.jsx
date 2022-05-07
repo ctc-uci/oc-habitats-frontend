@@ -145,14 +145,13 @@ const MonitorLogPage = () => {
             px="32px"
             fontWeight="600"
             fontSize={{ md: '4xl', sm: '3xl' }}
-            mb="40px"
-            mt="40px"
+            my="40px"
           >
             OCH Monitor Log
           </Heading>
           <Tabs
             variant="solid-rounded"
-            size="lg"
+            size="md"
             align="start"
             colorScheme="orange"
             index={activeTab}
@@ -173,7 +172,7 @@ const MonitorLogPage = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Container maxW="100vw">
+                <Container mt="10px" maxW="100vw">
                   <GeneralInfoTab
                     assignedSegments={assignedSegments}
                     monitorPartners={monitorPartners}

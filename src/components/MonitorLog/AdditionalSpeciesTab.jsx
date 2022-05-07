@@ -163,8 +163,13 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
         </Text>
       )}
       <FormControl>
-        <Grid marginTop="20px" minH="200px" templateColumns="repeat(6, 1fr)" gap="150">
-          <GridItem colSpan={3}>
+        <Grid
+          marginTop={{ md: '20px', sm: '0px' }}
+          minH="200px"
+          templateColumns={{ md: 'repeat(6, 1fr)', sm: 'repeat(1, 1fr)' }}
+          gap={{ md: '150', sm: '50' }}
+        >
+          <GridItem colSpan={{ md: 3, sm: 1 }}>
             <Box overflow="hidden" border="1px solid darkgray" rounded="md" mb="4">
               <Accordion as={Table} allowToggle reduceMotion>
                 <Thead w="100%" bg="#4E4E4E" borderColor="gray.200">
@@ -207,7 +212,7 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
               <AddSpeciesModal addNewRow={handleAddRow} speciesOptions={speciesOptions} />
             )}
           </GridItem>
-          <GridItem colSpan="2">
+          <GridItem colSpan={{ md: 2, sm: 1 }}>
             <VStack alignItems="start">
               <Text fontWeight="600" fontSize="xl">
                 Injured Terrestrial Wildlife
