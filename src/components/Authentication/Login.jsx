@@ -30,7 +30,8 @@ const Login = ({ cookies }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    // commented for prettier
+    // formState: { errors },
   } = useForm();
 
   /**
