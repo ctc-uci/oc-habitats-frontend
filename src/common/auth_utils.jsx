@@ -128,7 +128,7 @@ const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
  * @param {Cookies} cookies The user's cookies to populate
  * @returns A boolean indicating whether or not the log in was successful
  */
-const logInWithEmailAndPassword = async (email, password, redirectPath, navigate, cookies) => {
+const logInWithEmailAndPassword = async (email, password, navigate, cookies) => {
   await signInWithEmailAndPassword(auth, email, password);
   // Check if the user has verified their email.
   if (!auth.currentUser.emailVerified) {
@@ -139,7 +139,7 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
   console.log('Current user: ');
   console.table(user.data);
   cookies.set(cookieKeys.ROLE, user.data.role, cookieConfig);
-  navigate(redirectPath);
+  return user.data;
 };
 
 /**

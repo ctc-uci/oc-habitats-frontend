@@ -33,26 +33,10 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 import { UserContextProvider } from './components/UserContext/UserContext';
 import UserContextExample from './components/UserContext/UserContextExample';
 import AUTH_ROLES from './common/auth_config';
-// import { OCHBackend } from './common/utils';
 
 const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 // TO-DO: Navbar based on screen width
-
-// Load userData into App, get from backend
-// const [userData, setUserData] = useState(null);
-// useEffect(async () => {
-//   try {
-//     const userRes = await Promise.all([
-//       OCHBackend.get('/users/me', { withCredentials: true }),
-//       OCHBackend.get('/users/userSubmissions', { withCredentials: true }),
-//     ]);
-//     setUserData(userRes.data);
-//   } catch (err) {
-//     // eslint-disable-next-line no-console
-//     console.log(err);
-//   }
-// }, []);
 
 function App() {
   const [accMadeChanges, setAccMadeChanges] = useState(false);

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-children-prop */
 import React, { useState } from 'react';
-import { Link as ReachLink } from 'react-router-dom';
+import { Link as ReachLink, useNavigate } from 'react-router-dom';
 import {
   Box,
   FormControl,
@@ -16,12 +16,14 @@ import {
 } from '@chakra-ui/react';
 import { instanceOf } from 'prop-types';
 import { Cookies, withCookies } from '../../common/cookie_utils';
-import { logInWithEmailAndPassword, useNavigate } from '../../common/auth_utils';
+import { logInWithEmailAndPassword } from '../../common/auth_utils';
+import { useUserContext } from '../UserContext/UserContext';
 
 import OCHLogo from '../../assets/OCH_Logo_SVG.svg';
 
 const Login = ({ cookies }) => {
   const navigate = useNavigate();
+  const { setUserData } = useUserContext();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +37,11 @@ const Login = ({ cookies }) => {
   const handleSubmit = async e => {
     try {
       e.preventDefault();
-      await logInWithEmailAndPassword(email, password, '/logout', navigate, cookies);
+      const userData = await logInWithEmailAndPassword(email, password, navigate, cookies);
+      console.log('Printing userData in login.jsx');
+      console.log(userData);
+      setUserData(userData);
+      navigate('/logout');
     } catch (err) {
       setErrorMessage(err.message);
     }
