@@ -1,0 +1,20 @@
+.react-datepicker__input-container {
+  border-width: 1px;
+  border-radius: 6px;
+  /* width: 100%;
+    height: 40px; */
+}
+
+.react-datepicker__input-container input {
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  border-radius: 6px;
+  padding-left: 16px;
+}
+
+input[disabled],
+select[disabled],
+div[data-disabled] {
+  opacity: 0.65 !important;
+}

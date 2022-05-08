@@ -84,14 +84,9 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
   const deleteSegment = async () => {
     try {
       await axios.delete(`${process.env.REACT_APP_API_URL}/segment/${data._id}`);
-      // eslint-disable-next-line no-console
-      console.log('Clicked Delete Segment');
       updateSections();
       onCloseEdit();
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log(err);
-      // eslint-disable-next-line no-alert
       alert(err);
     }
   };
@@ -99,23 +94,18 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
   const editSegment = async () => {
     try {
       const putData = {
-        section: sectionID, // FIXME
+        section: sectionID,
         segmentId: segId,
         name: segName,
         streets: segLocation,
         mapLink: segLink,
         parking: segParking,
       };
-      console.log(putData);
       await axios.put(`${process.env.REACT_APP_API_URL}/segment/${data._id}`, putData);
-      // eslint-disable-next-line no-console
-      console.log('Clicked Edit Segment');
       updateSections();
       onCloseEdit();
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.log(err);
-      // eslint-disable-next-line no-alert
       alert(err);
     }
   };
@@ -200,10 +190,6 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
               variant="solid"
               mr={3}
               onClick={editSegment}
-              // onClick={() => {
-              //   // onUpdateSegment(segId, segName, segLocation, segLink, segParking);
-              //   editSegment;
-              // }}
             >
               Save Changes
             </Button>
@@ -214,17 +200,6 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
   );
 };
 const SectionTableRow = ({ row }) => {
-  // return (
-  //   <Tr {...row.getRowProps()}>
-  //     {row.cells.map(cell => {
-  //       return (
-  //         <Td fontSize="14px" key={row.id} {...cell.getCellProps()}>
-  //           {cell.render('Cell')}
-  //         </Td>
-  //       );
-  //     })}
-  //   </Tr>
-  // );
   return (
     <Tr {...row.getRowProps()}>
       {row.cells.map(cell => {
