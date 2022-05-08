@@ -173,7 +173,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
         </div>,
         <div>
           {row.sex.slice(0, 3).map(sex => (
-            <div>{sex}</div>
+            <div key={sex}>{sex}</div>
           ))}
         </div>,
       ],
