@@ -46,6 +46,10 @@ import { useFormContext } from 'react-hook-form';
 import { FiEdit3 } from 'react-icons/fi';
 import ListedSpeciesPopup from '../ListedSpecies/ListedSpeciesPopup';
 
+// TO-DO:
+//  - Mobile for listed species table (columns too wide for screen)
+//  - Mobile for Banding section
+
 const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader, isDisabled }) => {
   const formPrefix = `listedSpecies[${tab}].`;
   const { isOpen, onOpen: openPopup, onClose } = useDisclosure();
@@ -175,7 +179,12 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
           {speciesName}s
         </Text>
       )}
-      <Grid marginTop="20px" minH="200px" templateColumns="repeat(6, 1fr)" gap="150">
+      <Grid
+        marginTop="20px"
+        minH="200px"
+        templateColumns={{ md: 'repeat(6, 1fr)', sm: 'repeat(1, 1fr)' }}
+        gap={{ md: '150', sm: '50' }}
+      >
         <GridItem colSpan="3">
           <Box overflow="hidden" border="1px solid darkgray" rounded="md">
             <Accordion as={Table} allowToggle width="100%" reduceMotion>

@@ -19,6 +19,7 @@ import {
   Text,
   Thead,
   Tr,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
@@ -51,6 +52,7 @@ const BandingSection = () => {
   // watch the 4 bands on the current tab so we can generate the band code
   const currentBandTab = watch(`bandTabs.${activeTabIndex}`);
   const currentBandTabCode = generateBandingCode(currentBandTab);
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const addBirdBandTab = () => {
     const newTab = {};
@@ -77,7 +79,7 @@ const BandingSection = () => {
           key={d.id}
           onClose={() => removeBirdBandTab(i)}
         >
-          Banded Bird {i + 1}
+          Bird {i + 1}
         </CloseableTab>
       );
     });
@@ -86,17 +88,25 @@ const BandingSection = () => {
   return (
     <CollapsibleSection title="Banding" limitWidth={false}>
       <HStack align="start">
-        <Text fontWeight="semibold">Note:</Text>
-        <Box>
-          <Text>
-            If there is an alphanumeric band, select the color(s) of the band and input the
-            alphanumeric code in the text field “Alphanumeric”.
+        <Text fontWeight="semibold" fontSize={{ md: 'md', sm: 'sm' }}>
+          Note:
+        </Text>
+        {isMobile ? (
+          <Text fontSize="sm">
+            Input the bands in top to bottom order (from the bird&apos;s perspective)
           </Text>
-          <Text>
-            If there is an alphanumeric flag on the bird’s leg, check the “Is an Alphanumeric Flag”
-            box.
-          </Text>
-        </Box>
+        ) : (
+          <Box>
+            <Text>
+              If there is an alphanumeric band, select the color(s) of the band and input the
+              alphanumeric code in the text field “Alphanumeric”.
+            </Text>
+            <Text>
+              If there is an alphanumeric flag on the bird’s leg, check the “Is an Alphanumeric
+              Flag” box.
+            </Text>
+          </Box>
+        )}
       </HStack>
       <HStack marginTop="18px" />
       <Tabs
@@ -122,16 +132,16 @@ const BandingSection = () => {
               variant="outline"
               borderRadius="full"
               colorScheme="cyan"
-              minWidth="180px"
+              minWidth="130px"
             >
-              Add Banded Bird +
+              Add Bird +
             </Button>
           </HStack>
         </TabList>
         <TabPanels>
           {birdBandTabs.map((birdBandTab, tabIndex) => (
             <TabPanel bgColor="gray.50" key={birdBandTab.id} padding={4} marginTop={2} rounded="md">
-              <Grid templateColumns={['repeat(1,1fr)', '', 'repeat(2, 1fr)']} gap="2em">
+              <Grid templateColumns={{ md: 'repeat(2, 1fr)', sm: 'repeat(1, 1fr)' }} gap="2em">
                 {BAND_POSITIONS.map(({ label: bandPosition, value: bandPositionValue }) => (
                   <GridItem key={bandPosition}>
                     <Text fontWeight="semibold" fontSize="md" mb="2">

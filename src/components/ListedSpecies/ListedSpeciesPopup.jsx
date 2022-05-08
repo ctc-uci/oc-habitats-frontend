@@ -105,7 +105,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
       <HStack w="100%" ref={topRef}>
         <Flex mt="16px" w="100%">
           <IconButton
-            icon={<ArrowBackIcon boxSize={10} />}
+            icon={<ArrowBackIcon boxSize={{ md: 10, sm: 7 }} />}
             bgColor="transparent"
             onClick={checkUnsavedChanges}
             left="16px"
@@ -135,6 +135,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
             right="16px"
             spacing="8px"
             separator={<ChevronRightIcon color="gray.500" />}
+            fontSize={{ md: 'md', sm: 'xs' }}
           >
             <BreadcrumbItem>
               <BreadcrumbLink onClick={checkUnsavedChanges}>Survey Log</BreadcrumbLink>
@@ -151,7 +152,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
           <Heading as="h1">Add {adultName}</Heading>
         </Stack>
         <form onSubmit={handleSubmit}>
-          <VStack align="start" spacing="4em">
+          <VStack align="start" spacing={{ md: '4em', sm: '2em' }}>
             <GeneralListedInformation speciesName={adultName} />
             <Location />
             <SexSection />
