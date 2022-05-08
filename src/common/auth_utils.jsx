@@ -113,7 +113,6 @@ const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
       isActive: true,
       isTrainee: false,
       registered: true,
-      segments: null,
     });
   } catch (err) {
     throw new Error(err.message);
@@ -170,6 +169,7 @@ const createUser = async (email, password, firstName, lastName, role) => {
     const user = await createUserInFirebase(email, password);
     await createUserInDB(email, user.data.uid, role, firstName, lastName);
   } catch (err) {
+    // TODO: delete firebase account incase of error
     throw new Error(err.message);
   }
 };

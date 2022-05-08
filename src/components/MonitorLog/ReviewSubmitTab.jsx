@@ -24,7 +24,14 @@ EditSectionButton.propTypes = {
   jumpToTab: PropTypes.func.isRequired,
 };
 
-const ReviewSubmitTab = ({ jumpToTab }) => {
+const ReviewSubmitTab = ({
+  jumpToTab,
+  assignedSegments,
+  monitorPartners,
+  predators,
+  listedSpecies,
+  additionalSpecies,
+}) => {
   const parentForm = useFormContext();
   const nestedForm = useForm({ defaultValues: parentForm.getValues() });
 
@@ -40,45 +47,50 @@ const ReviewSubmitTab = ({ jumpToTab }) => {
         rightElement={createJumpButton(0)}
       >
         <Box mb="10">
-          <GeneralInfoTab ochUsers={[]} showHeader={false} isDisabled />
+          <GeneralInfoTab
+            ochUsers={[]}
+            showHeader={false}
+            isDisabled
+            assignedSegments={assignedSegments}
+            monitorPartners={monitorPartners}
+          />
         </Box>
       </CollapsibleSection>
-      <CollapsibleSection title="Least Tern" limitWidth={false} rightElement={createJumpButton(1)}>
-        <ListedSpeciesTab
-          tab={0}
-          speciesName="Least Tern"
-          speciesCode="LETE"
-          showHeader={false}
-          isDisabled
-        />
-      </CollapsibleSection>
-      <CollapsibleSection
-        title="Snowy Plover"
-        limitWidth={false}
-        rightElement={createJumpButton(2)}
-      >
-        <ListedSpeciesTab
-          tab={1}
-          speciesName="Snowy Plover"
-          speciesCode="WSPL"
-          showHeader={false}
-          isDisabled
-        />
-      </CollapsibleSection>
+      {listedSpecies.map((species, idx) => (
+        <CollapsibleSection
+          key={species._id}
+          title={species.name}
+          limitWidth={false}
+          rightElement={createJumpButton(idx + 1)}
+        >
+          <ListedSpeciesTab
+            tab={idx}
+            speciesName={species.name}
+            speciesCode={species.code}
+            speciesId={species._id}
+            showHeader={false}
+            isDisabled
+          />
+        </CollapsibleSection>
+      ))}
       <CollapsibleSection
         title="Additional Species"
         limitWidth={false}
-        rightElement={createJumpButton(3)}
+        rightElement={createJumpButton(listedSpecies.length + 1)}
       >
-        <AdditionalSpeciesTab showHeader={false} isDisabled />
+        <AdditionalSpeciesTab showHeader={false} isDisabled species={additionalSpecies} />
       </CollapsibleSection>
-      <CollapsibleSection title="Predators" limitWidth={false} rightElement={createJumpButton(4)}>
-        <PredatorsTab showHeader={false} isDisabled />
+      <CollapsibleSection
+        title="Predators"
+        limitWidth={false}
+        rightElement={createJumpButton(listedSpecies.length + 2)}
+      >
+        <PredatorsTab showHeader={false} isDisabled predators={predators} />
       </CollapsibleSection>
       <CollapsibleSection
         title="Human Activity"
         limitWidth={false}
-        rightElement={createJumpButton(5)}
+        rightElement={createJumpButton(listedSpecies.length + 3)}
       >
         <HumanActivityTab showHeader={false} isDisabled />
       </CollapsibleSection>
@@ -95,6 +107,39 @@ const ReviewSubmitTab = ({ jumpToTab }) => {
 
 ReviewSubmitTab.propTypes = {
   jumpToTab: PropTypes.func.isRequired,
+  assignedSegments: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      segmentId: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  monitorPartners: PropTypes.arrayOf(
+    PropTypes.shape({
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      _id: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  predators: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      _id: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  additionalSpecies: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      _id: PropTypes.string,
+    }),
+  ).isRequired,
+  listedSpecies: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      _id: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default ReviewSubmitTab;

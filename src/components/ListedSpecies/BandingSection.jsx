@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  chakra,
   Checkbox,
   Code,
   FormLabel,
@@ -21,17 +20,19 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { chakraComponents, Select } from 'chakra-react-select';
 import React, { useState } from 'react';
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import { IconContext } from 'react-icons';
-import { BsFillCircleFill } from 'react-icons/bs';
-import BandColors from '../../common/BandColors';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import generateBandingCode from '../../common/bandingCodeUtil';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
+import BandingColorSelect from './BandingColorSelect';
 import CloseableTab from './CloseableTab';
 
-const BAND_POSITIONS = ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'];
+const BAND_POSITIONS = [
+  { label: 'Top Left', value: 'topLeft' },
+  { label: 'Top Right', value: 'topRight' },
+  { label: 'Bottom Left', value: 'bottomLeft' },
+  { label: 'Bottom Right', value: 'bottomRight' },
+];
 
 const BandingSection = () => {
   const { register, watch, control } = useFormContext();
@@ -48,13 +49,13 @@ const BandingSection = () => {
   // keep track of current active tab
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   // watch the 4 bands on the current tab so we can generate the band code
-  const currentBandTab = [0, 1, 2, 3].map(idx => watch(`bandTabs.${activeTabIndex}.${idx}`));
+  const currentBandTab = watch(`bandTabs.${activeTabIndex}`);
   const currentBandTabCode = generateBandingCode(currentBandTab);
 
   const addBirdBandTab = () => {
     const newTab = {};
-    [...Array(4)].forEach((_, idx) => {
-      newTab[idx] = {
+    BAND_POSITIONS.forEach(({ value }) => {
+      newTab[value] = {
         colors: [],
         flag: false,
         verticalPosition: null,
@@ -67,38 +68,6 @@ const BandingSection = () => {
   const removeBirdBandTab = idx => {
     remove(idx);
   };
-
-  // setup custom rendering to show the band color in color select dropdown
-  const customComponents = {
-    // eslint-disable-next-line react/prop-types
-    Option: ({ children, ...props }) => (
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      <chakraComponents.Option {...props}>
-        {/* eslint-disable-next-line react/prop-types */}
-        <chakra.span
-          marginRight={2}
-          borderWidth="1px"
-          // eslint-disable-next-line react/prop-types
-          borderColor={props.data.value === 'W' ? 'gray.600' : props.data.realColor}
-          borderRadius="3xl"
-        >
-          {/* eslint-disable-next-line react/prop-types */}
-          <IconContext.Provider value={{ color: props.data.realColor }}>
-            <BsFillCircleFill />
-          </IconContext.Provider>
-        </chakra.span>{' '}
-        {children}
-      </chakraComponents.Option>
-    ),
-  };
-
-  const mappedColorOptions = BandColors.map(option => ({
-    ...option,
-    colorScheme: option.selectColor,
-    realValue: option.value,
-    // trick react-select into thinking nothing gets selected so we can have duplicate colors
-    value: Math.random(),
-  }));
 
   const addTabs = () => {
     return birdBandTabs.map((d, i) => {
@@ -163,7 +132,7 @@ const BandingSection = () => {
           {birdBandTabs.map((birdBandTab, tabIndex) => (
             <TabPanel bgColor="gray.50" key={birdBandTab.id} padding={4} marginTop={2} rounded="md">
               <Grid templateColumns={['repeat(1,1fr)', '', 'repeat(2, 1fr)']} gap="2em">
-                {BAND_POSITIONS.map((bandPosition, idx) => (
+                {BAND_POSITIONS.map(({ label: bandPosition, value: bandPositionValue }) => (
                   <GridItem key={bandPosition}>
                     <Text fontWeight="semibold" fontSize="md" mb="2">
                       {bandPosition} Band
@@ -194,39 +163,35 @@ const BandingSection = () => {
                             <ChakraSelect
                               placeholder="Select..."
                               bgColor="white"
-                              {...register(`bandTabs.${tabIndex}.${idx}.verticalPosition`)}
+                              {...register(
+                                `bandTabs.${tabIndex}.${bandPositionValue}.verticalPosition`,
+                              )}
                             >
-                              <option value="above">Above ankle</option>
-                              <option value="below">Below ankle</option>
+                              <option value="ABOVE">Above ankle</option>
+                              <option value="BELOW">Below ankle</option>
                             </ChakraSelect>
                           </Td>
                           <Td p="0" pr="4" verticalAlign="top">
                             <Box bgColor="white">
-                              <Controller
-                                name={`bandTabs.${tabIndex}.${idx}.colors`}
-                                control={control}
-                                render={({ field }) => (
-                                  <Select
-                                    {...field}
-                                    isMulti
-                                    options={mappedColorOptions}
-                                    closeMenuOnSelect={false}
-                                    components={customComponents}
-                                  />
-                                )}
+                              <BandingColorSelect
+                                name={`bandTabs.${tabIndex}.${bandPositionValue}.colors`}
                               />
                             </Box>
                           </Td>
                           <Td p="0" verticalAlign="top">
                             <Input
                               bgColor="white"
-                              {...register(`bandTabs.${tabIndex}.${idx}.alphanumeric`)}
+                              {...register(
+                                `bandTabs.${tabIndex}.${bandPositionValue}.alphanumeric`,
+                              )}
                             />
                           </Td>
                         </Tr>
                         <Tr>
                           <Td px="0" py="2" colSpan={3}>
-                            <Checkbox {...register(`bandTabs.${tabIndex}.${idx}.flag`)}>
+                            <Checkbox
+                              {...register(`bandTabs.${tabIndex}.${bandPositionValue}.flag`)}
+                            >
                               Is an Alphanumeric Flag
                             </Checkbox>
                           </Td>
