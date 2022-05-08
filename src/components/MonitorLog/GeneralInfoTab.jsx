@@ -1,7 +1,13 @@
 import { InfoIcon } from '@chakra-ui/icons';
 import {
+  Box,
   Flex,
   GridItem,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
   Input,
   Select,
   SimpleGrid,
@@ -12,14 +18,29 @@ import {
 } from '@chakra-ui/react';
 import { Select as ReactSelect } from 'chakra-react-select';
 import PropTypes from 'prop-types';
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, useFormContext } from 'react-hook-form';
 import './GeneralInfoTab.css';
+import { OCHBackend } from '../../common/utils';
 
 function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHeader, isTemplate }) {
+  const [additionalQuestions, setAdditionalQuestions] = useState([]);
+  // commented for prettier
+  // const [isLoading, setIsLoading] = useState(true);
   const { control, register } = useFormContext();
+
+  useEffect(async () => {
+    const newQuestions = await OCHBackend.get(`/forms/general`);
+    const questions = await newQuestions.data;
+    // for prettier
+    // console.log(newQuestions);
+
+    setAdditionalQuestions(questions.additionalFields);
+    // prettier
+    // setIsLoading(false);
+  }, []);
 
   const partnerSelectOptions = monitorPartners.map(user => ({
     ...user,
@@ -210,7 +231,33 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
               {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
+          {additionalQuestions.map(question => {
+            return (
+              <Box key={question.title} bgColor="ochBlue">
+                <GridItem key={question.title} colSpan={1} rowSpan={1}>
+                  <VStack spacing="8px" align="left">
+                    <Text fontWeight="500" fontSize="md">
+                      {question.title}
+                    </Text>
+                    {question.fieldType === 'TEXT' ? (
+                      <Input type="text" />
+                    ) : (
+                      <NumberInput allowMouseWheel>
+                        <NumberInputField />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                    )}
+                    {isTemplate && <Text color="#718096">Non-Static</Text>}
+                  </VStack>
+                </GridItem>
+              </Box>
+            );
+          })}
         </SimpleGrid>
+
         <VStack spacing="8px" align="left" maxW="600px">
           <Text fontWeight="500" fontSize="md">
             Monitoring Session Partners

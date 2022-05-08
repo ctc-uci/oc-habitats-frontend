@@ -3,6 +3,7 @@ import {
   chakra,
   Flex,
   GridItem,
+  Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -16,8 +17,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { OCHBackend } from '../../common/utils';
 
 const FORM_PREFIX = 'humanActivity.';
 const HUMAN_ACTIVITIES = [
@@ -86,7 +88,16 @@ HumanActivityField.propTypes = {
 
 const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
   const { register } = useFormContext();
+  const [additionalQuestions, setAdditionalQuestions] = useState([]);
 
+  useEffect(async () => {
+    const newQuestions = await OCHBackend.get(`/forms/human-activity`);
+    const questions = await newQuestions.data;
+    // for prettier
+    // console.log(newQuestions);
+
+    setAdditionalQuestions(questions.additionalFields);
+  }, []);
   return (
     <>
       {isTemplate && (
@@ -116,6 +127,29 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
               isTemplate={isTemplate}
             />
           ))}
+          {additionalQuestions.map(question => {
+            return (
+              <GridItem key={question.title} colSpan={1} rowSpan={1}>
+                <VStack spacing="8px" align="left">
+                  <Text fontWeight="500" fontSize="md">
+                    {question.title}
+                  </Text>
+                  {question.fieldType === 'TEXT' ? (
+                    <Input type="text" />
+                  ) : (
+                    <NumberInput allowMouseWheel>
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  )}
+                  {isTemplate && <Text color="#718096">Non-Static</Text>}
+                </VStack>
+              </GridItem>
+            );
+          })}
         </SimpleGrid>
         <Spacer />
         <VStack spacing="8px" align="left">

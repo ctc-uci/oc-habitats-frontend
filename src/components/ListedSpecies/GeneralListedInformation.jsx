@@ -11,6 +11,7 @@ import {
   NumberInputField,
   NumberInputStepper,
   Select,
+  SimpleGrid,
   Stack,
   Text,
   Tooltip,
@@ -23,7 +24,7 @@ import options from './DropdownOptions';
 import footNotes from './FootNotes';
 
 // component/section name not final
-const GeneralListedInformation = ({ isTemplate }) => {
+const GeneralListedInformation = ({ isTemplate, additionalQuestions }) => {
   const { register, setValue, getValues } = useFormContext();
 
   const createOptions = () => {
@@ -121,7 +122,7 @@ const GeneralListedInformation = ({ isTemplate }) => {
         <FormControl>
           <FormLabel>
             <Flex justify="space-between" align="center">
-              Habitat Decription
+              Habitat Description
               <Tooltip label={footNotes.habitat} fontSize="md">
                 <InfoIcon />
               </Tooltip>
@@ -133,15 +134,39 @@ const GeneralListedInformation = ({ isTemplate }) => {
           {isTemplate && <Text color="#718096">Static</Text>}
         </FormControl>
       </Stack>
+      <SimpleGrid mt="30px" columns={3} spacing="2em">
+        {additionalQuestions.map(question => {
+          return (
+            <FormControl key={question.title}>
+              <FormLabel>{question.title}</FormLabel>
+              {question.fieldType === 'TEXT' ? (
+                <Input type="text" />
+              ) : (
+                <NumberInput allowMouseWheel>
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              )}
+
+              {isTemplate && <Text color="#718096">Non-Static</Text>}
+            </FormControl>
+          );
+        })}
+      </SimpleGrid>
     </CollapsibleSection>
   );
 };
 
 GeneralListedInformation.defaultProps = {
   isTemplate: false,
+  additionalQuestions: null,
 };
 GeneralListedInformation.propTypes = {
   isTemplate: PropTypes.bool,
+  additionalQuestions: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])),
 };
 
 export default GeneralListedInformation;
