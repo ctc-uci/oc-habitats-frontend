@@ -30,97 +30,105 @@ import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 
+import { UserContextProvider } from './components/UserContext/UserContext';
+import UserContextExample from './components/UserContext/UserContextExample';
 import AUTH_ROLES from './common/auth_config';
-import { OCHBackend } from '../common/utils';
+// import { OCHBackend } from './common/utils';
 
 const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 // TO-DO: Navbar based on screen width
 
 // Load userData into App, get from backend
-const [userData, setUserData] = useState(null);
-useEffect(async () => {
-  try {
-    const userRes = await Promise.all([
-      OCHBackend.get('/users/me', { withCredentials: true }),
-      OCHBackend.get('/users/userSubmissions', { withCredentials: true }),
-    ]);
-    setUserData(userRes.data);
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.log(err);
-  }
-}, []);
+// const [userData, setUserData] = useState(null);
+// useEffect(async () => {
+//   try {
+//     const userRes = await Promise.all([
+//       OCHBackend.get('/users/me', { withCredentials: true }),
+//       OCHBackend.get('/users/userSubmissions', { withCredentials: true }),
+//     ]);
+//     setUserData(userRes.data);
+//   } catch (err) {
+//     // eslint-disable-next-line no-console
+//     console.log(err);
+//   }
+// }, []);
 
 function App() {
   const [accMadeChanges, setAccMadeChanges] = useState(false);
   return (
     <ChakraProvider theme={theme}>
       <CookiesProvider>
-        <Router>
-          <Box className="page-container">
-            <Box className="content-wrap">
-              <Navbar isAdmin changesMade={accMadeChanges} />
-              <Routes>
-                {/* Add routes as needed; route names subject to change */}
-                <Route path="/register/:inviteID" element={<InviteLandingPage />} />
-                <Route exact path="/invite" element={<AdminInviteModal />} />
-                <Route exact path="/" element={<AdminDashboardPage />} />
-                <Route exact path="/volunteerhome" element={<VolunteerDashboardPage />} />
-                <Route
-                  exact
-                  path="/account"
-                  element={
-                    <AccountPage changesMade={accMadeChanges} setChangesMade={setAccMadeChanges} />
-                  }
-                />
-                <Route exact path="/create-log" element={<MonitorLogPage />} />
-                <Route exact path="/sections" element={<SectionPage />} />
-                <Route exact path="/species" element={<Species />} />
-                {/* Admin only routes (TO DO, make admin only) */}
-                <Route exact path="/people" element={<PeoplePage />} />
-                <Route exact path="/contacts" />
-                <Route exact path="/map" />
-                <Route exact path="/logs" element={<AdminPage />} />
-                <Route exact path="/common-table-example" element={<CommonTableExample />} />
+        <UserContextProvider>
+          <Router>
+            <Box className="page-container">
+              <Box className="content-wrap">
+                <Navbar isAdmin changesMade={accMadeChanges} />
+                <Routes>
+                  {/* Add routes as needed; route names subject to change */}
+                  <Route path="/register/:inviteID" element={<InviteLandingPage />} />
+                  <Route exact path="/invite" element={<AdminInviteModal />} />
+                  <Route exact path="/" element={<AdminDashboardPage />} />
+                  <Route exact path="/volunteerhome" element={<VolunteerDashboardPage />} />
+                  <Route
+                    exact
+                    path="/account"
+                    element={
+                      <AccountPage
+                        changesMade={accMadeChanges}
+                        setChangesMade={setAccMadeChanges}
+                      />
+                    }
+                  />
+                  <Route exact path="/create-log" element={<MonitorLogPage />} />
+                  <Route exact path="/sections" element={<SectionPage />} />
+                  <Route exact path="/species" element={<Species />} />
+                  {/* Admin only routes (TO DO, make admin only) */}
+                  <Route exact path="/people" element={<PeoplePage />} />
+                  <Route exact path="/contacts" />
+                  <Route exact path="/map" />
+                  <Route exact path="/logs" element={<AdminPage />} />
+                  <Route exact path="/common-table-example" element={<CommonTableExample />} />
 
-                {/* NEW AUTH ROUTES */}
-                <Route path="/login" element={<Login />} />
-                <Route
-                  path="/admin"
-                  element={
-                    <ProtectedRoute
-                      Component={Logout}
-                      redirectPath="/logout"
-                      roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
-                    />
-                  }
-                />
-                <Route path="/email-action" element={<EmailAction redirectPath="/" />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route
-                  path="/logout"
-                  element={
-                    <ProtectedRoute
-                      Component={Logout}
-                      redirectPath="/"
-                      roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE]}
-                    />
-                  }
-                />
-                {/* <Route path="/new-user" element={<NewUser />} /> */}
-                <Route exact path="/contacts" />
-                <Route exact path="/map" />
-                <Route exact path="/logs" element={<AdminPage />} />
-                <Route exact path="/common-table-example" element={<CommonTableExample />} />
-              </Routes>
+                  {/* NEW AUTH ROUTES */}
+                  <Route path="/login" element={<Login />} />
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute
+                        Component={Logout}
+                        redirectPath="/logout"
+                        roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
+                      />
+                    }
+                  />
+                  <Route path="/email-action" element={<EmailAction redirectPath="/" />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route
+                    path="/logout"
+                    element={
+                      <ProtectedRoute
+                        Component={Logout}
+                        redirectPath="/"
+                        roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
+                    }
+                  />
+                  {/* <Route path="/new-user" element={<NewUser />} /> */}
+                  <Route exact path="/contacts" />
+                  <Route exact path="/map" />
+                  <Route exact path="/logs" element={<AdminPage />} />
+                  <Route exact path="/common-table-example" element={<CommonTableExample />} />
+                  <Route exact path="/user-context-example" element={<UserContextExample />} />
+                </Routes>
+              </Box>
             </Box>
-          </Box>
-          <Routes>
-            <Route path="/create-log" />
-            <Route path="/*" element={<Footer />} />
-          </Routes>
-        </Router>
+            <Routes>
+              <Route path="/create-log" />
+              <Route path="/*" element={<Footer />} />
+            </Routes>
+          </Router>
+        </UserContextProvider>
       </CookiesProvider>
     </ChakraProvider>
   );
