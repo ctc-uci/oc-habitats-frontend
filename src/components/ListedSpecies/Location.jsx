@@ -66,7 +66,12 @@ const Location = () => {
       <Text color="gray.500" mb="5" fontSize="sm">
         Note: DMS Format Example: N33 42.239 / W118 03.395
       </Text>
-      <Grid display={{ md: 'grid', sm: 'auto' }} templateColumns="repeat(2, 1fr)" w="100%" gap="4">
+      <Grid
+        display={{ md: 'grid', base: 'auto' }}
+        templateColumns="repeat(2, 1fr)"
+        w="100%"
+        gap="4"
+      >
         {createGPS()}
         <GridItem colSpan="2">
           <FormControl>

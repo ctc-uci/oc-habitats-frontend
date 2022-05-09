@@ -91,7 +91,7 @@ const BandingSection = () => {
   return (
     <CollapsibleSection title="Banding" limitWidth={false}>
       <HStack align="start">
-        <Text fontWeight="semibold" fontSize={{ md: 'md', sm: 'sm' }}>
+        <Text fontWeight="semibold" fontSize={{ md: 'md', base: 'sm' }}>
           Note:
         </Text>
         {isMobile ? (
@@ -145,7 +145,7 @@ const BandingSection = () => {
         <TabPanels>
           {birdBandTabs.map((birdBandTab, tabIndex) => (
             <TabPanel bgColor="gray.50" key={birdBandTab.id} padding={4} marginTop={4} rounded="md">
-              <Grid templateColumns={{ md: 'repeat(2, 1fr)', sm: 'repeat(1, 1fr)' }} gap="2em">
+              <Grid templateColumns={{ md: 'repeat(2, 1fr)', base: 'repeat(1, 1fr)' }} gap="2em">
                 {BAND_POSITIONS.map(({ label: bandPosition, value: bandPositionValue }) => (
                   <GridItem key={bandPosition}>
                     <Text fontWeight="semibold" fontSize="md" mb="2">

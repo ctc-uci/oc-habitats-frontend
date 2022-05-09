@@ -36,7 +36,7 @@ const GeneralListedInformation = () => {
 
   return (
     <CollapsibleSection title="General Information">
-      <Stack direction={{ md: 'row', sm: 'column' }} w="100%" spacing="2em">
+      <Stack direction={{ md: 'row', base: 'column' }} w="100%" spacing="2em">
         <FormControl>
           <FormLabel>
             # of Adults
@@ -96,7 +96,7 @@ const GeneralListedInformation = () => {
 
       <br />
 
-      <Stack direction={{ md: 'row', sm: 'column' }} w="100%" spacing="2em">
+      <Stack direction={{ md: 'row', base: 'column' }} w="100%" spacing="2em">
         <FormControl>
           <FormLabel>
             Time

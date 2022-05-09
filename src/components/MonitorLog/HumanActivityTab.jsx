@@ -43,7 +43,7 @@ const HumanActivityField = ({ activityName, activityDesc, activityId, isDisabled
 
   return (
     <GridItem colSpan={1}>
-      <VStack spacing={{ md: '8px', sm: '5px' }} align="left">
+      <VStack spacing={{ md: '8px', base: '5px' }} align="left">
         <Text fontWeight="500" fontSize="md">
           {activityName}
         </Text>
@@ -93,7 +93,11 @@ const HumanActivityTab = ({ showHeader, isDisabled }) => {
           Human Activity
         </Text>
       )}
-      <SimpleGrid columns={{ md: 3, sm: 1 }} spacingX="64px" spacingY={{ md: '68px', sm: '30px' }}>
+      <SimpleGrid
+        columns={{ md: 3, base: 1 }}
+        spacingX="64px"
+        spacingY={{ md: '68px', base: '30px' }}
+      >
         {HUMAN_ACTIVITIES.map(([name, desc, value]) => (
           <HumanActivityField
             key={value}
