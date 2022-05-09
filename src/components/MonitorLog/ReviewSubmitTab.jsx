@@ -1,4 +1,4 @@
-import { Box, Button, Text } from '@chakra-ui/react';
+import { Box, Button, Text, Icon, useMediaQuery } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
@@ -12,9 +12,9 @@ import PredatorsTab from './PredatorsTab';
 
 const EditSectionButton = ({ tabNum, jumpToTab }) => {
   return (
-    <Button colorScheme="cyan" minW="150px" onClick={() => jumpToTab(tabNum)}>
+    <Button colorScheme="cyan" w="155px" onClick={() => jumpToTab(tabNum)}>
       Edit Section
-      <FiEdit3 style={{ marginLeft: '4px' }} />
+      <Icon as={FiEdit3} ml={2} />
     </Button>
   );
 };

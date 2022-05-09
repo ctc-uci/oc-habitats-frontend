@@ -182,21 +182,38 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
       <Grid
         marginTop="20px"
         minH="200px"
-        templateColumns={{ md: 'repeat(6, 1fr)', sm: 'repeat(1, 1fr)' }}
-        gap={{ md: '150', sm: '50' }}
+        templateColumns={{ md: 'repeat(6, 1fr)', base: 'repeat(1, 1fr)' }}
+        gap={{ md: '150', base: '50' }}
       >
         <GridItem colSpan="3">
-          <Box overflow="hidden" border="1px solid darkgray" rounded="md">
+          <Box
+            border="1px solid darkgray"
+            rounded="md"
+            overflow="scroll"
+            css={{
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+            }}
+          >
             <Accordion as={Table} allowToggle width="100%" reduceMotion>
               <Thead bg="ochGrey">
-                <tr>
+                <Tr>
                   <Th width="0" />
-                  <Th color="#FDFDFD">Map #</Th>
-                  <Th color="#FDFDFD">Adults</Th>
-                  <Th color="#FDFDFD">Fledges</Th>
-                  <Th color="#FDFDFD">Chicks</Th>
+                  <Th textAlign="center" color="#FDFDFD">
+                    Map #
+                  </Th>
+                  <Th textAlign="center" color="#FDFDFD">
+                    Adults
+                  </Th>
+                  <Th textAlign="center" color="#FDFDFD">
+                    Fledges
+                  </Th>
+                  <Th textAlign="center" color="#FDFDFD">
+                    Chicks
+                  </Th>
                   <Th width="0" />
-                </tr>
+                </Tr>
               </Thead>
               {data.length === 0 && (
                 <Tbody>
@@ -260,10 +277,18 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
                             </Menu>
                           )}
                         </Td>
-                        <Td borderBottomWidth="0">{n + 1}</Td>
-                        <Td borderBottomWidth="0">{row.totalAdults}</Td>
-                        <Td borderBottomWidth="0">{row.totalFledges}</Td>
-                        <Td borderBottomWidth="0">{row.totalChicks}</Td>
+                        <Td textAlign="center" borderBottomWidth="0">
+                          {n + 1}
+                        </Td>
+                        <Td textAlign="center" borderBottomWidth="0">
+                          {row.totalAdults}
+                        </Td>
+                        <Td textAlign="center" borderBottomWidth="0">
+                          {row.totalFledges}
+                        </Td>
+                        <Td textAlign="center" borderBottomWidth="0">
+                          {row.totalChicks}
+                        </Td>
                         <Td width="0" borderBottomWidth="0">
                           <AccordionButton fontSize="2xl">
                             <AccordionIcon />
@@ -289,13 +314,13 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
                     Total
                   </Th>
                   <Th borderBottom="0" />
-                  <Th borderBottom="0" color="#FDFDFD">
+                  <Th textAlign="center" borderBottom="0" color="#FDFDFD">
                     {totals[0]}
                   </Th>
-                  <Th borderBottom="0" color="#FDFDFD">
+                  <Th textAlign="center" borderBottom="0" color="#FDFDFD">
                     {totals[1]}
                   </Th>
-                  <Th borderBottom="0" color="#FDFDFD">
+                  <Th textAlign="center" borderBottom="0" color="#FDFDFD">
                     {totals[2]}
                   </Th>
                   <Th width="0" />

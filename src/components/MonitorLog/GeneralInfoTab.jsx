@@ -39,7 +39,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
           General Information
         </Text>
       )}
-      <VStack spacing="23px" align="left">
+      <VStack mt="20px" spacing="23px" align="left">
         <SimpleGrid
           columns={{ md: 4, sm: 1 }}
           rows={3}

@@ -144,7 +144,7 @@ const MonitorLogPage = () => {
             ref={topRef}
             px="32px"
             fontWeight="600"
-            fontSize={{ md: '4xl', sm: '3xl' }}
+            fontSize={{ md: '4xl', base: '3xl' }}
             my="40px"
           >
             OCH Monitor Log
@@ -158,11 +158,21 @@ const MonitorLogPage = () => {
             onChange={setActiveTab}
             isLazy
           >
-            <TabList px="32px" maxW="100vw" alignItems="center" overflowX="scroll">
+            <TabList
+              px="32px"
+              maxW="100vw"
+              alignItems="center"
+              overflowX="scroll"
+              css={{
+                '&::-webkit-scrollbar': {
+                  display: 'none',
+                },
+              }}
+            >
               <HStack spacing="24px">
                 <MonitorTabButton>General Info</MonitorTabButton>
                 {listedSpecies.map(s => (
-                  <MonitorTabButton key={s._id}>{s.name}</MonitorTabButton>
+                  <MonitorTabButton key={s._id}>{s.code}</MonitorTabButton>
                 ))}
                 <MonitorTabButton>Additional Species</MonitorTabButton>
                 <MonitorTabButton>Predators</MonitorTabButton>
@@ -172,7 +182,7 @@ const MonitorLogPage = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Container mt="10px" maxW="100vw">
+                <Container maxW="100vw">
                   <GeneralInfoTab
                     assignedSegments={assignedSegments}
                     monitorPartners={monitorPartners}
