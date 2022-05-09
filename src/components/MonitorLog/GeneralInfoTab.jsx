@@ -52,7 +52,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
   const [newTitle, setNewTitle] = useState();
   const [newFieldType, setNewFieldType] = useState();
   const [newTooltip, setNewTooltip] = useState();
-  const [fieldToEdit, setFieldToEdit] = useState();
+  // const [fieldToEdit, setFieldToEdit] = useState();
   const [idOfFieldBeingEdited, setIdOfFieldBeingEdited] = useState();
 
   const updateQuestion = async () => {
