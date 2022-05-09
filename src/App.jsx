@@ -34,8 +34,6 @@ import HomePage from './HomePage';
 
 const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
-// TO-DO: Navbar based on screen width
-
 function App() {
   const [accMadeChanges, setAccMadeChanges] = useState(false);
   const isAdmin = true;

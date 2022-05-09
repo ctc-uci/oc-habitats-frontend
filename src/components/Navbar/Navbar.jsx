@@ -9,37 +9,22 @@ import Toast from '../Toast';
 import NavbarMobile from './NavbarMobile';
 
 const Navbar = ({ isAdmin, onAdminPortal, setOnAdminPortal, changesMade }) => {
-  // const [adminPortal, setAdminPortal] = useState(true);
   const [isMobile] = useMediaQuery('(max-width: 1024px)');
-
-  // const user = {
-  //   firstName: 'Dan',
-  //   lastName: 'Abramov',
-  //   profilePic: 'https://bit.ly/dan-abramov',
-  // };
 
   const admin = [
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'People', path: '/people' },
     { text: 'Species Catalog', path: '/species' },
     { text: 'Sections & Segments', path: '/sections' },
-    { text: 'Emergency Numbers', path: '/emergency-numbers' },
+    { text: 'Emergency Numbers', path: '/numbers' },
   ];
 
   const volunteer = [
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'Species Catalog', path: '/species' },
     { text: 'Sections & Segments', path: '/sections' },
-    { text: 'Emergency Numbers', path: '/emergency-numbers' },
+    { text: 'Emergency Numbers', path: '/numbers' },
   ];
-
-  // const togglePortal = () => {
-  //   if (adminPortal) {
-  //     setAdminPortal(false);
-  //   } else {
-  //     setAdminPortal(true);
-  //   }
-  // };
 
   const toast = useToast();
 
