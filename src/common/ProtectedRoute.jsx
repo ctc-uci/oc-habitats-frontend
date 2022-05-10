@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { PropTypes, instanceOf } from 'prop-types';
-import { withCookies, cookieKeys, Cookies, clearCookies } from './cookie_utils';
+import { withCookies, Cookies, clearCookies } from './cookie_utils';
 import { refreshToken } from './auth_utils';
 import { OCHBackend } from './utils';
 
@@ -35,6 +35,7 @@ const ProtectedRoute = ({ Component, redirectPath, roles, cookies }) => {
     setIsAuthenticated(authenticated);
     setIsLoading(false);
   }, []);
+
   if (isLoading) {
     return <h1>LOADING...</h1>;
   }

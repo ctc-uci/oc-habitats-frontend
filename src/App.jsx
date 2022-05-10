@@ -30,8 +30,8 @@ import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 
-import { UserContextProvider } from './components/UserContext/UserContext';
-import UserContextExample from './components/UserContext/UserContextExample';
+import { UserContextProvider } from './common/UserContext/UserContext';
+import UserContextExample from './common/UserContext/UserContextExample';
 import AUTH_ROLES from './common/auth_config';
 
 const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
@@ -103,7 +103,16 @@ function App() {
                   <Route exact path="/map" />
                   <Route exact path="/logs" element={<AdminPage />} />
                   <Route exact path="/common-table-example" element={<CommonTableExample />} />
-                  <Route exact path="/user-context-example" element={<UserContextExample />} />
+                  <Route
+                    path="/user-context-example"
+                    element={
+                      <ProtectedRoute
+                        Component={UserContextExample}
+                        redirectPath="/logout"
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
+                    }
+                  />
                 </Routes>
               </Box>
             </Box>

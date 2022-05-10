@@ -17,13 +17,11 @@ import {
 import { instanceOf } from 'prop-types';
 import { Cookies, withCookies } from '../../common/cookie_utils';
 import { logInWithEmailAndPassword } from '../../common/auth_utils';
-import { useUserContext } from '../UserContext/UserContext';
 
 import OCHLogo from '../../assets/OCH_Logo_SVG.svg';
 
 const Login = ({ cookies }) => {
   const navigate = useNavigate();
-  const { setUserData } = useUserContext();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [showPassword, setShowPassword] = useState(false);

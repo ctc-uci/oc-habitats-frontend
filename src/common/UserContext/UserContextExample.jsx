@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
-import { OCHBackend } from '../../common/utils';
+import React from 'react';
 import { useUserContext } from './UserContext';
 
 const UserContextExample = () => {
-  const { userData, setUserData } = useUserContext();
+  const { userData } = useUserContext();
 
   // Load userData into App, get from backend
   // useEffect(async () => {

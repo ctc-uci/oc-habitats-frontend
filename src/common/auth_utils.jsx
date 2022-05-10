@@ -21,7 +21,6 @@ import { renderEmail } from 'react-html-email';
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
 
 import { OCHBackend } from './utils';
-import { useUserContext } from '../components/UserContext';
 import AdminInviteEmail from '../components/Email/EmailTemplates/AdminInviteEmail';
 
 // Using Firebase Web version 9
