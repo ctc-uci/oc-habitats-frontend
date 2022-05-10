@@ -14,7 +14,7 @@ function useUserContext() {
 
 // Allows project files to use data
 const UserContextProvider = ({ children }) => {
-  const [userData, setUserData] = useState();
+  const [userData, setUserData] = useState({});
 
   const setDataWrapper = data => {
     console.log(`Setting userData to: ${JSON.stringify(data, null, 0)}`);

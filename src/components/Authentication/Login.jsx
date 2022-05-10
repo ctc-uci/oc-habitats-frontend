@@ -37,10 +37,7 @@ const Login = ({ cookies }) => {
   const handleSubmit = async e => {
     try {
       e.preventDefault();
-      const userData = await logInWithEmailAndPassword(email, password, navigate, cookies);
-      console.log('Printing userData in login.jsx');
-      console.log(userData);
-      setUserData(userData);
+      await logInWithEmailAndPassword(email, password, navigate, cookies);
       navigate('/logout');
     } catch (err) {
       setErrorMessage(err.message);

@@ -34,7 +34,7 @@ import { UserContextProvider } from './components/UserContext/UserContext';
 import UserContextExample from './components/UserContext/UserContextExample';
 import AUTH_ROLES from './common/auth_config';
 
-const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
+const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 // TO-DO: Navbar based on screen width
 
@@ -82,7 +82,7 @@ function App() {
                       <ProtectedRoute
                         Component={Logout}
                         redirectPath="/logout"
-                        roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE]}
+                        roles={[ADMIN_ROLE]}
                       />
                     }
                   />
@@ -94,7 +94,7 @@ function App() {
                       <ProtectedRoute
                         Component={Logout}
                         redirectPath="/"
-                        roles={[SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE]}
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
                       />
                     }
                   />

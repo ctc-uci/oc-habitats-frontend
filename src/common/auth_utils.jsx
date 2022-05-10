@@ -21,6 +21,7 @@ import { renderEmail } from 'react-html-email';
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
 
 import { OCHBackend } from './utils';
+import { useUserContext } from '../components/UserContext';
 import AdminInviteEmail from '../components/Email/EmailTemplates/AdminInviteEmail';
 
 // Using Firebase Web version 9
@@ -86,9 +87,6 @@ const refreshToken = async () => {
     });
     // Sets the appropriate cookies after refreshing access token
     setCookie(cookieKeys.ACCESS_TOKEN, idToken, cookieConfig);
-    const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`);
-    console.log(user.data.user);
-    setCookie(cookieKeys.ROLE, user.data.role, cookieConfig);
     return idToken;
   }
   return null;
