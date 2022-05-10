@@ -16,23 +16,36 @@ import {
   Flex,
   Box,
   Select,
+  Button,
 } from '@chakra-ui/react';
 import { OCHBackend } from '../../common/utils';
 import AUTH_ROLES from '../../common/auth_config';
 
-const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
+const { ADMIN_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
-const PersonalInformation = ({ userData }) => {
+const PersonalInformation = ({ userData, updateUser }) => {
+  const [userStatus, setUserStatus] = useState({
+    isActive: true,
+    isTrainee: false,
+  });
+  const [dirty, setDirty] = useState(false);
   const userSegments = userData?.segments?.map(segment => segment.segmentId).join(', ');
+
+  useEffect(() => {
+    setUserStatus({
+      isActive: userData?.isActive,
+      isTrainee: userData?.isTrainee,
+    });
+  }, [userData]);
 
   return (
     <Box mb={{ lg: '100px' }}>
       <VStack align="left" mx="auto">
         <Heading
-          textAlign={{ lg: 'left', sm: 'center' }}
-          fontSize="3xl"
-          py={{ lg: '10', sm: '5' }}
-          pl="2%"
+          textAlign="left"
+          fontSize={{ md: '3xl', base: 'xl' }}
+          py={{ md: '10', base: '5' }}
+          pl={{ md: '2%', base: '0' }}
           fontWeight={550}
         >
           Account Information
@@ -112,38 +125,63 @@ const PersonalInformation = ({ userData }) => {
             <Heading gridRowStart={2} fontSize="xl" mb=".8em" fontWeight={550}>
               {userData.role === ADMIN_ROLE ? 'Admin' : 'Volunteer'} Activity Information
             </Heading>
-            <SimpleGrid columns={{ lg: 3, sm: 1 }} rows={{ lg: 2, sm: 3 }} spacing={10}>
-              <GridItem colSpan={{ lg: 1 }} rowSpan={{ sm: 1 }}>
-                <FormControl>
-                  <FormLabel>Training Status</FormLabel>
-                  <Select>
-                    <option value="option1">In progress</option>
-                    <option value="option2">Complete</option>
-                  </Select>
-                </FormControl>
-              </GridItem>
-              <GridItem colSpan={{ lg: 1 }} rowSpan={{ sm: 1 }}>
-                <FormControl>
-                  <FormLabel>Active Status</FormLabel>
-                  <Select>
-                    <option value="option1">Active</option>
-                    <option value="option2">Inactive</option>
-                  </Select>
-                </FormControl>
-              </GridItem>
-              <GridItem colSpan={{ lg: 1 }} rowSpan={{ sm: 1 }}>
-                <FormControl>
-                  <FormLabel>Assigned Segment(s)</FormLabel>
-                  <Input
-                    placeholder="None"
-                    name="assigned segments"
-                    value={userSegments}
-                    bg="gray.100"
-                    isDisabled
-                  />
-                </FormControl>
-              </GridItem>
-            </SimpleGrid>
+            <form onSubmit={() => updateUser(userStatus)}>
+              <SimpleGrid columns={{ lg: 3, sm: 1 }} rows={{ lg: 2, sm: 3 }} spacing={10}>
+                <GridItem colSpan={{ lg: 1 }} rowSpan={{ sm: 1 }}>
+                  <FormControl>
+                    <FormLabel>Training Status</FormLabel>
+                    <Select
+                      value={`${userStatus.isTrainee}`}
+                      onChange={e => {
+                        setDirty(true);
+                        setUserStatus({
+                          ...userStatus,
+                          isTrainee: e.target.value === 'true',
+                        });
+                      }}
+                    >
+                      <option value="true">In progress</option>
+                      <option value="false">Complete</option>
+                    </Select>
+                  </FormControl>
+                </GridItem>
+                <GridItem colSpan={{ lg: 1 }} rowSpan={{ sm: 1 }}>
+                  <FormControl>
+                    <FormLabel>Active Status</FormLabel>
+                    <Select
+                      value={`${userStatus.isActive}`}
+                      onChange={e => {
+                        setDirty(true);
+                        setUserStatus({
+                          ...userStatus,
+                          isActive: e.target.value === 'true',
+                        });
+                      }}
+                    >
+                      <option value="true">Active</option>
+                      <option value="false">Inactive</option>
+                    </Select>
+                  </FormControl>
+                </GridItem>
+                <GridItem colSpan={{ lg: 1 }} rowSpan={{ sm: 1 }}>
+                  <FormControl>
+                    <FormLabel>Assigned Segment(s)</FormLabel>
+                    <Input
+                      placeholder="None"
+                      name="assigned segments"
+                      value={userSegments}
+                      bg="gray.100"
+                      isDisabled
+                    />
+                  </FormControl>
+                </GridItem>
+                <GridItem>
+                  <Button type="submit" variant="solid" bg="ochBlue" size="md" isDisabled={!dirty}>
+                    Save Changes
+                  </Button>
+                </GridItem>
+              </SimpleGrid>
+            </form>
           </GridItem>
         </Grid>
       </VStack>
@@ -157,26 +195,39 @@ const UserInformation = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({});
 
-  useEffect(async () => {
-    if (!id) navigate('/people');
+  const fetchUser = async () => {
     try {
       const res = await OCHBackend.get(`/users/${id}`);
       setUserData(res.data);
     } catch {
       navigate('/people');
     }
+  };
+
+  const updateUser = async ({ isTrainee, isActive }) => {
+    console.log({
+      isTrainee,
+      isActive,
+    });
+    await OCHBackend.put(`/users/update/${id}`, { isTrainee, isActive });
+    await fetchUser();
+  };
+
+  useEffect(async () => {
+    if (!id) navigate('/people');
+    await fetchUser();
   }, [id]);
 
   return (
     <Container maxW={{ md: 'container.xl', base: 'container.sm' }} mb={{ md: '0', base: '5em' }}>
-      <div>{JSON.stringify(userData, null, 2)}</div>;
-      <PersonalInformation userData={userData} />
+      <PersonalInformation userData={userData} updateUser={updateUser} />
     </Container>
   );
 };
 
 PersonalInformation.propTypes = {
   userData: PropTypes.string.isRequired,
+  updateUser: PropTypes.func.isRequired,
 };
 
 export default UserInformation;

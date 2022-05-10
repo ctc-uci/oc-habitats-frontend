@@ -44,7 +44,7 @@ nameFilterFn.autoRemove = val => !val;
 const segmentFilterFn = (rows, id, filterValue) => {
   return rows.filter(row => {
     const { segments } = row.values[id];
-    return segments !== null ? segments.some(segment => segment.id === filterValue) : false;
+    return segments !== null ? segments?.some(segment => segment.id === filterValue) : false;
   });
 };
 segmentFilterFn.autoRemove = val => !val;
