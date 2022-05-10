@@ -215,7 +215,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
             optionKey="_id"
             isDisabled={isDisabled}
             isMulti
-            placeholder="Search for member by name or email..."
+            placeholder="Search by name or email..."
             closeMenuOnSelect={false}
             size="md"
             menuPosition="fixed"

@@ -352,9 +352,12 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
             <Text fontWeight="600" fontSize="xl">
               Injured {speciesName}s
             </Text>
-            <Text>To report a sick or injured bird, contact the WWCC at 714.374.5587</Text>
+            {showHeader && (
+              <Text>To report a sick or injured bird, contact the WWCC at 714.374.5587</Text>
+            )}
             <FormControl>
               <NumberInput
+                mb="50px"
                 isDisabled={isDisabled}
                 min={0}
                 onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}

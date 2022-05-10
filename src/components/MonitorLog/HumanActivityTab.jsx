@@ -115,7 +115,7 @@ const HumanActivityTab = ({ showHeader, isDisabled }) => {
             Outreach
           </Text>
           <Spacer />
-          <Tooltip label="Tooltip" placement="top">
+          <Tooltip label="Note how many people and what topics (e.g. environmental concerns, surveying, the habitats, etc) you discussed with members of the public.">
             <InfoIcon />
           </Tooltip>
         </Flex>

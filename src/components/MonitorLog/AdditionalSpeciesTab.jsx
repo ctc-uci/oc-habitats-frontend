@@ -168,9 +168,19 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
           templateColumns={{ md: 'repeat(6, 1fr)', base: 'repeat(1, 1fr)' }}
           gap={{ md: '150', base: '50' }}
         >
-          <GridItem colSpan={{ md: 3, base: 1 }}>
-            <Box overflow="hidden" border="1px solid darkgray" rounded="md" mb="4">
-              <Accordion as={Table} allowToggle reduceMotion>
+          <GridItem colSpan="3">
+            <Box
+              border="1px solid darkgray"
+              rounded="md"
+              mb="4"
+              overflow="scroll"
+              css={{
+                '&::-webkit-scrollbar': {
+                  display: 'none',
+                },
+              }}
+            >
+              <Accordion as={Table} width="100%" allowToggle reduceMotion>
                 <Thead w="100%" bg="#4E4E4E" borderColor="gray.200">
                   <Tr>
                     <Th w="8%" bgColor="none" />
@@ -211,14 +221,16 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
               <AddSpeciesModal addNewRow={handleAddRow} speciesOptions={speciesOptions} />
             )}
           </GridItem>
-          <GridItem colSpan={{ md: 2, base: 1 }}>
+          <GridItem colSpan="2">
             <VStack alignItems="start">
               <Text fontWeight="600" fontSize="xl">
                 Injured Terrestrial Wildlife
               </Text>
-              <Text>
-                To report sick or injured terrestrial wildlife, contact the WWCC at 714.374.5587
-              </Text>
+              {showHeader && (
+                <Text>
+                  To report sick or injured terrestrial wildlife, contact the WWCC at 714.374.5587
+                </Text>
+              )}
               <FormControl>
                 <NumberInput
                   min={0}
@@ -239,6 +251,7 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
               </Text>
               <FormControl>
                 <NumberInput
+                  mb={15}
                   min={0}
                   isDisabled={isDisabled}
                   onChange={val => setValue(`${FORM_PREFIX}beachCast`, parseInt(val, 10))}

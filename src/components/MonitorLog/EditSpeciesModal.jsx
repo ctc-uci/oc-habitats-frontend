@@ -26,9 +26,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { CloseIcon, DeleteIcon } from '@chakra-ui/icons';
-import { FiEdit2 } from 'react-icons/fi';
+import { FiEdit3 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
-import { RiSaveFill } from 'react-icons/ri';
 import DropdownSearch from '../DropdownSearch';
 import DeleteSpeciesModal from './DeleteSpeciesModal';
 
@@ -58,13 +57,7 @@ const EditSpeciesModal = ({ speciesRow, editRow, deleteRow, speciesOptions }) =>
 
   return (
     <div>
-      <IconButton
-        size="md"
-        w="2.75em"
-        h="2.75em"
-        icon={<Icon as={FiEdit2} w="1.5em" h="1.5em" />}
-        onClick={onOpen}
-      />
+      <IconButton size="md" icon={<Icon as={FiEdit3} w="1.5em" h="1.5em" />} onClick={onOpen} />
       <Modal isOpen={isOpen} isCentered size="md">
         <ModalOverlay />
         {isDelete ? (
@@ -157,16 +150,7 @@ const EditSpeciesModal = ({ speciesRow, editRow, deleteRow, speciesOptions }) =>
                 </VStack>
               </ModalBody>
               <ModalFooter mb="1em">
-                <VStack w="100%">
-                  <Button
-                    rightIcon={<RiSaveFill />}
-                    bgColor="#2BC0E3"
-                    fontWeight="600"
-                    w="100%"
-                    onClick={updateSpecies}
-                  >
-                    Save
-                  </Button>
+                <HStack w="75%">
                   <Button
                     w="100%"
                     fontWeight="600"
@@ -180,7 +164,10 @@ const EditSpeciesModal = ({ speciesRow, editRow, deleteRow, speciesOptions }) =>
                   >
                     Delete
                   </Button>
-                </VStack>
+                  <Button bgColor="#2BC0E3" fontWeight="600" w="100%" onClick={updateSpecies}>
+                    Save Changes
+                  </Button>
+                </HStack>
               </ModalFooter>
             </Container>
           </ModalContent>
