@@ -4,13 +4,23 @@ import { PropTypes, instanceOf } from 'prop-types';
 import { withCookies, Cookies, clearCookies } from './cookie_utils';
 import { refreshToken } from './auth_utils';
 import { OCHBackend } from './utils';
+import { useUserContext } from './UserContext/UserContext';
 
 const userIsAuthenticated = async (roles, cookies) => {
   try {
-    const accessToken = await refreshToken(cookies);
+    const { idToken: accessToken, currentUserId } = await refreshToken(cookies);
     if (!accessToken) return false;
-    const loggedIn = await OCHBackend.get(`/auth/verifyToken/${accessToken}`);
-    return loggedIn.status === 200;
+
+    const [loggedIn, currentUser] = await Promise.all([
+      OCHBackend.get(`/auth/verifyToken/${accessToken}`),
+      OCHBackend.get(`/users/${currentUserId}`),
+    ]);
+
+    // User role matches, and token is verified
+    return {
+      authenticated: roles.includes(currentUser.data?.role) && loggedIn.status === 200,
+      userData: currentUser.data,
+    };
   } catch (err) {
     // console.log(err);
     clearCookies(cookies);
@@ -29,10 +39,13 @@ const userIsAuthenticated = async (roles, cookies) => {
 const ProtectedRoute = ({ Component, redirectPath, roles, cookies }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { setUserData } = useUserContext();
 
   useEffect(async () => {
-    const authenticated = await userIsAuthenticated(roles, cookies);
+    const { authenticated, userData } = await userIsAuthenticated(roles, cookies);
     setIsAuthenticated(authenticated);
+    setUserData(userData);
+
     setIsLoading(false);
   }, []);
 

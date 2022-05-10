@@ -78,6 +78,11 @@ const refreshToken = async () => {
   const currentUser = await getCurrentUser(auth);
   if (currentUser) {
     const refreshT = currentUser.refreshToken;
+    const currentUserId = currentUser.uid;
+
+    console.log('In refresh token');
+    console.log(currentUser);
+
     const {
       data: { access_token: idToken },
     } = await axios.post(refreshUrl, {
@@ -86,7 +91,7 @@ const refreshToken = async () => {
     });
     // Sets the appropriate cookies after refreshing access token
     setCookie(cookieKeys.ACCESS_TOKEN, idToken, cookieConfig);
-    return idToken;
+    return { idToken, currentUserId };
   }
   return null;
 };
