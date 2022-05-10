@@ -54,6 +54,7 @@ const Toast = props => {
 const VolunteerDashboardPage = () => {
   const [userData, setUserData] = useState(null);
   const [userSubmissions, setUserSubmissions] = useState([]);
+  const [userNotifications, setUserNotifications] = useState([]);
 
   // Get data from backend
   useEffect(async () => {
@@ -70,6 +71,55 @@ const VolunteerDashboardPage = () => {
       console.log(err);
     }
   }, []);
+
+  useEffect(async () => {
+    try {
+      const [notificationsRes] = await Promise.all([
+        OCHBackend.get('/notification/', { withCredentials: true }),
+      ]);
+      setUserNotifications(notificationsRes.data);
+    } catch (err) {
+      // TODO: handle error
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+  }, []);
+
+  const Notifications = () => {
+    return userNotifications.map(notification => (
+      <Toast
+        key={notification._id}
+        title={notification.title}
+        description={notification.message}
+        status={notification.type === 'MONITOR_LOG_APPROVED' ? 'success' : 'error'}
+        variant="left-accent"
+        closeButton={notification.type === 'MONITOR_LOG_APPROVED' ? 'true' : 'false'}
+      />
+    ));
+  };
+
+  const UnsubmittedLogNotifications = () => {
+    const userDrafts = userSubmissions.filter(submission => submission.status === 'UNSUBMITTED');
+    let userSegments = '';
+    userDrafts.forEach((segment, index) => {
+      if (index !== 0) {
+        userSegments = userSegments.concat(',');
+      }
+      userSegments = userSegments.concat(segment.segment.segmentId);
+    });
+    if (userDrafts.length !== 0) {
+      return (
+        <Toast
+          title={`Monitor logs for segment(s) ${userSegments} have not been submitted yet.`}
+          description="Please complete monitor logs by [date] at [time]"
+          status="warning"
+          variant="left-accent"
+          closeButton
+        />
+      );
+    }
+    return <></>;
+  };
 
   const Segments = () => {
     if (userData.segments.length === 0) {
@@ -164,36 +214,8 @@ const VolunteerDashboardPage = () => {
         Notifications
       </Heading>
       <VStack spacing="5px" align="left">
-        <Toast
-          title="You have submitted a log for: OC09c, OC09b"
-          description="You have not submitted a log for: OC01"
-          status="info"
-          variant="left-accent"
-          closeButton={false}
-        />
-        <Toast
-          title="Your monitor log for OC09a on 02-16-2022 has been approved!"
-          description="Thank you for your hard work, keep it up!"
-          status="success"
-          variant="left-accent"
-          closeButton
-        />
-        <Toast
-          title="Monitor logs for segment(s) OC01 have not been submitted yet."
-          description="Please submit these logs by 02-28-2022 at 12:00PM."
-          status="warning"
-          variant="left-accent"
-          closeButton
-        />
-        <Toast
-          title="Edits have been requested for your OC09b log on 02-16-2022"
-          description="Request Reason: [Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-           eiusmod tempor incididunt ut labore et dolore magna aliqua. Diam volutpat commodo
-           sed egestas egestas fringilla.]"
-          status="error"
-          variant="left-accent"
-          goToLogButton
-        />
+        {Notifications()}
+        {UnsubmittedLogNotifications()}
       </VStack>
       <br />
       <Heading size="md">Segment Assignment(s)</Heading>
