@@ -56,8 +56,10 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
   const [idOfFieldBeingEdited, setIdOfFieldBeingEdited] = useState();
 
   const updateQuestion = async () => {
+    console.log(`updateQuestion called with fieldId: ${idOfFieldBeingEdited}`);
+    console.log(`fieldBody: ${newTitle}, ${newFieldType}, ${newTooltip}`);
     await OCHBackend.put('/forms/update/field', {
-      type: newFieldType,
+      type: 'general',
       fieldId: idOfFieldBeingEdited,
       fieldBody: {
         title: newTitle,
@@ -290,6 +292,8 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                   setNewFieldType(question.fieldType);
                   setNewTooltip(question.tooltip);
                   setIdOfFieldBeingEdited(question._id);
+                  console.log(`idOfFieldBeingEdited: ${idOfFieldBeingEdited}`);
+                  console.log(additionalQuestions);
                 }}
                 px="10px"
                 py="10px"
