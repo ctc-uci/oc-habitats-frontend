@@ -16,7 +16,7 @@ const Navbar = ({ isAdmin, changesMade }) => {
     { text: 'People', path: '/people' },
     { text: 'Species Catalog', path: '/species' },
     { text: 'Sections & Segments', path: '/sections' },
-    { text: 'Emergency Numbers', path: '/emergency-numbers' },
+    { text: 'Emergency Numbers', path: '/numbers' },
   ];
 
   const volunteer = [
