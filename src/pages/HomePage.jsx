@@ -134,19 +134,17 @@ const RecentlySubmittedLog = props => {
 };
 
 // GET BACKEND DATA
-const HomePage = props => {
+const HomePage = () => {
   const [userData, setUserData] = useState(null);
   useEffect(async () => {
     try {
       const res = await OCHBackend.get('users/me', { withCredentials: true });
       setUserData(res.data);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
     }
   }, []);
-
-  console.log(userData);
-  console.log(userData?.segments);
 
   return (
     <div>
