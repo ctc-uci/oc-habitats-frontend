@@ -14,7 +14,6 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  ModalFooter,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
@@ -364,9 +363,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
             <Box>
               <FormControl>
                 <FormControl>
-                  <FormLabel htmlFor="title" ml="20px">
-                    Question Title
-                  </FormLabel>
+                  <FormLabel htmlFor="title">Question Title</FormLabel>
                   <Input
                     id="title"
                     type="text"
@@ -375,20 +372,16 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                     onChange={({ target }) => setNewTitle(target.value)}
                     w="412px"
                     mb="20px"
-                    ml="20px"
                   />
                 </FormControl>
                 <FormControl>
-                  <FormLabel htmlFor="type" ml="20px">
-                    Question Type
-                  </FormLabel>
+                  <FormLabel htmlFor="type">Question Type</FormLabel>
                   <RadioGroup
                     id="type"
                     onChange={e => setNewFieldType(e)}
                     value={newFieldType}
                     maxW="700px"
                     defaultValue="TEXT"
-                    ml="20px"
                   >
                     <HStack spacing="2px" mb="10px">
                       <Radio value="TEXT" mr="10px">
@@ -398,7 +391,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                     </HStack>
                   </RadioGroup>
                   <FormControl>
-                    <FormLabel ml="20px">Tooltip (Optional)</FormLabel>
+                    <FormLabel>Tooltip (Optional)</FormLabel>
                     <Textarea
                       value={newTooltip}
                       onChange={({ target }) => setNewTooltip(target.value)}
@@ -406,7 +399,6 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                       w="412px"
                       h="128px"
                       mb="60px"
-                      ml="20px"
                     />
                     <VStack>
                       <Button w="412px" h="40px" bgColor="ochBlue" onClick={updateQuestion}>
