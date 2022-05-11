@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Box,
   Button,
   Modal,
   ModalOverlay,
@@ -53,7 +54,7 @@ const AddSpeciesModal = ({ addNewRow, speciesOptions }) => {
   };
 
   return (
-    <div>
+    <Box w="100%">
       <Button onClick={onOpen} bgColor="#2BC0E3" width="100%" height="40px">
         Add New Row +
       </Button>
@@ -160,7 +161,7 @@ const AddSpeciesModal = ({ addNewRow, speciesOptions }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </div>
+    </Box>
   );
 };
 

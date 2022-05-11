@@ -190,7 +190,7 @@ const MonitorLogPage = () => {
                 </Container>
               </TabPanel>
               {listedSpecies.map((s, idx) => (
-                <TabPanel key={s._id}>
+                <TabPanel key={s._id} px={{ base: 0, lg: 4 }}>
                   <Container maxW="100vw">
                     <ListedSpeciesTab
                       tab={idx}

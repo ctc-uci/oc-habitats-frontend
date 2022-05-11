@@ -27,6 +27,7 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Stack,
   Table,
   Tbody,
   Td,
@@ -173,20 +174,21 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
   };
 
   return (
-    <>
+    <VStack align="left" spacing="29px">
       {showHeader && (
         <Text fontWeight="600" fontSize="2xl">
           {speciesName}s
         </Text>
       )}
-      <Grid
-        marginTop="20px"
+      <Stack
+        mt="20px"
         minH="200px"
-        templateColumns={{ md: 'repeat(6, 1fr)', base: 'repeat(1, 1fr)' }}
-        gap={{ md: '150', base: '50' }}
+        direction={{ lg: 'row', base: 'column' }}
+        spacing={{ lg: '100px', base: '30px' }}
       >
-        <GridItem colSpan="3">
+        <VStack w={{ lg: '650px', base: '100%' }} align="start">
           <Box
+            w="100%"
             border="1px solid darkgray"
             rounded="md"
             overflow="scroll"
@@ -346,41 +348,39 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
               </Modal>
             </>
           )}
-        </GridItem>
-        <GridItem colSpan="2">
-          <VStack alignItems="start">
-            <Text fontWeight="600" fontSize="xl">
-              Injured {speciesName}s
-            </Text>
-            {showHeader && (
-              <Text>To report a sick or injured bird, contact the WWCC at 714.374.5587</Text>
-            )}
-            <FormControl>
-              <NumberInput
-                mb="50px"
-                isDisabled={isDisabled}
-                min={0}
-                onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}
-                defaultValue={getValues(`${formPrefix}injuredCount`) || 0}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
-            {/* <Text fontWeight="600" fontSize="xl">
+        </VStack>
+        <VStack alignItems="start" maxW="768px">
+          <Text fontWeight="600" fontSize="xl">
+            Injured {speciesName}s
+          </Text>
+          {showHeader && (
+            <Text>To report a sick or injured bird, contact the WWCC at 714.374.5587</Text>
+          )}
+          <FormControl>
+            <NumberInput
+              mb="50px"
+              isDisabled={isDisabled}
+              min={0}
+              onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}
+              defaultValue={getValues(`${formPrefix}injuredCount`) || 0}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
+          {/* <Text fontWeight="600" fontSize="xl">
               Marked Map (PNG or JPEG Only)
             </Text>
             <Text>
               Provide a map with the locations of sighted Western Snowy Plovers marked with Map #
               according to the Tracker table.
             </Text> */}
-          </VStack>
-        </GridItem>
-      </Grid>
-    </>
+        </VStack>
+      </Stack>
+    </VStack>
   );
 };
 
