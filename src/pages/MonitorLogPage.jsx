@@ -18,13 +18,14 @@ import {
   TabPanels,
   Tabs,
   useDisclosure,
+  Alert,
+  AlertTitle,
 } from '@chakra-ui/react';
 import { React, useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp, FiCheck } from 'react-icons/fi';
 import { WarningIcon } from '@chakra-ui/icons';
-import MuiAlert from '@material-ui/lab/Alert';
-import MuiAlertTitle from '@material-ui/lab/AlertTitle';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { OCHBackend } from '../common/utils';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
@@ -56,16 +57,16 @@ const MonitorTabButton = props => {
 //   return <MonitorLogPage submission={submission}
 // }
 
-const MonitorLogPage = props => {
-  // const { displayMode, id } = props;
-  const formMethods = useForm({
+const MonitorLogPage = () => {
+  const userID = useParams();
+  const { formMethods, setValue } = useForm({
     defaultValues: {
       temperature: '10',
     },
   });
 
   useEffect(async () => {
-    const res = await OCHBackend.get('submission/625f3e335b6cf2f2ad34dfc1');
+    const res = await OCHBackend.get(`submission/${userID}`);
     console.log(res.data);
     formMethods.reset(res.data);
   }, []);
@@ -108,12 +109,12 @@ const MonitorLogPage = props => {
     if (requested) {
       return (
         <>
-          <MuiAlert severity="error" icon={<WarningIcon />}>
-            <MuiAlertTitle>
+          <Alert severity="error" icon={<WarningIcon />}>
+            <AlertTitle>
               <strong>Edits have been requested</strong>
-            </MuiAlertTitle>{' '}
+            </AlertTitle>{' '}
             Request Reason{' '}
-          </MuiAlert>
+          </Alert>
           <br />
         </>
       );

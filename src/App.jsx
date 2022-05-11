@@ -57,7 +57,7 @@ function App() {
                     <AccountPage changesMade={accMadeChanges} setChangesMade={setAccMadeChanges} />
                   }
                 />
-                <Route exact path="/create-log" element={<MonitorLogPage />} />
+                <Route exact path="/create-log/:userID" element={<MonitorLogPage />} />
                 <Route exact path="/sections" element={<SectionPage />} />
                 <Route exact path="/species" element={<Species />} />
                 {/* Admin only routes (TO DO, make admin only) */}
