@@ -140,7 +140,6 @@ const logInWithEmailAndPassword = async (email, password, navigate, cookies) => 
   const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`);
   console.log('Current user: ');
   console.table(user.data);
-  cookies.set(cookieKeys.ROLE, user.data.role, cookieConfig);
   return user.data;
 };
 

@@ -14,6 +14,7 @@ function useUserContext() {
 
 // Allows project files to use data
 const UserContextProvider = ({ children }) => {
+  // setUserData should only be set in ProtectedRoute.jsx
   const [userData, setUserData] = useState({});
 
   const setDataWrapper = data => {
