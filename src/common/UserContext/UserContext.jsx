@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 
-// Create context
+// Create context with default values
 const UserContext = createContext({
   userData: {},
   setUserData: () => {},
@@ -12,20 +12,17 @@ function useUserContext() {
   return useContext(UserContext);
 }
 
-// Allows project files to use data
+// Provide context to children
+// Note: must be a protected route to properly read data
 const UserContextProvider = ({ children }) => {
   // setUserData should only be set in ProtectedRoute.jsx
   const [userData, setUserData] = useState({});
 
-  const setDataWrapper = data => {
-    console.log(`Setting userData to: ${JSON.stringify(data, null, 0)}`);
-    setUserData(data);
-  };
-
   const contextValue = {
     userData,
-    setUserData: setDataWrapper,
+    setUserData,
   };
+
   return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;
 };
 

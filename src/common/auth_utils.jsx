@@ -80,9 +80,6 @@ const refreshToken = async () => {
     const refreshT = currentUser.refreshToken;
     const currentUserId = currentUser.uid;
 
-    console.log('In refresh token');
-    console.log(currentUser);
-
     const {
       data: { access_token: idToken },
     } = await axios.post(refreshUrl, {
