@@ -78,6 +78,8 @@ const refreshToken = async () => {
   const currentUser = await getCurrentUser(auth);
   if (currentUser) {
     const refreshT = currentUser.refreshToken;
+    const currentUserId = currentUser.uid;
+
     const {
       data: { access_token: idToken },
     } = await axios.post(refreshUrl, {
@@ -86,10 +88,7 @@ const refreshToken = async () => {
     });
     // Sets the appropriate cookies after refreshing access token
     setCookie(cookieKeys.ACCESS_TOKEN, idToken, cookieConfig);
-    const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`);
-    console.log(user.data.user);
-    setCookie(cookieKeys.ROLE, user.data.role, cookieConfig);
-    return idToken;
+    return { idToken, currentUserId };
   }
   return null;
 };
@@ -128,7 +127,7 @@ const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
  * @param {Cookies} cookies The user's cookies to populate
  * @returns A boolean indicating whether or not the log in was successful
  */
-const logInWithEmailAndPassword = async (email, password, redirectPath, navigate, cookies) => {
+const logInWithEmailAndPassword = async (email, password, navigate, cookies) => {
   await signInWithEmailAndPassword(auth, email, password);
   // Check if the user has verified their email.
   if (!auth.currentUser.emailVerified) {
@@ -138,8 +137,7 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
   const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`);
   console.log('Current user: ');
   console.table(user.data);
-  cookies.set(cookieKeys.ROLE, user.data.role, cookieConfig);
-  navigate(redirectPath);
+  return user.data;
 };
 
 /**
