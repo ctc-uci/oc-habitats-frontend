@@ -17,7 +17,6 @@ import EmailAction from './components/Authentication/EmailAction';
 
 import CommonTableExample from './pages/CommonTableExample';
 import AdminPage from '../src/pages/AdminPage';
-import VolunteerDashboardPage from './pages/VolunteerDashboardPage';
 import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
@@ -29,29 +28,39 @@ import Numbers from './pages/EmergencyNumbers';
 
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
-import AdminDashboardPage from './pages/AdminDashboardPage';
 
 import AUTH_ROLES from './common/auth_config';
 
-const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
+import HomePage from './HomePage';
 
-// TO-DO: Navbar based on screen width
+const { SUPER_ADMIN_ROLE, ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 function App() {
   const [accMadeChanges, setAccMadeChanges] = useState(false);
+  const isAdmin = true;
+  const [onAdminPortal, setOnAdminPortal] = useState(true);
+
   return (
     <ChakraProvider theme={theme}>
       <CookiesProvider>
         <Router>
           <Box className="page-container">
             <Box className="content-wrap">
-              <Navbar isAdmin changesMade={accMadeChanges} />
+              <Navbar
+                isAdmin={isAdmin}
+                onAdminPortal={onAdminPortal}
+                setOnAdminPortal={setOnAdminPortal}
+                changesMade={accMadeChanges}
+              />
               <Routes>
                 {/* Add routes as needed; route names subject to change */}
                 <Route path="/register/:inviteID" element={<InviteLandingPage />} />
                 <Route exact path="/invite" element={<AdminInviteModal />} />
-                <Route exact path="/" element={<AdminDashboardPage />} />
-                <Route exact path="/volunteerhome" element={<VolunteerDashboardPage />} />
+                <Route
+                  exact
+                  path="/"
+                  element={<HomePage isAdmin={isAdmin} onAdminPortal={onAdminPortal} />}
+                />
                 <Route
                   exact
                   path="/account"

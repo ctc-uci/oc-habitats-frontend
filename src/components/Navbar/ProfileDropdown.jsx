@@ -19,7 +19,11 @@ const user = {
   lastName: 'Abramov',
   profilePic: 'https://bit.ly/dan-abramov',
 };
-const ProfileDropdown = ({ isAdmin }) => {
+const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal }) => {
+  const handleOnClick = () => {
+    setOnAdminPortal(!onAdminPortal);
+  };
+
   return (
     <Menu>
       <MenuButton
@@ -33,7 +37,28 @@ const ProfileDropdown = ({ isAdmin }) => {
       <MenuList>
         <NavbarLinkMobile text="Account" path="/account" />
         <MenuDivider />
-        {isAdmin ? <NavbarLinkMobile text="Admin Portal" path="/admin-portal" /> : null}
+        {isAdmin && onAdminPortal && (
+          <MenuItem
+            color="black"
+            fontFamily="Inter"
+            fontWeight="600"
+            href="/"
+            onClick={handleOnClick}
+          >
+            Volunteer Portal
+          </MenuItem>
+        )}
+        {isAdmin && !onAdminPortal && (
+          <MenuItem
+            color="black"
+            fontFamily="Inter"
+            fontWeight="600"
+            href="/"
+            onClick={handleOnClick}
+          >
+            Admin Portal
+          </MenuItem>
+        )}
         {isAdmin ? <MenuDivider /> : null}
         <Link to="/sign-out">
           <MenuItem>
@@ -50,6 +75,8 @@ const ProfileDropdown = ({ isAdmin }) => {
 
 ProfileDropdown.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
+  onAdminPortal: PropTypes.bool.isRequired,
+  setOnAdminPortal: PropTypes.func.isRequired,
 };
 
 export default ProfileDropdown;
