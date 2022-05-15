@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination } from 'react-table';
 import { Table, Tr, Td, Tbody } from '@chakra-ui/react';
@@ -9,13 +9,19 @@ import CellStructure from './AdminPageStructure';
 
 /* eslint-enable react/destructuring-assignment, react/prop-types */
 
-const AdminPageTable = ({ tableData, checked, setChecked, allChecked, setAllChecked }) => {
+const AdminPageTable = ({
+  tableData,
+  pageCount: controlledPageCount,
+  checked,
+  setChecked,
+  allChecked,
+  setAllChecked,
+  setPageSettings,
+}) => {
   const columns = useMemo(
     () => CellStructure(checked, setChecked, allChecked, setAllChecked),
     [checked, setChecked, allChecked, setAllChecked],
   );
-  const data = useMemo(() => tableData);
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -23,6 +29,7 @@ const AdminPageTable = ({ tableData, checked, setChecked, allChecked, setAllChec
     rows,
     page,
     prepareRow,
+    pageCount,
     canPreviousPage,
     canNextPage,
     nextPage,
@@ -32,11 +39,17 @@ const AdminPageTable = ({ tableData, checked, setChecked, allChecked, setAllChec
   } = useTable(
     {
       columns,
-      data,
+      data: tableData.results,
       initialState: { pageIndex: 0 },
+      manualPagination: true,
+      pageCount: controlledPageCount,
     },
     usePagination,
   );
+
+  useEffect(() => {
+    setPageSettings({ pageIndex, pageSize });
+  }, [pageIndex, pageSize]);
 
   return (
     <>
@@ -82,7 +95,7 @@ const AdminPageTable = ({ tableData, checked, setChecked, allChecked, setAllChec
         setPageSize={setPageSize}
         previousPage={previousPage}
         nextPage={nextPage}
-        totalData={rows.length}
+        totalData={tableData.total}
       />
     </>
   );
@@ -93,9 +106,11 @@ AdminPageTable.propTypes = {
   checked: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   tableData: PropTypes.array.isRequired,
+  pageCount: PropTypes.number.isRequired,
   allChecked: PropTypes.bool.isRequired,
   setChecked: PropTypes.func.isRequired,
   setAllChecked: PropTypes.func.isRequired,
+  setPageSettings: PropTypes.func.isRequired,
 };
 
 export default AdminPageTable;

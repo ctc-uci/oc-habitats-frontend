@@ -14,10 +14,11 @@ import {
 import DatePicker from 'react-datepicker';
 
 const approvalStatues = {
-  readyToReview: 'Ready To Review',
-  resubmitted: 'Resubmitted',
-  editsRequested: 'Edits Requested',
-  approved: 'Approved',
+  UNDER_REVIEW: 'Ready To Review',
+  RESUBMITTED: 'Resubmitted',
+  EDITS_REQUESTED: 'Edits Requested',
+  APPROVED: 'Approved',
+  UNSUBMITTED: 'Unsubmitted',
 };
 
 // set the filters when the user selects them
@@ -51,9 +52,9 @@ const AdminPageFilters = ({
             setSegmentFilter(event.target.value);
           }}
         >
-          {segments.map(val => (
-            <option key={val} value={val}>
-              {val}
+          {segments.map(s => (
+            <option key={s.value} value={s.value}>
+              {s.label}
             </option>
           ))}
         </Select>
@@ -122,7 +123,7 @@ AdminPageFilters.propTypes = {
   setDateFilter: PropTypes.func.isRequired,
   setApprovalFilter: PropTypes.func.isRequired,
   setSearchFilter: PropTypes.func.isRequired,
-  dateFilter: PropTypes.string.isRequired,
+  dateFilter: PropTypes.instanceOf(Date).isRequired,
   segmentFilter: PropTypes.string.isRequired,
   approvalFilter: PropTypes.string.isRequired,
   searchFilter: PropTypes.string.isRequired,

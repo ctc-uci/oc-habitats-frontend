@@ -22,7 +22,7 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
     {
       id: 'segment',
       Header: 'Segment',
-      accessor: 'generalFieldValues.surveySegment',
+      accessor: 'segment.segmentId',
       Cell: props => <p>{props.value}</p>,
     },
     {
