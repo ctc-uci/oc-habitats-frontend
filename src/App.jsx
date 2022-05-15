@@ -59,7 +59,11 @@ function App() {
                   {/* Add routes as needed; route names subject to change */}
                   <Route path="/register/:inviteID" element={<InviteLandingPage />} />
                   <Route exact path="/invite" element={<AdminInviteModal />} />
-                  <Route exact path="/" element={<HomePage />} />
+                  <Route
+                    exact
+                    path="/"
+                    element={<HomePage isAdmin={isAdmin} onAdminPortal={onAdminPortal} />}
+                  />
                   <Route
                     exact
                     path="/account"
