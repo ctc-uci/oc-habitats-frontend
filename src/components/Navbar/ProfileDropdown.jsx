@@ -1,6 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import PropTypes, { instanceOf } from 'prop-types';
 import { FiLogOut } from 'react-icons/fi';
 import {
   Avatar,
@@ -13,13 +12,16 @@ import {
   Text,
 } from '@chakra-ui/react';
 import NavbarLinkMobile from './NavbarLinkMobile';
+import { logout, useNavigate } from '../../common/auth_utils';
+import { Cookies, withCookies } from '../../common/cookie_utils';
 
 const user = {
   firstName: 'Dan',
   lastName: 'Abramov',
   profilePic: 'https://bit.ly/dan-abramov',
 };
-const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal }) => {
+const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal, cookies }) => {
+  const navigate = useNavigate();
   const handleOnClick = () => {
     setOnAdminPortal(!onAdminPortal);
   };
@@ -60,14 +62,12 @@ const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal }) => {
           </MenuItem>
         )}
         {isAdmin ? <MenuDivider /> : null}
-        <Link to="/sign-out">
-          <MenuItem>
-            <HStack color="ochRed">
-              <Text fontWeight="600">Sign Out</Text>
-              <FiLogOut />
-            </HStack>
-          </MenuItem>
-        </Link>
+        <MenuItem onClick={() => logout('/sign-out', navigate, cookies)}>
+          <HStack color="ochRed">
+            <Text fontWeight="600">Sign Out</Text>
+            <FiLogOut />
+          </HStack>
+        </MenuItem>
       </MenuList>
     </Menu>
   );
@@ -75,8 +75,9 @@ const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal }) => {
 
 ProfileDropdown.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
+  cookies: instanceOf(Cookies).isRequired,
   onAdminPortal: PropTypes.bool.isRequired,
   setOnAdminPortal: PropTypes.func.isRequired,
 };
 
-export default ProfileDropdown;
+export default withCookies(ProfileDropdown);

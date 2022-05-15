@@ -1,6 +1,6 @@
 /* eslint-disable react/no-children-prop */
 import React, { useState } from 'react';
-import { Link as ReachLink } from 'react-router-dom';
+import { Link as ReachLink, useNavigate } from 'react-router-dom';
 import {
   Box,
   FormControl,
@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { instanceOf } from 'prop-types';
 import { Cookies, withCookies } from '../../common/cookie_utils';
-import { logInWithEmailAndPassword, useNavigate } from '../../common/auth_utils';
+import { logInWithEmailAndPassword } from '../../common/auth_utils';
 
 import OCHLogo from '../../assets/OCH_Logo_SVG.svg';
 
@@ -35,7 +35,8 @@ const Login = ({ cookies }) => {
   const handleSubmit = async e => {
     try {
       e.preventDefault();
-      await logInWithEmailAndPassword(email, password, '/logout', navigate, cookies);
+      await logInWithEmailAndPassword(email, password, navigate, cookies);
+      navigate('/logout');
     } catch (err) {
       setErrorMessage(err.message);
     }
