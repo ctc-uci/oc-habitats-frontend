@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes, { instanceOf } from 'prop-types';
-import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import {
   Avatar,
@@ -21,8 +20,12 @@ const user = {
   lastName: 'Abramov',
   profilePic: 'https://bit.ly/dan-abramov',
 };
-const ProfileDropdown = ({ isAdmin, cookies }) => {
+const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal, cookies }) => {
   const navigate = useNavigate();
+  const handleOnClick = () => {
+    setOnAdminPortal(!onAdminPortal);
+  };
+
   return (
     <Menu>
       <MenuButton
@@ -36,7 +39,28 @@ const ProfileDropdown = ({ isAdmin, cookies }) => {
       <MenuList>
         <NavbarLinkMobile text="Account" path="/account" />
         <MenuDivider />
-        {isAdmin ? <NavbarLinkMobile text="Admin Portal" path="/admin-portal" /> : null}
+        {isAdmin && onAdminPortal && (
+          <MenuItem
+            color="black"
+            fontFamily="Inter"
+            fontWeight="600"
+            href="/"
+            onClick={handleOnClick}
+          >
+            Volunteer Portal
+          </MenuItem>
+        )}
+        {isAdmin && !onAdminPortal && (
+          <MenuItem
+            color="black"
+            fontFamily="Inter"
+            fontWeight="600"
+            href="/"
+            onClick={handleOnClick}
+          >
+            Admin Portal
+          </MenuItem>
+        )}
         {isAdmin ? <MenuDivider /> : null}
         <MenuItem onClick={() => logout('/sign-out', navigate, cookies)}>
           <HStack color="ochRed">
@@ -52,6 +76,8 @@ const ProfileDropdown = ({ isAdmin, cookies }) => {
 ProfileDropdown.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
   cookies: instanceOf(Cookies).isRequired,
+  onAdminPortal: PropTypes.bool.isRequired,
+  setOnAdminPortal: PropTypes.func.isRequired,
 };
 
 export default withCookies(ProfileDropdown);
