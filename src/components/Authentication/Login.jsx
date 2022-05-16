@@ -12,11 +12,13 @@ import {
   Button,
   Flex,
   Link,
+  Text,
   Center,
 } from '@chakra-ui/react';
 import { instanceOf } from 'prop-types';
 import { Cookies, withCookies } from '../../common/cookie_utils';
 import { logInWithEmailAndPassword } from '../../common/auth_utils';
+import authErrors from '../../common/auth_errors';
 
 import OCHLogo from '../../assets/OCH_Logo_SVG.svg';
 
@@ -38,7 +40,12 @@ const Login = ({ cookies }) => {
       await logInWithEmailAndPassword(email, password, navigate, cookies);
       navigate('/');
     } catch (err) {
-      setErrorMessage(err.message);
+      const error = err.code.slice(5);
+      if (authErrors[error]) {
+        setErrorMessage(authErrors[error]);
+      } else {
+        setErrorMessage(err.message);
+      }
     }
   };
 
@@ -100,7 +107,11 @@ const Login = ({ cookies }) => {
             Sign In
           </Button>
           <br />
-          {errorMessage && <p>{errorMessage}</p>}
+          {errorMessage && (
+            <Text mt="2" color="red">
+              {errorMessage}
+            </Text>
+          )}
         </form>
       </Flex>
     </Box>
