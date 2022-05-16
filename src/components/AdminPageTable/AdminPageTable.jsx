@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { useTable, usePagination } from 'react-table';
+import { useTable, usePagination, useSortBy } from 'react-table';
 import { Table, Tr, Td, Tbody, Spinner } from '@chakra-ui/react';
 import AdminPageHeader from './AdminPageHeader';
 import Pagination from './Pagination';
@@ -17,7 +17,7 @@ const AdminPageTable = ({
   setChecked,
   allChecked,
   setAllChecked,
-  setPageSettings,
+  setFetchSettings,
 }) => {
   const columns = useMemo(
     () => CellStructure(checked, setChecked, allChecked, setAllChecked),
@@ -36,21 +36,23 @@ const AdminPageTable = ({
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    state: { pageIndex, pageSize, sortBy },
   } = useTable(
     {
       columns,
       data: tableData.results,
-      initialState: { pageIndex: 0 },
+      initialState: { pageIndex: 0, pageSize: 10, sortBy: [{ id: 'submittedAt', desc: false }] },
       manualPagination: true,
+      manualSortBy: true,
       pageCount: controlledPageCount,
     },
+    useSortBy,
     usePagination,
   );
 
   useEffect(() => {
-    setPageSettings({ pageIndex, pageSize });
-  }, [pageIndex, pageSize]);
+    setFetchSettings({ pageIndex, pageSize, sortBy });
+  }, [pageIndex, pageSize, sortBy]);
 
   return (
     <>
@@ -127,7 +129,7 @@ AdminPageTable.propTypes = {
   allChecked: PropTypes.bool.isRequired,
   setChecked: PropTypes.func.isRequired,
   setAllChecked: PropTypes.func.isRequired,
-  setPageSettings: PropTypes.func.isRequired,
+  setFetchSettings: PropTypes.func.isRequired,
 };
 
 export default AdminPageTable;

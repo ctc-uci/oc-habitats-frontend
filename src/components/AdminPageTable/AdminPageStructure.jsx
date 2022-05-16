@@ -17,6 +17,7 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
         />
       ),
       accessor: '_id',
+      disableSortBy: true,
       Cell: ({ value }) => <Check checked={checked} setChecked={setChecked} id={value} />,
     },
     {
@@ -26,13 +27,13 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       Cell: props => <p>{props.value}</p>,
     },
     {
-      id: 'date',
+      id: 'submittedAt',
       Header: 'Date',
       accessor: 'submittedAt',
       Cell: ({ value }) => <DateFormat date={value} />,
     },
     {
-      id: 'volunteers',
+      id: 'submitter',
       Header: 'Volunteer(s)',
       accessor: d => ({
         submitter: d.submitter,
@@ -41,7 +42,7 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       Cell: props => <VolunteerColumn data={props.value} />,
     },
     {
-      id: 'approval',
+      id: 'status',
       Header: 'Approval Status',
       accessor: 'status',
       Cell: ({ value }) => <ApplyBadge approval={value} />,
@@ -50,6 +51,7 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       id: 'review',
       Header: '',
       accessor: '_id',
+      disableSortBy: true,
       Cell: ({ value }) => <Button approval={value}>Review</Button>,
     },
   ];

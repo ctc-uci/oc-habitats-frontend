@@ -20,23 +20,26 @@ const AdminPage = () => {
 
   const [checked, setChecked] = useState(new Map());
   const [allChecked, setAllChecked] = useState(false);
-  const [pageSettings, setPageSettings] = useState({ pageIndex: 0, pageSize: 10 });
+  const [fetchSettings, setFetchSettings] = useState({ pageIndex: 0, pageSize: 10 });
 
   // get data from backend
   const getSubmissions = async () => {
     try {
       setDataLoaded(false);
+      const { sortBy } = fetchSettings;
       const query = {
         segment: segmentFilter,
         date: dateFilter,
         status: approvalFilter,
         submitter: searchFilter,
-        pageIndex: pageSettings.pageIndex,
-        pageSize: pageSettings.pageSize,
+        pageIndex: fetchSettings.pageIndex,
+        pageSize: fetchSettings.pageSize,
+        sort: sortBy.length === 1 ? sortBy[0].id : null,
+        sortAscending: sortBy.length === 1 ? !sortBy[0].desc : null,
       };
       const res = await OCHBackend.get(`submissions`, { params: query });
       setData(res.data);
-      setPageCount(Math.ceil(res.data.total / pageSettings.pageSize));
+      setPageCount(Math.ceil(res.data.total / fetchSettings.pageSize));
       setDataLoaded(true);
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -62,7 +65,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     getSubmissions();
-  }, [pageSettings, segmentFilter, dateFilter, approvalFilter, searchFilter]);
+  }, [fetchSettings, segmentFilter, dateFilter, approvalFilter, searchFilter]);
 
   useEffect(() => {
     const m = new Map();
@@ -135,7 +138,7 @@ const AdminPage = () => {
           setChecked={setChecked}
           allChecked={allChecked}
           setAllChecked={setAllChecked}
-          setPageSettings={setPageSettings}
+          setFetchSettings={setFetchSettings}
         />
       </div>
     </Container>
