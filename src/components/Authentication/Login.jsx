@@ -58,48 +58,50 @@ const Login = ({ cookies }) => {
         <Center width="100%" mb={{ sm: 10, lg: 20 }}>
           <Image src={OCHLogo} alt="OCH Logo" w="80%" />
         </Center>
-        <FormControl>
-          <FormLabel htmlFor="email">OC Habitats Email</FormLabel>
-          <Input
-            id="email"
-            bg="white"
-            onChange={({ target }) => setEmail(target.value)}
-            mb="30px"
-            w="100%"
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="password">Password</FormLabel>
-          <InputGroup w="100%">
+        <form onSubmit={handleSubmit}>
+          <FormControl>
+            <FormLabel htmlFor="email">OC Habitats Email</FormLabel>
             <Input
-              type={showPassword ? 'text' : 'password'}
-              onChange={({ target }) => setPassword(target.value)}
+              id="email"
               bg="white"
+              onChange={({ target }) => setEmail(target.value)}
+              mb="30px"
+              w="100%"
             />
-            <InputRightAddon
-              children={`${showPassword ? 'Hide' : 'Show'}`}
-              onClick={() => setShowPassword(!showPassword)}
-            />
-          </InputGroup>
-        </FormControl>
-        <Link mt="30px" as={ReachLink} to="/forgot-password" textDecoration="underline">
-          Forgot Your Password?
-        </Link>
-        <Button
-          bg="#2BC0E3"
-          color="white"
-          onClick={handleSubmit}
-          mt="10px"
-          w={{ md: '200px', sm: '80%' }}
-          alignSelf={{ md: 'flex-end', sm: 'center' }}
-          px="10px"
-          isDisabled={!(email && password)}
-          _hover={{ _disabled: { opacity: 0.38, cursor: 'not-allowed' } }}
-        >
-          Sign In
-        </Button>
-        <br />
-        {errorMessage && <p>{errorMessage}</p>}
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <InputGroup w="100%">
+              <Input
+                type={showPassword ? 'text' : 'password'}
+                onChange={({ target }) => setPassword(target.value)}
+                bg="white"
+              />
+              <InputRightAddon
+                children={`${showPassword ? 'Hide' : 'Show'}`}
+                onClick={() => setShowPassword(!showPassword)}
+              />
+            </InputGroup>
+          </FormControl>
+          <Link mt="30px" as={ReachLink} to="/forgot-password" textDecoration="underline">
+            Forgot Your Password?
+          </Link>
+          <Button
+            type="submit"
+            bg="#2BC0E3"
+            color="white"
+            mt="10px"
+            w={{ md: '200px', sm: '80%' }}
+            alignSelf={{ md: 'flex-end', sm: 'center' }}
+            px="10px"
+            isDisabled={!(email && password)}
+            _hover={{ _disabled: { opacity: 0.38, cursor: 'not-allowed' } }}
+          >
+            Sign In
+          </Button>
+          <br />
+          {errorMessage && <p>{errorMessage}</p>}
+        </form>
       </Flex>
     </Box>
   );
