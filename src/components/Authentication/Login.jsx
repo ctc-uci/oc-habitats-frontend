@@ -29,14 +29,14 @@ const Login = ({ cookies }) => {
 
   /**
    * This function handles logging in with email/password (standard log in)
-   * If the user signs in successfully, they are redirected to /logout, otherwise they are redirected to the login screen
+   * If the user signs in successfully, they are redirected to /, otherwise they are redirected to the login screen
    * @param {Event} e
    */
   const handleSubmit = async e => {
     try {
       e.preventDefault();
       await logInWithEmailAndPassword(email, password, navigate, cookies);
-      navigate('/logout');
+      navigate('/');
     } catch (err) {
       setErrorMessage(err.message);
     }
