@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination } from 'react-table';
-import { Table, Tr, Td, Tbody } from '@chakra-ui/react';
+import { Table, Tr, Td, Tbody, Spinner } from '@chakra-ui/react';
 import AdminPageHeader from './AdminPageHeader';
 import Pagination from './Pagination';
 import CellStructure from './AdminPageStructure';
@@ -13,6 +13,7 @@ const AdminPageTable = ({
   tableData,
   pageCount: controlledPageCount,
   checked,
+  isLoading,
   setChecked,
   allChecked,
   setAllChecked,
@@ -71,20 +72,35 @@ const AdminPageTable = ({
       <Table variant="striped" {...getTableProps()}>
         <AdminPageHeader headerGroups={headerGroups} />
         <Tbody {...getTableBodyProps()}>
-          {page.map(row => {
-            prepareRow(row);
-            return (
-              <Tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return (
-                    <Td fontSize="14px" key={row.id} {...cell.getCellProps()}>
-                      {cell.render('Cell')}
-                    </Td>
-                  );
-                })}
-              </Tr>
-            );
-          })}
+          {isLoading && (
+            <Tr>
+              <Td colSpan="6" textAlign="center" py="10">
+                <Spinner />
+              </Td>
+            </Tr>
+          )}
+          {!isLoading && page.length === 0 && (
+            <Tr>
+              <Td colSpan="6" textAlign="center" py="10">
+                No results
+              </Td>
+            </Tr>
+          )}
+          {!isLoading &&
+            page.map(row => {
+              prepareRow(row);
+              return (
+                <Tr {...row.getRowProps()}>
+                  {row.cells.map(cell => {
+                    return (
+                      <Td fontSize="14px" key={row.id} {...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </Td>
+                    );
+                  })}
+                </Tr>
+              );
+            })}
         </Tbody>
       </Table>
       <Pagination
@@ -106,6 +122,7 @@ AdminPageTable.propTypes = {
   checked: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   tableData: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   pageCount: PropTypes.number.isRequired,
   allChecked: PropTypes.bool.isRequired,
   setChecked: PropTypes.func.isRequired,

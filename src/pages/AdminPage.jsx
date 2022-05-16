@@ -129,6 +129,7 @@ const AdminPage = () => {
         />
         <AdminPageTable
           tableData={data}
+          isLoading={!dataLoaded}
           pageCount={pageCount}
           checked={checked}
           setChecked={setChecked}

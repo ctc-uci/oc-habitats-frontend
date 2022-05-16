@@ -78,7 +78,7 @@ const AdminPageFilters = ({
           value={approvalFilter}
           backgroundColor="white"
           color="black"
-          placeholder="Approval"
+          placeholder="Approval status"
           onChange={event => {
             setApprovalFilter(event.target.value);
           }}
