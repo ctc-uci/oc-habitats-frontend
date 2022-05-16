@@ -9,36 +9,41 @@ import {
   Th,
   Td,
   TableContainer,
-  Box,
+  Flex,
 } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
 
 const SightedListedSpeciesTable = ({ name, speciesData }) => {
   return (
-    <Box h="224px" w="505px">
-      <Text fontSize="20px" fontWeight="600" ml="110px" mt="24px">
+    <Flex direction="column" h="fit-content" w={{ lg: 'fit-content', sm: '100%' }}>
+      <Text fontSize="20px" fontWeight="600" mt="24px">
         {name}
       </Text>
 
-      <TableContainer mt="8px" borderRadius="6px">
+      <TableContainer mt="8px" borderRadius="6px" border="1px solid" borderColor="ochLightGrey">
         <Table>
           <Thead>
-            <Tr bg="#4E4E4E">
-              <Th fontSize="16px" color="white">
+            <Tr bg="ochGrey">
+              <Th textAlign="left" fontSize={{ md: '16px', sm: '12px' }} color="white">
                 Segment
               </Th>
-              <Th fontSize="16px" color="white">
+              <Th textAlign="center" fontSize={{ md: '16px', sm: '12px' }} color="white">
                 Adults
               </Th>
-              <Th fontSize="16px" color="white">
+              <Th textAlign="center" fontSize={{ md: '16px', sm: '12px' }} color="white">
                 Fledges
               </Th>
-              <Th fontSize="16px" color="white">
+              <Th textAlign="center" fontSize={{ md: '16px', sm: '12px' }} color="white">
                 Chicks
               </Th>
             </Tr>
           </Thead>
           <Tbody>
+            {speciesData.length === 0 && (
+              <Tr>
+                <Td>{'  '}</Td>
+              </Tr>
+            )}
             {speciesData.map(data => {
               return (
                 <Tr key={data.segment}>
@@ -58,9 +63,9 @@ const SightedListedSpeciesTable = ({ name, speciesData }) => {
               );
             })}
           </Tbody>
-          <Tfoot bg="#4E4E4E">
+          <Tfoot bg="ochGrey">
             <Tr>
-              <Th fontSize="16px" color="white">
+              <Th textAlign="left" fontSize={{ md: '16px', sm: '12px' }} color="white">
                 Total
               </Th>
               <Th fontSize="16px" color="white">
@@ -82,7 +87,7 @@ const SightedListedSpeciesTable = ({ name, speciesData }) => {
           </Tfoot>
         </Table>
       </TableContainer>
-    </Box>
+    </Flex>
   );
 };
 

@@ -1,13 +1,22 @@
-/* eslint-disable no-unused-vars */
-import { React } from 'react';
-// import { withCookies } from 'react-cookie';
-import { Cookies, withCookies, cookieConfig } from '../common/cookie_utils';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const HomePage = props => {
+import AdminDashboardPage from './AdminDashboardPage';
+import VolunteerDashboardPage from './VolunteerDashboardPage';
+
+const HomePage = ({ isAdmin, onAdminPortal }) => {
   return (
-    // eslint-disable-next-line react/no-unescaped-entities
-    <div>Homepage</div>
+    <>
+      {isAdmin && onAdminPortal && <AdminDashboardPage />}
+      {!isAdmin && <VolunteerDashboardPage />}
+      {isAdmin && !onAdminPortal && <VolunteerDashboardPage />}
+    </>
   );
 };
 
-export default withCookies(HomePage);
+HomePage.propTypes = {
+  isAdmin: PropTypes.bool.isRequired,
+  onAdminPortal: PropTypes.bool.isRequired,
+};
+
+export default HomePage;

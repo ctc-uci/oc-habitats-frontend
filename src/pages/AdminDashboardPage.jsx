@@ -1,9 +1,10 @@
-import { React } from 'react';
-import { Text } from '@chakra-ui/react';
+import { React, useState, useEffect } from 'react';
+import { Text, Box } from '@chakra-ui/react';
 import MonitorLogSubmissionStats from '../components/AdminDashboard/MonitorLogSubmissionStats';
 import SightedListedSpecies from '../components/AdminDashboard/SightedListedSpecies';
 import EmergentIssues from '../components/AdminDashboard/EmergentIssues';
 import LogNotification from '../components/AdminDashboard/LogNotification';
+import { OCHBackend } from '../common/utils';
 
 // Data to be received from Database
 const name = 'Peter';
@@ -28,7 +29,6 @@ const month = monthNames[new Date().getMonth()];
 const year = new Date().getUTCFullYear();
 const numLogsCompleted = 5;
 const numLogsNotCompleted = 5;
-const numSegsUnassigned = 3;
 
 const emergentIssuesData = [
   {
@@ -132,12 +132,41 @@ const speciesData = [
       },
     ],
   },
+  {
+    id: 4,
+    speciesName: 'California Least Terns',
+    data: [
+      {
+        segment: 'OC01',
+        adults: 6,
+        fledges: 3,
+        chicks: 1,
+      },
+      {
+        segment: 'OC09a',
+        adults: 4,
+        fledges: 2,
+        chicks: 0,
+      },
+      {
+        segment: 'OC09b',
+        adults: 2,
+        fledges: 1,
+        chicks: 0,
+      },
+    ],
+  },
+  {
+    id: 3,
+    speciesName: 'New Listed',
+    data: [],
+  },
 ];
 
 const statsDataCompleted = [
   {
-    segId: 'XX',
-    peopleAssigned: [
+    segmentId: 'XX',
+    volunteers: [
       {
         id: 1,
         firstName: 'FirstName',
@@ -155,8 +184,8 @@ const statsDataCompleted = [
     ],
   },
   {
-    segId: 'XX',
-    peopleAssigned: [
+    segmentId: 'XX',
+    volunteers: [
       {
         id: 1,
         firstName: 'NamesLongerThan25Characters',
@@ -174,8 +203,8 @@ const statsDataCompleted = [
     ],
   },
   {
-    segId: 'XX',
-    peopleAssigned: [
+    segmentId: 'XX',
+    volunteers: [
       {
         id: 1,
         firstName: 'FirstName',
@@ -193,8 +222,8 @@ const statsDataCompleted = [
     ],
   },
   {
-    segId: 'XX',
-    peopleAssigned: [
+    segmentId: 'XX',
+    volunteers: [
       {
         id: 1,
         firstName: 'FirstName',
@@ -212,8 +241,8 @@ const statsDataCompleted = [
     ],
   },
   {
-    segId: 'XX',
-    peopleAssigned: [
+    segmentId: 'XX',
+    volunteers: [
       {
         id: 1,
         firstName: 'FirstName',
@@ -234,8 +263,8 @@ const statsDataCompleted = [
 
 const statsDataNotCompleted = [
   {
-    segId: 'XX',
-    peopleAssigned: [
+    segmentId: 'XX',
+    volunteers: [
       {
         id: 1,
         firstName: 'FirstName',
@@ -253,106 +282,8 @@ const statsDataNotCompleted = [
     ],
   },
   {
-    segId: 'XX',
-    peopleAssigned: [
-      {
-        id: 1,
-        firstName: 'NamesLongerThan25Characters',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-  {
-    segId: 'XX',
-    peopleAssigned: [
-      {
-        id: 1,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-  {
-    segId: 'XX',
-    peopleAssigned: [
-      {
-        id: 1,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-  {
-    segId: 'XX',
-    peopleAssigned: [
-      {
-        id: 1,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-];
-
-const statsDataUnassigned = [
-  {
-    segId: 'XX',
-    peopleAssigned: [
-      {
-        id: 1,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-  {
-    segId: 'XX',
-    peopleAssigned: [
+    segmentId: 'XX',
+    volunteers: [
       {
         id: 1,
         firstName: 'NamesLongerThan25Characters',
@@ -370,8 +301,46 @@ const statsDataUnassigned = [
     ],
   },
   {
-    segId: 'XX',
-    peopleAssigned: [
+    segmentId: 'XX',
+    volunteers: [
+      {
+        id: 1,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
+  },
+  {
+    segmentId: 'XX',
+    volunteers: [
+      {
+        id: 1,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+      {
+        id: 2,
+        firstName: 'FirstName',
+        lastName: 'LastName',
+        email: 'finitial.lastname@ochabitats.org',
+        accountInfoLink: '/account',
+      },
+    ],
+  },
+  {
+    segmentId: 'XX',
+    volunteers: [
       {
         id: 1,
         firstName: 'FirstName',
@@ -391,13 +360,24 @@ const statsDataUnassigned = [
 ];
 
 const AdminDashboardPage = () => {
+  const [unassignedSegments, setUnassignedSegments] = useState([]);
+
+  useEffect(async () => {
+    try {
+      const unassigned = await OCHBackend.get('/segments/unassigned');
+      setUnassignedSegments(unassigned.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
   return (
-    <>
-      <Text fontSize="36px" fontWeight="600" ml="110px" mt="40px">
+    <Box mx={{ lg: '100px', sm: '40px' }} my="40px" mb={{ lg: 0, xs: '170px' }}>
+      <Text fontSize={{ md: '4xl', sm: '2xl' }} fontWeight="600">
         Welcome back, {name}!
       </Text>
 
-      <Text fontSize="24px" fontWeight="600" ml="110px" mt="50px">
+      <Text fontSize="24px" fontWeight="600" mt="50px">
         Notifications
       </Text>
 
@@ -408,14 +388,14 @@ const AdminDashboardPage = () => {
         year={year}
         numLogsCompleted={numLogsCompleted}
         numLogsNotCompleted={numLogsNotCompleted}
-        numSegsUnassigned={numSegsUnassigned}
+        numSegsUnassigned={unassignedSegments.length}
         statsDataCompleted={statsDataCompleted}
         statsDataNotCompleted={statsDataNotCompleted}
-        statsDataUnassigned={statsDataUnassigned}
+        statsDataUnassigned={unassignedSegments}
       />
       <EmergentIssues month={month} year={year} emergentIssuesData={emergentIssuesData} />
       <SightedListedSpecies month={month} year={year} speciesData={speciesData} />
-    </>
+    </Box>
   );
 };
 

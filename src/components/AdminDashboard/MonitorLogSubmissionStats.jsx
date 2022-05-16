@@ -1,5 +1,5 @@
 import { React } from 'react';
-import { Text, HStack } from '@chakra-ui/react';
+import { Text, Stack, Box } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
 
 import StatsCard from './StatsCard';
@@ -24,12 +24,12 @@ const MonitorLogSubmissionStats = ({
   const cardNums = [numLogsCompleted, numLogsNotCompleted, numSegsUnassigned];
   const cardData = [statsDataCompleted, statsDataNotCompleted, statsDataUnassigned];
   return (
-    <>
-      <Text fontSize="24px" fontWeight="600" ml="110px" mt="64px">
+    <Box justify="left" mt="64px">
+      <Text fontSize="24px" fontWeight="600">
         {month} {year} Monitor Log Submission Stats
       </Text>
 
-      <HStack h="218px" mt="24px" spacing="24px">
+      <Stack direction={{ lg: 'row', sm: 'column' }} justify="left" mt="24px" spacing="24px">
         {cardTitles.map((title, index) => {
           return (
             <StatsCard
@@ -41,8 +41,8 @@ const MonitorLogSubmissionStats = ({
             />
           );
         })}
-      </HStack>
-    </>
+      </Stack>
+    </Box>
   );
 };
 
@@ -54,8 +54,8 @@ MonitorLogSubmissionStats.propTypes = {
   numSegsUnassigned: PropTypes.number.isRequired,
   statsDataCompleted: PropTypes.arrayOf(
     PropTypes.shape({
-      segId: PropTypes.string.isRequired,
-      peopleAssigned: PropTypes.arrayOf(
+      segmentId: PropTypes.string.isRequired,
+      volunteers: PropTypes.arrayOf(
         PropTypes.shape({
           id: PropTypes.number.isRequired,
           firstName: PropTypes.string.isRequired,
@@ -68,8 +68,8 @@ MonitorLogSubmissionStats.propTypes = {
   ).isRequired,
   statsDataNotCompleted: PropTypes.arrayOf(
     PropTypes.shape({
-      segId: PropTypes.string.isRequired,
-      peopleAssigned: PropTypes.arrayOf(
+      segmentId: PropTypes.string.isRequired,
+      volunteers: PropTypes.arrayOf(
         PropTypes.shape({
           id: PropTypes.number.isRequired,
           firstName: PropTypes.string.isRequired,
@@ -82,8 +82,8 @@ MonitorLogSubmissionStats.propTypes = {
   ).isRequired,
   statsDataUnassigned: PropTypes.arrayOf(
     PropTypes.shape({
-      segId: PropTypes.string.isRequired,
-      peopleAssigned: PropTypes.arrayOf(
+      segmentId: PropTypes.string.isRequired,
+      volunteers: PropTypes.arrayOf(
         PropTypes.shape({
           id: PropTypes.number.isRequired,
           firstName: PropTypes.string.isRequired,
