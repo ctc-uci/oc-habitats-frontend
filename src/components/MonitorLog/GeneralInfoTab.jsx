@@ -284,16 +284,20 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                 h="133px"
                 borderRadius="6px"
                 key={question.title}
-                _hover={{ bgColor: 'rgba(43, 192, 227, 0.25)' }}
-                onClick={() => {
-                  editQuestionModal.onOpen();
-                  setNewTitle(question.title);
-                  setNewFieldType(question.fieldType);
-                  setNewTooltip(question.tooltip);
-                  setIdOfFieldBeingEdited(question._id);
-                  console.log(`idOfFieldBeingEdited: ${idOfFieldBeingEdited}`);
-                  console.log(additionalQuestions);
-                }}
+                _hover={isTemplate ? { bgColor: 'rgba(43, 192, 227, 0.25)' } : null}
+                onClick={
+                  isTemplate
+                    ? () => {
+                        editQuestionModal.onOpen();
+                        setNewTitle(question.title);
+                        setNewFieldType(question.fieldType);
+                        setNewTooltip(question.tooltip);
+                        setIdOfFieldBeingEdited(question._id);
+                        console.log(`idOfFieldBeingEdited: ${idOfFieldBeingEdited}`);
+                        console.log(additionalQuestions);
+                      }
+                    : null
+                }
                 px="10px"
                 py="10px"
               >
