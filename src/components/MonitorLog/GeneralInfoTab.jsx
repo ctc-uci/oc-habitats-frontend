@@ -81,7 +81,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
     const newQuestions = await OCHBackend.get(`/forms/general`);
     const questions = await newQuestions.data;
     // for prettier
-    // console.log(newQuestions);
+    console.log(newQuestions);
 
     setAdditionalQuestions(questions.additionalFields);
     // prettier
