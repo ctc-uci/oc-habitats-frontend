@@ -30,7 +30,6 @@ import NewQuestionModal from './components/NewQuestionModal';
 import DeleteModal from './components/DeleteModal';
 
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
-import EditQuestionModal from './components/MonitorLog/EditQuestionPopup';
 import theme from './theme/theme';
 
 import AUTH_ROLES from './common/auth_config';
