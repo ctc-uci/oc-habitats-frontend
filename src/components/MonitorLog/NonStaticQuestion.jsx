@@ -230,7 +230,15 @@ function NonStaticQuestion({ question }) {
               >
                 Yes, Delete
               </Button>
-              <Button type="submit" w="100%" h="40px" /* onClick={handleDelete} */>
+              <Button
+                type="submit"
+                w="100%"
+                h="40px"
+                onClick={() => {
+                  deleteQuestionModal.onClose();
+                  editQuestionModal.onOpen();
+                }}
+              >
                 Cancel
               </Button>
             </Box>
