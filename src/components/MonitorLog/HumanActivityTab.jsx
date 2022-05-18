@@ -19,6 +19,7 @@ import {
 import PropTypes from 'prop-types';
 import { React, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import NonStaticQuestion from './NonStaticQuestion';
 import { OCHBackend } from '../../common/utils';
 
 const FORM_PREFIX = 'humanActivity.';
@@ -129,25 +130,11 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
           ))}
           {additionalQuestions.map(question => {
             return (
-              <GridItem key={question.title} colSpan={1} rowSpan={1}>
-                <VStack spacing="8px" align="left">
-                  <Text fontWeight="500" fontSize="md">
-                    {question.title}
-                  </Text>
-                  {question.fieldType === 'TEXT' ? (
-                    <Input type="text" />
-                  ) : (
-                    <NumberInput allowMouseWheel>
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-                  )}
-                  {isTemplate && <Text color="#718096">Non-Static</Text>}
-                </VStack>
-              </GridItem>
+              <NonStaticQuestion
+                key={question.title}
+                formType="human-activity"
+                question={question}
+              />
             );
           })}
         </SimpleGrid>

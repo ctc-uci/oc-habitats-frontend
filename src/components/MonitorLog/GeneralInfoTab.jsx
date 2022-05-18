@@ -260,7 +260,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
           </GridItem>
           {additionalQuestions.map(question => {
             return (
-              <NonStaticQuestion key={question.title} question={question} />
+              <NonStaticQuestion key={question.title} question={question} formType="general" />
               // <Box
               //   w="255px"
               //   h="133px"

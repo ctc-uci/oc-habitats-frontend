@@ -35,7 +35,7 @@ import './GeneralInfoTab.css';
 import { FiArrowLeft } from 'react-icons/fi';
 import { OCHBackend } from '../../common/utils';
 
-function NonStaticQuestion({ question }) {
+function NonStaticQuestion({ formType, question }) {
   const [newTitle, setNewTitle] = useState();
   const [newFieldType, setNewFieldType] = useState();
   const [newTooltip, setNewTooltip] = useState();
@@ -47,7 +47,7 @@ function NonStaticQuestion({ question }) {
     console.log(`updateQuestion called with fieldId: ${idOfFieldBeingEdited}`);
     console.log(`fieldBody: ${newTitle}, ${newFieldType}, ${newTooltip}`);
     await OCHBackend.put('/forms/update/field', {
-      type: 'general',
+      type: formType,
       fieldId: idOfFieldBeingEdited,
       fieldBody: {
         title: newTitle,
@@ -62,7 +62,7 @@ function NonStaticQuestion({ question }) {
     console.log(`deleteQuestion called with fieldId ${idOfFieldBeingEdited}`);
     await OCHBackend.delete('/forms/delete/field', {
       data: {
-        formType: 'general',
+        formType,
         fieldId: idOfFieldBeingEdited,
       },
     });
@@ -244,8 +244,12 @@ function NonStaticQuestion({ question }) {
   );
 }
 
+NonStaticQuestion.defaultProps = {
+  formType: null,
+};
 NonStaticQuestion.propTypes = {
   question: PropTypes.object.isRequired,
+  formType: PropTypes.string,
 };
 
 export default NonStaticQuestion;
