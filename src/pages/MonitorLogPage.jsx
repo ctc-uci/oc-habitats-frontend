@@ -123,7 +123,7 @@ const MonitorLogPage = () => {
 
   return (
     <Flex w="100%" justifyContent="center">
-      <Box w="1500px">
+      <Box w="100%">
         <FormProvider {...formMethods}>
           <Modal isOpen={checkInModal.isOpen} onClose={checkInModal.onClose}>
             <ModalOverlay />
