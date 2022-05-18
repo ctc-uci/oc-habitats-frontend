@@ -27,7 +27,6 @@ import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import NewQuestionModal from './components/NewQuestionModal';
-import DeleteModal from './components/DeleteModal';
 
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
@@ -93,7 +92,6 @@ function App() {
                 <Route exact path="/logs" element={<AdminPage />} />
                 <Route exact path="/common-table-example" element={<CommonTableExample />} />
                 <Route exact path="/new-question" element={<NewQuestionModal />} />
-                <Route exact path="/delete-question" element={<DeleteModal />} />
               </Routes>
             </Box>
           </Box>

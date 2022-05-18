@@ -1,34 +1,15 @@
+/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 import { InfoIcon } from '@chakra-ui/icons';
 import {
-  Box,
-  Button,
   Flex,
-  FormControl,
-  FormLabel,
   GridItem,
-  HStack,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Input,
-  Radio,
-  RadioGroup,
   Select,
   SimpleGrid,
   Spacer,
   Text,
-  Textarea,
   Tooltip,
-  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { Select as ReactSelect } from 'chakra-react-select';
@@ -53,7 +34,6 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
   // const [newFieldType, setNewFieldType] = useState();
   // const [newTooltip, setNewTooltip] = useState();
   // const [fieldToEdit, setFieldToEdit] = useState();
-  const [idOfFieldBeingEdited, setIdOfFieldBeingEdited] = useState();
 
   // const updateQuestion = async () => {
   //   console.log(`updateQuestion called with fieldId: ${idOfFieldBeingEdited}`);

@@ -1,10 +1,9 @@
+/* eslint-disable no-console */
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable no-underscore-dangle */
-import { InfoIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
-  Flex,
   FormControl,
   FormLabel,
   GridItem,
@@ -24,21 +23,14 @@ import {
   Input,
   Radio,
   RadioGroup,
-  Select,
-  SimpleGrid,
-  Spacer,
   Text,
   Textarea,
-  Tooltip,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { Select as ReactSelect } from 'chakra-react-select';
 import PropTypes from 'prop-types';
-import { React, useState, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
+import { React, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Controller, useFormContext } from 'react-hook-form';
 import './GeneralInfoTab.css';
 import { FiArrowLeft } from 'react-icons/fi';
 import { OCHBackend } from '../../common/utils';
@@ -67,11 +59,14 @@ function NonStaticQuestion({ question }) {
   };
 
   const deleteQuestion = async () => {
+    console.log(`deleteQuestion called with fieldId ${idOfFieldBeingEdited}`);
     await OCHBackend.delete('/forms/delete/field', {
-      formType: 'general',
-      fieldId: idOfFieldBeingEdited,
+      data: {
+        formType: 'general',
+        fieldId: idOfFieldBeingEdited,
+      },
     });
-    editQuestionModal.onClose();
+    deleteQuestionModal.onClose();
   };
 
   return (
