@@ -100,6 +100,7 @@ const AdminPageFilters = ({
             onChange={event => {
               setSearchTerm(event.target.value);
             }}
+            placeholder="Search volunteer"
           />
           <InputRightElement w="84px">
             <Button

@@ -27,10 +27,8 @@ const AdminPageTable = ({
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     page,
     prepareRow,
-    pageCount,
     canPreviousPage,
     canNextPage,
     nextPage,
@@ -56,21 +54,6 @@ const AdminPageTable = ({
 
   return (
     <>
-      {/* <pre>
-        <code>
-          {JSON.stringify(
-            {
-              pageIndex,
-              pageSize,
-              pageCount,
-              canNextPage,
-              canPreviousPage,
-            },
-            null,
-            2,
-          )}
-        </code>
-      </pre> */}
       <Table variant="striped" {...getTableProps()}>
         <AdminPageHeader headerGroups={headerGroups} />
         <Tbody {...getTableBodyProps()}>
