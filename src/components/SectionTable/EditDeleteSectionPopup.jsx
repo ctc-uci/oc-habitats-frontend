@@ -77,7 +77,7 @@ const ModalContentEditSection = ({ editSection, section, onClose }) => {
           </Stack>
           <ModalFooter>
             <Button colorScheme="gray" mr={3} onClick={onClose}>
-              Close
+              Cancel
             </Button>
             <Button colorScheme="blue" bg="ochBlue" color="ochBlack" variant="solid" type="submit">
               Save Changes

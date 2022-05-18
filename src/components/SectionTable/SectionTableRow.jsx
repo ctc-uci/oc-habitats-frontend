@@ -24,6 +24,8 @@ import {
   useDisclosure,
   Link,
   Select,
+  FormLabel,
+  Stack,
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import axios from 'axios';
@@ -131,53 +133,61 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
           <ModalHeader>Edit Segment</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>Section</Text>
-            <Select
-              value={sectionID}
-              defaultValue={sectionID}
-              onChange={e => setSectionID(e.target.value)}
-            >
-              {allSections?.map(section => (
-                <option key={section._id} value={section._id}>
-                  {section.name}
-                </option>
-              ))}
-            </Select>
-            <Text>Segment ID</Text>
-            <Input
-              value={segId}
-              onChange={event => {
-                setSegId(event.target.value);
-              }}
-            />
-            <Text>Segment Name</Text>
-            <Input
-              value={segName}
-              onChange={event => {
-                setSegName(event.target.value);
-              }}
-            />
-            <Text>Section Map Link</Text>
-            <Textarea
-              value={segLink}
-              onChange={event => {
-                setSegLink(event.target.value);
-              }}
-            />
-            <Text>Street Names</Text>
-            <Input
-              value={segLocation}
-              onChange={event => {
-                setSegLocation(event.target.value);
-              }}
-            />
-            <Text>Parking Information</Text>
-            <Textarea
-              value={segParking}
-              onChange={event => {
-                setSegParking(event.target.value);
-              }}
-            />
+            <VStack align="left" spacing="20px">
+              <FormLabel>Section</FormLabel>
+              {/* <Text>Section</Text> */}
+              <Select
+                value={sectionID}
+                defaultValue={sectionID}
+                onChange={e => setSectionID(e.target.value)}
+              >
+                {allSections?.map(section => (
+                  <option key={section._id} value={section._id}>
+                    {section.name}
+                  </option>
+                ))}
+              </Select>
+              <FormLabel>Segment Id</FormLabel>
+              {/* <Text>Segment Id</Text> */}
+              <Input
+                value={segId}
+                onChange={event => {
+                  setSegId(event.target.value);
+                }}
+              />
+              <FormLabel>Segment Name</FormLabel>
+              {/* <Text>Segment Name</Text> */}
+              <Input
+                value={segName}
+                onChange={event => {
+                  setSegName(event.target.value);
+                }}
+              />
+              <FormLabel>Segment Map Link</FormLabel>
+              {/* <Text>Section Map Link</Text> */}
+              <Textarea
+                value={segLink}
+                onChange={event => {
+                  setSegLink(event.target.value);
+                }}
+              />
+              <FormLabel>Street Names</FormLabel>
+              {/* <Text>Street Names</Text> */}
+              <Input
+                value={segLocation}
+                onChange={event => {
+                  setSegLocation(event.target.value);
+                }}
+              />
+              <FormLabel>Parking Information</FormLabel>
+              {/* <Text>Parking Information</Text> */}
+              <Textarea
+                value={segParking}
+                onChange={event => {
+                  setSegParking(event.target.value);
+                }}
+              />
+            </VStack>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="gray" mr={3} onClick={onCloseEdit}>

@@ -96,10 +96,10 @@ const ModalContentAddSection = ({ addNewSection, onClose }) => {
           </Stack>
           <ModalFooter>
             <Button colorScheme="gray" mr={3} onClick={onClose}>
-              Close
+              Cancel
             </Button>
             <Button colorScheme="blue" bg="ochBlue" color="ochBlack" variant="solid" type="submit">
-              Create New Section
+              Create Section
             </Button>
           </ModalFooter>
         </form>
@@ -170,10 +170,10 @@ const ModalContentAddSegment = ({ sectionOptions, addNewSegment, onClose }) => {
           </Stack>
           <ModalFooter>
             <Button colorScheme="gray" mr={3} onClick={onClose}>
-              Close
+              Cancel
             </Button>
             <Button colorScheme="blue" bg="ochBlue" color="ochBlack" variant="solid" type="submit">
-              Create New Segment
+              Create Segment
             </Button>
           </ModalFooter>
         </form>
