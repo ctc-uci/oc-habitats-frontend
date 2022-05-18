@@ -74,11 +74,43 @@ function App() {
                       />
                     }
                   />
-                  <Route exact path="/create-log" element={<MonitorLogPage />} />
+                  <Route
+                    exact
+                    path="/edit-log/:id"
+                    element={
+                      <ProtectedRoute
+                        Component={() => <MonitorLogPage mode="edit" />}
+                        redirectPath="/login"
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/review-log/:id"
+                    element={
+                      <ProtectedRoute
+                        Component={() => <MonitorLogPage mode="review" />}
+                        redirectPath="/login"
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
+                    }
+                  />
                   <Route exact path="/sections" element={<SectionPage />} />
                   <Route exact path="/species" element={<Species />} />
                   {/* Admin only routes (TO DO, make admin only) */}
                   <Route exact path="/people" element={<PeoplePage />} />
+                  <Route
+                    exact
+                    path="/create-log"
+                    element={
+                      <ProtectedRoute
+                        Component={MonitorLogPage}
+                        redirectPath="/login"
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
+                    }
+                  />
                   <Route exact path="/numbers" element={<Numbers />} />
                   <Route exact path="/map" />
                   <Route exact path="/logs" element={<AdminPage />} />
@@ -124,7 +156,7 @@ function App() {
                 </Routes>
               </Box>
               <Routes>
-                <Route path="/create-log" />
+                <Route exact path="/create-log" />
                 <Route path="/*" element={<Footer />} />
               </Routes>
             </Box>

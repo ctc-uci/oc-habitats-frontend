@@ -20,13 +20,16 @@ import {
   useDisclosure,
   Alert,
   AlertTitle,
+  AlertIcon,
+  AlertDescription,
 } from '@chakra-ui/react';
 import { React, useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp, FiCheck } from 'react-icons/fi';
-import { WarningIcon } from '@chakra-ui/icons';
 import { useParams } from 'react-router-dom';
+import { parseISO } from 'date-fns';
 import PropTypes from 'prop-types';
+import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
 import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
@@ -52,25 +55,10 @@ const MonitorTabButton = props => {
   );
 };
 
-// // https://localhost:3000/edit-log/625f3e335b6cf2f2ad34dfc1
-// const EditLogPage = () => {
-//   submisison = getIdfromurlsomehow();
-//   return <MonitorLogPage submission={submission}
-// }
-
-const MonitorLogPage = () => {
-  const userID = useParams();
-  const { formMethods } = useForm({
-    defaultValues: {
-      temperature: '10',
-    },
-  });
-
-  useEffect(async () => {
-    const res = await OCHBackend.get(`submission/${userID}`);
-    console.log(res.data);
-    formMethods.reset(res.data);
-  }, []);
+const MonitorLogPage = ({ mode }) => {
+  const userDataContext = useUserContext();
+  const userData = useParams();
+  const formMethods = useForm();
 
   const checkInModal = useDisclosure();
 
@@ -83,23 +71,43 @@ const MonitorLogPage = () => {
   const returnToTop = () => {
     topRef.current.scrollIntoView({ behavior: 'smooth' });
   };
-  const [user, setUser] = useState(null);
+
+  const [user, setUser] = useState(false);
+  const [submissionData, setSubmissionData] = useState(null);
+  const [segmentData, setSegmentData] = useState(null);
   const [monitorPartners, setMonitorPartners] = useState([]);
   const [predators, setPredators] = useState([]);
   const [listedSpecies, setListedSpecies] = useState([]);
   const [additionalSpecies, setAdditionalSpecies] = useState([]);
-  const [editMode, setEditMode] = useState(false);
-  const requested = false;
+
+  useEffect(async () => {
+    if (mode === 'edit' || mode === 'review') {
+      try {
+        const submission = await OCHBackend.get(`submission/${userData.id}`);
+        submission.data.date = parseISO(submission.data.date);
+        formMethods.reset(submission.data);
+        setSubmissionData(submission.data);
+        if (submission.data.segment) {
+          setSegmentData(
+            userDataContext.userData.segments.find(s => s._id === submission.data.segment),
+          );
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err.message);
+      }
+    }
+  }, []);
 
   useEffect(async () => {
     checkInModal.onOpen();
     try {
-      const [userData, monitorPartnersData, speciesData] = await Promise.all([
+      const [userD, monitorPartnersData, speciesData] = await Promise.all([
         OCHBackend.get('users/me', { withCredentials: true }),
         OCHBackend.get('users/monitorPartners', { withCredentials: true }),
         OCHBackend.get('species', { withCredentials: true }),
       ]);
-      setUser(userData.data);
+      setUser(userD.data);
       setMonitorPartners(monitorPartnersData.data);
       setPredators(
         speciesData.data
@@ -146,14 +154,21 @@ const MonitorLogPage = () => {
   const assignedSegments = useMemo(() => user?.segments || [], [user]);
 
   const request = () => {
-    if (requested) {
+    if (submissionData != null && submissionData.requestedEdits && segmentData) {
+      const d = new Date(submissionData.requestedEdits.requestDate);
       return (
         <>
-          <Alert severity="error" icon={<WarningIcon />}>
-            <AlertTitle>
-              <strong>Edits have been requested</strong>
-            </AlertTitle>{' '}
-            Request Reason{' '}
+          <Alert status="error">
+            <AlertIcon />
+            <Box>
+              <AlertTitle>
+                Edits have been requested for your {segmentData.segmentId} log on {d.getMonth() + 1}
+                -{d.getDate()}-{d.getFullYear()}
+              </AlertTitle>
+              <AlertDescription>
+                Request Reason: {submissionData.requestedEdits.requests}{' '}
+              </AlertDescription>
+            </Box>
           </Alert>
           <br />
         </>
@@ -213,7 +228,7 @@ const MonitorLogPage = () => {
                   <GeneralInfoTab
                     assignedSegments={assignedSegments}
                     monitorPartners={monitorPartners}
-                    isDisabled={editMode}
+                    isDisabled={mode !== 'edit' && userDataContext.userData.role === 'admin'}
                   />
                 </Container>
               </TabPanel>
@@ -225,23 +240,32 @@ const MonitorLogPage = () => {
                       speciesName={s.name}
                       speciesCode={s.code}
                       speciesId={s._id}
+                      isDisabled={mode !== 'edit' && userDataContext.userData.role === 'admin'}
                     />
                   </Container>
                 </TabPanel>
               ))}
               <TabPanel>
                 <Container maxW="100vw">
-                  <AdditionalSpeciesTab species={additionalSpecies} />
+                  <AdditionalSpeciesTab
+                    species={additionalSpecies}
+                    isDisabled={mode !== 'edit' && userDataContext.userData.role === 'admin'}
+                  />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <PredatorsTab predators={predators} />
+                  <PredatorsTab
+                    predators={predators}
+                    isDisabled={mode !== 'edit' && userDataContext.userData.role === 'admin'}
+                  />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <HumanActivity isDisabled={editMode} />
+                  <HumanActivity
+                    isDisabled={mode !== 'edit' && userDataContext.userData.role === 'admin'}
+                  />
                 </Container>
               </TabPanel>
               <TabPanel>
@@ -301,6 +325,14 @@ const MonitorLogPage = () => {
       </Box>
     </Flex>
   );
+};
+
+MonitorLogPage.defaultProps = {
+  mode: 'create',
+};
+
+MonitorLogPage.propTypes = {
+  mode: PropTypes.string,
 };
 
 export default MonitorLogPage;
