@@ -35,7 +35,7 @@ import './GeneralInfoTab.css';
 import { FiArrowLeft } from 'react-icons/fi';
 import { OCHBackend } from '../../common/utils';
 
-function NonStaticQuestion({ formType, question }) {
+function NonStaticQuestion({ isTemplate, formType, question }) {
   const [newTitle, setNewTitle] = useState();
   const [newFieldType, setNewFieldType] = useState();
   const [newTooltip, setNewTooltip] = useState();
@@ -76,20 +76,23 @@ function NonStaticQuestion({ formType, question }) {
         h="133px"
         borderRadius="6px"
         key={question.title}
-        _hover={{ bgColor: 'rgba(43, 192, 227, 0.25)' }}
-        onClick={() => {
-          editQuestionModal.onOpen();
-          setNewTitle(question.title);
-          setNewFieldType(question.fieldType);
-          setNewTooltip(question.tooltip);
-          setIdOfFieldBeingEdited(question._id);
-          console.log(`idOfFieldBeingEdited: ${idOfFieldBeingEdited}`);
-          // console.log(additionalQuestions);
-        }}
+        _hover={isTemplate ? { bgColor: 'rgba(43, 192, 227, 0.25)' } : null}
+        onClick={
+          isTemplate
+            ? () => {
+                editQuestionModal.onOpen();
+                setNewTitle(question.title);
+                setNewFieldType(question.fieldType);
+                setNewTooltip(question.tooltip);
+                setIdOfFieldBeingEdited(question._id);
+                console.log(`idOfFieldBeingEdited: ${idOfFieldBeingEdited}`);
+              }
+            : null
+        }
         px="10px"
         py="10px"
       >
-        <GridItem key={question.title} colSpan={1} rowSpan={1}>
+        <GridItem px="10px" py="10px" key={question.title} colSpan={1} rowSpan={1}>
           <VStack spacing="8px" align="left">
             <Text fontWeight="500" fontSize="md">
               {question.title}
@@ -246,10 +249,12 @@ function NonStaticQuestion({ formType, question }) {
 
 NonStaticQuestion.defaultProps = {
   formType: null,
+  isTemplate: false,
 };
 NonStaticQuestion.propTypes = {
   question: PropTypes.object.isRequired,
   formType: PropTypes.string,
+  isTemplate: PropTypes.bool,
 };
 
 export default NonStaticQuestion;

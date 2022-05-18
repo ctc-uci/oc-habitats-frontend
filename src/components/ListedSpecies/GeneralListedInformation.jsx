@@ -165,6 +165,7 @@ const GeneralListedInformation = ({ isTemplate, additionalQuestions }) => {
                 key={question.title}
                 formType="listed-species"
                 question={question}
+                isTemplate={isTemplate}
               />
             );
           })}
