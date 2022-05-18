@@ -1,4 +1,4 @@
-import { Box, Button, Text, Icon, useMediaQuery } from '@chakra-ui/react';
+import { Box, Button, Text, Icon } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';

@@ -164,8 +164,6 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
       <Stack
         mt="20px"
         minH="200px"
-        // templateColumns={{ md: 'repeat(6, 1fr)', base: 'repeat(1, 1fr)' }}
-        // gap={{ md: '150', base: '50' }}
         direction={{ lg: 'row', base: 'column' }}
         spacing={{ lg: '100px', base: '30px' }}
       >

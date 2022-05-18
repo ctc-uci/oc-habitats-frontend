@@ -8,8 +8,6 @@ import {
   Button,
   Collapse,
   FormControl,
-  Grid,
-  GridItem,
   Icon,
   IconButton,
   Menu,
@@ -46,10 +44,6 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FiEdit3 } from 'react-icons/fi';
 import ListedSpeciesPopup from '../ListedSpecies/ListedSpeciesPopup';
-
-// TO-DO:
-//  - Mobile for listed species table (columns too wide for screen)
-//  - Mobile for Banding section
 
 const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader, isDisabled }) => {
   const formPrefix = `listedSpecies[${tab}].`;
@@ -371,13 +365,6 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
               </NumberInputStepper>
             </NumberInput>
           </FormControl>
-          {/* <Text fontWeight="600" fontSize="xl">
-              Marked Map (PNG or JPEG Only)
-            </Text>
-            <Text>
-              Provide a map with the locations of sighted Western Snowy Plovers marked with Map #
-              according to the Tracker table.
-            </Text> */}
         </VStack>
       </Stack>
     </VStack>
