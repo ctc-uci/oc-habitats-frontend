@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Checkbox, Badge, Text, HStack } from '@chakra-ui/react';
 
 const DateFormat = ({ date }) => {
-  const dateString = new Date(date);
-  return `${dateString.getMonth()}/${dateString.getDate()}/${dateString.getFullYear()}`;
+  return new Date(date).toLocaleDateString();
 };
 
 const Check = ({ checked, setChecked, id }) => {
@@ -50,7 +49,7 @@ const ApplyBadge = ({ approval }) => {
   if (approval === 'UNDER_REVIEW') {
     return (
       <Badge variant="solid" colorScheme="blue">
-        {approval}
+        UNDER REVIEW
       </Badge>
     );
   }
@@ -74,7 +73,9 @@ const ApplyBadge = ({ approval }) => {
 const VolunteerColumn = ({ data }) => {
   return (
     <HStack>
-      <Text>{data.submitter}</Text>
+      <Text>
+        {data.submitter?.firstName} {data.submitter?.lastName}
+      </Text>
       {data.isSubmittedByTrainee && (
         <Badge variant="solid" colorScheme="orange">
           IN TRAINING
