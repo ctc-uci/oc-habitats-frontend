@@ -123,7 +123,7 @@ const MonitorLogPage = () => {
 
   return (
     <Flex w="100%" justifyContent="center">
-      <Box w="1500px">
+      <Box w="100%">
         <FormProvider {...formMethods}>
           <Modal isOpen={checkInModal.isOpen} onClose={checkInModal.onClose}>
             <ModalOverlay />
@@ -140,23 +140,39 @@ const MonitorLogPage = () => {
               </ModalFooter>
             </ModalContent>
           </Modal>
-          <Heading ref={topRef} px="32px" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
+          <Heading
+            ref={topRef}
+            px="32px"
+            fontWeight="600"
+            fontSize={{ md: '4xl', base: '3xl' }}
+            my="40px"
+          >
             OCH Monitor Log
           </Heading>
           <Tabs
             variant="solid-rounded"
-            size="lg"
+            size="md"
             align="start"
             colorScheme="orange"
             index={activeTab}
             onChange={setActiveTab}
             isLazy
           >
-            <TabList px="32px" alignItems="center">
+            <TabList
+              px="32px"
+              maxW="100vw"
+              alignItems="center"
+              overflowX="scroll"
+              css={{
+                '&::-webkit-scrollbar': {
+                  display: 'none',
+                },
+              }}
+            >
               <HStack spacing="24px">
                 <MonitorTabButton>General Info</MonitorTabButton>
                 {listedSpecies.map(s => (
-                  <MonitorTabButton key={s._id}>{s.name}</MonitorTabButton>
+                  <MonitorTabButton key={s._id}>{s.code}</MonitorTabButton>
                 ))}
                 <MonitorTabButton>Additional Species</MonitorTabButton>
                 <MonitorTabButton>Predators</MonitorTabButton>
@@ -174,7 +190,7 @@ const MonitorLogPage = () => {
                 </Container>
               </TabPanel>
               {listedSpecies.map((s, idx) => (
-                <TabPanel key={s._id}>
+                <TabPanel key={s._id} px={{ base: 0, lg: 4 }}>
                   <Container maxW="100vw">
                     <ListedSpeciesTab
                       tab={idx}
