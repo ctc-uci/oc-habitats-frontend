@@ -1,13 +1,23 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Thead, Tbody, Tr, Text, Spinner, VStack } from '@chakra-ui/react';
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Box,
+  Text,
+  Spinner,
+  VStack,
+  useMediaQuery,
+} from '@chakra-ui/react';
 
 import { useTable, usePagination, useFilters, useSortBy } from 'react-table';
 import PeopleTableDescription from './PeopleTableDescription';
 import PeopleTableFilters from './PeopleTableFilters';
 import PeopleTableHeader from './PeopleTableHeader';
 import PeopleTableFooter from './PeopleTableFooter';
-import { PeopleTableRow, NameColumn, SegmentColumn } from './PeopleTableRow';
+import { PeopleTableRow, NameColumn, SegmentAndButtonColumn } from './PeopleTableRow';
 import { RowModalContextProvider } from './RowModalContext';
 
 const rowsPerPageSelect = [6, 10, 20, 30];
@@ -34,7 +44,7 @@ nameFilterFn.autoRemove = val => !val;
 const segmentFilterFn = (rows, id, filterValue) => {
   return rows.filter(row => {
     const { segments } = row.values[id];
-    return segments !== undefined ? segments.some(segment => segment.id === filterValue) : true;
+    return segments !== null ? segments.some(segment => segment.id === filterValue) : false;
   });
 };
 segmentFilterFn.autoRemove = val => !val;
@@ -47,21 +57,23 @@ const nameSortFn = (rowA, rowB, id, desc) => {
   return activeSort || rowB.values[id].name.localeCompare(rowA.values[id].name);
 };
 
-/* eslint-disable react/destructuring-assignment, react/prop-types */
+/* eslint-disable react/prop-types */
 const cellStructure = [
   {
     id: 'name',
     Header: 'Name',
     accessor: d => ({
+      userId: d.id,
       name: `${d.firstName} ${d.lastName}`,
       email: d.email,
-      registered: d.registered,
+      registered: d.registered ?? false,
       isTrainee: d.isTrainee,
       isActive: d.isActive,
+      ...d,
     }),
     filter: 'nameFilter',
     sortType: nameSortFn,
-    Cell: props => <NameColumn data={props.value} />,
+    Cell: ({ value, isMobile }) => <NameColumn data={value} isMobile={isMobile} />,
   },
   {
     id: 'lastUpdated',
@@ -75,20 +87,23 @@ const cellStructure = [
     accessor: d => ({
       segments: d.segments,
       userId: d.id,
+      name: `${d.firstName} ${d.lastName}`,
+      email: d.email,
+      role: d.role,
       registered: d.registered,
       isActive: d.isActive,
     }),
     filter: 'segmentFilter',
-    Cell: props => <SegmentColumn data={props.value} />,
+    Cell: ({ value }) => <SegmentAndButtonColumn data={value} />,
   },
 ];
-/* eslint-enable react/destructuring-assignment, react/prop-types */
+/* eslint-enable react/prop-types */
 
 const LoadingRow = () => (
   <Tr>
     <td colSpan={3}>
       <VStack justifyContent="center" alignContent="center" margin="50px">
-        <Text fontWeight="bold">Loading</Text>
+        <Text fontWeight="bold">Loading</Text>name
         <Spinner size="sm" />
       </VStack>
     </td>
@@ -105,14 +120,14 @@ const EmptyRow = () => (
   </Tr>
 );
 
-const tableContent = (loading, page, prepareRow) => {
+const tableContent = (loading, page, prepareRow, isMobile) => {
   if (loading) {
     return <LoadingRow />;
   }
   if (page?.length) {
     return page.map(row => {
       prepareRow(row);
-      return <PeopleTableRow key={row.name} row={row} />;
+      return <PeopleTableRow key={row.id} row={row} isMobile={isMobile} />;
     });
   }
   return <EmptyRow />;
@@ -136,9 +151,10 @@ JSON.safeStringify = (obj, indent = 2) => {
   return retVal;
 };
 
-const PeopleTable = ({ variant, userData, segments, loading }) => {
+const PeopleTable = ({ variant, userData, segments, loading, refreshData }) => {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const columns = useMemo(() => cellStructure, []);
-  const data = useMemo(() => userData, [loading]);
+  const data = useMemo(() => userData, [userData]);
   const filterTypes = useMemo(
     () => ({
       nameFilter: nameFilterFn,
@@ -161,6 +177,7 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
     canPreviousPage,
     setFilter,
     setSortBy,
+    setHiddenColumns,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -177,9 +194,13 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
     usePagination,
   );
 
+  // Hide columns on mobile
+  useEffect(() => {
+    setHiddenColumns(isMobile ? ['lastUpdated', 'assignedSegments'] : []);
+  }, [isMobile]);
+
   return (
     <>
-      {/* <pre>{JSON.safeStringify(rows)}</pre> */}
       <PeopleTableDescription variant={variant} />
       <PeopleTableFilters
         variant={variant}
@@ -188,24 +209,28 @@ const PeopleTable = ({ variant, userData, segments, loading }) => {
         setSegmentFilter={value => setFilter('assignedSegments', value)}
         sortOptions={sortOptions}
         setSortBy={setSortBy}
+        isMobile={isMobile}
       />
-      <Table variant="striped" {...getTableProps()}>
-        <Thead>
-          <PeopleTableHeader headerGroups={headerGroups} loading={loading} />
-        </Thead>
-        <Tbody {...getTableBodyProps()}>
-          <RowModalContextProvider>
-            {tableContent(loading, page, prepareRow)}
-          </RowModalContextProvider>
-        </Tbody>
-      </Table>
-      <PeopleTableFooter
-        rowCount={rows.length}
-        pageIndex={pageIndex}
-        rowsPerPageSelect={rowsPerPageSelect}
-        pageSize={pageSize}
-        pageControl={{ setPageSize, nextPage, previousPage, canNextPage, canPreviousPage }}
-      />
+      <Box>
+        <Table variant="striped" {...getTableProps()}>
+          <Thead>
+            <PeopleTableHeader headerGroups={headerGroups} loading={loading} />
+          </Thead>
+          <Tbody {...getTableBodyProps()}>
+            <RowModalContextProvider segmentData={segments} refreshData={refreshData}>
+              {tableContent(loading, page, prepareRow, isMobile)}
+            </RowModalContextProvider>
+          </Tbody>
+        </Table>
+        <PeopleTableFooter
+          rowCount={rows.length}
+          pageIndex={pageIndex}
+          rowsPerPageSelect={rowsPerPageSelect}
+          pageSize={pageSize}
+          pageControl={{ setPageSize, nextPage, previousPage, canNextPage, canPreviousPage }}
+          isMobile={isMobile}
+        />
+      </Box>
     </>
   );
 };
@@ -214,9 +239,10 @@ PeopleTable.propTypes = {
   variant: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  userData: PropTypes.object.isRequired,
+  userData: PropTypes.array.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  segments: PropTypes.object.isRequired,
+  segments: PropTypes.array.isRequired,
+  refreshData: PropTypes.func.isRequired,
 };
 
 export default PeopleTable;

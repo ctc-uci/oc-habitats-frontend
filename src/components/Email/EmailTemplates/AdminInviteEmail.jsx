@@ -9,7 +9,7 @@ const AdminInviteEmail = ({ role, url }) => {
     <div>
       <Email title="">
         <img
-          src={require('../../../assets/OCHlogo.png').default}
+          src={require('../../../assets/OCH_Logo_SVG.svg').default}
           w="346px"
           h="105px"
           alt="OC Habitats Logo"

@@ -10,3 +10,8 @@
 #table-head th {
   color: white;
 }
+
+.bold {
+  font-size: x-small;
+  font-weight: bold;
+}
