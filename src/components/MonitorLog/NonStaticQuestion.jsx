@@ -25,6 +25,7 @@ import {
   RadioGroup,
   Text,
   Textarea,
+  Tooltip,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -94,9 +95,17 @@ function NonStaticQuestion({ isTemplate, formType, question }) {
       >
         <GridItem px="10px" py="10px" key={question.title} colSpan={1} rowSpan={1}>
           <VStack spacing="8px" align="left">
-            <Text fontWeight="500" fontSize="md">
-              {question.title}
-            </Text>
+            {isTemplate ? (
+              <Text fontWeight="500" fontSize="md">
+                {question.title}
+              </Text>
+            ) : (
+              <Tooltip label={question.tooltip} fontSize="sm">
+                <Text fontWeight="500" fontSize="md">
+                  {question.title}
+                </Text>
+              </Tooltip>
+            )}
             {question.fieldType === 'TEXT' ? (
               <Input type="text" />
             ) : (

@@ -3,7 +3,6 @@ import {
   chakra,
   Flex,
   GridItem,
-  Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -134,6 +133,7 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
                 key={question.title}
                 formType="human-activity"
                 question={question}
+                isTemplate={isTemplate}
               />
             );
           })}
