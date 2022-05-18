@@ -114,30 +114,18 @@
     "@babel/helpers" "^7.17.9"
     "@babel/parser" "^7.17.12"
     "@babel/template" "^7.16.7"
-<<<<<<< HEAD
     "@babel/traverse" "^7.17.12"
     "@babel/types" "^7.17.12"
-=======
-    "@babel/traverse" "^7.17.3"
-    "@babel/types" "^7.17.0"
->>>>>>> dev
     convert-source-map "^1.7.0"
     debug "^4.1.0"
     gensync "^1.0.0-beta.2"
     json5 "^2.1.2"
     semver "^6.3.0"
 
-<<<<<<< HEAD
 "@babel/generator@^7.12.1", "@babel/generator@^7.12.11", "@babel/generator@^7.12.5", "@babel/generator@^7.17.12":
   version "7.17.12"
   resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.17.12.tgz#5970e6160e9be0428e02f4aba62d8551ec366cc8"
   integrity sha512-V49KtZiiiLjH/CnIW6OjJdrenrGoyh6AmKQ3k2AZFKozC1h846Q4NYlZ5nqAigPDUXfGzC88+LOUuG8yKd2kCw==
-=======
-"@babel/generator@^7.12.1", "@babel/generator@^7.12.11", "@babel/generator@^7.12.5", "@babel/generator@^7.17.7":
-  version "7.17.7"
-  resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.17.7.tgz#8da2599beb4a86194a3b24df6c085931d9ee45ad"
-  integrity sha512-oLcVCTeIFadUoArDTwpluncplrYBmTCCZZgXCbgNGvOBBiSDDK3eWO4b/+eOTli5tKv1lg+a5/NAXg+nTcei1w==
->>>>>>> dev
   dependencies:
     "@babel/types" "^7.17.12"
     "@jridgewell/gen-mapping" "^0.3.0"
@@ -379,7 +367,6 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-<<<<<<< HEAD
 "@babel/parser@^7.1.0", "@babel/parser@^7.12.11", "@babel/parser@^7.12.3", "@babel/parser@^7.12.7", "@babel/parser@^7.14.7", "@babel/parser@^7.16.7", "@babel/parser@^7.17.12", "@babel/parser@^7.7.0":
   version "7.17.12"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.17.12.tgz#36c2ed06944e3691ba82735fc4cf62d12d491a23"
@@ -389,22 +376,6 @@
   version "7.17.12"
   resolved "https://registry.yarnpkg.com/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/-/plugin-bugfix-safari-id-destructuring-collision-in-function-expression-7.17.12.tgz#1dca338caaefca368639c9ffb095afbd4d420b1e"
   integrity sha512-xCJQXl4EeQ3J9C4yOmpTrtVGmzpm2iSzyxbkZHw7UCnZBftHpF/hpII80uWVyVrc40ytIClHjgWGTG1g/yB+aw==
-=======
-"@babel/parser@^7.1.0", "@babel/parser@^7.12.11", "@babel/parser@^7.12.3", "@babel/parser@^7.12.7", "@babel/parser@^7.14.7", "@babel/parser@^7.16.7", "@babel/parser@^7.17.8", "@babel/parser@^7.7.0":
-  version "7.17.8"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.17.8.tgz#2817fb9d885dd8132ea0f8eb615a6388cca1c240"
-  integrity sha512-BoHhDJrJXqcg+ZL16Xv39H9n+AqJ4pcDrQBGZN+wHxIysrLZ3/ECwCBUch/1zUNhnsXULcONU3Ei5Hmkfk6kiQ==
-
-"@babel/parser@^7.17.3":
-  version "7.17.10"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.17.10.tgz#873b16db82a8909e0fbd7f115772f4b739f6ce78"
-  integrity sha512-n2Q6i+fnJqzOaq2VkdXxy2TCPCWQZHiCo0XqmrCvDWcZQKRyZzYi4Z0yxlBuN0w+r2ZHmre+Q087DSrw3pbJDQ==
-
-"@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression@^7.16.7":
-  version "7.16.7"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/-/plugin-bugfix-safari-id-destructuring-collision-in-function-expression-7.16.7.tgz#4eda6d6c2a0aa79c70fa7b6da67763dfe2141050"
-  integrity sha512-anv/DObl7waiGEnC24O9zqL0pSuI9hljihqiDuFHC8d7/bjr/4RLGPWuc8rYOff/QPzbEPSkzG8wGG9aDuhHRg==
->>>>>>> dev
   dependencies:
     "@babel/helper-plugin-utils" "^7.17.12"
 
@@ -451,12 +422,8 @@
     "@babel/helper-create-class-features-plugin" "^7.17.12"
     "@babel/helper-plugin-utils" "^7.17.12"
     "@babel/helper-replace-supers" "^7.16.7"
-<<<<<<< HEAD
     "@babel/helper-split-export-declaration" "^7.16.7"
     "@babel/plugin-syntax-decorators" "^7.17.12"
-=======
-    "@babel/plugin-syntax-decorators" "^7.17.0"
->>>>>>> dev
     charcodes "^0.2.0"
 
 "@babel/plugin-proposal-dynamic-import@^7.16.7":
@@ -1214,22 +1181,13 @@
   integrity sha512-zULPs+TbCvOkIFd4FrG53xrpxvCBwLIgo6tO0tJorY7YV2IWFxUfS/lXDJbGgfyYt9ery/Gxj2niwttNnB0gIw==
   dependencies:
     "@babel/code-frame" "^7.16.7"
-<<<<<<< HEAD
     "@babel/generator" "^7.17.12"
-=======
-    "@babel/generator" "^7.17.3"
->>>>>>> dev
     "@babel/helper-environment-visitor" "^7.16.7"
     "@babel/helper-function-name" "^7.16.7"
     "@babel/helper-hoist-variables" "^7.16.7"
     "@babel/helper-split-export-declaration" "^7.16.7"
-<<<<<<< HEAD
     "@babel/parser" "^7.17.12"
     "@babel/types" "^7.17.12"
-=======
-    "@babel/parser" "^7.17.3"
-    "@babel/types" "^7.17.0"
->>>>>>> dev
     debug "^4.1.0"
     globals "^11.1.0"
 
@@ -2745,7 +2703,6 @@
     "@jridgewell/set-array" "^1.0.0"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-<<<<<<< HEAD
 "@jridgewell/gen-mapping@^0.3.0":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.1.tgz#cf92a983c83466b8c0ce9124fadeaf09f7c66ea9"
@@ -2755,8 +2712,6 @@
     "@jridgewell/sourcemap-codec" "^1.4.10"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-=======
->>>>>>> dev
 "@jridgewell/resolve-uri@^3.0.3":
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/@jridgewell/resolve-uri/-/resolve-uri-3.0.7.tgz#30cd49820a962aff48c8fffc5cd760151fca61fe"
