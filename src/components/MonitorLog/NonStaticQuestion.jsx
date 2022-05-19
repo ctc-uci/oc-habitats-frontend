@@ -36,7 +36,7 @@ import './GeneralInfoTab.css';
 import { FiArrowLeft } from 'react-icons/fi';
 import { OCHBackend } from '../../common/utils';
 
-function NonStaticQuestion({ isTemplate, formType, question }) {
+function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
   const [newTitle, setNewTitle] = useState();
   const [newFieldType, setNewFieldType] = useState();
   const [newTooltip, setNewTooltip] = useState();
@@ -56,6 +56,7 @@ function NonStaticQuestion({ isTemplate, formType, question }) {
         tooltip: newTooltip,
       },
     });
+    refreshTrigger(true);
     editQuestionModal.onClose();
   };
 
@@ -67,6 +68,7 @@ function NonStaticQuestion({ isTemplate, formType, question }) {
         fieldId: idOfFieldBeingEdited,
       },
     });
+    refreshTrigger(true);
     deleteQuestionModal.onClose();
   };
 
@@ -261,6 +263,7 @@ NonStaticQuestion.defaultProps = {
   isTemplate: false,
 };
 NonStaticQuestion.propTypes = {
+  refreshTrigger: PropTypes.func.isRequired,
   question: PropTypes.object.isRequired,
   formType: PropTypes.string,
   isTemplate: PropTypes.bool,

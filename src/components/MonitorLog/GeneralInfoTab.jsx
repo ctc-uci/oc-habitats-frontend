@@ -24,6 +24,7 @@ import { OCHBackend } from '../../common/utils';
 
 function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHeader, isTemplate }) {
   const [additionalQuestions, setAdditionalQuestions] = useState([]);
+  const [tabEdited, setTabEdited] = useState(false);
   // commented for prettier
   // const [isLoading, setIsLoading] = useState(true);
   const { control, register } = useFormContext();
@@ -67,7 +68,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
     setAdditionalQuestions(questions.additionalFields);
     // prettier
     // setIsLoading(false);
-  }, []);
+  }, [tabEdited]);
 
   const partnerSelectOptions = monitorPartners.map(user => ({
     ...user,
@@ -261,6 +262,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
           {additionalQuestions.map(question => {
             return (
               <NonStaticQuestion
+                refreshTrigger={setTabEdited}
                 key={question.title}
                 question={question}
                 formType="general"
