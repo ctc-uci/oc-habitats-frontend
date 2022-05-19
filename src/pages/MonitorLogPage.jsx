@@ -228,7 +228,7 @@ const MonitorLogPage = ({ mode }) => {
                   <GeneralInfoTab
                     assignedSegments={assignedSegments}
                     monitorPartners={monitorPartners}
-                    isDisabled={mode !== 'edit' && userDataContext.userData.role === 'admin'}
+                    isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
                   />
                 </Container>
               </TabPanel>
@@ -240,7 +240,7 @@ const MonitorLogPage = ({ mode }) => {
                       speciesName={s.name}
                       speciesCode={s.code}
                       speciesId={s._id}
-                      isDisabled={mode !== 'edit' && userDataContext.userData.role === 'admin'}
+                      isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
                     />
                   </Container>
                 </TabPanel>
@@ -249,7 +249,7 @@ const MonitorLogPage = ({ mode }) => {
                 <Container maxW="100vw">
                   <AdditionalSpeciesTab
                     species={additionalSpecies}
-                    isDisabled={mode !== 'edit' && userDataContext.userData.role === 'admin'}
+                    isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
                   />
                 </Container>
               </TabPanel>
@@ -257,14 +257,14 @@ const MonitorLogPage = ({ mode }) => {
                 <Container maxW="100vw">
                   <PredatorsTab
                     predators={predators}
-                    isDisabled={mode !== 'edit' && userDataContext.userData.role === 'admin'}
+                    isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
                   />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
                   <HumanActivity
-                    isDisabled={mode !== 'edit' && userDataContext.userData.role === 'admin'}
+                    isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
                   />
                 </Container>
               </TabPanel>
