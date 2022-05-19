@@ -22,9 +22,9 @@ import { PropTypes } from 'prop-types';
 
 import { OCHBackend } from '../common/utils';
 
-const NewQuestionModal = ({ currentTemplate }) => {
+const NewQuestionModal = ({ addQuestionRefreshTrigger, currentTemplate }) => {
   const [title, setTitle] = useState();
-  const [type, setType] = useState();
+  const [type, setType] = useState('TEXT');
   const [tooltip, setTooltip] = useState();
   const addQuestionModal = useDisclosure();
 
@@ -45,9 +45,11 @@ const NewQuestionModal = ({ currentTemplate }) => {
       fieldBody: {
         title,
         fieldType: type,
+        static: false,
         tooltip,
       },
     });
+    addQuestionRefreshTrigger(true);
     addQuestionModal.onClose();
   };
   return (
@@ -134,6 +136,7 @@ NewQuestionModal.defaultProps = {
   currentTemplate: '',
 };
 NewQuestionModal.propTypes = {
+  addQuestionRefreshTrigger: PropTypes.func.isRequired,
   currentTemplate: PropTypes.string,
 };
 export default NewQuestionModal;

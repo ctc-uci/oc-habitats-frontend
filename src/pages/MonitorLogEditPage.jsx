@@ -27,7 +27,7 @@ const MonitorLogEditPage = () => {
   */
   // state for tab switcher
   const [currentTemplate, setCurrentTemplate] = useState('general');
-
+  const [questionAdded, setQuestionAdded] = useState(false);
   // const form = await OCHBackend.post('/forms/create/field', {
   //   formType: currentTemplate,
   //   fieldBody: {
@@ -55,7 +55,7 @@ const MonitorLogEditPage = () => {
       // eslint-disable-next-line no-console
       console.error(err.message);
     }
-  }, []);
+  }, [questionAdded]);
 
   return (
     <Flex w="100%" justifyContent="center">
@@ -90,7 +90,10 @@ const MonitorLogEditPage = () => {
               </Select>
               <Spacer />
               {currentTemplate !== 'non-listed' && currentTemplate !== 'predator' && (
-                <NewQuestionModal currentTemplate={currentTemplate} />
+                <NewQuestionModal
+                  addQuestionRefreshTrigger={setQuestionAdded}
+                  currentTemplate={currentTemplate}
+                />
               )}
             </HStack>
             <LogTemplateSwitcher type={currentTemplate} />
