@@ -18,10 +18,18 @@ import {
   TabPanels,
   Tabs,
   useDisclosure,
+  Alert,
+  AlertTitle,
+  AlertIcon,
+  AlertDescription,
 } from '@chakra-ui/react';
 import { React, useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp, FiCheck } from 'react-icons/fi';
+import { useParams } from 'react-router-dom';
+import { parseISO } from 'date-fns';
+import PropTypes from 'prop-types';
+import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
 import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
@@ -47,8 +55,10 @@ const MonitorTabButton = props => {
   );
 };
 
-const MonitorLogPage = () => {
-  const formMethods = useForm({});
+const MonitorLogPage = ({ mode }) => {
+  const userDataContext = useUserContext();
+  const userData = useParams();
+  const formMethods = useForm();
 
   const checkInModal = useDisclosure();
 
@@ -61,21 +71,43 @@ const MonitorLogPage = () => {
   const returnToTop = () => {
     topRef.current.scrollIntoView({ behavior: 'smooth' });
   };
-  const [user, setUser] = useState(null);
+
+  const [user, setUser] = useState(false);
+  const [submissionData, setSubmissionData] = useState(null);
+  const [segmentData, setSegmentData] = useState(null);
   const [monitorPartners, setMonitorPartners] = useState([]);
   const [predators, setPredators] = useState([]);
   const [listedSpecies, setListedSpecies] = useState([]);
   const [additionalSpecies, setAdditionalSpecies] = useState([]);
 
   useEffect(async () => {
+    if (mode === 'edit' || mode === 'review') {
+      try {
+        const submission = await OCHBackend.get(`submission/${userData.id}`);
+        submission.data.date = parseISO(submission.data.date);
+        formMethods.reset(submission.data);
+        setSubmissionData(submission.data);
+        if (submission.data.segment) {
+          setSegmentData(
+            userDataContext.userData.segments.find(s => s._id === submission.data.segment),
+          );
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err.message);
+      }
+    }
+  }, []);
+
+  useEffect(async () => {
     checkInModal.onOpen();
     try {
-      const [userData, monitorPartnersData, speciesData] = await Promise.all([
+      const [userD, monitorPartnersData, speciesData] = await Promise.all([
         OCHBackend.get('users/me', { withCredentials: true }),
         OCHBackend.get('users/monitorPartners', { withCredentials: true }),
         OCHBackend.get('species', { withCredentials: true }),
       ]);
-      setUser(userData.data);
+      setUser(userD.data);
       setMonitorPartners(monitorPartnersData.data);
       setPredators(
         speciesData.data
@@ -121,6 +153,30 @@ const MonitorLogPage = () => {
 
   const assignedSegments = useMemo(() => user?.segments || [], [user]);
 
+  const request = () => {
+    if (submissionData != null && submissionData.requestedEdits && segmentData) {
+      const d = new Date(submissionData.requestedEdits.requestDate);
+      return (
+        <>
+          <Alert status="error">
+            <AlertIcon />
+            <Box>
+              <AlertTitle>
+                Edits have been requested for your {segmentData.segmentId} log on {d.getMonth() + 1}
+                -{d.getDate()}-{d.getFullYear()}
+              </AlertTitle>
+              <AlertDescription>
+                Request Reason: {submissionData.requestedEdits.requests}{' '}
+              </AlertDescription>
+            </Box>
+          </Alert>
+          <br />
+        </>
+      );
+    }
+    return null;
+  };
+
   return (
     <Flex w="100%" justifyContent="center">
       <Box w="100%">
@@ -149,6 +205,8 @@ const MonitorLogPage = () => {
           >
             OCH Monitor Log
           </Heading>
+          {request()}
+
           <Tabs
             variant="solid-rounded"
             size="md"
@@ -186,6 +244,7 @@ const MonitorLogPage = () => {
                   <GeneralInfoTab
                     assignedSegments={assignedSegments}
                     monitorPartners={monitorPartners}
+                    isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
                   />
                 </Container>
               </TabPanel>
@@ -197,23 +256,32 @@ const MonitorLogPage = () => {
                       speciesName={s.name}
                       speciesCode={s.code}
                       speciesId={s._id}
+                      isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
                     />
                   </Container>
                 </TabPanel>
               ))}
               <TabPanel>
                 <Container maxW="100vw">
-                  <AdditionalSpeciesTab species={additionalSpecies} />
+                  <AdditionalSpeciesTab
+                    species={additionalSpecies}
+                    isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
+                  />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <PredatorsTab predators={predators} />
+                  <PredatorsTab
+                    predators={predators}
+                    isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
+                  />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
-                  <HumanActivity />
+                  <HumanActivity
+                    isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
+                  />
                 </Container>
               </TabPanel>
               <TabPanel>
@@ -273,6 +341,14 @@ const MonitorLogPage = () => {
       </Box>
     </Flex>
   );
+};
+
+MonitorLogPage.defaultProps = {
+  mode: 'create',
+};
+
+MonitorLogPage.propTypes = {
+  mode: PropTypes.string,
 };
 
 export default MonitorLogPage;
