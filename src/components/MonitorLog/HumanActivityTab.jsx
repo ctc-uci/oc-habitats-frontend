@@ -127,6 +127,8 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
               isTemplate={isTemplate}
             />
           ))}
+        </SimpleGrid>
+        <SimpleGrid columns={3} spacingX="64px" spacingY="68px">
           {additionalQuestions.map(question => {
             return (
               <NonStaticQuestion

@@ -68,7 +68,6 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
   const [rowToDelete, setRowToDelete] = useState(undefined);
   const [totals, setTotals] = useState([0, 0, 0]);
   const [listedSpeciesList, setListedSpeciesList] = useState([]);
-  const [additionalQuestions, setAdditionalQuestions] = useState([]);
 
   const toast = useToast();
 
@@ -94,14 +93,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
     },
   });
 
-  useEffect(async () => {
-    const newQuestions = await OCHBackend.get(`/forms/listed-species`);
-    const questions = await newQuestions.data;
-    // for prettier
-    // console.log(newQuestions);
-
-    setAdditionalQuestions(questions.additionalFields);
-
+  useEffect(() => {
     setTotals(
       data
         .map(row => [row.totalAdults, row.totalFledges, row.totalChicks])
@@ -464,7 +456,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
             tracker.
           </Text>
           <VStack align="start" spacing="4em">
-            <GeneralListedInformation isTemplate additionalQuestions={additionalQuestions} />
+            <GeneralListedInformation isTemplate />
             <Location isTemplate />
             <SexSection isTemplate />
             <BehaviorsSection

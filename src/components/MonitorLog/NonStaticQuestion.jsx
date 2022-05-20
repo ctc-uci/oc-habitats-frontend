@@ -4,6 +4,7 @@
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormLabel,
   GridItem,
@@ -23,6 +24,7 @@ import {
   Input,
   Radio,
   RadioGroup,
+  Spacer,
   Text,
   Textarea,
   Tooltip,
@@ -34,6 +36,7 @@ import { React, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import './GeneralInfoTab.css';
 import { FiArrowLeft } from 'react-icons/fi';
+import { InfoIcon } from '@chakra-ui/icons';
 import { OCHBackend } from '../../common/utils';
 
 function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
@@ -75,8 +78,6 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
   return (
     <>
       <Box
-        w="365px"
-        h="133px"
         borderRadius="6px"
         key={question.title}
         _hover={isTemplate ? { bgColor: 'rgba(43, 192, 227, 0.25)' } : null}
@@ -93,18 +94,22 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
             : null
         }
       >
-        <GridItem py="10px" px="20px" key={question.title} colSpan={1} rowSpan={1}>
+        <GridItem py="10px" px="5px" key={question.title} colSpan={1} rowSpan={1}>
           <VStack spacing="8px" align="left">
             {isTemplate ? (
               <Text fontWeight="500" fontSize="md">
                 {question.title}
               </Text>
             ) : (
-              <Tooltip label={question.tooltip} fontSize="sm">
+              <Flex align="center">
                 <Text fontWeight="500" fontSize="md">
                   {question.title}
                 </Text>
-              </Tooltip>
+                <Spacer />
+                <Tooltip label={question.tooltip} placement="top">
+                  <InfoIcon />
+                </Tooltip>
+              </Flex>
             )}
             {question.fieldType === 'TEXT' ? (
               <Input type="text" />
@@ -121,6 +126,7 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
           </VStack>
         </GridItem>
       </Box>
+
       {/* EDIT QUESTION MODAL STARTS HERE */}
       <Modal
         w="460px"

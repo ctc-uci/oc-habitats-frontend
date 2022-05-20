@@ -30,7 +30,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { PropTypes } from 'prop-types';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
@@ -40,7 +40,7 @@ import NonStaticQuestion from '../MonitorLog/NonStaticQuestion';
 import { OCHBackend } from '../../common/utils';
 
 // component/section name not final
-const GeneralListedInformation = ({ isTemplate, additionalQuestions }) => {
+const GeneralListedInformation = ({ isTemplate }) => {
   const { register, setValue, getValues } = useFormContext();
   const editQuestionModal = useDisclosure();
 
@@ -48,7 +48,17 @@ const GeneralListedInformation = ({ isTemplate, additionalQuestions }) => {
   const [newTitle, setNewTitle] = useState();
   const [newFieldType, setNewFieldType] = useState();
   const [newTooltip, setNewTooltip] = useState();
+  const [additionalQuestions, setAdditionalQuestions] = useState([]);
   // const [fieldToEdit, setFieldToEdit] = useState();
+
+  useEffect(async () => {
+    const newQuestions = await OCHBackend.get(`/forms/listed-species`);
+    const questions = await newQuestions.data;
+    // for prettier
+    // console.log(newQuestions);
+
+    setAdditionalQuestions(questions.additionalFields);
+  }, []);
 
   const createOptions = () => {
     return options.habitat.map(option => {
