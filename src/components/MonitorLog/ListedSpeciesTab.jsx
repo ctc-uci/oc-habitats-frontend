@@ -29,6 +29,7 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Spacer,
   Table,
   Tbody,
   Td,
@@ -56,7 +57,7 @@ import BandingSection from '../ListedSpecies/BandingSection';
 import BehaviorsSection from '../ListedSpecies/BehaviorsSection';
 import options from '../ListedSpecies/DropdownOptions';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
-import { OCHBackend } from '../../common/utils';
+import NewQuestionModal from '../NewQuestionModal';
 
 const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplate }) => {
   const formPrefix = `listedSpecies.${tab}.`;
@@ -209,9 +210,13 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
   return (
     <>
       {isTemplate ? (
-        <Text fontWeight="600" fontSize="2xl" mt="30px" mb="5px">
-          Listed Species
-        </Text>
+        <HStack>
+          <Text fontWeight="600" fontSize="2xl" mt="30px" mb="5px">
+            Listed Species
+          </Text>
+          <Spacer />
+          <NewQuestionModal currentTemplate="listed-species" />
+        </HStack>
       ) : (
         // {showHeader && (
         <Text fontWeight="600" fontSize="2xl">

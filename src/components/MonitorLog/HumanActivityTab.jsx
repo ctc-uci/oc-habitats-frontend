@@ -1,8 +1,10 @@
 import { InfoIcon } from '@chakra-ui/icons';
 import {
+  Box,
   chakra,
   Flex,
   GridItem,
+  HStack,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -20,6 +22,7 @@ import { React, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import NonStaticQuestion from './NonStaticQuestion';
 import { OCHBackend } from '../../common/utils';
+import NewHumanActivityModal from '../NewHumanActivityModal';
 
 const FORM_PREFIX = 'humanActivity.';
 const HUMAN_ACTIVITIES = [
@@ -102,12 +105,18 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
     <>
       {isTemplate && (
         <>
-          <Text mt="30px" color="ochPurple" fontWeight="500">
-            &quot;Static&quot; questions cannot be edited.
-          </Text>
-          <Text mb="20px" color="ochPurple" fontWeight="500">
-            &quot;Non-Static&quot; questions can be added, edited, and/or deleted.
-          </Text>
+          <HStack>
+            <Box>
+              <Text mt="30px" color="ochPurple" fontWeight="500">
+                &quot;Static&quot; questions cannot be edited.
+              </Text>
+              <Text mb="20px" color="ochPurple" fontWeight="500">
+                &quot;Non-Static&quot; questions can be added, edited, and/or deleted.
+              </Text>
+            </Box>
+            <Spacer />
+            <NewHumanActivityModal currentTemplate="human-activity" />
+          </HStack>
         </>
       )}
       <VStack spacing="23px" align="left">

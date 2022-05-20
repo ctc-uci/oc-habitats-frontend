@@ -2,8 +2,10 @@
 /* eslint-disable no-underscore-dangle */
 import { InfoIcon } from '@chakra-ui/icons';
 import {
+  Box,
   Flex,
   GridItem,
+  HStack,
   Input,
   Select,
   SimpleGrid,
@@ -21,6 +23,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import NonStaticQuestion from './NonStaticQuestion';
 import './GeneralInfoTab.css';
 import { OCHBackend } from '../../common/utils';
+import NewQuestionModal from '../NewQuestionModal';
 
 function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHeader, isTemplate }) {
   const [additionalQuestions, setAdditionalQuestions] = useState([]);
@@ -78,12 +81,18 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
     <div>
       {isTemplate && (
         <>
-          <Text mt="30px" color="ochPurple" fontWeight="500">
-            &quot;Static&quot; questions cannot be edited.
-          </Text>
-          <Text mb="20px" color="ochPurple" fontWeight="500">
-            &quot;Non-Static&quot; questions can be added, edited, and/or deleted.
-          </Text>
+          <HStack>
+            <Box>
+              <Text mt="30px" color="ochPurple" fontWeight="500" align="start">
+                &quot;Static&quot; questions cannot be edited.
+              </Text>
+              <Text mb="20px" color="ochPurple" fontWeight="500" align="start">
+                &quot;Non-Static&quot; questions can be added, edited, and/or deleted.
+              </Text>
+            </Box>
+            <Spacer />
+            <NewQuestionModal currentTemplate="general" />
+          </HStack>
         </>
       )}
       {showHeader && (

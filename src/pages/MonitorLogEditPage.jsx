@@ -6,7 +6,6 @@ import { React, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 // import { OCHBackend } from '../common/utils';
 import LogTemplateSwitcher from '../components/LogTemplateSwitcher';
-import NewQuestionModal from '../components/NewQuestionModal';
 
 const MonitorLogEditPage = () => {
   const formMethods = useForm({});
@@ -88,9 +87,9 @@ const MonitorLogEditPage = () => {
                 <option value="human-activity">Human Activity</option>
               </Select>
               <Spacer />
-              {currentTemplate !== 'non-listed' && currentTemplate !== 'predator' && (
-                <NewQuestionModal currentTemplate={currentTemplate} />
-              )}
+              {/* {currentTemplate !== 'non-listed' && currentTemplate !== 'predator' && (
+                
+              )} */}
             </HStack>
             <LogTemplateSwitcher type={currentTemplate} />
           </Tabs>

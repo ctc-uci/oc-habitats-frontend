@@ -38,6 +38,7 @@ import options from './DropdownOptions';
 import footNotes from './FootNotes';
 import NonStaticQuestion from '../MonitorLog/NonStaticQuestion';
 import { OCHBackend } from '../../common/utils';
+import NewQuestionModal from '../NewQuestionModal';
 
 // component/section name not final
 const GeneralListedInformation = ({ isTemplate }) => {
@@ -72,6 +73,7 @@ const GeneralListedInformation = ({ isTemplate }) => {
 
   return (
     <>
+      <NewQuestionModal currentTemplate="listed-species" />
       <CollapsibleSection title="General Information">
         <Stack direction={['column', 'row']} w="100%" spacing="2em">
           <FormControl>
