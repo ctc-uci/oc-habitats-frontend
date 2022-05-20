@@ -75,7 +75,7 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
   return (
     <>
       <Box
-        w="255px"
+        w="365px"
         h="133px"
         borderRadius="6px"
         key={question.title}
@@ -92,10 +92,8 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
               }
             : null
         }
-        px="10px"
-        py="10px"
       >
-        <GridItem px="10px" py="10px" key={question.title} colSpan={1} rowSpan={1}>
+        <GridItem py="10px" px="20px" key={question.title} colSpan={1} rowSpan={1}>
           <VStack spacing="8px" align="left">
             {isTemplate ? (
               <Text fontWeight="500" fontSize="md">
