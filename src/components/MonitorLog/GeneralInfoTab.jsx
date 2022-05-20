@@ -259,6 +259,8 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
               {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
+        </SimpleGrid>
+        <SimpleGrid columns={4} spacingX="25px" spacingY="68px">
           {additionalQuestions.map(question => {
             return (
               <NonStaticQuestion
@@ -315,7 +317,6 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
             );
           })}
         </SimpleGrid>
-
         <VStack spacing="8px" align="left" maxW="600px">
           <Text fontWeight="500" fontSize="md">
             Monitoring Session Partners

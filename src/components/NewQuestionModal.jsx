@@ -24,7 +24,7 @@ import { OCHBackend } from '../common/utils';
 
 const NewQuestionModal = ({ currentTemplate }) => {
   const [title, setTitle] = useState();
-  const [type, setType] = useState();
+  const [type, setType] = useState('TEXT');
   const [tooltip, setTooltip] = useState();
   const addQuestionModal = useDisclosure();
 
