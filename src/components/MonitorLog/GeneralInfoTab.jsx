@@ -62,12 +62,10 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
   useEffect(async () => {
     const newQuestions = await OCHBackend.get(`/forms/general`);
     const questions = await newQuestions.data;
-    // for prettier
+
     console.log(newQuestions);
 
     setAdditionalQuestions(questions.additionalFields);
-    // prettier
-    // setIsLoading(false);
   }, [tabEdited]);
 
   const partnerSelectOptions = monitorPartners.map(user => ({
