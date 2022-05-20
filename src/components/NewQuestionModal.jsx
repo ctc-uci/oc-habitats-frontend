@@ -45,6 +45,7 @@ const NewQuestionModal = ({ currentTemplate }) => {
       fieldBody: {
         title,
         fieldType: type,
+        static: false,
         tooltip,
       },
     });
@@ -90,13 +91,7 @@ const NewQuestionModal = ({ currentTemplate }) => {
                 </FormControl>
                 <FormControl>
                   <FormLabel htmlFor="type">Question Type</FormLabel>
-                  <RadioGroup
-                    id="type"
-                    onChange={e => setType(e)}
-                    value={type}
-                    maxW="700px"
-                    defaultValue="TEXT"
-                  >
+                  <RadioGroup id="type" onChange={e => setType(e)} value={type} maxW="700px">
                     <HStack spacing="2px" mb="10px">
                       <Radio value="TEXT" mr="10px">
                         Text Input

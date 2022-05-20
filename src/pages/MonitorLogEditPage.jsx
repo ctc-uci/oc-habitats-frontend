@@ -27,7 +27,6 @@ const MonitorLogEditPage = () => {
   */
   // state for tab switcher
   const [currentTemplate, setCurrentTemplate] = useState('general');
-
   // const form = await OCHBackend.post('/forms/create/field', {
   //   formType: currentTemplate,
   //   fieldBody: {
