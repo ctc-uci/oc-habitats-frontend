@@ -58,6 +58,7 @@ import BehaviorsSection from '../ListedSpecies/BehaviorsSection';
 import options from '../ListedSpecies/DropdownOptions';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import NewQuestionModal from '../NewQuestionModal';
+import { OCHBackend } from '../../common/utils';
 
 const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplate }) => {
   const formPrefix = `listedSpecies.${tab}.`;
@@ -69,6 +70,9 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
   const [rowToDelete, setRowToDelete] = useState(undefined);
   const [totals, setTotals] = useState([0, 0, 0]);
   const [listedSpeciesList, setListedSpeciesList] = useState([]);
+  const [additionalQuestions, setAdditionalQuestions] = useState([]);
+  const [questionAdded, setQuestionAdded] = useState(false);
+  const [tabEdited, setTabEdited] = useState(false);
 
   const toast = useToast();
 
@@ -94,7 +98,11 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
     },
   });
 
-  useEffect(() => {
+  useEffect(async () => {
+    const newQuestions = await OCHBackend.get(`/forms/listed-species`);
+    const questions = await newQuestions.data;
+    setAdditionalQuestions(questions.additionalFields);
+
     setTotals(
       data
         .map(row => [row.totalAdults, row.totalFledges, row.totalChicks])
@@ -107,7 +115,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
       'Plover: Western Snowy (SNPL/WSPL)',
       'Tern: California Least (CLTE/LETE)',
     ]);
-  }, [data]);
+  }, [data, questionAdded, tabEdited]);
 
   const addRow = formData => {
     if (formData.editing !== undefined) {
@@ -215,7 +223,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
             Listed Species
           </Text>
           <Spacer />
-          <NewQuestionModal currentTemplate="listed-species" />
+          <NewQuestionModal currentTemplate="listed-species" refreshTrigger={setQuestionAdded} />
         </HStack>
       ) : (
         // {showHeader && (
@@ -461,7 +469,11 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
             tracker.
           </Text>
           <VStack align="start" spacing="4em">
-            <GeneralListedInformation isTemplate />
+            <GeneralListedInformation
+              refreshTrigger={setTabEdited}
+              additionalQuestions={additionalQuestions}
+              isTemplate
+            />
             <Location isTemplate />
             <SexSection isTemplate />
             <BehaviorsSection

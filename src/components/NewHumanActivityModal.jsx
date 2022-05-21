@@ -20,7 +20,7 @@ import { PropTypes } from 'prop-types';
 
 import { OCHBackend } from '../common/utils';
 
-const NewHumanActivityModal = () => {
+const NewHumanActivityModal = ({ refreshTrigger }) => {
   const [category, setCategory] = useState();
   const [categoryLength, setCategoryLength] = useState(0);
   const [examples, setExamples] = useState();
@@ -39,16 +39,15 @@ const NewHumanActivityModal = () => {
   };
   */
   const addHumanActivity = async () => {
-    console.log('in addHumanActivity, examples is:');
-    console.log(examples);
     await OCHBackend.post('/forms/create/field', {
       formType: 'human-activity',
       fieldBody: {
         title: category,
-        subtitle: 'this is a working subtitle',
+        subtitle: examples,
         static: false,
       },
     });
+    refreshTrigger(true);
     addHumanActivityModal.onClose();
   };
   return (
@@ -123,6 +122,10 @@ const NewHumanActivityModal = () => {
       </Modal>
     </>
   );
+};
+
+NewHumanActivityModal.propTypes = {
+  refreshTrigger: PropTypes.func.isRequired,
 };
 
 export default NewHumanActivityModal;

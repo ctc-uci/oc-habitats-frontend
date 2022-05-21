@@ -20,9 +20,9 @@ import {
 import PropTypes from 'prop-types';
 import { React, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import NonStaticQuestion from './NonStaticQuestion';
 import { OCHBackend } from '../../common/utils';
 import NewHumanActivityModal from '../NewHumanActivityModal';
+import NonStaticHumanActivity from '../NonStaticHumanActivity';
 
 const FORM_PREFIX = 'humanActivity.';
 const HUMAN_ACTIVITIES = [
@@ -92,6 +92,8 @@ HumanActivityField.propTypes = {
 const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
   const { register } = useFormContext();
   const [additionalQuestions, setAdditionalQuestions] = useState([]);
+  const [activityAdded, setActivityAdded] = useState(false);
+  const [tabEdited, setTabEdited] = useState(false);
 
   useEffect(async () => {
     const newQuestions = await OCHBackend.get(`/forms/human-activity`);
@@ -100,7 +102,7 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
     // console.log(newQuestions);
 
     setAdditionalQuestions(questions.additionalFields);
-  }, []);
+  }, [tabEdited, activityAdded]);
   return (
     <>
       {isTemplate && (
@@ -115,7 +117,10 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
               </Text>
             </Box>
             <Spacer />
-            <NewHumanActivityModal currentTemplate="human-activity" />
+            <NewHumanActivityModal
+              currentTemplate="human-activity"
+              refreshTrigger={setActivityAdded}
+            />
           </HStack>
         </>
       )}
@@ -140,9 +145,9 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
         <SimpleGrid columns={3} spacingX="64px" spacingY="68px">
           {additionalQuestions.map(question => {
             return (
-              <NonStaticQuestion
-                key={question.title}
-                formType="human-activity"
+              <NonStaticHumanActivity
+                key={question.title.length}
+                refreshTrigger={setTabEdited}
                 question={question}
                 isTemplate={isTemplate}
               />

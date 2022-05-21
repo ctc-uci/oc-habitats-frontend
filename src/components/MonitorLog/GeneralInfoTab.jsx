@@ -28,6 +28,7 @@ import NewQuestionModal from '../NewQuestionModal';
 function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHeader, isTemplate }) {
   const [additionalQuestions, setAdditionalQuestions] = useState([]);
   const [tabEdited, setTabEdited] = useState(false);
+  const [questionAdded, setQuestionAdded] = useState(false);
   // commented for prettier
   // const [isLoading, setIsLoading] = useState(true);
   const { control, register } = useFormContext();
@@ -69,7 +70,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
     console.log(newQuestions);
 
     setAdditionalQuestions(questions.additionalFields);
-  }, [tabEdited]);
+  }, [tabEdited, questionAdded]);
 
   const partnerSelectOptions = monitorPartners.map(user => ({
     ...user,
@@ -91,7 +92,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
               </Text>
             </Box>
             <Spacer />
-            <NewQuestionModal currentTemplate="general" />
+            <NewQuestionModal currentTemplate="general" refreshTrigger={setQuestionAdded} />
           </HStack>
         </>
       )}

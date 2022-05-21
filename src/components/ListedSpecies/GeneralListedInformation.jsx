@@ -1,34 +1,21 @@
 import { InfoIcon } from '@chakra-ui/icons';
 import {
-  Box,
-  Button,
   Flex,
   FormControl,
   FormLabel,
-  HStack,
   Input,
   InputGroup,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  Radio,
-  RadioGroup,
   Select,
   SimpleGrid,
   Stack,
   Text,
-  Textarea,
   Tooltip,
   useDisclosure,
-  VStack,
 } from '@chakra-ui/react';
 import { React, useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -38,28 +25,10 @@ import options from './DropdownOptions';
 import footNotes from './FootNotes';
 import NonStaticQuestion from '../MonitorLog/NonStaticQuestion';
 import { OCHBackend } from '../../common/utils';
-import NewQuestionModal from '../NewQuestionModal';
 
 // component/section name not final
-const GeneralListedInformation = ({ isTemplate }) => {
+const GeneralListedInformation = ({ refreshTrigger, additionalQuestions, isTemplate }) => {
   const { register, setValue, getValues } = useFormContext();
-  const editQuestionModal = useDisclosure();
-
-  // states for editQuestion modal
-  const [newTitle, setNewTitle] = useState();
-  const [newFieldType, setNewFieldType] = useState();
-  const [newTooltip, setNewTooltip] = useState();
-  const [additionalQuestions, setAdditionalQuestions] = useState([]);
-  // const [fieldToEdit, setFieldToEdit] = useState();
-
-  useEffect(async () => {
-    const newQuestions = await OCHBackend.get(`/forms/listed-species`);
-    const questions = await newQuestions.data;
-    // for prettier
-    // console.log(newQuestions);
-
-    setAdditionalQuestions(questions.additionalFields);
-  }, []);
 
   const createOptions = () => {
     return options.habitat.map(option => {
@@ -73,7 +42,6 @@ const GeneralListedInformation = ({ isTemplate }) => {
 
   return (
     <>
-      <NewQuestionModal currentTemplate="listed-species" />
       <CollapsibleSection title="General Information">
         <Stack direction={['column', 'row']} w="100%" spacing="2em">
           <FormControl>
@@ -174,10 +142,11 @@ const GeneralListedInformation = ({ isTemplate }) => {
           {additionalQuestions.map(question => {
             return (
               <NonStaticQuestion
-                key={question.title}
                 formType="listed-species"
+                key={question.title}
                 question={question}
                 isTemplate={isTemplate}
+                refreshTrigger={refreshTrigger}
               />
             );
           })}
@@ -192,6 +161,7 @@ GeneralListedInformation.defaultProps = {
   additionalQuestions: null,
 };
 GeneralListedInformation.propTypes = {
+  refreshTrigger: PropTypes.func.isRequired,
   isTemplate: PropTypes.bool,
   additionalQuestions: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])),
 };

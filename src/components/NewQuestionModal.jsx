@@ -22,7 +22,7 @@ import { PropTypes } from 'prop-types';
 
 import { OCHBackend } from '../common/utils';
 
-const NewQuestionModal = ({ currentTemplate }) => {
+const NewQuestionModal = ({ currentTemplate, refreshTrigger }) => {
   const [title, setTitle] = useState();
   const [type, setType] = useState('TEXT');
   const [tooltip, setTooltip] = useState();
@@ -49,6 +49,7 @@ const NewQuestionModal = ({ currentTemplate }) => {
         tooltip,
       },
     });
+    refreshTrigger(true);
     addQuestionModal.onClose();
   };
   return (
@@ -130,5 +131,6 @@ NewQuestionModal.defaultProps = {
 };
 NewQuestionModal.propTypes = {
   currentTemplate: PropTypes.string,
+  refreshTrigger: PropTypes.func.isRequired,
 };
 export default NewQuestionModal;
