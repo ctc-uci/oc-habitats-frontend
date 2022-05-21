@@ -39,11 +39,13 @@ const NewHumanActivityModal = () => {
   };
   */
   const addHumanActivity = async () => {
+    console.log('in addHumanActivity, examples is:');
+    console.log(examples);
     await OCHBackend.post('/forms/create/field', {
       formType: 'human-activity',
       fieldBody: {
         title: category,
-        subtitle: examples,
+        subtitle: 'this is a working subtitle',
         static: false,
       },
     });
