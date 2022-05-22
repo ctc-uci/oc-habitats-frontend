@@ -37,6 +37,7 @@ import HumanActivity from '../components/MonitorLog/HumanActivityTab';
 import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
 import PredatorsTab from '../components/MonitorLog/PredatorsTab';
 import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
+import ReviewSubmitTabPopup from '../components/MonitorLog/ReviewSubmitTabPopup';
 
 const MonitorTabButton = props => {
   // eslint-disable-next-line react/prop-types
@@ -330,10 +331,11 @@ const MonitorLogPage = ({ mode }) => {
                 </Button>
               )}
               {activeTab === totalTabs - 1 && (
-                <Button colorScheme="green" type="submit" onClick={submitForm}>
-                  {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
-                  Submit Log <FiCheck style={{ marginLeft: '4px' }} />
-                </Button>
+                // <Button colorScheme="green" type="submit" onClick={submitForm}>
+                //   {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
+                //   Submit Log <FiCheck style={{ marginLeft: '4px' }} />
+                // </Button>
+                <ReviewSubmitTabPopup submitForm={submitForm} />
               )}
             </Flex>
           </Flex>
