@@ -22,20 +22,18 @@ import {
 
 function EditSpeciesModal({ editSpecies, specie, predOrSpecies }) {
   const [isToggled, setIsToggled] = useState(false);
-  const [speciesName, setSpeciesName] = useState(specie.name);
-  const [speciesCode, setSpeciesCode] = useState(specie.code);
-  const [speciesGroup, setSpeciesGroup] = useState(specie.isListed ? 'listed' : 'nonListed');
-  const [speciesPredator, setSpeciesPredator] = useState(specie.isPredator ? 'Yes' : 'No');
+  const [speciesName, setSpeciesName] = useState('');
+  const [speciesCode, setSpeciesCode] = useState('');
+  const [speciesCategory, setSpeciesCategory] = useState('');
   const [isValid, setIsValid] = useState(true);
 
   const checkInput = () => {
-    if (speciesName && speciesCode && speciesGroup) {
+    if (speciesName && speciesCode && speciesCategory) {
       editSpecies(
         {
           name: speciesName,
           code: speciesCode,
-          group: speciesGroup,
-          predator: speciesPredator,
+          category: speciesCategory,
         },
         specie,
       );
@@ -52,6 +50,9 @@ function EditSpeciesModal({ editSpecies, specie, predOrSpecies }) {
           e.preventDefault();
           setIsToggled(!isToggled);
           setIsValid(true);
+          setSpeciesName(specie.name);
+          setSpeciesCode(specie.code);
+          setSpeciesCategory(specie.category);
         }}
       >
         Edit {predOrSpecies}
@@ -92,15 +93,15 @@ function EditSpeciesModal({ editSpecies, specie, predOrSpecies }) {
                     Is also Non-Listed
                   </Text>
                   <RadioGroup
-                    value={speciesGroup}
-                    onChange={val => setSpeciesGroup(val)}
+                    value={speciesCategory}
+                    onChange={val => setSpeciesCategory(val)}
                     as={HStack}
                     spacing={10}
                   >
-                    <Radio color="#3182CE" value="listed">
+                    <Radio color="#3182CE" value="JUST_PREDATOR">
                       <Text fontWeight={475}>No</Text>
                     </Radio>
-                    <Radio color="#3182CE" value="nonListed">
+                    <Radio color="#3182CE" value="NON_LISTED_PREDATOR">
                       <Text fontWeight={475}>Yes</Text>
                     </Radio>
                   </RadioGroup>
@@ -112,33 +113,34 @@ function EditSpeciesModal({ editSpecies, specie, predOrSpecies }) {
                     Species Type
                   </Text>
                   <RadioGroup
-                    value={speciesGroup}
-                    onChange={val => setSpeciesGroup(val)}
+                    value={speciesCategory}
+                    onChange={val => setSpeciesCategory(val)}
                     as={HStack}
                     spacing={10}
+                    defaultValue={speciesCategory}
                   >
-                    <Radio color="#3182CE" value="nonListed">
+                    <Radio color="#3182CE" value="NON_LISTED">
                       <Text fontWeight={475}>Non-Listed</Text>
                     </Radio>
-                    <Radio color="#3182CE" value="listed">
+                    <Radio color="#3182CE" value="LISTED">
                       <Text fontWeight={475}>Listed</Text>
                     </Radio>
                   </RadioGroup>
-                  {speciesGroup === 'nonListed' && (
+                  {speciesCategory && speciesCategory !== 'LISTED' && (
                     <>
                       <Text fontWeight={550} fontSize="18px">
                         Is a Predator
                       </Text>
                       <RadioGroup
-                        value={speciesPredator}
-                        onChange={val => setSpeciesPredator(val)}
+                        value={speciesCategory}
+                        onChange={val => setSpeciesCategory(val)}
                         as={HStack}
                         spacing={10}
                       >
-                        <Radio color="#3182CE" value="No">
+                        <Radio color="#3182CE" value="NON_LISTED">
                           <Text fontWeight={475}>No</Text>
                         </Radio>
-                        <Radio color="#3182CE" value="Yes">
+                        <Radio color="#3182CE" value="NON_LISTED_PREDATOR">
                           <Text fontWeight={475}>Yes</Text>
                         </Radio>
                       </RadioGroup>
@@ -190,8 +192,7 @@ EditSpeciesModal.propTypes = {
   specie: PropTypes.shape({
     name: PropTypes.string.isRequired,
     code: PropTypes.string.isRequired,
-    isListed: PropTypes.bool.isRequired,
-    isPredator: PropTypes.bool.isRequired,
+    category: PropTypes.string.isRequired,
   }).isRequired,
 };
 

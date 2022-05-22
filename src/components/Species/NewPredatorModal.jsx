@@ -23,17 +23,15 @@ function NewPredatorModal({ addNewPredator }) {
   const [isToggled, setIsToggled] = useState(false);
   const [speciesName, setSpeciesName] = useState(null);
   const [speciesCode, setSpeciesCode] = useState(null);
-  const [speciesGroup, setSpeciesGroup] = useState(null);
-  const [speciesPredator] = useState(null);
+  const [speciesCategory, setSpeciesCategory] = useState(null);
   const [isValid, setIsValid] = useState(true);
 
   const checkInput = () => {
-    if (speciesName && speciesCode && speciesGroup) {
+    if (speciesName && speciesCode && speciesCategory) {
       addNewPredator({
         name: speciesName,
         code: speciesCode,
-        group: speciesGroup,
-        predator: speciesPredator,
+        category: speciesCategory,
       });
       setIsValid(true);
       setIsToggled(!isToggled);
@@ -87,11 +85,11 @@ function NewPredatorModal({ addNewPredator }) {
               <Text fontWeight={550} fontSize="18px">
                 Is also Non-Listed
               </Text>
-              <RadioGroup onChange={val => setSpeciesGroup(val)} as={HStack} spacing={10}>
-                <Radio color="#3182CE" value="listed">
+              <RadioGroup onChange={val => setSpeciesCategory(val)} as={HStack} spacing={10}>
+                <Radio color="#3182CE" value="JUST_PREDATOR">
                   <Text fontWeight={475}>No</Text>
                 </Radio>
-                <Radio color="#3182CE" value="nonListed">
+                <Radio color="#3182CE" value="NON_LISTED_PREDATOR">
                   <Text fontWeight={475}>Yes</Text>
                 </Radio>
               </RadioGroup>
