@@ -1,4 +1,8 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Box,
   Button,
   Container,
@@ -18,27 +22,23 @@ import {
   TabPanels,
   Tabs,
   useDisclosure,
-  Alert,
-  AlertTitle,
-  AlertIcon,
-  AlertDescription,
 } from '@chakra-ui/react';
-import { React, useEffect, useMemo, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FiArrowUp, FiCheck } from 'react-icons/fi';
-import { useParams } from 'react-router-dom';
 import { parseISO } from 'date-fns';
 import PropTypes from 'prop-types';
+import { React, useEffect, useMemo, useRef, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FiArrowUp } from 'react-icons/fi';
+import { useParams } from 'react-router-dom';
 import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
+import EditLogPopup from '../components/MonitorLog/EditLogPopup';
 import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
 import HumanActivity from '../components/MonitorLog/HumanActivityTab';
 import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
 import PredatorsTab from '../components/MonitorLog/PredatorsTab';
 import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
 import ReviewSubmitTabPopup from '../components/MonitorLog/ReviewSubmitTabPopup';
-import EditLogPopup from '../components/MonitorLog/EditLogPopup';
 
 const MonitorTabButton = props => {
   // eslint-disable-next-line react/prop-types
