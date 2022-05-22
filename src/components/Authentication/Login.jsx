@@ -14,6 +14,8 @@ import {
   Link,
   Text,
   Center,
+  Container,
+  Stack,
 } from '@chakra-ui/react';
 import { instanceOf } from 'prop-types';
 import { Cookies, withCookies } from '../../common/cookie_utils';
@@ -50,17 +52,16 @@ const Login = ({ cookies }) => {
   };
 
   return (
-    <Box w="100%" px={4} mb={{ sm: '70px', md: 0 }}>
+    <Container maxW="container.xl" centerContent>
       <Flex
         bg="rgba(43, 192, 227, .10)"
         borderRadius="6px"
-        w={{ xl: '50%', lg: '60%' }}
+        spacing="40px"
+        p={{ md: 20, base: 5 }}
+        w={{ md: '760px', base: '90vw' }}
         justifyContent="center"
-        alignItems="center"
-        mx={{ xl: 'auto', lg: 'auto', md: 'auto' }}
         my="5%"
         direction="column"
-        p={{ md: '90px 20px', sm: '45px 10px' }}
       >
         <Center width="100%" mb={{ sm: 10, lg: 20 }}>
           <Image src={OCHLogo} alt="OCH Logo" w="80%" />
@@ -78,7 +79,7 @@ const Login = ({ cookies }) => {
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="password">Password</FormLabel>
-            <InputGroup w="100%">
+            <InputGroup w="100%" cursor="pointer">
               <Input
                 type={showPassword ? 'text' : 'password'}
                 onChange={({ target }) => setPassword(target.value)}
@@ -90,22 +91,24 @@ const Login = ({ cookies }) => {
               />
             </InputGroup>
           </FormControl>
-          <Link mt="30px" as={ReachLink} to="/forgot-password" textDecoration="underline">
-            Forgot Your Password?
-          </Link>
-          <Button
-            type="submit"
-            bg="#2BC0E3"
-            color="white"
-            mt="10px"
-            w={{ md: '200px', sm: '80%' }}
-            alignSelf={{ md: 'flex-end', sm: 'center' }}
-            px="10px"
-            isDisabled={!(email && password)}
-            _hover={{ _disabled: { opacity: 0.38, cursor: 'not-allowed' } }}
-          >
-            Sign In
-          </Button>
+          <Flex direction="column">
+            <Link mt="30px" as={ReachLink} to="/forgot-password" textDecoration="underline">
+              Forgot Your Password?
+            </Link>
+            <Button
+              type="submit"
+              bg="ochBlue"
+              color="white"
+              mt={4}
+              w={{ md: '200px', base: '100%' }}
+              alignSelf={{ md: 'flex-end', base: 'center' }}
+              px="10px"
+              isDisabled={!(email && password)}
+              _hover={{ _disabled: { opacity: 0.38, cursor: 'not-allowed' } }}
+            >
+              Sign In
+            </Button>
+          </Flex>
           <br />
           {errorMessage && (
             <Text mt="2" color="red">
@@ -114,7 +117,7 @@ const Login = ({ cookies }) => {
           )}
         </form>
       </Flex>
-    </Box>
+    </Container>
   );
 };
 

@@ -83,28 +83,8 @@ function App() {
                   <Route exact path="/map" />
                   <Route exact path="/logs" element={<AdminPage />} />
                   <Route exact path="/common-table-example" element={<CommonTableExample />} />
-                  <Route
-                    path="/user-context-example"
-                    element={
-                      <ProtectedRoute
-                        Component={UserContextExample}
-                        redirectPath="/logout"
-                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
-                      />
-                    }
-                  />
                   {/* NEW AUTH ROUTES */}
                   <Route path="/login" element={<Login />} />
-                  <Route
-                    path="/admin"
-                    element={
-                      <ProtectedRoute
-                        Component={Logout}
-                        redirectPath="/logout"
-                        roles={[ADMIN_ROLE]}
-                      />
-                    }
-                  />
                   <Route path="/email-action" element={<EmailAction redirectPath="/" />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route
