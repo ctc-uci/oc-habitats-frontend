@@ -23,12 +23,12 @@ import { React, useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp, FiCheck } from 'react-icons/fi';
 import { OCHBackend } from '../common/utils';
-import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
-import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
-import HumanActivity from '../components/MonitorLog/HumanActivityTab';
-import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
-import PredatorsTab from '../components/MonitorLog/PredatorsTab';
-import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
+import AdditionalSpeciesTab from '../components/monitorLog/AdditionalSpeciesTab';
+import GeneralInfoTab from '../components/monitorLog/GeneralInfoTab';
+import HumanActivity from '../components/monitorLog/HumanActivityTab';
+import ListedSpeciesTab from '../components/monitorLog/ListedSpeciesTab';
+import PredatorsTab from '../components/monitorLog/PredatorsTab';
+import ReviewSubmitTab from '../components/monitorLog/ReviewSubmitTab';
 
 const MonitorTabButton = props => {
   // eslint-disable-next-line react/prop-types

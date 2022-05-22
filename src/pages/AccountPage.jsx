@@ -22,16 +22,15 @@ import {
 import { FiEdit2 } from 'react-icons/fi';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { set } from 'react-hook-form';
 import UploadModal from '../components/UploadModal';
 import defaultPic from '../assets/defaultProfile.jpg';
 import Toast from '../components/Toast';
+import { updateUserPassword } from '../common/auth_utils';
+import { useUserContext } from '../common/UserContext/UserContext';
 
-const AccountPage = ({
-  changesMade,
-  setChangesMade,
-  // TODO: Remove when getting ID from param/props
-  id = 'd882dffe-d560-4f24-a3ff-a3dc8eb9ef0d',
-}) => {
+const AccountPage = ({ changesMade, setChangesMade }) => {
+  // console.log('loaded Acc page');
   const [isLoading, setLoading] = useState(false);
 
   // stores information on whether the passwords are hidden/shown, plus the state of the button text
@@ -53,15 +52,7 @@ const AccountPage = ({
   const [imageSource, setImageSource] = useState(null);
   const [file, setFile] = useState(0);
 
-  // Holds user info from mongo
-  const [user, setUser] = useState({
-    firstName: null,
-    lastName: null,
-    email: null,
-    isTrainee: null,
-    isActive: null,
-    assignedSegments: null,
-  });
+  const { userData } = useUserContext();
 
   // shows/hides the left ("current") password accordingly
   // and changes the button text from "show" to "hide"
@@ -89,41 +80,30 @@ const AccountPage = ({
     }
   };
 
-  const getAccountInfo = async () => {
-    let currUser = await axios.get(`${process.env.REACT_APP_API_URL}/users/${id}`);
-    currUser = currUser.data;
-
-    setFirstName(currUser.firstName);
-    setLastName(currUser.lastName);
-    setEmail(currUser.email);
-    setIsTrainee(currUser.isTrainee);
-    setIsActive(currUser.isActive);
-    setAsignedSegments(currUser.segments.toString());
-    setUser({
-      ...user,
-      firstName: currUser.firstName,
-      lastName: currUser.lastName,
-      email: currUser.email,
-      isTrainee: currUser.isTrainee,
-      isActive: currUser.isActive,
-      assignedSegments: currUser.segments.toString(),
-      // currPassword: currUser.password,
-    });
-    const base64String = Buffer.from(currUser.profileImage.data.data).toString('base64');
-    setImageSource(`data:${currUser.profileImage.contentType};base64,${base64String}`);
+  const setAccountInfo = user => {
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    setEmail(user.email);
+    setIsTrainee(user.isTrainee);
+    setIsActive(user.isActive);
+    setAsignedSegments(user.segments.toString());
+    // if (userData.profileImage) {
+    //   const base64String = Buffer.from(currUser.profileImage.data.data).toString('base64');
+    //   setImageSource(`data:${currUser.profileImage.contentType};base64,${base64String}`);
+    // }
   };
 
   useEffect(async () => {
     setLoading(true);
-    await getAccountInfo();
+    setAccountInfo(userData);
     setLoading(false);
   }, []);
 
   const checkChanges = () => {
     if (
-      user.email !== email ||
-      user.firstName !== firstName ||
-      user.lastName !== lastName ||
+      userData.email !== email ||
+      userData.firstName !== firstName ||
+      userData.lastName !== lastName ||
       currPassword ||
       newPassword
     ) {
@@ -143,44 +123,44 @@ const AccountPage = ({
   const toast = useToast();
   const handleSubmit = async e => {
     e.preventDefault();
-    // if (newPassword && currPassword !== user.currPassword) {
-    //   return Toast(toast, 'password');
-    // }
     if (currPassword && !newPassword) {
       return Toast(toast, 'empty');
     }
-    const forsmata = new FormData();
-    forsmata.append('firstName', firstName);
-    forsmata.append('lastName', lastName);
-    forsmata.append('email', email);
-    if (file) forsmata.append('profileImage', file);
-    if (newPassword && currPassword) forsmata.append('password', newPassword);
-    try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/users/update/${id}`, forsmata);
-      setChangesMade(false);
-      setCurrPassword('');
-      setNewPassword('');
-      // if (newPassword)
-      //   setUser({
-      //     ...user,
-      //     firstName,
-      //     lastName,
-      //     email,
-      //     currPassword: newPassword,
-      //   });
-      // else {
-      setUser({
-        ...user,
-        firstName,
-        lastName,
-        email,
-      });
-      // }
-
-      return Toast(toast, 'success');
-    } catch (err) {
-      return Toast(toast, 'error');
+    const formData = new FormData();
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('email', email);
+    if (file) formData.append('profileImage', file);
+    let isPassUpdated = true;
+    if (newPassword && currPassword) {
+      isPassUpdated = updateUserPassword(newPassword, currPassword);
     }
+    let updatedProfile;
+    if (isPassUpdated) {
+      try {
+        updatedProfile = await axios.put(
+          `${process.env.REACT_APP_API_URL}/users/update/${userData.id}`,
+          formData,
+        );
+        if (newPassword && currPassword) {
+          const updateResult = updateUserPassword(newPassword, currPassword);
+          console.log('updatedResult', updateResult);
+          if (updateResult !== 'success') {
+            // console.log(updateResult);
+            return Toast(toast, updateResult);
+          }
+        }
+        setChangesMade(false);
+        setAccountInfo(updatedProfile);
+        setCurrPassword('');
+        setNewPassword('');
+        return Toast(toast, 'success');
+      } catch (err) {
+        return Toast(toast, 'error');
+      }
+    }
+
+    return Toast(toast, 'error');
   };
 
   if (isLoading) {
@@ -418,7 +398,6 @@ const AccountPage = ({
 AccountPage.propTypes = {
   changesMade: PropTypes.bool.isRequired,
   setChangesMade: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
 };
 
 export default AccountPage;

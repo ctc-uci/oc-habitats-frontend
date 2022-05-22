@@ -36,7 +36,8 @@ const userIsAuthenticated = async (roles, cookies) => {
  * @param {Cookies} cookies The user's current cookies
  * @returns The relevant path to redirect the user to depending on authentication state.
  */
-const ProtectedRoute = ({ Component, redirectPath, roles, cookies }) => {
+// eslint-disable-next-line react/prop-types
+const ProtectedRoute = ({ children, redirectPath, roles, cookies }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { setUserData } = useUserContext();
@@ -53,13 +54,14 @@ const ProtectedRoute = ({ Component, redirectPath, roles, cookies }) => {
     return <h1>LOADING...</h1>;
   }
   if (isAuthenticated) {
-    return <Component />;
+    return children;
   }
   return <Navigate to={redirectPath} />;
 };
 
 ProtectedRoute.propTypes = {
-  Component: PropTypes.elementType.isRequired,
+  // Component: PropTypes.elementType.isRequired,
+
   redirectPath: PropTypes.string.isRequired,
   roles: PropTypes.arrayOf(PropTypes.string).isRequired,
   cookies: instanceOf(Cookies).isRequired,

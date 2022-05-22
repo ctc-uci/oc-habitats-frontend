@@ -36,7 +36,7 @@ const Login = ({ cookies }) => {
     try {
       e.preventDefault();
       await logInWithEmailAndPassword(email, password, navigate, cookies);
-      navigate('/logout');
+      navigate('/account');
     } catch (err) {
       setErrorMessage(err.message);
     }

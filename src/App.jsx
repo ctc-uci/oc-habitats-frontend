@@ -68,10 +68,12 @@ function App() {
                     exact
                     path="/account"
                     element={
-                      <AccountPage
-                        changesMade={accMadeChanges}
-                        setChangesMade={setAccMadeChanges}
-                      />
+                      <ProtectedRoute redirectPath="/logout" roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
+                        <AccountPage
+                          changesMade={accMadeChanges}
+                          setChangesMade={setAccMadeChanges}
+                        />
+                      </ProtectedRoute>
                     }
                   />
                   <Route exact path="/create-log" element={<MonitorLogPage />} />

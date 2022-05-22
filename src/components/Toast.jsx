@@ -13,7 +13,7 @@ const Toast = (toast, status) => {
   }
 
   if (status === 'error') {
-    description = 'Error: Unable to save';
+    description = 'Error: Unable to save, please try again later.';
   }
 
   if (status === 'password') {
