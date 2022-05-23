@@ -5,7 +5,7 @@ import { sendPasswordReset } from '../../common/auth_utils';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState();
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
   const [confirmed, setConfirmed] = useState(false);
 
   const handleForgotPassword = async e => {
@@ -13,9 +13,6 @@ const ForgotPassword = () => {
       e.preventDefault();
       await sendPasswordReset(email);
       setConfirmed(true);
-      // setConfirmationMessage(
-      //   'If the email entered is associated with an account, you should receive an email to reset your password shortly.',
-      // );
       setErrorMessage('');
       setEmail('');
     } catch (err) {
@@ -56,11 +53,13 @@ const ForgotPassword = () => {
         )}
         {confirmed && (
           <Flex direction="column" bg="rgba(43, 192, 227, .10)" gap={3} p={12} borderRadius={6}>
-            <Text>
+            <Text display="inline">
               An email has sent to allow you to reset your password. Please wait a few minutes for
-              the email to be delivered and follow the instructions. Check your spam and promotions
-              inboxes. If you do not receive an email within an hour, please re-enter your email and
-              try again.
+              the email to be delivered and follow the instructions.
+            </Text>
+            <Text display="inline">
+              Check your spam and promotions inboxes. If you do not receive an email within an hour,
+              please re-enter your email and try again.
             </Text>
             <Button bgColor="ochBlue" w="200px" alignSelf="flex-end">
               <Link to="/login">Back to Login</Link>
