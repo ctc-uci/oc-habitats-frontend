@@ -205,7 +205,6 @@ const registerWithEmailAndPassword = async (
  */
 const sendPasswordReset = async email => {
   const user = await OCHBackend.get(`/users/email/${email}`);
-  console.log(user);
   if (user) {
     await sendPasswordResetEmail(auth, email);
   } else {

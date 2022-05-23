@@ -1,4 +1,4 @@
-import { Box, Container, Center, Text, Flex, Heading, Input, Button } from '@chakra-ui/react';
+import { Box, Container, Text, Flex, Heading, Input, Button } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { sendPasswordReset } from '../../common/auth_utils';
@@ -45,7 +45,12 @@ const ForgotPassword = () => {
                   {errorMessage}
                 </Text>
               )}
-              <Button type="submit" bgColor="ochBlue" w="200px" alignSelf="flex-end">
+              <Button
+                type="submit"
+                bgColor="ochBlue"
+                w={{ md: '200px', base: '100%' }}
+                alignSelf="flex-end"
+              >
                 Continue
               </Button>
             </Flex>
@@ -61,7 +66,7 @@ const ForgotPassword = () => {
               Check your spam and promotions inboxes. If you do not receive an email within an hour,
               please re-enter your email and try again.
             </Text>
-            <Button bgColor="ochBlue" w="200px" alignSelf="flex-end">
+            <Button bgColor="ochBlue" w={{ md: '200px', base: '100%' }} alignSelf="flex-end">
               <Link to="/login">Back to Login</Link>
             </Button>
           </Flex>
