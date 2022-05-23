@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Thead, Tbody, Tr, Link, Text, Spinner, VStack } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Text, Spinner, VStack } from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
 import SectionTableFooter from './SectionTableFooter';
 import SectionTableHeader from './SectionTableHeader';
@@ -11,6 +11,7 @@ import {
   SegmentNameColumn,
   ParkingColumn,
   UpdateSegmentPopupColumn,
+  MapLinkColumn,
 } from './SectionTableRow';
 
 const rowsPerPageSelect = [6, 10, 20, 30];
@@ -66,16 +67,10 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
         Cell: props => <SegmentNameColumn data={props.value} />,
       },
       {
-        id: 'map',
-        accessor: 'map',
+        id: 'mapLink',
+        accessor: 'mapLink',
         Header: 'Map',
-        Cell: props => (
-          <div>
-            <Link href={`${props.value}`} isExternal>
-              <u>Link</u>
-            </Link>
-          </div>
-        ),
+        Cell: props => <MapLinkColumn data={props.value} />,
       },
       {
         id: 'parking',

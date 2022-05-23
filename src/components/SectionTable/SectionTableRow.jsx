@@ -63,7 +63,7 @@ const ParkingColumn = ({ data }) => {
 const MapLinkColumn = ({ data }) => {
   return (
     <>
-      <Link href={`${data}`} isExternal>
+      <Link href={data} isExternal>
         <u>Link</u>
       </Link>
     </>
