@@ -1,15 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useLocation, Link } from 'react-router-dom';
-import {
-  Center,
-  Menu,
-  MenuButton,
-  MenuList,
-  useDisclosure,
-  Text,
-  MenuDivider,
-} from '@chakra-ui/react';
+import { Center, Menu, MenuButton, MenuList, useDisclosure, Text } from '@chakra-ui/react';
 
 const NavbarLink = ({ text, path = '/', isAdmin }) => {
   const current = useLocation().pathname;

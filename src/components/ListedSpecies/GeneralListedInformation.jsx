@@ -15,16 +15,14 @@ import {
   Stack,
   Text,
   Tooltip,
-  useDisclosure,
 } from '@chakra-ui/react';
-import { React, useState, useEffect } from 'react';
+import { React } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { PropTypes } from 'prop-types';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import options from './DropdownOptions';
 import footNotes from './FootNotes';
 import NonStaticQuestion from '../MonitorLog/NonStaticQuestion';
-import { OCHBackend } from '../../common/utils';
 
 // component/section name not final
 const GeneralListedInformation = ({ refreshTrigger, additionalQuestions, isTemplate }) => {
