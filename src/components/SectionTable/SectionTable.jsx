@@ -50,7 +50,7 @@ const tableContent = (loading, page, prepareRow) => {
   return <EmptyRow />;
 };
 
-const SectionTable = ({ loading, segments, allSections, updateSections, sectionId }) => {
+const SectionTable = ({ loading, segments, allSections, updateSections, sectionId, role }) => {
   const columns = useMemo(
     () => [
       {
@@ -119,6 +119,7 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
       data,
       initialState: {
         pageSize: rowsPerPageSelect[0],
+        hiddenColumns: role !== 'admin' ? ['delete'] : [],
       },
     },
     usePagination,
@@ -164,6 +165,7 @@ SectionTable.propTypes = {
     }),
   ).isRequired,
   updateSections: PropTypes.func.isRequired,
+  role: PropTypes.string.isRequired,
 };
 
 export default SectionTable;

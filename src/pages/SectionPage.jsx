@@ -18,10 +18,12 @@ import NewSectionSegmentPopup from '../components/NewSectionSegmentPopup';
 import SectionTable from '../components/SectionTable/SectionTable';
 import EditDeleteSectionPopup from '../components/SectionTable/EditDeleteSectionPopup';
 import { OCHBackend } from '../common/utils';
+import { useUserContext } from '../common/UserContext/UserContext';
 
 const SectionPage = () => {
   const [sections, setSections] = useState([]); // sectionsData
   const [isLoading, setIsLoading] = useState(true);
+  const user = useUserContext();
 
   // const [change, setChange] = useState(false); // new
   const sectionOptions = sections.map(section => ({
@@ -49,24 +51,26 @@ const SectionPage = () => {
   return (
     <>
       <Box marginLeft="110px" marginRight="110px">
-        <Heading align="left" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
+        <Heading align="left" fontWeight="600" fontSize="36px" mt="40px">
           Sections & Segments
         </Heading>
 
         <Tabs variant="solid-rounded" size="lg" align="start" colorScheme="orange">
-          <TabPanels>
-            {sections.map(sectionObj => {
-              return (
-                <TabPanel key={sectionObj._id} padding="0px">
-                  <NewSectionSegmentPopup
-                    key={sectionObj._id}
-                    sectionOptions={sectionOptions}
-                    getSections={getSections}
-                  />
-                </TabPanel>
-              );
-            })}
-          </TabPanels>
+          {user.userData.role === 'admin' && (
+            <TabPanels mt="32px">
+              {sections.map(sectionObj => {
+                return (
+                  <TabPanel key={sectionObj._id} padding="0px">
+                    <NewSectionSegmentPopup
+                      key={sectionObj._id}
+                      sectionOptions={sectionOptions}
+                      getSections={getSections}
+                    />
+                  </TabPanel>
+                );
+              })}
+            </TabPanels>
+          )}
           <TabList
             paddingTop="32px"
             // alignItems="center"
@@ -102,21 +106,21 @@ const SectionPage = () => {
                         Section {sectionObj._id} - <Text as="u">{sectionObj.name}</Text>
                       </>
                     </Heading>
-                    <HStack w="100%" justifyContent="space-between" spacing="10">
-                      <VStack>
-                        <Text fontWeight="400" fontSize="18px" align="left" display="inline">
-                          <>
-                            Select the <BsThreeDotsVertical style={{ display: 'inline' }} /> button
-                            on a row in the table to view, edit, or delete a Segment.
-                          </>
-                        </Text>
-                      </VStack>
-                      <VStack>
-                        <div>
+                    {user.userData.role === 'admin' && (
+                      <HStack w="100%" justifyContent="space-between" spacing="10">
+                        <VStack>
+                          <Text fontWeight="400" fontSize="18px" align="left" display="inline">
+                            <>
+                              Select the <BsThreeDotsVertical style={{ display: 'inline' }} />{' '}
+                              button on a row in the table to view, edit, or delete a Segment.
+                            </>
+                          </Text>
+                        </VStack>
+                        <VStack>
                           <EditDeleteSectionPopup section={sectionObj} getSections={getSections} />
-                        </div>
-                      </VStack>
-                    </HStack>
+                        </VStack>
+                      </HStack>
+                    )}
                     <br />
 
                     <SectionTable
@@ -125,6 +129,7 @@ const SectionPage = () => {
                       segments={sectionObj.segments}
                       allSections={sections}
                       updateSections={getSections}
+                      role={user.userData.role}
                     />
                   </Container>
                 </TabPanel>
