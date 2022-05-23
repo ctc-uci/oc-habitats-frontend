@@ -127,16 +127,6 @@ function App() {
                   />
                   {/* NEW AUTH ROUTES */}
                   <Route path="/login" element={<Login />} />
-                  <Route
-                    path="/admin"
-                    element={
-                      <ProtectedRoute
-                        Component={Logout}
-                        redirectPath="/logout"
-                        roles={[ADMIN_ROLE]}
-                      />
-                    }
-                  />
                   <Route path="/email-action" element={<EmailAction redirectPath="/" />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route

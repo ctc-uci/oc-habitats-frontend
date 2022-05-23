@@ -62,7 +62,7 @@ const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal, cookies }) 
           </MenuItem>
         )}
         {isAdmin ? <MenuDivider /> : null}
-        <MenuItem onClick={() => logout('/sign-out', navigate, cookies)}>
+        <MenuItem onClick={() => logout('/login', navigate, cookies)}>
           <HStack color="ochRed">
             <Text fontWeight="600">Sign Out</Text>
             <FiLogOut />
