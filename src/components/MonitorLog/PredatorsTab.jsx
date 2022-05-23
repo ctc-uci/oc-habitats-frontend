@@ -24,7 +24,7 @@ const PredatorField = ({ predatorName, predatorId, isDisabled, predatorIndex }) 
   const { setValue, getValues } = useFormContext();
 
   return (
-    <GridItem colSpan={1} rowSpan={1} width="200px">
+    <GridItem colSpan={1} rowSpan={1} width={{ md: '90%', base: '80%' }}>
       <VStack spacing="8px" align="left">
         <Text fontWeight="500" fontSize="md">
           {predatorName}
@@ -64,7 +64,11 @@ const PredatorsTab = ({ showHeader, isDisabled, predators }) => {
           Predators
         </Text>
       )}
-      <SimpleGrid columns={4} spacingX="64px" spacingY="68px">
+      <SimpleGrid
+        columns={{ md: 4, base: 1 }}
+        spacingX="64px"
+        spacingY={{ md: '68px', base: '30px' }}
+      >
         {predators.map(({ name: predatorName, _id }, num) => (
           <PredatorField
             key={_id}
@@ -77,7 +81,7 @@ const PredatorsTab = ({ showHeader, isDisabled, predators }) => {
       </SimpleGrid>
       <Spacer />
       <VStack spacing="8px" align="left">
-        <HStack spacing="390">
+        <HStack spacing={{ md: '380' }} justify={{ base: 'space-between', md: 'start' }}>
           <Text fontWeight="500" fontSize="md">
             Other Predator(s)
           </Text>
@@ -89,7 +93,11 @@ const PredatorsTab = ({ showHeader, isDisabled, predators }) => {
             <InfoIcon />
           </Tooltip>
         </HStack>
-        <Textarea width="536px" placeholder="Type here..." {...register(`${FORM_PREFIX}Other`)} />
+        <Textarea
+          width={{ md: '536px', base: '100%' }}
+          placeholder="Type here..."
+          {...register(`${FORM_PREFIX}Other`)}
+        />
         <Spacer />
         <Spacer />
       </VStack>

@@ -8,8 +8,6 @@ import {
   Button,
   Collapse,
   FormControl,
-  Grid,
-  GridItem,
   Icon,
   IconButton,
   Menu,
@@ -27,6 +25,7 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Stack,
   Table,
   Tbody,
   Td,
@@ -169,25 +168,48 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
   };
 
   return (
-    <>
+    <VStack align="left" spacing="29px">
       {showHeader && (
         <Text fontWeight="600" fontSize="2xl">
           {speciesName}s
         </Text>
       )}
-      <Grid marginTop="20px" minH="200px" templateColumns="repeat(6, 1fr)" gap="150">
-        <GridItem colSpan="3">
-          <Box overflow="hidden" border="1px solid darkgray" rounded="md">
+      <Stack
+        mt="20px"
+        minH="200px"
+        direction={{ lg: 'row', base: 'column' }}
+        spacing={{ lg: '100px', base: '30px' }}
+      >
+        <VStack w={{ lg: '650px', base: '100%' }} align="start">
+          <Box
+            w="100%"
+            border="1px solid darkgray"
+            rounded="md"
+            overflow="scroll"
+            css={{
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+            }}
+          >
             <Accordion as={Table} allowToggle width="100%" reduceMotion>
               <Thead bg="ochGrey">
-                <tr>
+                <Tr>
                   <Th width="0" />
-                  <Th color="#FDFDFD">Map #</Th>
-                  <Th color="#FDFDFD">Adults</Th>
-                  <Th color="#FDFDFD">Fledges</Th>
-                  <Th color="#FDFDFD">Chicks</Th>
+                  <Th textAlign="center" color="#FDFDFD">
+                    Map #
+                  </Th>
+                  <Th textAlign="center" color="#FDFDFD">
+                    Adults
+                  </Th>
+                  <Th textAlign="center" color="#FDFDFD">
+                    Fledges
+                  </Th>
+                  <Th textAlign="center" color="#FDFDFD">
+                    Chicks
+                  </Th>
                   <Th width="0" />
-                </tr>
+                </Tr>
               </Thead>
               {data.length === 0 && (
                 <Tbody>
@@ -251,10 +273,18 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
                             </Menu>
                           )}
                         </Td>
-                        <Td borderBottomWidth="0">{n + 1}</Td>
-                        <Td borderBottomWidth="0">{row.totalAdults}</Td>
-                        <Td borderBottomWidth="0">{row.totalFledges}</Td>
-                        <Td borderBottomWidth="0">{row.totalChicks}</Td>
+                        <Td textAlign="center" borderBottomWidth="0">
+                          {n + 1}
+                        </Td>
+                        <Td textAlign="center" borderBottomWidth="0">
+                          {row.totalAdults}
+                        </Td>
+                        <Td textAlign="center" borderBottomWidth="0">
+                          {row.totalFledges}
+                        </Td>
+                        <Td textAlign="center" borderBottomWidth="0">
+                          {row.totalChicks}
+                        </Td>
                         <Td width="0" borderBottomWidth="0">
                           <AccordionButton fontSize="2xl">
                             <AccordionIcon />
@@ -280,13 +310,13 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
                     Total
                   </Th>
                   <Th borderBottom="0" />
-                  <Th borderBottom="0" color="#FDFDFD">
+                  <Th textAlign="center" borderBottom="0" color="#FDFDFD">
                     {totals[0]}
                   </Th>
-                  <Th borderBottom="0" color="#FDFDFD">
+                  <Th textAlign="center" borderBottom="0" color="#FDFDFD">
                     {totals[1]}
                   </Th>
-                  <Th borderBottom="0" color="#FDFDFD">
+                  <Th textAlign="center" borderBottom="0" color="#FDFDFD">
                     {totals[2]}
                   </Th>
                   <Th width="0" />
@@ -312,38 +342,32 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
               </Modal>
             </>
           )}
-        </GridItem>
-        <GridItem colSpan="2">
-          <VStack alignItems="start">
-            <Text fontWeight="600" fontSize="xl">
-              Injured {speciesName}s
-            </Text>
+        </VStack>
+        <VStack alignItems="start" maxW="768px">
+          <Text fontWeight="600" fontSize="xl">
+            Injured {speciesName}s
+          </Text>
+          {showHeader && (
             <Text>To report a sick or injured bird, contact the WWCC at 714.374.5587</Text>
-            <FormControl>
-              <NumberInput
-                isDisabled={isDisabled}
-                min={0}
-                onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}
-                defaultValue={getValues(`${formPrefix}injuredCount`) || 0}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
-            {/* <Text fontWeight="600" fontSize="xl">
-              Marked Map (PNG or JPEG Only)
-            </Text>
-            <Text>
-              Provide a map with the locations of sighted Western Snowy Plovers marked with Map #
-              according to the Tracker table.
-            </Text> */}
-          </VStack>
-        </GridItem>
-      </Grid>
-    </>
+          )}
+          <FormControl>
+            <NumberInput
+              mb="50px"
+              isDisabled={isDisabled}
+              min={0}
+              onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}
+              defaultValue={getValues(`${formPrefix}injuredCount`) || 0}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
+        </VStack>
+      </Stack>
+    </VStack>
   );
 };
 

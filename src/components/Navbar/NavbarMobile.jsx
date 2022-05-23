@@ -17,39 +17,24 @@ import ProfileDropdown from './ProfileDropdown';
 
 import logo from '../../assets/OCH_Logo_SVG.svg';
 
-const NavbarMobile = ({ isAdmin }) => {
+const NavbarMobile = ({ isAdmin, onAdminPortal, setOnAdminPortal }) => {
   // TO DO: get profile image and name
-  const user = {
-    firstName: 'Dan',
-    lastName: 'Abramov',
-    profilePic: 'https://bit.ly/dan-abramov',
-  };
 
   const admin = [
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'People', path: '/people' },
     { text: 'Species Catalog', path: '/species' },
     { text: 'Sections & Segments', path: '/sections' },
-    { text: 'Emergency Numbers', path: '/emergency-numbers' },
+    { text: 'Emergency Numbers', path: '/numbers' },
   ];
 
   const volunteer = [
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'Species Catalog', path: '/species' },
     { text: 'Sections & Segments', path: '/sections' },
-    { text: 'Emergency Numbers', path: '/emergency-numbers' },
+    { text: 'Emergency Numbers', path: '/numbers' },
   ];
 
-  const adminAccountDrop = [
-    { text: 'Account', path: '/account' },
-    { text: 'Admin Portal', path: '/adminportal' },
-    { text: 'Sign Out', path: '/signout' },
-  ];
-
-  const volunteerAccountDrop = [
-    { text: 'Account', path: '/account' },
-    { text: 'Sign Out', path: '/signout' },
-  ];
   return (
     <Flex
       as="nav"
@@ -98,13 +83,19 @@ const NavbarMobile = ({ isAdmin }) => {
             : volunteer.map(v => <NavbarLinkMobile key={v.text} text={v.text} path={v.path} />)}
         </MenuList>
       </Menu>
-      <ProfileDropdown isAdmin={isAdmin} />
+      <ProfileDropdown
+        isAdmin={isAdmin}
+        onAdminPortal={onAdminPortal}
+        setOnAdminPortal={setOnAdminPortal}
+      />
     </Flex>
   );
 };
 
 NavbarMobile.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
+  onAdminPortal: PropTypes.bool.isRequired,
+  setOnAdminPortal: PropTypes.func.isRequired,
 };
 
 export default NavbarMobile;

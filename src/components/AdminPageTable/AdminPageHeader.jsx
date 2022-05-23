@@ -2,6 +2,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Thead, Tr, Th } from '@chakra-ui/react';
+import { FiArrowDown, FiArrowUp } from 'react-icons/fi';
+
+const ArrowIcon = ({ down }) => {
+  const style = { display: 'inline', position: 'relative', left: '4px', top: '2px' };
+  if (down) {
+    return <FiArrowDown size="1em" style={style} />;
+  }
+  return <FiArrowUp size="1em" style={style} />;
+};
+ArrowIcon.propTypes = {
+  down: PropTypes.bool.isRequired,
+};
 
 // header portion of table where user can sort data
 const AdminPageHeader = ({ headerGroups }) => {
@@ -10,8 +22,13 @@ const AdminPageHeader = ({ headerGroups }) => {
       {headerGroups.map(headerGroup => (
         <Tr id="table-head" w="parent" {...headerGroup.getHeaderGroupProps()}>
           {headerGroup.headers.map(column => (
-            <Th color="white" bgColor="ochGrey">
+            <Th
+              color="white"
+              bgColor="ochGrey"
+              {...column.getHeaderProps(column.getSortByToggleProps())}
+            >
               {column.render('Header')}
+              {column.isSorted ? <ArrowIcon down={column.isSortedDesc} /> : ''}
             </Th>
           ))}
         </Tr>

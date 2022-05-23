@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { PropTypes, instanceOf } from 'prop-types';
-import { withCookies, cookieKeys, Cookies, clearCookies } from './cookie_utils';
+import { withCookies, Cookies, clearCookies } from './cookie_utils';
 import { refreshToken } from './auth_utils';
 import { OCHBackend } from './utils';
+import { useUserContext } from './UserContext/UserContext';
 
 const userIsAuthenticated = async (roles, cookies) => {
   try {
-    const accessToken = await refreshToken(cookies);
-    // console.log(accessToken);
-    if (!accessToken) {
-      return false;
-    }
-    const loggedIn = await OCHBackend.get(`/auth/verifyToken/${accessToken}`);
-    // console.log(accessToken, loggedIn);
-    return roles.includes(cookies.get(cookieKeys.ROLE)) && loggedIn.status === 200;
+    const { idToken: accessToken, currentUserId } = await refreshToken(cookies);
+    if (!accessToken) return false;
+
+    const [loggedIn, currentUser] = await Promise.all([
+      OCHBackend.get(`/auth/verifyToken/${accessToken}`),
+      OCHBackend.get(`/users/${currentUserId}`),
+    ]);
+
+    // User role matches, and token is verified
+    return {
+      authenticated: roles.includes(currentUser.data?.role) && loggedIn.status === 200,
+      userData: currentUser.data,
+    };
   } catch (err) {
     // console.log(err);
     clearCookies(cookies);
@@ -33,12 +39,16 @@ const userIsAuthenticated = async (roles, cookies) => {
 const ProtectedRoute = ({ Component, redirectPath, roles, cookies }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { setUserData } = useUserContext();
 
   useEffect(async () => {
-    const authenticated = await userIsAuthenticated(roles, cookies);
+    const { authenticated, userData } = await userIsAuthenticated(roles, cookies);
     setIsAuthenticated(authenticated);
+    setUserData(userData);
+
     setIsLoading(false);
   }, []);
+
   if (isLoading) {
     return <h1>LOADING...</h1>;
   }

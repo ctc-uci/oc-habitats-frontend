@@ -1,6 +1,7 @@
 import { Box, Center, Flex, Stack, Text, VStack, HStack } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import DropdownSearch from '../components/DropdownSearch';
 import SpeciesList from '../components/SpeciesList';
 import NewSpeciesModal from '../components/NewSpeciesModal';
@@ -146,10 +147,10 @@ const Species = () => {
     await axios.delete(`${process.env.REACT_APP_API_URL}/species/${deletedSpecie}`);
     setChange(c => !c);
   };
-
+  const isAdmin = false;
   return (
     <Center>
-      <Stack w="container.xl" justify-content="center" mb="4em">
+      <Stack w="container.xl" justify-content="center" mb="4em" mx="1.5em">
         <VStack align="left" spacing="1.5em" w="100%">
           <Text fontWeight="600" fontSize="36px" mt="40px">
             Species List
@@ -158,14 +159,16 @@ const Species = () => {
             <strong>Search for a Species:</strong>
             <HStack>
               <Box w="100%">
-                <Flex justifyContent="space-between" flexDir="row">
-                  <Box w="32.5%">
+                <Flex justifyContent="space-between" flexDir={{ md: 'row', sm: 'column' }}>
+                  <Box w={{ md: '32.5%', sm: '100%' }} my={{ md: '0', sm: '5' }}>
                     <DropdownSearch options={options} handleSelectedValue={highlightSearch} />
                   </Box>
-                  <HStack>
-                    <NewSpeciesModal addNewSpecies={addNewSpecies} />
-                    <NewPredatorModal addNewPredator={addNewPredator} />
-                  </HStack>
+                  {isAdmin && (
+                    <HStack>
+                      <NewSpeciesModal addNewSpecies={addNewSpecies} />
+                      <NewPredatorModal addNewPredator={addNewPredator} />
+                    </HStack>
+                  )}
                 </Flex>
               </Box>
             </HStack>
@@ -176,4 +179,5 @@ const Species = () => {
     </Center>
   );
 };
+
 export default Species;
