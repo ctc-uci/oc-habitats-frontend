@@ -33,7 +33,7 @@ const NavbarLink = ({ text, path = '/', isAdmin }) => {
                 <Text fontWeight={500}>{text}</Text>
               </MenuButton>
             </Link>
-            <MenuList onMouseLeave={onClose}>
+            <MenuList onMouseLeave={onClose} boxShadow="base" bgColor="#FDFDFD">
               <Link to={path}>
                 <Text color="black" fontWeight={400} ml="17px" mr="17px" mb="17px">
                   View Submissions
