@@ -16,6 +16,7 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
@@ -24,6 +25,7 @@ import { OCHBackend } from '../common/utils';
 
 const NewQuestionModal = ({ currentTemplate, refreshTrigger }) => {
   const [title, setTitle] = useState();
+  const [titleLength, setTitleLength] = useState(0);
   const [type, setType] = useState('TEXT');
   const [tooltip, setTooltip] = useState();
   const addQuestionModal = useDisclosure();
@@ -81,15 +83,22 @@ const NewQuestionModal = ({ currentTemplate, refreshTrigger }) => {
                 <FormControl>
                   <FormLabel htmlFor="title">Question Title</FormLabel>
                   <Input
+                    maxLength={40}
                     id="title"
                     type="text"
                     value={title}
                     placeholder="Title"
-                    onChange={({ target }) => setTitle(target.value)}
+                    onChange={({ target }) => {
+                      setTitle(target.value);
+                      setTitleLength(target.value.length);
+                    }}
                     w="412px"
                     mb="20px"
                   />
                 </FormControl>
+                <Text ml="360px" fontSize="12px" color="gray">
+                  {titleLength}/40
+                </Text>
                 <FormControl>
                   <FormLabel htmlFor="type">Question Type</FormLabel>
                   <RadioGroup id="type" onChange={e => setType(e)} value={type} maxW="700px">
@@ -116,7 +125,14 @@ const NewQuestionModal = ({ currentTemplate, refreshTrigger }) => {
             </Box>
           </ModalBody>
           <ModalFooter>
-            <Button type="submit" bgColor="ochBlue" w="412px" h="40px" onClick={addQuestion}>
+            <Button
+              type="submit"
+              disabled={!title}
+              bgColor="ochBlue"
+              w="412px"
+              h="40px"
+              onClick={addQuestion}
+            >
               Add Question
             </Button>
           </ModalFooter>

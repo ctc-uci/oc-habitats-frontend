@@ -79,7 +79,9 @@ function NonStaticHumanActivity({ refreshTrigger, isTemplate, question }) {
             ? () => {
                 editHumanActivityModal.onOpen();
                 setNewCategory(question.title);
+                setNewCategoryLength(question.title.length);
                 setNewExamples(question.subtitle);
+                setNewExamplesLength(question.subtitle.length);
                 setIdOfFieldBeingEdited(question._id);
                 console.log(`idOfFieldBeingEdited: ${idOfFieldBeingEdited}`);
               }
@@ -128,7 +130,7 @@ function NonStaticHumanActivity({ refreshTrigger, isTemplate, question }) {
                   <Input
                     id="category"
                     type="text"
-                    maxLength={25}
+                    maxLength={50}
                     value={newCategory}
                     placeholder="Category Name"
                     onChange={({ target }) => {
@@ -139,13 +141,13 @@ function NonStaticHumanActivity({ refreshTrigger, isTemplate, question }) {
                   />
                 </FormControl>
                 <Text ml="360px" fontSize="12px" color="gray">
-                  {`${newCategoryLength}/25`}
+                  {`${newCategoryLength}/50`}
                 </Text>
                 <FormControl>
                   <FormLabel htmlFor="examples">Activity Examples</FormLabel>
                   <Textarea
                     value={newExamples}
-                    maxLength={30}
+                    maxLength={60}
                     placeholder="Type here..."
                     w="412px"
                     h="64px"
@@ -156,10 +158,16 @@ function NonStaticHumanActivity({ refreshTrigger, isTemplate, question }) {
                   />
                 </FormControl>
                 <Text ml="360px" fontSize="12px" color="gray">
-                  {newExamplesLength}/30
+                  {newExamplesLength}/60
                 </Text>
                 <VStack>
-                  <Button w="412px" h="40px" bgColor="ochBlue" onClick={updateHumanActivity}>
+                  <Button
+                    w="412px"
+                    h="40px"
+                    bgColor="ochBlue"
+                    disabled={!newCategory || !newExamples}
+                    onClick={updateHumanActivity}
+                  >
                     Save Changes
                   </Button>
                   <Button

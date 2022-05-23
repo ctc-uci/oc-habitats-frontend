@@ -41,6 +41,7 @@ import { OCHBackend } from '../../common/utils';
 
 function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
   const [newTitle, setNewTitle] = useState();
+  const [newTitleLength, setNewTitleLength] = useState(0);
   const [newFieldType, setNewFieldType] = useState();
   const [newTooltip, setNewTooltip] = useState();
   const [idOfFieldBeingEdited, setIdOfFieldBeingEdited] = useState();
@@ -86,6 +87,7 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
             ? () => {
                 editQuestionModal.onOpen();
                 setNewTitle(question.title);
+                setNewTitleLength(question.title.length);
                 setNewFieldType(question.fieldType);
                 setNewTooltip(question.tooltip);
                 setIdOfFieldBeingEdited(question._id);
@@ -147,15 +149,22 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
                 <FormControl>
                   <FormLabel htmlFor="title">Question Title</FormLabel>
                   <Input
+                    maxLength={40}
                     id="title"
                     type="text"
                     value={newTitle}
                     placeholder="Question Title"
-                    onChange={({ target }) => setNewTitle(target.value)}
+                    onChange={({ target }) => {
+                      setNewTitle(target.value);
+                      setNewTitleLength(target.value.length);
+                    }}
                     w="412px"
                     mb="20px"
                   />
                 </FormControl>
+                <Text ml="360px" fontSize="12px" color="gray">
+                  {newTitleLength}/40
+                </Text>
                 <FormControl>
                   <FormLabel htmlFor="type">Question Type</FormLabel>
                   <RadioGroup
@@ -183,7 +192,13 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
                       mb="60px"
                     />
                     <VStack>
-                      <Button w="412px" h="40px" bgColor="ochBlue" onClick={updateQuestion}>
+                      <Button
+                        w="412px"
+                        h="40px"
+                        disabled={!newTitle}
+                        bgColor="ochBlue"
+                        onClick={updateQuestion}
+                      >
                         Save Changes
                       </Button>
                       <Button

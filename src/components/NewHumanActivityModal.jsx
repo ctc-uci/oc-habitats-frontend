@@ -81,7 +81,7 @@ const NewHumanActivityModal = ({ refreshTrigger }) => {
                   <Input
                     id="category"
                     type="text"
-                    maxLength={25}
+                    maxLength={50}
                     value={category}
                     placeholder="Category Name"
                     onChange={({ target }) => {
@@ -92,12 +92,12 @@ const NewHumanActivityModal = ({ refreshTrigger }) => {
                   />
                 </FormControl>
                 <Text ml="360px" fontSize="12px" color="gray">
-                  {`${categoryLength}/25`}
+                  {`${categoryLength}/50`}
                 </Text>
                 <FormControl>
                   <FormLabel htmlFor="examples">Activity Examples</FormLabel>
                   <Textarea
-                    maxLength={30}
+                    maxLength={60}
                     placeholder="Type here..."
                     w="412px"
                     h="64px"
@@ -108,13 +108,20 @@ const NewHumanActivityModal = ({ refreshTrigger }) => {
                   />
                 </FormControl>
                 <Text ml="360px" fontSize="12px" color="gray">
-                  {examplesLength}/30
+                  {examplesLength}/60
                 </Text>
               </FormControl>
             </Box>
           </ModalBody>
           <ModalFooter>
-            <Button type="submit" bgColor="ochBlue" w="412px" h="40px" onClick={addHumanActivity}>
+            <Button
+              type="submit"
+              bgColor="ochBlue"
+              w="412px"
+              h="40px"
+              disabled={!category || !examples}
+              onClick={addHumanActivity}
+            >
               Add Human Activity
             </Button>
           </ModalFooter>
