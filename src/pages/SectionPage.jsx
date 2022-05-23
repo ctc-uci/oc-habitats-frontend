@@ -35,7 +35,8 @@ const SectionPage = () => {
     try {
       setIsLoading(true);
       const res = await OCHBackend.get(`${process.env.REACT_APP_API_URL}/sections`);
-      setSections(res.data);
+      // sort sections by id
+      setSections(res.data.sort((a, b) => a._id.localeCompare(b._id)));
 
       setIsLoading(false);
     } catch (err) {
