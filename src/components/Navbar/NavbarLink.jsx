@@ -1,10 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useLocation, Link } from 'react-router-dom';
-import { Center } from '@chakra-ui/react';
+import {
+  Center,
+  Menu,
+  MenuButton,
+  MenuList,
+  useDisclosure,
+  Text,
+  MenuDivider,
+} from '@chakra-ui/react';
 
-const NavbarLink = ({ text, path = '/' }) => {
+const NavbarLink = ({ text, path = '/', isAdmin }) => {
   const current = useLocation().pathname;
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Center
       h="inherit"
@@ -16,14 +25,42 @@ const NavbarLink = ({ text, path = '/' }) => {
       fontWeight={500}
       whiteSpace="nowrap"
     >
-      <Link to={path}>{text}</Link>
+      {isAdmin && text === 'Monitor Logs' ? (
+        <>
+          <Menu isOpen={isOpen}>
+            <Link to={path}>
+              <MenuButton onMouseEnter={onOpen}>
+                <Text fontWeight={500}>{text}</Text>
+              </MenuButton>
+            </Link>
+            <MenuList onMouseLeave={onClose}>
+              <Link to={path}>
+                <Text color="black" fontWeight={400} ml="17px" mr="17px" mb="17px">
+                  View Submissions
+                </Text>
+              </Link>
+              <Link to="edit-log-template">
+                <Text color="black" fontWeight={400} ml="17px" mr="17px" mb="5px">
+                  Edit Monitor Log Template
+                </Text>
+              </Link>
+            </MenuList>
+          </Menu>
+        </>
+      ) : (
+        <Link to={path}>{text}</Link>
+      )}
     </Center>
   );
 };
 
+NavbarLink.defaultProps = {
+  isAdmin: false,
+};
 NavbarLink.propTypes = {
   text: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
+  isAdmin: PropTypes.bool,
 };
 
 export default NavbarLink;

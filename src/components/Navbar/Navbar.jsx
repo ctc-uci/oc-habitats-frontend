@@ -49,7 +49,7 @@ const Navbar = ({ isAdmin }) => {
       <HStack h="inherit" spacing={6} pr={4}>
         {isAdmin
           ? admin.map(a => <NavbarLink key={a.text} text={a.text} path={a.path} />)
-          : volunteer.map(v => <NavbarLink key={v.text} text={v.text} path={v.path} />)}
+          : volunteer.map(v => <NavbarLink key={v.text} text={v.text} path={v.path} isAdmin />)}
         {!isAdmin && (
           <Link to="/create-log">
             <Button size="sm" bgColor="ochBlue" color="ochBlack" _hover={{ opacity: '0.8' }}>
