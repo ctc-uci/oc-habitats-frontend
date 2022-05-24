@@ -267,8 +267,8 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
   return (
     <>
       <Button
+        w={{ md: 'fit-content', base: '100%' }}
         onClick={handButtonClick}
-        size="md"
         bg="ochBlue"
         variant="solid"
         rightIcon={<AddIcon />}

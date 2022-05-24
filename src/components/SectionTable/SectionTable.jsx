@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-key */
 
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Thead, Tbody, Tr, Text, Spinner, VStack } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Text, Spinner, VStack, useMediaQuery } from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
 import SectionTableFooter from './SectionTableFooter';
 import SectionTableHeader from './SectionTableHeader';
@@ -31,7 +31,7 @@ const LoadingRow = () => (
 const EmptyRow = () => (
   <Tr>
     <td colSpan={4}>
-      <VStack justifyContent="center" alignContent="center">
+      <VStack justifyContent="center" alignContent="center" my={4}>
         <Text fontWeight="bold">No segments found</Text>
       </VStack>
     </td>
@@ -52,6 +52,8 @@ const tableContent = (loading, page, prepareRow) => {
 };
 
 const SectionTable = ({ loading, segments, allSections, updateSections, sectionId, role }) => {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
   const columns = useMemo(
     () => [
       {
@@ -95,6 +97,7 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
     [allSections],
   );
   const data = useMemo(() => segments, [segments, loading]);
+
   const {
     getTableProps,
     // getTableBodyProps,
@@ -107,6 +110,7 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
     previousPage,
     canNextPage,
     canPreviousPage,
+    setHiddenColumns,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -114,11 +118,22 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
       data,
       initialState: {
         pageSize: rowsPerPageSelect[0],
-        hiddenColumns: role !== 'admin' ? ['delete'] : [],
       },
     },
     usePagination,
   );
+
+  // set hidden table columns, depending on user role and mobile
+  useEffect(() => {
+    const hiddenColumns = [];
+    if (role === 'volunteer') {
+      hiddenColumns.push('delete');
+    }
+    if (isMobile) {
+      hiddenColumns.push('mapLink', 'parking');
+    }
+    setHiddenColumns(hiddenColumns);
+  }, [isMobile]);
 
   return (
     <>

@@ -80,10 +80,13 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
   const [segLink, setSegLink] = useState(data.mapLink);
   const [segParking, setSegParking] = useState(data.parking);
   console.log('DATA', sectionID);
+  console.log(data._id);
 
   const deleteSegment = async () => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/segment/${data._id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/segment/${data._id}`, {
+        sectionId: sectionID,
+      });
       updateSections();
       onCloseEdit();
     } catch (err) {
