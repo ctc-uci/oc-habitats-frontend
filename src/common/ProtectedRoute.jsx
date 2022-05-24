@@ -54,7 +54,10 @@ const ProtectedRoute = ({ children, redirectPath, roles, cookies }) => {
     return <h1>LOADING...</h1>;
   }
   if (isAuthenticated) {
-    return children;
+    if (children) {
+      return children;
+    }
+    return <></>;
   }
   return <Navigate to={redirectPath} />;
 };

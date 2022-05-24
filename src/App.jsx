@@ -69,10 +69,7 @@ function App() {
                     path="/account"
                     element={
                       <ProtectedRoute redirectPath="/logout" roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
-                        <AccountPage
-                          changesMade={accMadeChanges}
-                          setChangesMade={setAccMadeChanges}
-                        />
+                        <AccountPage setChangesMade={setAccMadeChanges} />
                       </ProtectedRoute>
                     }
                   />
@@ -88,11 +85,9 @@ function App() {
                   <Route
                     path="/user-context-example"
                     element={
-                      <ProtectedRoute
-                        Component={UserContextExample}
-                        redirectPath="/logout"
-                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
-                      />
+                      <ProtectedRoute redirectPath="/logout" roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
+                        <UserContextExample />
+                      </ProtectedRoute>
                     }
                   />
                   {/* NEW AUTH ROUTES */}

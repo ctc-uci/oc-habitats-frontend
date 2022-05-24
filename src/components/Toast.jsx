@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import React from 'react';
 
 // Pass in toast because can't call hooks in conditionals
 const Toast = (toast, status) => {
@@ -8,6 +9,11 @@ const Toast = (toast, status) => {
   const isClosable = true;
   const duration = 5000;
   let description = '';
+
+  if (status === '') {
+    return null;
+  }
+
   if (status === 'success') {
     description = 'Successfully saved changes!';
   }
@@ -27,6 +33,11 @@ const Toast = (toast, status) => {
   if (status === 'unsaved') {
     description = 'Careful - you have unsaved changes';
   }
+
+  if (status === 'weak') {
+    description = 'Error - Password should be at least 6 characters';
+  }
+
   return toast({
     description,
     position,

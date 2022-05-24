@@ -325,6 +325,9 @@ const updateUserPassword = async (newPassword, oldPassword) => {
     if (e.code === 'auth/wrong-password') {
       return 'password';
     }
+    if (e.code === 'auth/weak-password') {
+      return 'weak';
+    }
     return 'error';
   }
 };
