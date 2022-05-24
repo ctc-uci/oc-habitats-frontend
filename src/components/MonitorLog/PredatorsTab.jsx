@@ -22,6 +22,11 @@ const FORM_PREFIX = 'predators';
 
 const PredatorField = ({ predatorName, predatorId, isDisabled, predatorIndex }) => {
   const { setValue, getValues } = useFormContext();
+  const formKey = `${FORM_PREFIX}[${predatorIndex}]`;
+
+  React.useEffect(() => {
+    setValue(formKey, { species: predatorId, count: getValues(formKey)?.count || 0 });
+  }, []);
 
   return (
     <GridItem colSpan={1} rowSpan={1} width={{ md: '90%', base: '80%' }}>
@@ -32,10 +37,8 @@ const PredatorField = ({ predatorName, predatorId, isDisabled, predatorIndex }) 
         <NumberInput
           min={0}
           isDisabled={isDisabled}
-          onChange={(_, val) =>
-            setValue(`${FORM_PREFIX}[${predatorIndex}]`, { species: predatorId, count: val })
-          }
-          defaultValue={getValues(`${FORM_PREFIX}[${predatorIndex}]`)?.count || 0}
+          onChange={(_, val) => setValue(formKey, { species: predatorId, count: val })}
+          defaultValue={getValues(formKey)?.count || 0}
         >
           <NumberInputField />
           <NumberInputStepper>

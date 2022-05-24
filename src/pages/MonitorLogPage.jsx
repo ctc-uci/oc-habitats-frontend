@@ -310,7 +310,7 @@ const MonitorLogPage = ({ mode }) => {
             h="16"
             zIndex="banner"
           >
-            <Flex width="100%" maxWidth="1500px" p="32px">
+            <Flex width="100%" p="32px">
               <Button
                 onClick={returnToTop}
                 variant="outline"
@@ -324,7 +324,9 @@ const MonitorLogPage = ({ mode }) => {
                 <Button
                   colorScheme="cyan"
                   type="submit"
-                  //  onClick={handleSubmit}
+                  onClick={() => {
+                    console.log(formMethods.getValues());
+                  }}
                 >
                   {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
                   Save Changes
