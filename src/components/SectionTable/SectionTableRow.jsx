@@ -127,7 +127,7 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
 
       <Modal size="xl" isOpen={isOpenEdit} onClose={onCloseEdit}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent p={3}>
           <ModalHeader>Edit Segment</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -179,7 +179,7 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
               }}
             />
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter pr={0}>
             <Button colorScheme="gray" mr={3} onClick={onCloseEdit}>
               Cancel
             </Button>

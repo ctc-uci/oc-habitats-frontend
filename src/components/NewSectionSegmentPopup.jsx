@@ -14,7 +14,6 @@ import {
   Stack,
   Input,
   Textarea,
-  Text,
   FormControl,
   FormLabel,
   FormErrorMessage,
@@ -45,20 +44,40 @@ const addSegmentSchema = yup.object({
   newSegParking: yup.string().required('Segment Parking is required'),
 });
 
-const ModalContentStepOne = ({ step, setStep }) => (
-  <>
-    <ModalHeader>Create New:</ModalHeader>
-    <ModalBody>
-      <Text>User Type</Text>
-      <RadioGroup onChange={setStep} value={step}>
-        <Stack column="vertical">
-          <Radio value="1">Section</Radio>
-          <Radio value="2">Segment</Radio>
-        </Stack>
-      </RadioGroup>
-    </ModalBody>
-  </>
-);
+const ModalContentStepOne = ({ step, setStep, onClose }) => {
+  const [current, setCurrent] = useState(step);
+  const handleClick = () => {
+    setStep(current);
+  };
+
+  return (
+    <>
+      <ModalHeader>Create New:</ModalHeader>
+      <ModalBody>
+        <RadioGroup onChange={val => setCurrent(val)} value={current} mb={4}>
+          <Stack direction="column">
+            <Radio value="1">Section</Radio>
+            <Radio value="2">Segment</Radio>
+          </Stack>
+        </RadioGroup>
+        <ModalFooter pr={0}>
+          <Button colorScheme="gray" mr={3} onClick={onClose}>
+            Close
+          </Button>
+          <Button
+            colorScheme="blue"
+            bg="ochBlue"
+            color="ochBlack"
+            variant="solid"
+            onClick={handleClick}
+          >
+            Next
+          </Button>
+        </ModalFooter>
+      </ModalBody>
+    </>
+  );
+};
 
 const ModalContentAddSection = ({ addNewSection, onClose }) => {
   const {
@@ -94,12 +113,12 @@ const ModalContentAddSection = ({ addNewSection, onClose }) => {
               <FormErrorMessage>{errors.sectionMapLink?.message}</FormErrorMessage>
             </FormControl>
           </Stack>
-          <ModalFooter>
+          <ModalFooter pr={0}>
             <Button colorScheme="gray" mr={3} onClick={onClose}>
               Close
             </Button>
             <Button colorScheme="blue" bg="ochBlue" color="ochBlack" variant="solid" type="submit">
-              Create New Section
+              Create Section
             </Button>
           </ModalFooter>
         </form>
@@ -168,12 +187,12 @@ const ModalContentAddSegment = ({ sectionOptions, addNewSegment, onClose }) => {
               <FormErrorMessage>{errors.newSegParking?.message}</FormErrorMessage>
             </FormControl>
           </Stack>
-          <ModalFooter>
+          <ModalFooter pr={0}>
             <Button colorScheme="gray" mr={3} onClick={onClose}>
               Close
             </Button>
             <Button colorScheme="blue" bg="ochBlue" color="ochBlack" variant="solid" type="submit">
-              Create New Segment
+              Create Segment
             </Button>
           </ModalFooter>
         </form>
@@ -234,7 +253,7 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
   };
 
   const modalSteps = {
-    0: <ModalContentStepOne step={step} setStep={setStep} />,
+    0: <ModalContentStepOne step={step} setStep={setStep} onClose={onClose} />,
     1: <ModalContentAddSection addNewSection={addNewSection} onClose={onClose} />,
     2: (
       <ModalContentAddSegment
@@ -278,6 +297,7 @@ NewSectionSegmentPopup.propTypes = {
 ModalContentStepOne.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 ModalContentAddSection.propTypes = {

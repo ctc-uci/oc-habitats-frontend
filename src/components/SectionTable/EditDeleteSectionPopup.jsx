@@ -75,7 +75,7 @@ const ModalContentEditSection = ({ editSection, section, onClose }) => {
               <FormErrorMessage>{errors.sectionMapLink?.message}</FormErrorMessage>
             </FormControl>
           </Stack>
-          <ModalFooter>
+          <ModalFooter pr={0}>
             <Button colorScheme="gray" mr={3} onClick={onClose}>
               Close
             </Button>
