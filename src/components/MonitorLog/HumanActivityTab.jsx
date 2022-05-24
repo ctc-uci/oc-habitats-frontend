@@ -197,7 +197,7 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
           <Textarea
             disabled={isDisabled}
             placeholder="Type here..."
-            {...register(`${FORM_PREFIX}outreach`)}
+            {...register(`${FORM_PREFIX}Outreach`)}
           />
         </VStack>
         <VStack spacing="8px" align="left">
@@ -213,7 +213,7 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
           <Textarea
             disabled={isDisabled}
             placeholder="Type here..."
-            {...register(`${FORM_PREFIX}otherNotes`)}
+            {...register(`${FORM_PREFIX}OtherNotes`)}
           />
         </VStack>
       </VStack>
