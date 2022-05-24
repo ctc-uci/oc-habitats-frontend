@@ -135,7 +135,7 @@ const HumanActivityTab = ({ showHeader, isDisabled }) => {
         <Textarea
           disabled={isDisabled}
           placeholder="Type here..."
-          {...register(`${FORM_PREFIX}outreach`)}
+          {...register(`${FORM_PREFIX}Outreach`)}
         />
         <Spacer />
         <Spacer />
@@ -147,7 +147,7 @@ const HumanActivityTab = ({ showHeader, isDisabled }) => {
         <Textarea
           disabled={isDisabled}
           placeholder="Type here..."
-          {...register(`${FORM_PREFIX}otherNotes`)}
+          {...register(`${FORM_PREFIX}OtherNotes`)}
         />
         <Spacer />
         <Spacer />
