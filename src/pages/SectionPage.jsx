@@ -135,7 +135,10 @@ const SectionPage = () => {
                             </>
                           </Text>
                         </HStack>
-                        <HStack justify="flex-end" sx={{ marginTop: '16px !important' }}>
+                        <HStack
+                          justify="flex-end"
+                          mt={{ md: '0px !important', base: '16px !important' }}
+                        >
                           <EditDeleteSectionPopup section={sectionObj} getSections={getSections} />
                         </HStack>
                       </Stack>

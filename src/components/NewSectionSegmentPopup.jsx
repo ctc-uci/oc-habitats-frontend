@@ -218,11 +218,16 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
         name: newSection.sectionName,
         map: newSection.sectionMapLink,
       });
+      toast({
+        title: 'Successfully created a new section.',
+        status: 'success',
+        isClosable: true,
+      });
       getSections();
       onClose();
     } catch (err) {
       toast({
-        title: 'An Error Occured!',
+        title: 'Unable to create new section',
         description: err?.message,
         status: 'error',
         isClosable: true,
@@ -240,11 +245,16 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
         mapLink: newSegment.newSegLink,
         parking: newSegment.newSegParking,
       });
+      toast({
+        title: 'Successfully created a new segment.',
+        status: 'success',
+        isClosable: true,
+      });
       getSections();
       onClose();
     } catch (err) {
       toast({
-        title: 'An Error Occured!',
+        title: 'Unable to create new segment',
         description: err?.message,
         status: 'error',
         isClosable: true,

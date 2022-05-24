@@ -24,11 +24,11 @@ import {
   useDisclosure,
   Link,
   Select,
+  useToast,
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import axios from 'axios';
 import './SectionTableRow.css';
-// import UpdateDeleteSegmentMenu from './SectionTableEditDeleteMenu';
+import { OCHBackend } from '../../common/utils';
 
 // Custom component to render Name
 const SegmentNameColumn = ({ data }) => {
@@ -79,18 +79,27 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
   const [segLocation, setSegLocation] = useState(data.streets);
   const [segLink, setSegLink] = useState(data.mapLink);
   const [segParking, setSegParking] = useState(data.parking);
-  console.log('DATA', sectionID);
-  console.log(data._id);
+  const toast = useToast();
 
   const deleteSegment = async () => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/segment/${data._id}`, {
+      await OCHBackend.delete(`/segment/${data._id}`, {
         sectionId: sectionID,
+      });
+      toast({
+        title: 'Successfully deleted segment.',
+        description: `Segment has been deleted.`,
+        status: 'success',
+        isClosable: true,
       });
       updateSections();
       onCloseEdit();
     } catch (err) {
-      alert(err);
+      toast({
+        title: `Unable to delete segment.`,
+        status: 'error',
+        isClosable: true,
+      });
     }
   };
 
@@ -104,12 +113,21 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
         mapLink: segLink,
         parking: segParking,
       };
-      await axios.put(`${process.env.REACT_APP_API_URL}/segment/${data._id}`, putData);
+      await OCHBackend.put(`/segment/${data._id}`, putData);
+      toast({
+        title: 'Successfully updated segment.',
+        description: `Segment has been updated.`,
+        status: 'success',
+        isClosable: true,
+      });
       updateSections();
       onCloseEdit();
     } catch (err) {
-      console.log(err);
-      alert(err);
+      toast({
+        title: `Unable to update segment.`,
+        status: 'error',
+        isClosable: true,
+      });
     }
   };
 
