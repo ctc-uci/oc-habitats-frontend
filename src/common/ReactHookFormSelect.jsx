@@ -18,7 +18,7 @@ const ReactHookFormSelect = props => {
           options={options}
           onBlur={onBlur}
           onChange={isMulti ? val => onChange(val.map(v => v.value)) : v => onChange(v.value)}
-          defaultValue={
+          value={
             isMulti
               ? options.filter(o => (getValues(name) || []).includes(o[optionKey]))
               : options.find(o => o[optionKey] === getValues(name))

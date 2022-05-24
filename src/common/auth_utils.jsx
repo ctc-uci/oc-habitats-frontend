@@ -208,10 +208,10 @@ const registerWithEmailAndPassword = async (
  */
 const sendPasswordReset = async email => {
   const user = await OCHBackend.get(`/users/email/${email}`);
-  if (user.response.status !== 200 || !user || !user.data) {
-    throw new Error(`There is no account associated with the email ${email}.`);
-  } else {
+  if (user) {
     await sendPasswordResetEmail(auth, email);
+  } else {
+    throw new Error(`There is no account associated with the email ${email}.`);
   }
 };
 

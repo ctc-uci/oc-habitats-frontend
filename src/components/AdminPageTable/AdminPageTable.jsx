@@ -1,26 +1,32 @@
 /* eslint-disable react/jsx-key */
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { useTable, usePagination } from 'react-table';
-import { Table, Tr, Td, Tbody } from '@chakra-ui/react';
+import { useTable, usePagination, useSortBy } from 'react-table';
+import { Table, Tr, Td, Tbody, Spinner } from '@chakra-ui/react';
 import AdminPageHeader from './AdminPageHeader';
 import Pagination from './Pagination';
 import CellStructure from './AdminPageStructure';
 
 /* eslint-enable react/destructuring-assignment, react/prop-types */
 
-const AdminPageTable = ({ tableData, checked, setChecked, allChecked, setAllChecked }) => {
+const AdminPageTable = ({
+  tableData,
+  pageCount: controlledPageCount,
+  checked,
+  isLoading,
+  setChecked,
+  allChecked,
+  setAllChecked,
+  setFetchSettings,
+}) => {
   const columns = useMemo(
     () => CellStructure(checked, setChecked, allChecked, setAllChecked),
     [checked, setChecked, allChecked, setAllChecked],
   );
-  const data = useMemo(() => tableData);
-
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     page,
     prepareRow,
     canPreviousPage,
@@ -28,50 +34,58 @@ const AdminPageTable = ({ tableData, checked, setChecked, allChecked, setAllChec
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    state: { pageIndex, pageSize, sortBy },
   } = useTable(
     {
       columns,
-      data,
-      initialState: { pageIndex: 0 },
+      data: tableData.results,
+      initialState: { pageIndex: 0, pageSize: 10, sortBy: [{ id: 'submittedAt', desc: false }] },
+      manualPagination: true,
+      manualSortBy: true,
+      pageCount: controlledPageCount,
     },
+    useSortBy,
     usePagination,
   );
 
+  useEffect(() => {
+    setFetchSettings({ pageIndex, pageSize, sortBy });
+  }, [pageIndex, pageSize, sortBy]);
+
   return (
     <>
-      {/* <pre>
-        <code>
-          {JSON.stringify(
-            {
-              pageIndex,
-              pageSize,
-              pageCount,
-              canNextPage,
-              canPreviousPage,
-            },
-            null,
-            2,
-          )}
-        </code>
-      </pre> */}
       <Table variant="striped" {...getTableProps()}>
         <AdminPageHeader headerGroups={headerGroups} />
         <Tbody {...getTableBodyProps()}>
-          {page.map(row => {
-            prepareRow(row);
-            return (
-              <Tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return (
-                    <Td fontSize="14px" key={row.id} {...cell.getCellProps()}>
-                      {cell.render('Cell')}
-                    </Td>
-                  );
-                })}
-              </Tr>
-            );
-          })}
+          {isLoading && (
+            <Tr>
+              <Td colSpan="6" textAlign="center" py="10">
+                <Spinner />
+              </Td>
+            </Tr>
+          )}
+          {!isLoading && page.length === 0 && (
+            <Tr>
+              <Td colSpan="6" textAlign="center" py="10">
+                No results
+              </Td>
+            </Tr>
+          )}
+          {!isLoading &&
+            page.map(row => {
+              prepareRow(row);
+              return (
+                <Tr {...row.getRowProps()}>
+                  {row.cells.map(cell => {
+                    return (
+                      <Td fontSize="14px" key={row.id} {...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </Td>
+                    );
+                  })}
+                </Tr>
+              );
+            })}
         </Tbody>
       </Table>
       <Pagination
@@ -82,7 +96,7 @@ const AdminPageTable = ({ tableData, checked, setChecked, allChecked, setAllChec
         setPageSize={setPageSize}
         previousPage={previousPage}
         nextPage={nextPage}
-        totalData={rows.length}
+        totalData={tableData.total}
       />
     </>
   );
@@ -93,9 +107,12 @@ AdminPageTable.propTypes = {
   checked: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   tableData: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  pageCount: PropTypes.number.isRequired,
   allChecked: PropTypes.bool.isRequired,
   setChecked: PropTypes.func.isRequired,
   setAllChecked: PropTypes.func.isRequired,
+  setFetchSettings: PropTypes.func.isRequired,
 };
 
 export default AdminPageTable;
