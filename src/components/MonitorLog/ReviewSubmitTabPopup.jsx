@@ -47,9 +47,9 @@ function ReturnPopup({ submitForm }) {
   const [modalStep, setModalStep] = useState('submitSurvey');
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  useEffect(() => {
-    setModalStep('reminderSelect');
-  });
+  // useEffect(() => {
+  //   setModalStep('reminderSelect');
+  // });
 
   const modalContent = {
     submitSurvey: (
