@@ -106,18 +106,6 @@ const AdminPage = () => {
           <span className="bold">SEGMENT</span>, <span className="bold">VOLUNTEER(S)</span>, and
           <span className="bold"> APPROVAL STATUS</span>.
         </Text>
-        {/* <pre>
-          {JSON.stringify(
-            {
-              segmentFilter,
-              dateFilter,
-              approvalFilter,
-              searchFilter,
-            },
-            null,
-            2,
-          )}
-        </pre> */}
         <AdminPageFilters
           segments={segments}
           segmentFilter={segmentFilter}

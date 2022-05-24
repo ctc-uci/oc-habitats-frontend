@@ -282,7 +282,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
             {/* Added Partners will be notified when this monitor log is submitted for review. */}
           </Text>
           <ReactHookFormSelect
-            name="partners"
+            name="sessionPartners"
             options={partnerSelectOptions}
             optionKey="_id"
             isDisabled={isDisabled}
