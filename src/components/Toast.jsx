@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
-
 // Pass in toast because can't call hooks in conditionals
 const Toast = (toast, status) => {
   const containerStyle = { width: '100vw', fontWeight: 550 };
