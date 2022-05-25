@@ -95,6 +95,10 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
   const [activityAdded, setActivityAdded] = useState(false);
   const [tabEdited, setTabEdited] = useState(false);
 
+  const toggleTabEdited = () => {
+    setTabEdited(!tabEdited);
+  };
+
   useEffect(async () => {
     const newQuestions = await OCHBackend.get(`/forms/human-activity`);
     const questions = await newQuestions.data;
@@ -147,7 +151,7 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
             return (
               <NonStaticHumanActivity
                 key={question.title.length}
-                refreshTrigger={setTabEdited}
+                refreshTrigger={toggleTabEdited}
                 question={question}
                 isTemplate={isTemplate}
               />

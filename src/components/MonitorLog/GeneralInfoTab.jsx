@@ -63,6 +63,10 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
   //   editQuestionModal.onClose();
   // };
 
+  const toggleTabEdited = () => {
+    setTabEdited(!tabEdited);
+  };
+
   useEffect(async () => {
     const newQuestions = await OCHBackend.get(`/forms/general`);
     const questions = await newQuestions.data;
@@ -272,56 +276,12 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
           {additionalQuestions.map(question => {
             return (
               <NonStaticQuestion
-                refreshTrigger={setTabEdited}
+                refreshTrigger={toggleTabEdited}
                 key={question.title}
                 question={question}
                 formType="general"
                 isTemplate={isTemplate}
               />
-              // <Box
-              //   w="255px"
-              //   h="133px"
-              //   borderRadius="6px"
-              //   key={question.title}
-              /*
-                _hover={isTemplate ? { bgColor: 'rgba(43, 192, 227, 0.25)' } : null}
-                onClick={
-                  isTemplate
-                    ? () => {
-                        editQuestionModal.onOpen();
-                        setNewTitle(question.title);
-                        setNewFieldType(question.fieldType);
-                        setNewTooltip(question.tooltip);
-                        setIdOfFieldBeingEdited(question._id);
-                        console.log(`idOfFieldBeingEdited: ${idOfFieldBeingEdited}`);
-                        console.log(additionalQuestions);
-                      }
-                    : null
-                }
-                */
-              //   px="10px"
-              //   py="10px"
-              // >
-              //   <GridItem key={question.title} colSpan={1} rowSpan={1}>
-              //     <VStack spacing="8px" align="left">
-              //       <Text fontWeight="500" fontSize="md">
-              //         {question.title}
-              //       </Text>
-              //       {question.fieldType === 'TEXT' ? (
-              //         <Input type="text" />
-              //       ) : (
-              //         <NumberInput allowMouseWheel>
-              //           <NumberInputField />
-              //           <NumberInputStepper>
-              //             <NumberIncrementStepper />
-              //             <NumberDecrementStepper />
-              //           </NumberInputStepper>
-              //         </NumberInput>
-              //       )}
-              //       {isTemplate && <Text color="#718096">Non-Static</Text>}
-              //     </VStack>
-              //   </GridItem>
-              // </Box>
             );
           })}
         </SimpleGrid>

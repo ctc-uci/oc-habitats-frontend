@@ -56,11 +56,12 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
       fieldId: idOfFieldBeingEdited,
       fieldBody: {
         title: newTitle,
+        subtitle: 'asdfghjkl',
         fieldType: newFieldType,
         tooltip: newTooltip,
       },
     });
-    refreshTrigger(true);
+    refreshTrigger();
     editQuestionModal.onClose();
   };
 
@@ -72,7 +73,7 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
         fieldId: idOfFieldBeingEdited,
       },
     });
-    refreshTrigger(true);
+    refreshTrigger();
     deleteQuestionModal.onClose();
   };
 

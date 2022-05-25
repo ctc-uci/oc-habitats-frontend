@@ -98,6 +98,10 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
     },
   });
 
+  const toggleTabEdited = () => {
+    setTabEdited(!tabEdited);
+  };
+
   useEffect(async () => {
     const newQuestions = await OCHBackend.get(`/forms/listed-species`);
     const questions = await newQuestions.data;
@@ -111,6 +115,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
     setValue(`${formPrefix}data`, data);
 
     // TODO: BACKEND API CALL TO GET ALL LISTED SPECIES FROM SPECIES CATALOG
+
     setListedSpeciesList([
       'Plover: Western Snowy (SNPL/WSPL)',
       'Tern: California Least (CLTE/LETE)',
@@ -470,7 +475,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
           </Text>
           <VStack align="start" spacing="4em">
             <GeneralListedInformation
-              refreshTrigger={setTabEdited}
+              refreshTrigger={toggleTabEdited}
               additionalQuestions={additionalQuestions}
               isTemplate
             />

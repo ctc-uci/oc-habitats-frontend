@@ -52,7 +52,7 @@ function NonStaticHumanActivity({ refreshTrigger, isTemplate, question }) {
         subtitle: newExamples,
       },
     });
-    refreshTrigger(true);
+    refreshTrigger();
     editHumanActivityModal.onClose();
   };
 
@@ -64,7 +64,7 @@ function NonStaticHumanActivity({ refreshTrigger, isTemplate, question }) {
         fieldId: idOfFieldBeingEdited,
       },
     });
-    refreshTrigger(true);
+    refreshTrigger();
     deleteHumanActivityModal.onClose();
   };
 
