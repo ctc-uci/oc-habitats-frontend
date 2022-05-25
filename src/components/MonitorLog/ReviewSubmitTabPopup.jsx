@@ -1,20 +1,20 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
   Button,
-  Image,
-  Center,
-  Text,
   ButtonGroup,
+  Center,
+  Image,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import { FiCheck } from 'react-icons/fi';
 import { React, useState } from 'react';
+import { FiCheck } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import confirmSubmission from '../../assets/confirmSubmission.svg';
 import monitorLogSubmissionComplete from '../../assets/monitorLogSubmissionComplete.svg';
