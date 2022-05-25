@@ -7,27 +7,46 @@ import {
   ModalFooter,
   useDisclosure,
   Button,
+  Image,
+  Center,
+  Text,
+  ButtonGroup,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { FiCheck } from 'react-icons/fi';
 import { React, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import confirmSubmission from '../../assets/confirmSubmission.svg';
+import monitorLogSubmissionComplete from '../../assets/monitorLogSubmissionComplete.svg';
 
 const SubmitSurvey = ({ setModalStep, onClose, submit }) => {
   console.log('entered');
   return (
     <>
-      <ModalHeader>Are you sure you want to submit your survey log?</ModalHeader>
-      <ModalFooter>
-        <Button onClick={() => onClose()}>No</Button>
-        <Button
-          onClick={() => {
-            submit();
-            setModalStep('submitted');
-          }}
-        >
-          Yes, Submit My Log
-        </Button>
-      </ModalFooter>
+      <ModalContent>
+        <ModalHeader>Are you sure you want to submit your survey log?</ModalHeader>
+        <ModalBody>
+          <Center>
+            <Image maxH="270px" maxW="300px" src={confirmSubmission} alt="Are you sure?" />
+          </Center>
+        </ModalBody>
+        <ModalFooter>
+          <ButtonGroup gap="2">
+            <Button onClick={() => onClose()}>No</Button>
+            <Button
+              type="submit"
+              colorScheme="green"
+              onClick={() => {
+                submit();
+                setModalStep('submitted');
+              }}
+              variant="solidNoHover"
+            >
+              Yes, Submit My Log
+            </Button>
+          </ButtonGroup>
+        </ModalFooter>
+      </ModalContent>
     </>
   );
 };
@@ -35,10 +54,17 @@ const SubmitSurvey = ({ setModalStep, onClose, submit }) => {
 const Submitted = ({ onClose }) => {
   return (
     <>
-      <ModalBody>Congratulations! You’ve submitted your monitor log for review.</ModalBody>
-      <ModalFooter>
-        <Button onClick={onClose}>Close</Button>
-      </ModalFooter>
+      <ModalContent>
+        <ModalBody>
+          <Text fontSize="2xl">Congratulations! You’ve submitted your monitor log for review.</Text>
+          <Image src={monitorLogSubmissionComplete} alt="Confirmation" />
+        </ModalBody>
+        <ModalFooter>
+          <Link to="/">
+            <Button onClick={onClose}>Close</Button>
+          </Link>
+        </ModalFooter>
+      </ModalContent>
     </>
   );
 };
@@ -58,7 +84,6 @@ function ReturnPopup({ submitForm }) {
     submitted: <Submitted onSubmit={submitForm} onClose={onClose} />,
   };
 
-  console.log('Entered Popup');
   return (
     <>
       <Button colorScheme="green" type="submit" onClick={onOpen}>
