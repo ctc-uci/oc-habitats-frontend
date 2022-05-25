@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Container, Spinner } from '@chakra-ui/react';
 import { Navigate } from 'react-router-dom';
 import { PropTypes, instanceOf } from 'prop-types';
 import { withCookies, Cookies, clearCookies } from './cookie_utils';
@@ -50,7 +51,12 @@ const ProtectedRoute = ({ Component, redirectPath, roles, cookies }) => {
   }, []);
 
   if (isLoading) {
-    return <h1>LOADING...</h1>;
+    return (
+      <Container centerContent mt="50px">
+        <Spinner />
+        <h1>Loading...</h1>
+      </Container>
+    );
   }
   if (isAuthenticated) {
     return <Component />;

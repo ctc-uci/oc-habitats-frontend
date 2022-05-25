@@ -100,7 +100,7 @@ const EditDeleteSectionPopup = ({ section, getSections }) => {
         map: newSection.sectionMapLink,
       });
       toast({
-        title: 'Successfully updated section',
+        title: `Successfully updated Section ${newSection.sectionId}.`,
         status: 'success',
         isClosable: true,
       });
@@ -108,7 +108,7 @@ const EditDeleteSectionPopup = ({ section, getSections }) => {
       onClose();
     } catch (err) {
       toast({
-        title: 'Unable to update section',
+        title: `Unable to update Section ${newSection.sectionId}.`,
         description: err?.message,
         status: 'error',
         isClosable: true,
@@ -122,7 +122,7 @@ const EditDeleteSectionPopup = ({ section, getSections }) => {
       // eslint-disable-next-line no-underscore-dangle
       await OCHBackend.delete(`/section/${section._id}`);
       toast({
-        title: 'Successfully deleted section.',
+        title: `Successfully deleted Section ${section._id}.`,
         status: 'success',
         isClosable: true,
       });
@@ -130,7 +130,7 @@ const EditDeleteSectionPopup = ({ section, getSections }) => {
       onClose();
     } catch (err) {
       toast({
-        title: 'Unable to delete section',
+        title: `Unable to delete Section ${section._id}.`,
         description: err?.message,
         status: 'error',
         isClosable: true,

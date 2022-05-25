@@ -219,7 +219,7 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
         map: newSection.sectionMapLink,
       });
       toast({
-        title: 'Successfully created a new section.',
+        title: `Successfully created Section ${newSection.sectionId}.`,
         status: 'success',
         isClosable: true,
       });
@@ -247,6 +247,7 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
       });
       toast({
         title: 'Successfully created a new segment.',
+        description: `Segment ${newSegment.newSegId} is now in Section ${newSegment.newSection.value}.`,
         status: 'success',
         isClosable: true,
       });

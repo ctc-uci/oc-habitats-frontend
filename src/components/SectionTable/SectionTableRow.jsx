@@ -76,8 +76,7 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
         sectionId: sectionID,
       });
       toast({
-        title: 'Successfully deleted segment.',
-        description: `Segment has been deleted.`,
+        title: `Successfully deleted Segment ${segId}.`,
         status: 'success',
         isClosable: true,
       });
@@ -85,7 +84,7 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
       onCloseEdit();
     } catch (err) {
       toast({
-        title: `Unable to delete segment.`,
+        title: `Unable to delete Segment ${segId}.`,
         status: 'error',
         isClosable: true,
       });
@@ -104,8 +103,8 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
       };
       await OCHBackend.put(`/segment/${data._id}`, putData);
       toast({
-        title: 'Successfully updated segment.',
-        description: `Segment has been updated.`,
+        title: `Successfully updated Segment ${segId}.`,
+        description: `Segment ${segId} has been updated.`,
         status: 'success',
         isClosable: true,
       });
@@ -113,7 +112,7 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
       onCloseEdit();
     } catch (err) {
       toast({
-        title: `Unable to update segment.`,
+        title: `Unable to update Segment ${segId}.`,
         status: 'error',
         isClosable: true,
       });
