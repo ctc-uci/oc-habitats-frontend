@@ -46,6 +46,7 @@ const NewQuestionModal = ({ currentTemplate, refreshTrigger }) => {
       formType: currentTemplate,
       fieldBody: {
         title,
+        subtitle: 'temporary subtitle',
         fieldType: type,
         static: false,
         tooltip,
