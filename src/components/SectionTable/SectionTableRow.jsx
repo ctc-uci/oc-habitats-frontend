@@ -33,45 +33,34 @@ import { OCHBackend } from '../../common/utils';
 // Custom component to render Name
 const SegmentNameColumn = ({ data }) => {
   return (
-    <>
-      <VStack>
-        <div className="segmentname-container">
-          {data.segmentId} {data.name}
-        </div>
-        <div className="location-container">{data.streets}</div>
-      </VStack>
-    </>
+    <VStack>
+      <div className="segmentname-container">
+        {data.segmentId} {data.name}
+      </div>
+      <div className="location-container">{data.streets}</div>
+    </VStack>
   );
 };
 
 const ParkingColumn = ({ data }) => {
   return (
-    <>
-      <HStack w="100%" justifyContent="space-between">
-        <VStack align="normal">
-          <Text>{data}</Text>
-        </VStack>
-
-        {/* <div>
-          <UpdateSegmentPopup />
-        </div> */}
-      </HStack>
-    </>
+    <HStack w="100%" justifyContent="space-between">
+      <VStack align="normal">
+        <Text>{data}</Text>
+      </VStack>
+    </HStack>
   );
 };
 
 const MapLinkColumn = ({ data }) => {
   return (
-    <>
-      <Link href={data} isExternal>
-        <u>Link</u>
-      </Link>
-    </>
+    <Link href={data} isExternal>
+      <u>Link</u>
+    </Link>
   );
 };
 
 const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSection }) => {
-  // const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
   const [sectionID, setSectionID] = useState(currentSection);
   const [segId, setSegId] = useState(data.segmentId);
@@ -139,7 +128,6 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
         </MenuButton>
         <MenuList>
           <MenuItem onClick={onOpenEdit}>Edit Segment</MenuItem>
-          {/* <MenuItem><Text color='red' onClick={onOpenDelete}>Delete Segment</Text></MenuItem> */}
           <MenuItem onClick={deleteSegment}>
             <Text color="red">Delete Segment</Text>
           </MenuItem>

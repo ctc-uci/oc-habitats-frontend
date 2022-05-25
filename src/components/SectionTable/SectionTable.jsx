@@ -100,7 +100,6 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
 
   const {
     getTableProps,
-    // getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,

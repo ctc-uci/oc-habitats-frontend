@@ -278,6 +278,7 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
     <>
       <Button
         w={{ md: 'fit-content', base: '100%' }}
+        fontSize={{ md: '16px', base: '14px' }}
         onClick={handButtonClick}
         bg="ochBlue"
         variant="solid"

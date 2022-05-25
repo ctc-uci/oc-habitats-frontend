@@ -3,6 +3,7 @@ import {
   Box,
   Heading,
   HStack,
+  Link,
   Tab,
   TabList,
   TabPanel,
@@ -14,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { React, useEffect, useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { FiExternalLink } from 'react-icons/fi';
 import NewSectionSegmentPopup from '../components/NewSectionSegmentPopup';
 import SectionTable from '../components/SectionTable/SectionTable';
 import EditDeleteSectionPopup from '../components/SectionTable/EditDeleteSectionPopup';
@@ -51,7 +53,7 @@ const SectionPage = () => {
 
   return (
     <>
-      <Box mx={{ md: '110px', base: '10px' }} mb={{ md: 10, base: 20 }}>
+      <Box mx={{ md: '5%', base: '10px' }} mb={{ md: 10, base: 20 }}>
         <Heading align="left" fontWeight="600" fontSize={{ md: '36px', base: '24px' }} mt="40px">
           Sections & Segments
         </Heading>
@@ -113,7 +115,15 @@ const SectionPage = () => {
                       align="left"
                     >
                       <>
-                        Section {sectionObj._id} - <Text as="u">{sectionObj.name}</Text>
+                        Section {sectionObj._id} -{' '}
+                        <Link
+                          _hover={{ textDecoration: 'underline' }}
+                          href={sectionObj.map}
+                          isExternal
+                        >
+                          {sectionObj.name}
+                          <FiExternalLink style={{ marginLeft: '5px', display: 'inline' }} />
+                        </Link>
                       </>
                     </Heading>
                     {user.userData.role === 'admin' && (
