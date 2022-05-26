@@ -36,7 +36,7 @@ const NewHumanActivityModal = ({ refreshTrigger }) => {
         static: false,
       },
     });
-    refreshTrigger(true);
+    refreshTrigger();
     addHumanActivityModal.onClose();
   };
   return (

@@ -99,6 +99,10 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
     setTabEdited(!tabEdited);
   };
 
+  const toggleActivityAdded = () => {
+    setActivityAdded(!activityAdded);
+  };
+
   useEffect(async () => {
     const newQuestions = await OCHBackend.get(`/forms/human-activity`);
     const questions = await newQuestions.data;
@@ -121,7 +125,7 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
             <Spacer />
             <NewHumanActivityModal
               currentTemplate="human-activity"
-              refreshTrigger={setActivityAdded}
+              refreshTrigger={toggleActivityAdded}
             />
           </HStack>
         </>
