@@ -30,17 +30,6 @@ const NewQuestionModal = ({ currentTemplate, refreshTrigger }) => {
   const [tooltip, setTooltip] = useState();
   const addQuestionModal = useDisclosure();
 
-  /*
-  const handleSubmit = async () => {
-    try {
-      await NPOBackend.post('/forms/create/field', {
-        formType: 
-      });
-    } catch (err) {
-      // HANDLE ERROR HERE
-    }
-  };
-  */
   const addQuestion = async () => {
     await OCHBackend.post('/forms/create/field', {
       formType: currentTemplate,
@@ -57,11 +46,7 @@ const NewQuestionModal = ({ currentTemplate, refreshTrigger }) => {
   };
   return (
     <>
-      <Button
-        bgColor="ochOrange"
-        // type="submit"
-        onClick={addQuestionModal.onOpen}
-      >
+      <Button bgColor="ochOrange" onClick={addQuestionModal.onOpen}>
         + Add Question
       </Button>
 

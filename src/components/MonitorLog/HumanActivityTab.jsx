@@ -102,8 +102,6 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
   useEffect(async () => {
     const newQuestions = await OCHBackend.get(`/forms/human-activity`);
     const questions = await newQuestions.data;
-    // for prettier
-    // console.log(newQuestions);
 
     setAdditionalQuestions(questions.additionalFields);
   }, [tabEdited, activityAdded]);

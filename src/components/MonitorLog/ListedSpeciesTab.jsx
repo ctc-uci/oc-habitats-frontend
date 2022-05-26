@@ -457,13 +457,6 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
                 </NumberInputStepper>
               </NumberInput>
             </FormControl>
-            {/* <Text fontWeight="600" fontSize="xl">
-              Marked Map (PNG or JPEG Only)
-            </Text>
-            <Text>
-              Provide a map with the locations of sighted Western Snowy Plovers marked with Map #
-              according to the Tracker table.
-            </Text> */}
           </VStack>
         </GridItem>
       </Grid>
