@@ -117,9 +117,11 @@ function App() {
                   <Route
                     path="/user-context-example"
                     element={
-                      <ProtectedRoute redirectPath="/logout" roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
-                        <UserContextExample />
-                      </ProtectedRoute>
+                      <ProtectedRoute
+                        Component={UserContextExample}
+                        redirectPath="/logout"
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
                     }
                   />
                   {/* NEW AUTH ROUTES */}

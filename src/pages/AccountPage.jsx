@@ -31,7 +31,6 @@ import { OCHBackend } from '../common/utils';
 
 const AccountPage = ({ setChangesMade }) => {
   const { userData } = useUserContext();
-  const [isLoading, setLoading] = useState(false);
   const {
     handleSubmit,
     control,
@@ -42,8 +41,8 @@ const AccountPage = ({ setChangesMade }) => {
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,
-      currPassword: undefined,
-      newPassword: undefined,
+      currPassword: '',
+      newPassword: '',
     },
   });
   // stores information on whether the passwords are hidden/shown, plus the state of the button text
@@ -85,12 +84,10 @@ const AccountPage = ({ setChangesMade }) => {
   };
 
   useEffect(() => {
-    setLoading(true);
     if (userData.profileImage) {
       const base64String = Buffer.from(userData.profileImage.data.data).toString('base64');
       setCloudImgSrc(`data:${userData.profileImage.contentType};base64,${base64String}`);
     }
-    setLoading(false);
   }, [userData]);
 
   const saveUpload = upload => {
@@ -139,6 +136,8 @@ const AccountPage = ({ setChangesMade }) => {
     } catch (err) {
       // Check if updated password, but not updated on mongo
       if (updatePassResult === 'success' && err.response.data.message.includes('not update')) {
+        setIsFileSaved(true);
+        reset(data);
         return Toast(toast, 'success');
       }
       return Toast(toast, 'error');
@@ -149,10 +148,6 @@ const AccountPage = ({ setChangesMade }) => {
     if (isDirty || !isFileSaved) setChangesMade(true);
     else setChangesMade(false);
   }, [isDirty, isFileSaved]);
-
-  if (isLoading) {
-    return <div>loading...</div>;
-  }
 
   const fileImgSrc = file ? file.preview : null;
 
