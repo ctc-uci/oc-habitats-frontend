@@ -17,7 +17,7 @@ const BehaviorsSection = ({ behaviorOptions, nestingOptions }) => {
 
   return (
     <CollapsibleSection title="Behaviors">
-      <Grid templateColumns="repeat(2, 1fr)" gap={4} width="100%">
+      <Grid templateColumns={{ md: 'repeat(2, 1fr)', base: 'repeat(1,1fr)' }} gap={4} width="100%">
         <GridItem>
           <FormControl>
             <FormLabel>

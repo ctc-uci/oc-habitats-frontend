@@ -39,8 +39,13 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
           General Information
         </Text>
       )}
-      <VStack spacing="23px" align="left">
-        <SimpleGrid columns={4} rows={3} spacingX="64px" spacingY="68px">
+      <VStack mt="20px" spacing="23px" align="left">
+        <SimpleGrid
+          columns={{ md: 4, base: 1 }}
+          rows={3}
+          spacingX="64px"
+          spacingY={{ md: '68px', base: '30px' }}
+        >
           <GridItem colSpan={1} rowSpan={1}>
             <VStack spacing="8px" align="left">
               <Text fontWeight="500" fontSize="md">
@@ -210,7 +215,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
             optionKey="_id"
             isDisabled={isDisabled}
             isMulti
-            placeholder="Search for member by name or email..."
+            placeholder="Search by name or email..."
             closeMenuOnSelect={false}
             size="md"
             menuPosition="fixed"

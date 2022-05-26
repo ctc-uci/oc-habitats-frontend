@@ -54,7 +54,6 @@ const Location = () => {
                   />
                 ))}
               </HStack>
-              <Text color="gray.500">DMS Format Example: N33 42.239 / W118 03.395</Text>
             </FormLabel>
           </FormControl>
         </GridItem>
@@ -64,7 +63,15 @@ const Location = () => {
 
   return (
     <CollapsibleSection title="Location">
-      <Grid templateColumns="repeat(2, 1fr)" w="100%" gap="4">
+      <Text color="gray.500" mb="5" fontSize="sm">
+        Note: DMS Format Example: N33 42.239 / W118 03.395
+      </Text>
+      <Grid
+        display={{ md: 'grid', base: 'auto' }}
+        templateColumns="repeat(2, 1fr)"
+        w="100%"
+        gap="4"
+      >
         {createGPS()}
         <GridItem colSpan="2">
           <FormControl>

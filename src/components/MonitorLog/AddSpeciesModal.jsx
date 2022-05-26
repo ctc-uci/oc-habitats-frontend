@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Box,
   Button,
   Modal,
   ModalOverlay,
@@ -27,7 +28,6 @@ import {
 } from '@chakra-ui/react';
 import { CloseIcon, InfoIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
-import { RiSaveFill } from 'react-icons/ri';
 import DropdownSearch from '../DropdownSearch';
 
 const AddSpeciesModal = ({ addNewRow, speciesOptions }) => {
@@ -54,8 +54,8 @@ const AddSpeciesModal = ({ addNewRow, speciesOptions }) => {
   };
 
   return (
-    <div>
-      <Button onClick={onOpen} bgColor="#2BC0E3" width="100%" height="48px">
+    <Box w="100%">
+      <Button onClick={onOpen} bgColor="#2BC0E3" width="100%" height="40px">
         Add New Row +
       </Button>
       <Modal isOpen={isOpen} isCentered size="md" onClose={onClose}>
@@ -150,24 +150,18 @@ const AddSpeciesModal = ({ addNewRow, speciesOptions }) => {
           </ModalBody>
 
           <ModalFooter mb="1em">
-            <VStack w="100%">
-              <Button
-                rightIcon={<RiSaveFill />}
-                bgColor="#2BC0E3"
-                fontWeight="600"
-                w="100%"
-                onClick={addNewSpecie}
-              >
-                Save
-              </Button>
+            <HStack w="60%">
               <Button width="100%" onClick={onClose}>
                 Cancel
               </Button>
-            </VStack>
+              <Button bgColor="#2BC0E3" fontWeight="600" w="100%" onClick={addNewSpecie}>
+                Save
+              </Button>
+            </HStack>
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </div>
+    </Box>
   );
 };
 

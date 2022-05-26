@@ -13,18 +13,50 @@ const AdminPage = () => {
   const [dateFilter, setDateFilter] = useState(null);
   const [approvalFilter, setApprovalFilter] = useState('');
   const [searchFilter, setSearchFilter] = useState('');
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({ results: [], total: 0 });
+  const [pageCount, setPageCount] = useState(0);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [segments, setSegments] = useState([]);
 
   const [checked, setChecked] = useState(new Map());
   const [allChecked, setAllChecked] = useState(false);
+  const [fetchSettings, setFetchSettings] = useState({ pageIndex: 0, pageSize: 10 });
 
   // get data from backend
   const getSubmissions = async () => {
     try {
-      const res = await OCHBackend.get(`submissions`);
+      setDataLoaded(false);
+      const { sortBy } = fetchSettings;
+      const query = {
+        segment: segmentFilter,
+        date: dateFilter,
+        status: approvalFilter,
+        submitter: searchFilter,
+        pageIndex: fetchSettings.pageIndex,
+        pageSize: fetchSettings.pageSize,
+        sort: sortBy.length === 1 ? sortBy[0].id : null,
+        sortAscending: sortBy.length === 1 ? !sortBy[0].desc : null,
+      };
+      const res = await OCHBackend.get(`submissions`, { params: query });
       setData(res.data);
+      setPageCount(Math.ceil(res.data.total / fetchSettings.pageSize));
       setDataLoaded(true);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+  };
+
+  // get segments from backend
+  const getSegments = async () => {
+    try {
+      const res = await OCHBackend.get(`segments`);
+      setSegments(
+        res.data.map(s => ({
+          label: s.segmentId,
+          value: s._id,
+        })),
+      );
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err);
@@ -33,16 +65,19 @@ const AdminPage = () => {
 
   useEffect(() => {
     getSubmissions();
-  }, []);
+  }, [fetchSettings, segmentFilter, dateFilter, approvalFilter, searchFilter]);
 
   useEffect(() => {
     const m = new Map();
     for (let i = 0; i < data.length; i += 1) {
-      // eslint-disable-next-line dot-notation
-      m.set(data[i]['_id'], false);
+      m.set(data[i]._id, false);
     }
     setChecked(m);
-  }, [dataLoaded]);
+  }, [segmentFilter, dateFilter, approvalFilter, searchFilter]);
+
+  useEffect(() => {
+    getSegments();
+  }, []);
 
   const checkCount = () => {
     let count = 0;
@@ -84,7 +119,7 @@ const AdminPage = () => {
           )}
         </pre> */}
         <AdminPageFilters
-          segments={['O1', 'O2']}
+          segments={segments}
           segmentFilter={segmentFilter}
           setSegmentFilter={setSegmentFilter}
           dateFilter={dateFilter}
@@ -97,10 +132,13 @@ const AdminPage = () => {
         />
         <AdminPageTable
           tableData={data}
+          isLoading={!dataLoaded}
+          pageCount={pageCount}
           checked={checked}
           setChecked={setChecked}
           allChecked={allChecked}
           setAllChecked={setAllChecked}
+          setFetchSettings={setFetchSettings}
         />
       </div>
     </Container>
