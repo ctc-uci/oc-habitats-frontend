@@ -39,6 +39,7 @@ import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
 import PredatorsTab from '../components/MonitorLog/PredatorsTab';
 import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
 import ReviewSubmitTabPopup from '../components/MonitorLog/ReviewSubmitTabPopup';
+import EditLogPopup from '../components/MonitorLog/EditLogPopup';
 
 const MonitorTabButton = props => {
   // eslint-disable-next-line react/prop-types
