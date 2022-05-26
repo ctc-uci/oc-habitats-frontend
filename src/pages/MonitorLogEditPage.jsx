@@ -2,57 +2,23 @@
 /* eslint-disable react/self-closing-comp */
 import { Box, Flex, Heading, HStack, Select, Spacer, Tabs, useDisclosure } from '@chakra-ui/react';
 import { React, useEffect, useRef, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-// import { OCHBackend } from '../common/utils';
 import LogTemplateSwitcher from '../components/LogTemplateSwitcher';
 
 const MonitorLogEditPage = () => {
   const formMethods = useForm({});
-  // for prettier
-  // const navigate = useNavigate();
 
   const checkInModal = useDisclosure();
 
   const [activeTab, setActiveTab] = useState(0);
-  // tab # will be dynamic with dynamic listed species
-  // const totalTabs = 7;
 
   const topRef = useRef();
-  /*
-  const returnToTop = () => {
-    topRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
-  */
+
   // state for tab switcher
   const [currentTemplate, setCurrentTemplate] = useState('general');
-  // const form = await OCHBackend.post('/forms/create/field', {
-  //   formType: currentTemplate,
-  //   fieldBody: {
-  //     title,
-  //     fieldType: type,
-  //     tooltip,
-  //   }
-  //   },
-  // });
-
-  // console.log(form);
-  // };
 
   useEffect(async () => {
     checkInModal.onOpen();
-
-    try {
-      // const [userData, monitorPartnersData] = await Promise.all([
-      //  OCHBackend.get('users/me', { withCredentials: true }),
-      //  OCHBackend.get('users/monitorPartners', { withCredentials: true }),
-      // ]);
-      // setUser(userData.data);
-      // setMonitorPartners(monitorPartnersData.data);
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err.message);
-    }
   }, []);
 
   return (
@@ -87,9 +53,6 @@ const MonitorLogEditPage = () => {
                 <option value="human-activity">Human Activity</option>
               </Select>
               <Spacer />
-              {/* {currentTemplate !== 'non-listed' && currentTemplate !== 'predator' && (
-                
-              )} */}
             </HStack>
             <LogTemplateSwitcher type={currentTemplate} />
           </Tabs>
