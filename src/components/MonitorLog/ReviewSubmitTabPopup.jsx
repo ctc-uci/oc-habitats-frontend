@@ -14,39 +14,36 @@ import {
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { FiCheck } from 'react-icons/fi';
-import { React, useState, useEffect } from 'react';
+import { React, useState } from 'react';
 import { Link } from 'react-router-dom';
 import confirmSubmission from '../../assets/confirmSubmission.svg';
 import monitorLogSubmissionComplete from '../../assets/monitorLogSubmissionComplete.svg';
 
 const SubmitSurvey = ({ setModalStep, onClose, submit }) => {
-  console.log('entered');
   return (
     <>
-      <ModalContent>
-        <ModalHeader>Are you sure you want to submit your survey log?</ModalHeader>
-        <ModalBody>
-          <Center>
-            <Image maxH="270px" maxW="300px" src={confirmSubmission} alt="Are you sure?" />
-          </Center>
-        </ModalBody>
-        <ModalFooter>
-          <ButtonGroup gap="2">
-            <Button onClick={() => onClose()}>No</Button>
-            <Button
-              type="submit"
-              colorScheme="green"
-              onClick={() => {
-                submit();
-                setModalStep('submitted');
-              }}
-              variant="solidNoHover"
-            >
-              Yes, Submit My Log
-            </Button>
-          </ButtonGroup>
-        </ModalFooter>
-      </ModalContent>
+      <ModalHeader>Are you sure you want to submit your survey log?</ModalHeader>
+      <ModalBody>
+        <Center>
+          <Image maxH="270px" maxW="300px" src={confirmSubmission} alt="Are you sure?" />
+        </Center>
+      </ModalBody>
+      <ModalFooter>
+        <ButtonGroup gap="2">
+          <Button onClick={() => onClose()}>No</Button>
+          <Button
+            type="submit"
+            colorScheme="green"
+            onClick={() => {
+              submit();
+              setModalStep('submitted');
+            }}
+            variant="solidNoHover"
+          >
+            Yes, Submit My Log
+          </Button>
+        </ButtonGroup>
+      </ModalFooter>
     </>
   );
 };
@@ -54,17 +51,20 @@ const SubmitSurvey = ({ setModalStep, onClose, submit }) => {
 const Submitted = ({ onClose }) => {
   return (
     <>
-      <ModalContent>
-        <ModalBody>
+      <ModalBody>
+        <Center>
           <Text fontSize="2xl">Congratulations! You’ve submitted your monitor log for review.</Text>
-          <Image src={monitorLogSubmissionComplete} alt="Confirmation" />
-        </ModalBody>
-        <ModalFooter>
-          <Link to="/">
-            <Button onClick={onClose}>Close</Button>
-          </Link>
-        </ModalFooter>
-      </ModalContent>
+        </Center>
+        <br />
+        <Center>
+          <Image maxH="326px" maxW="362px" src={monitorLogSubmissionComplete} alt="Confirmation" />
+        </Center>
+      </ModalBody>
+      <ModalFooter>
+        <Link to="/">
+          <Button onClick={onClose}>Close</Button>
+        </Link>
+      </ModalFooter>
     </>
   );
 };
