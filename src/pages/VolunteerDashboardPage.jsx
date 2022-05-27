@@ -29,7 +29,13 @@ import { OCHBackend } from '../common/utils';
 // TODO: replace notification
 const Toast = props => {
   const [closed, setClosed] = useState();
-  const { title, description, status, variant, closeButton, goToLogButton } = props;
+  const { id, title, description, status, variant, closeButton, goToLogButton } = props;
+
+  const close = () => {
+    setClosed(true);
+    OCHBackend.delete(`/notification/${id}`, { withCredentials: true });
+  };
+
   return closed ? (
     ''
   ) : (
@@ -39,7 +45,7 @@ const Toast = props => {
         <AlertTitle>{title}</AlertTitle>
         <AlertDescription display="block">{description}</AlertDescription>
         {closeButton && (
-          <CloseButton position="absolute" right="8px" top="8px" onClick={() => setClosed(true)} />
+          <CloseButton position="absolute" right="8px" top="8px" onClick={() => close()} />
         )}
         {goToLogButton && (
           <Button float="right" colorScheme="red" size="sm" rightIcon={<ArrowForwardIcon />}>
@@ -89,6 +95,7 @@ const VolunteerDashboardPage = () => {
     return userNotifications.map(notification => (
       <Toast
         key={notification._id}
+        id={notification._id}
         title={notification.title}
         description={notification.message}
         status={notification.type === 'MONITOR_LOG_APPROVED' ? 'success' : 'error'}
@@ -96,29 +103,6 @@ const VolunteerDashboardPage = () => {
         closeButton={notification.type === 'MONITOR_LOG_APPROVED' ? 'true' : 'false'}
       />
     ));
-  };
-
-  const UnsubmittedLogNotifications = () => {
-    const userDrafts = userSubmissions.filter(submission => submission.status === 'UNSUBMITTED');
-    let userSegments = '';
-    userDrafts.forEach((segment, index) => {
-      if (index !== 0) {
-        userSegments = userSegments.concat(',');
-      }
-      userSegments = userSegments.concat(segment.segment.segmentId);
-    });
-    if (userDrafts.length !== 0) {
-      return (
-        <Toast
-          title={`Monitor logs for segment(s) ${userSegments} have not been submitted yet.`}
-          description="Please complete monitor logs by [date] at [time]"
-          status="warning"
-          variant="left-accent"
-          closeButton
-        />
-      );
-    }
-    return <></>;
   };
 
   const Segments = () => {
@@ -162,7 +146,7 @@ const VolunteerDashboardPage = () => {
         <UnsubmittedLogDraft
           // eslint-disable-next-line react/no-array-index-key
           key={idx}
-          segment={draft.segment.segmentId}
+          segment={draft.segment ? draft.segment.segmentId : ''}
           date={draft.date}
           lastSaved={draft.lastEditedAt}
         />
@@ -215,7 +199,6 @@ const VolunteerDashboardPage = () => {
       </Heading>
       <VStack spacing="5px" align="left">
         {Notifications()}
-        {UnsubmittedLogNotifications()}
       </VStack>
       <br />
       <Heading size="md">Segment Assignment(s)</Heading>
