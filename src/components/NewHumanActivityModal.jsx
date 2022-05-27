@@ -27,17 +27,6 @@ const NewHumanActivityModal = ({ refreshTrigger }) => {
   const [examplesLength, setExamplesLength] = useState(0);
   const addHumanActivityModal = useDisclosure();
 
-  /*
-  const handleSubmit = async () => {
-    try {
-      await NPOBackend.post('/forms/create/field', {
-        formType: 
-      });
-    } catch (err) {
-      // HANDLE ERROR HERE
-    }
-  };
-  */
   const addHumanActivity = async () => {
     await OCHBackend.post('/forms/create/field', {
       formType: 'human-activity',
@@ -47,16 +36,12 @@ const NewHumanActivityModal = ({ refreshTrigger }) => {
         static: false,
       },
     });
-    refreshTrigger(true);
+    refreshTrigger();
     addHumanActivityModal.onClose();
   };
   return (
     <>
-      <Button
-        bgColor="ochOrange"
-        // type="submit"
-        onClick={addHumanActivityModal.onOpen}
-      >
+      <Button bgColor="ochOrange" onClick={addHumanActivityModal.onOpen}>
         + Add Human Activity
       </Button>
 

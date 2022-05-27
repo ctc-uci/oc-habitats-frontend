@@ -67,6 +67,10 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
     setTabEdited(!tabEdited);
   };
 
+  const toggleQuestionAdded = () => {
+    setQuestionAdded(!questionAdded);
+  };
+
   useEffect(async () => {
     const newQuestions = await OCHBackend.get(`/forms/general`);
     const questions = await newQuestions.data;
@@ -96,7 +100,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
               </Text>
             </Box>
             <Spacer />
-            <NewQuestionModal currentTemplate="general" refreshTrigger={setQuestionAdded} />
+            <NewQuestionModal currentTemplate="general" refreshTrigger={toggleQuestionAdded} />
           </HStack>
         </>
       )}

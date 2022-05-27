@@ -102,6 +102,10 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
     setTabEdited(!tabEdited);
   };
 
+  const toggleQuestionAdded = () => {
+    setQuestionAdded(!questionAdded);
+  };
+
   useEffect(async () => {
     const newQuestions = await OCHBackend.get(`/forms/listed-species`);
     const questions = await newQuestions.data;
@@ -228,7 +232,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
             Listed Species
           </Text>
           <Spacer />
-          <NewQuestionModal currentTemplate="listed-species" refreshTrigger={setQuestionAdded} />
+          <NewQuestionModal currentTemplate="listed-species" refreshTrigger={toggleQuestionAdded} />
         </HStack>
       ) : (
         // {showHeader && (
@@ -457,13 +461,6 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
                 </NumberInputStepper>
               </NumberInput>
             </FormControl>
-            {/* <Text fontWeight="600" fontSize="xl">
-              Marked Map (PNG or JPEG Only)
-            </Text>
-            <Text>
-              Provide a map with the locations of sighted Western Snowy Plovers marked with Map #
-              according to the Tracker table.
-            </Text> */}
           </VStack>
         </GridItem>
       </Grid>
