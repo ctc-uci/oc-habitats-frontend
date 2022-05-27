@@ -80,9 +80,7 @@ const VolunteerDashboardPage = () => {
 
   useEffect(async () => {
     try {
-      const [notificationsRes] = await Promise.all([
-        OCHBackend.get('/notification/', { withCredentials: true }),
-      ]);
+      const notificationsRes = await OCHBackend.get('/notification/', { withCredentials: true });
       setUserNotifications(notificationsRes.data);
     } catch (err) {
       // TODO: handle error
