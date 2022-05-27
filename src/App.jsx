@@ -95,7 +95,17 @@ function App() {
                       />
                     }
                   />
-                  <Route exact path="/sections" element={<SectionPage />} />
+                  <Route
+                    exact
+                    path="/sections"
+                    element={
+                      <ProtectedRoute
+                        Component={SectionPage}
+                        redirectPath="/login"
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
+                    }
+                  />
                   <Route exact path="/species" element={<Species />} />
                   {/* Admin only routes (TO DO, make admin only) */}
                   <Route exact path="/people" element={<PeoplePage />} />

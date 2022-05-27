@@ -24,54 +24,43 @@ import {
   useDisclosure,
   Link,
   Select,
+  useToast,
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import axios from 'axios';
 import './SectionTableRow.css';
-// import UpdateDeleteSegmentMenu from './SectionTableEditDeleteMenu';
+import { OCHBackend } from '../../common/utils';
 
 // Custom component to render Name
 const SegmentNameColumn = ({ data }) => {
   return (
-    <>
-      <VStack>
-        <div className="segmentname-container">
-          {data.segmentId} {data.name}
-        </div>
-        <div className="location-container">{data.streets}</div>
-      </VStack>
-    </>
+    <VStack>
+      <div className="segmentname-container">
+        {data.segmentId} {data.name}
+      </div>
+      <div className="location-container">{data.streets}</div>
+    </VStack>
   );
 };
 
 const ParkingColumn = ({ data }) => {
   return (
-    <>
-      <HStack w="100%" justifyContent="space-between">
-        <VStack align="normal">
-          <Text>{data}</Text>
-        </VStack>
-
-        {/* <div>
-          <UpdateSegmentPopup />
-        </div> */}
-      </HStack>
-    </>
+    <HStack w="100%" justifyContent="space-between">
+      <VStack align="normal">
+        <Text>{data}</Text>
+      </VStack>
+    </HStack>
   );
 };
 
 const MapLinkColumn = ({ data }) => {
   return (
-    <>
-      <Link href={`${data}`} isExternal>
-        <u>Link</u>
-      </Link>
-    </>
+    <Link href={data} isExternal>
+      <u>Link</u>
+    </Link>
   );
 };
 
 const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSection }) => {
-  // const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
   const [sectionID, setSectionID] = useState(currentSection);
   const [segId, setSegId] = useState(data.segmentId);
@@ -79,15 +68,26 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
   const [segLocation, setSegLocation] = useState(data.streets);
   const [segLink, setSegLink] = useState(data.mapLink);
   const [segParking, setSegParking] = useState(data.parking);
-  console.log('DATA', sectionID);
+  const toast = useToast();
 
   const deleteSegment = async () => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/segment/${data._id}`);
+      await OCHBackend.delete(`/segment/${data._id}`, {
+        sectionId: sectionID,
+      });
+      toast({
+        title: `Successfully deleted Segment ${segId}.`,
+        status: 'success',
+        isClosable: true,
+      });
       updateSections();
       onCloseEdit();
     } catch (err) {
-      alert(err);
+      toast({
+        title: `Unable to delete Segment ${segId}.`,
+        status: 'error',
+        isClosable: true,
+      });
     }
   };
 
@@ -101,12 +101,21 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
         mapLink: segLink,
         parking: segParking,
       };
-      await axios.put(`${process.env.REACT_APP_API_URL}/segment/${data._id}`, putData);
+      await OCHBackend.put(`/segment/${data._id}`, putData);
+      toast({
+        title: `Successfully updated Segment ${segId}.`,
+        description: `Segment ${segId} has been updated.`,
+        status: 'success',
+        isClosable: true,
+      });
       updateSections();
       onCloseEdit();
     } catch (err) {
-      console.log(err);
-      alert(err);
+      toast({
+        title: `Unable to update Segment ${segId}.`,
+        status: 'error',
+        isClosable: true,
+      });
     }
   };
 
@@ -118,7 +127,6 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
         </MenuButton>
         <MenuList>
           <MenuItem onClick={onOpenEdit}>Edit Segment</MenuItem>
-          {/* <MenuItem><Text color='red' onClick={onOpenDelete}>Delete Segment</Text></MenuItem> */}
           <MenuItem onClick={deleteSegment}>
             <Text color="red">Delete Segment</Text>
           </MenuItem>
@@ -127,7 +135,7 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
 
       <Modal size="xl" isOpen={isOpenEdit} onClose={onCloseEdit}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent p={3}>
           <ModalHeader>Edit Segment</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -179,7 +187,7 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
               }}
             />
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter pr={0}>
             <Button colorScheme="gray" mr={3} onClick={onCloseEdit}>
               Cancel
             </Button>

@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-key */
 
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Thead, Tbody, Tr, Link, Text, Spinner, VStack } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Text, Spinner, VStack, useMediaQuery } from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
 import SectionTableFooter from './SectionTableFooter';
 import SectionTableHeader from './SectionTableHeader';
@@ -11,6 +11,7 @@ import {
   SegmentNameColumn,
   ParkingColumn,
   UpdateSegmentPopupColumn,
+  MapLinkColumn,
 } from './SectionTableRow';
 
 const rowsPerPageSelect = [6, 10, 20, 30];
@@ -30,7 +31,7 @@ const LoadingRow = () => (
 const EmptyRow = () => (
   <Tr>
     <td colSpan={4}>
-      <VStack justifyContent="center" alignContent="center">
+      <VStack justifyContent="center" alignContent="center" my={4}>
         <Text fontWeight="bold">No segments found</Text>
       </VStack>
     </td>
@@ -50,7 +51,9 @@ const tableContent = (loading, page, prepareRow) => {
   return <EmptyRow />;
 };
 
-const SectionTable = ({ loading, segments, allSections, updateSections, sectionId }) => {
+const SectionTable = ({ loading, segments, allSections, updateSections, sectionId, role }) => {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
   const columns = useMemo(
     () => [
       {
@@ -66,16 +69,10 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
         Cell: props => <SegmentNameColumn data={props.value} />,
       },
       {
-        id: 'map',
-        accessor: 'map',
+        id: 'mapLink',
+        accessor: 'mapLink',
         Header: 'Map',
-        Cell: props => (
-          <div>
-            <Link href={`${props.value}`} isExternal>
-              <u>Link</u>
-            </Link>
-          </div>
-        ),
+        Cell: props => <MapLinkColumn data={props.value} />,
       },
       {
         id: 'parking',
@@ -100,9 +97,9 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
     [allSections],
   );
   const data = useMemo(() => segments, [segments, loading]);
+
   const {
     getTableProps,
-    // getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
@@ -112,6 +109,7 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
     previousPage,
     canNextPage,
     canPreviousPage,
+    setHiddenColumns,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -123,6 +121,18 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
     },
     usePagination,
   );
+
+  // set hidden table columns, depending on user role and mobile
+  useEffect(() => {
+    const hiddenColumns = [];
+    if (role === 'volunteer') {
+      hiddenColumns.push('delete');
+    }
+    if (isMobile) {
+      hiddenColumns.push('mapLink', 'parking');
+    }
+    setHiddenColumns(hiddenColumns);
+  }, [isMobile]);
 
   return (
     <>
@@ -164,6 +174,7 @@ SectionTable.propTypes = {
     }),
   ).isRequired,
   updateSections: PropTypes.func.isRequired,
+  role: PropTypes.string.isRequired,
 };
 
 export default SectionTable;
