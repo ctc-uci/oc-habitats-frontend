@@ -125,7 +125,7 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
                 </NumberInputStepper>
               </NumberInput>
             )}
-            <Text color="#718096">Non-Static</Text>
+            {isTemplate ? <Text color="#718096">Non-Static</Text> : null}
           </VStack>
         </GridItem>
       </Box>

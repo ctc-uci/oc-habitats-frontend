@@ -103,7 +103,7 @@ function NonStaticHumanActivity({ refreshTrigger, isTemplate, question }) {
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
-            <Text color="#718096">Non-Static</Text>
+            {isTemplate ? <Text color="#718096">Non-Static</Text> : null}
           </VStack>
         </GridItem>
       </Box>
