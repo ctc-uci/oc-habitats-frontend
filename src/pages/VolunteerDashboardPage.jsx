@@ -18,6 +18,7 @@ import {
   SimpleGrid,
 } from '@chakra-ui/react';
 import { ArrowForwardIcon, InfoIcon } from '@chakra-ui/icons';
+import { Link } from 'react-router-dom';
 import SegmentAssignment from '../components/VolunteerDashboard/SegmentAssignment';
 import UnsubmittedLogDraft from '../components/VolunteerDashboard/UnsubmittedLogDraft';
 import RecentlySubmittedLog from '../components/VolunteerDashboard/RecentlySubmittedLog';
@@ -147,6 +148,7 @@ const VolunteerDashboardPage = () => {
           segment={draft.segment ? draft.segment.segmentId : ''}
           date={draft.date}
           lastSaved={draft.lastEditedAt}
+          logId={draft._id}
         />
       ));
   };
@@ -183,6 +185,7 @@ const VolunteerDashboardPage = () => {
         date={recent.date}
         timeDescription={recent.submittedAt}
         status={recent.status}
+        logId={recent._id}
       />
     ));
   };

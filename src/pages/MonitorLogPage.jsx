@@ -102,7 +102,9 @@ const MonitorLogPage = ({ mode }) => {
   }, []);
 
   useEffect(async () => {
-    checkInModal.onOpen();
+    if (mode === 'create') {
+      checkInModal.onOpen();
+    }
     try {
       const [userD, monitorPartnersData, speciesData] = await Promise.all([
         OCHBackend.get('users/me', { withCredentials: true }),

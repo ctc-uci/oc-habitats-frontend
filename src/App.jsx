@@ -185,7 +185,10 @@ function App() {
                 </Routes>
               </Box>
               <Routes>
-                <Route exact path="/create-log" />
+                <Route path="/create-log" />
+                <Route path="/create-log/:id" />
+                <Route path="/edit-log/:id" />
+                <Route path="/review-log/:id" />
                 <Route path="/*" element={<Footer />} />
               </Routes>
             </Box>
