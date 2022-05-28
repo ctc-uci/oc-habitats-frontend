@@ -62,15 +62,7 @@ const MonitorLogPage = () => {
   };
   const [user, setUser] = useState(null);
   const [monitorPartners, setMonitorPartners] = useState([]);
-  // const [formQuestions, setFormQuestions] = useState([]);
 
-  // useEffect(getAllQuestions )
-  // const questions = OCHBackend.get('/whateverformwewant', withCredentials: true);
-  // <GeneralInfoTab questions=questions />
-  // (this is inside generalinfotabs code) questions.map((q => {
-  // <p>{q.text}</p>
-  // <Input type="text"></Input>
-  // })
   useEffect(async () => {
     checkInModal.onOpen();
 
