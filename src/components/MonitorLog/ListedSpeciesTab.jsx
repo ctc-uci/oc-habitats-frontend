@@ -118,12 +118,12 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
     );
     setValue(`${formPrefix}data`, data);
 
-    // TODO: BACKEND API CALL TO GET ALL LISTED SPECIES FROM SPECIES CATALOG
-
-    setListedSpeciesList([
-      'Plover: Western Snowy (SNPL/WSPL)',
-      'Tern: California Least (CLTE/LETE)',
-    ]);
+    // querying listed species from backend and wrangling with the data
+    const species = await OCHBackend.get('/species/');
+    const speciesData = await species.data;
+    const filteredSpeciesData = speciesData.filter(el => el.isListed);
+    const mappedSpecies = filteredSpeciesData.map(el => `${el.name} (${el.code})`);
+    setListedSpeciesList(mappedSpecies);
   }, [data, questionAdded, tabEdited]);
 
   const addRow = formData => {
@@ -262,7 +262,15 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
               </Text>
             </Link>
           </HStack>
-          <HStack mt="10px" bgColor="ochLightGrey" borderRadius="6px" pl="20px" w="100%" h="70px">
+          <HStack
+            overflowX="scroll"
+            mt="10px"
+            bgColor="ochLightGrey"
+            borderRadius="6px"
+            pl="20px"
+            w="100%"
+            h="70px"
+          >
             {listedSpeciesList.map(e => {
               return (
                 <Center
