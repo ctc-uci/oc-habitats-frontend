@@ -425,7 +425,13 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
           </Box>
           {!isDisabled && (
             <>
-              <Button onClick={openPopup} width="100%" marginTop="10px" colorScheme="cyan">
+              <Button
+                disabled={isTemplate}
+                onClick={openPopup}
+                width="100%"
+                marginTop="10px"
+                colorScheme="cyan"
+              >
                 {isTemplate ? 'Add New Row +' : `Add Sighted ${speciesCode} +`}
               </Button>
               <Modal size="full" isOpen={isOpen} closeOnEsc={false}>
