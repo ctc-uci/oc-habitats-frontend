@@ -2,12 +2,11 @@ import { FormControl, FormLabel, Grid, GridItem, Text } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { PropTypes } from 'prop-types';
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import ReactHookFormSelect from '../../common/ReactHookFormSelect';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 
 const BehaviorsSection = ({ behaviorOptions, nestingOptions, isTemplate }) => {
   const { control } = useFormContext();
-
   const behaviorDropdown = behaviorOptions.map(behavior => ({
     label: behavior,
     value: behavior,
@@ -20,17 +19,17 @@ const BehaviorsSection = ({ behaviorOptions, nestingOptions, isTemplate }) => {
 
   return (
     <CollapsibleSection title="Behaviors">
-      <Grid templateColumns="repeat(2, 1fr)" gap={4} width="100%">
+      <Grid templateColumns={{ md: 'repeat(2, 1fr)', base: 'repeat(1,1fr)' }} gap={4} width="100%">
         <GridItem>
           <FormControl>
             <FormLabel>
               Nesting
-              <Controller
+              <ReactHookFormSelect
                 name="nesting"
-                control={control}
-                render={({ field }) => (
-                  <Select {...field} isMulti options={nestingDropdown} closeMenuOnSelect={false} />
-                )}
+                options={nestingDropdown}
+                optionKey="value"
+                isMulti
+                closeMenuOnSelect={false}
               />
             </FormLabel>
             {isTemplate && <Text color="#718096">Static</Text>}
@@ -40,12 +39,12 @@ const BehaviorsSection = ({ behaviorOptions, nestingOptions, isTemplate }) => {
           <FormControl>
             <FormLabel>
               Behaviors
-              <Controller
+              <ReactHookFormSelect
                 name="behaviors"
-                control={control}
-                render={({ field }) => (
-                  <Select {...field} isMulti options={behaviorDropdown} closeMenuOnSelect={false} />
-                )}
+                options={behaviorDropdown}
+                optionKey="value"
+                isMulti
+                closeMenuOnSelect={false}
               />
             </FormLabel>
             {isTemplate && <Text color="#718096">Static</Text>}
@@ -61,8 +60,6 @@ BehaviorsSection.defaultProps = {
 };
 BehaviorsSection.propTypes = {
   behaviorOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
-  behaviors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setBehaviors: PropTypes.func.isRequired,
   nestingOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
   nesting: PropTypes.arrayOf(PropTypes.string).isRequired,
   setNesting: PropTypes.func.isRequired,

@@ -81,7 +81,6 @@ const GeneralListedInformation = ({ refreshTrigger, additionalQuestions, isTempl
             </FormLabel>
             {isTemplate && <Text color="#718096">Static</Text>}
           </FormControl>
-
           <FormControl>
             <FormLabel>
               # of Chicks
@@ -113,7 +112,6 @@ const GeneralListedInformation = ({ refreshTrigger, additionalQuestions, isTempl
             </FormLabel>
             {isTemplate && <Text color="#718096">Static</Text>}
           </FormControl>
-
           <FormControl>
             <FormLabel>
               Map #

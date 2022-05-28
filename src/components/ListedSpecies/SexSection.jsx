@@ -37,7 +37,7 @@ const SexSection = ({ isTemplate }) => {
 
   return (
     <CollapsibleSection title="Sex">
-      <Grid templateColumns="repeat(3, 1fr)" gap="2em">
+      <Grid templateColumns={{ md: 'repeat(3, 1fr)', base: 'repeat(1, 1fr)' }} gap="2em">
         {inputs.map((input, idx) => (
           <GridItem key={input}>
             <FormControl>

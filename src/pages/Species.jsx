@@ -1,72 +1,51 @@
-import { Box, Center, Flex, Spacer, Stack, Text, VStack } from '@chakra-ui/react';
+import { Box, Center, Flex, Stack, Text, VStack, HStack } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { DragDropContext } from 'react-beautiful-dnd';
+import PropTypes from 'prop-types';
 import DropdownSearch from '../components/DropdownSearch';
-import DroppableList from '../components/DroppableList';
+import SpeciesList from '../components/SpeciesList';
 import NewSpeciesModal from '../components/NewSpeciesModal';
+import NewPredatorModal from '../components/NewPredatorModal';
 
 const initialData = {
   endangered: {
-    id: 'endangered',
-    name: 'Listed Species (Endangered)',
+    id: 'listed',
+    name: 'Listed Species',
     speciesIds: [],
   },
   additional: { id: 'additional', name: 'Additional Species', speciesIds: [] },
 };
 
-const onDragEnd = async (result, columns, setColumns) => {
-  if (!result.destination) return;
-  const { source, destination } = result;
-  if (source.droppableId !== destination.droppableId) {
-    const sourceColumn = columns[source.droppableId];
-    const destColumn = columns[destination.droppableId];
-    const sourceItems = [...sourceColumn.speciesIds];
-    const destItems = [...destColumn.speciesIds];
-    const [removed] = sourceItems.splice(source.index, 1);
-    sourceItems.sort();
-    destItems.push(removed);
-    destItems.sort();
-    const newColumns = {
-      ...columns,
-      [source.droppableId]: {
-        ...sourceColumn,
-        speciesIds: sourceItems,
-      },
-      [destination.droppableId]: {
-        ...destColumn,
-        speciesIds: destItems,
-      },
-    };
-    Object.entries(newColumns).forEach(column => {
-      column[1].speciesIds.sort((a, b) => (a.name > b.name ? 1 : -1));
-    });
-    setColumns(newColumns);
-
-    const specie = columns[source.droppableId].speciesIds[source.index];
-    // eslint-disable-next-line no-underscore-dangle
-    const speciesID = specie._id;
-    const newListing = destination.droppableId === 'endangered';
-    await axios.put(`${process.env.REACT_APP_API_URL}/species/${speciesID}/${newListing}`);
-  }
-};
 /*
   input: columns - contains id, names of columns, and species that belong to each column
   populates the page with each type of column and the species that belong to them
 */
-const createLists = (columns, searchItem) => {
+const createLists = (columns, searchItem, editSpecies, deleteSpecies) => {
   // Create DroppableLists by iterating over each column in columns
   // Will pass in the species that belong to each list as well as their titles and ids
   return Object.entries(columns).map(([id, col]) => {
-    const specieNames = col.speciesIds.map(specie => specie.name);
     return (
-      <DroppableList
-        key={id}
-        name={col.name}
-        species={specieNames}
-        colID={id}
-        searchItem={searchItem}
-      />
+      <>
+        <VStack align="left">
+          {col.title !== '' && (
+            <Text fontWeight={550} align="left">
+              {col.title}
+            </Text>
+          )}
+          <Text as="i" fontWeight={450}>
+            {col.text}
+          </Text>
+        </VStack>
+        <SpeciesList
+          key={id}
+          name={col.name}
+          species={col.speciesIds}
+          colID={id}
+          searchItem={searchItem}
+          editSpecies={editSpecies}
+          deleteSpecies={deleteSpecies}
+        />
+      </>
     );
   });
 };
@@ -86,15 +65,25 @@ const Species = () => {
       setIsLoading(true);
       const res = await axios.get(`${process.env.REACT_APP_API_URL}/species`);
       const formattedData = {
-        endangered: {
-          id: 'endangered',
-          name: 'Listed Species (Endangered)',
-          speciesIds: res.data.filter(specie => specie.isEndangered),
+        listed: {
+          id: 'listed',
+          title: 'Listed Species',
+          text: 'Note: Adding a listed species will create a new section on the monitor log.',
+          speciesIds: res.data.filter(specie => specie.isListed && !specie.isPredator),
         },
-        additional: {
-          id: 'additional',
-          name: 'Additional Species',
-          speciesIds: res.data.filter(specie => !specie.isEndangered),
+        predators: {
+          id: 'predators',
+          title: 'Predators',
+          text: 'Note: To mark a tracked non-listed species as a predator, click on the species, select "Edit", and select "Yes" on the "Is a Predator" field.',
+          speciesIds: res.data.filter(
+            specie => specie.isPredator && (!specie.isListed || specie.isNeither),
+          ),
+        },
+        nonListed: {
+          id: 'nonListed',
+          title: 'Non-Listed Species',
+          text: '',
+          speciesIds: res.data.filter(specie => !specie.isListed && !specie.isNeither),
         },
       };
       Object.entries(formattedData).forEach(column => {
@@ -120,39 +109,75 @@ const Species = () => {
     await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
       name: newSpecies.name,
       code: newSpecies.code,
-      isEndangered: newSpecies.group === 'endangered',
+      isListed: newSpecies.group === 'listed',
+      isPredator: newSpecies.predator === 'Yes',
+      isNeither: newSpecies.group !== 'nonListed',
       isAssigned: false,
     });
     setChange(!change);
   };
+
+  const addNewPredator = async newSpecies => {
+    await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
+      name: newSpecies.name,
+      code: newSpecies.code,
+      isPredator: true,
+      // if isNeither is true the predator is neither non listed nor listed
+      isNeither: newSpecies.group !== 'nonListed',
+      isAssigned: false,
+    });
+    setChange(!change);
+  };
+
+  const editSpecies = async (newSpecies, oldSpecies) => {
+    // eslint-disable-next-line no-underscore-dangle
+    await axios.put(`${process.env.REACT_APP_API_URL}/species/${oldSpecies._id}`, {
+      name: newSpecies.name,
+      code: newSpecies.code,
+      isListed: newSpecies.group === 'listed',
+      isPredator: newSpecies.predator === 'Yes',
+      isNeither: newSpecies.group !== 'nonListed',
+      isAssigned: false,
+    });
+    setChange(c => !c);
+  };
+
+  const deleteSpecies = async deletedSpecie => {
+    // eslint-disable-next-line dot-notation
+    await axios.delete(`${process.env.REACT_APP_API_URL}/species/${deletedSpecie}`);
+    setChange(c => !c);
+  };
+  const isAdmin = false;
   return (
     <Center>
-      <Stack w="container.xl" justify-content="center" mb="4em">
+      <Stack w="container.xl" justify-content="center" mb="4em" mx="1.5em">
         <VStack align="left" spacing="1.5em" w="100%">
           <Text fontWeight="600" fontSize="36px" mt="40px">
             Species List
           </Text>
           <VStack spacing={2} align="stretch">
             <strong>Search for a Species:</strong>
-            <Box w="32.5%">
-              <DropdownSearch options={options} handleSelectedValue={highlightSearch} />
-            </Box>
-            <Flex align="end">
-              <Flex align="center">
-                <Text as="i" fontWeight={450}>
-                  Note: Adding a listed species will create a new section on the monitor log.
-                </Text>
-              </Flex>
-              <Spacer />
-              <NewSpeciesModal addNewSpecies={addNewSpecies} />
-            </Flex>
+            <HStack>
+              <Box w="100%">
+                <Flex justifyContent="space-between" flexDir={{ md: 'row', sm: 'column' }}>
+                  <Box w={{ md: '32.5%', sm: '100%' }} my={{ md: '0', sm: '5' }}>
+                    <DropdownSearch options={options} handleSelectedValue={highlightSearch} />
+                  </Box>
+                  {isAdmin && (
+                    <HStack>
+                      <NewSpeciesModal addNewSpecies={addNewSpecies} />
+                      <NewPredatorModal addNewPredator={addNewPredator} />
+                    </HStack>
+                  )}
+                </Flex>
+              </Box>
+            </HStack>
           </VStack>
-          <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
-            {createLists(columns, searchItem)}
-          </DragDropContext>
+          {createLists(columns, searchItem, editSpecies, deleteSpecies)}
         </VStack>
       </Stack>
     </Center>
   );
 };
+
 export default Species;

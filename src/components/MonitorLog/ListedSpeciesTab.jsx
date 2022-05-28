@@ -30,6 +30,7 @@ import {
   NumberInputField,
   NumberInputStepper,
   Spacer,
+  Stack,
   Table,
   Tbody,
   Td,
@@ -60,12 +61,13 @@ import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import NewQuestionModal from '../NewQuestionModal';
 import { OCHBackend } from '../../common/utils';
 
-const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplate }) => {
+const ListedSpeciesTab = ({ tab, speciesName, speciesCode,speciesId, showHeader, isDisabled, isTemplate }) => {
   const formPrefix = `listedSpecies.${tab}.`;
+
   const { isOpen, onOpen: openPopup, onClose } = useDisclosure();
   const { setValue, getValues } = useFormContext();
   const confirmDeleteModal = useDisclosure();
-  const [data, setData] = useState(getValues(`${formPrefix}data`) || []);
+  const [data, setData] = useState(getValues(`${formPrefix}entries`) || []);
   const [rowToEdit, setRowToEdit] = useState(undefined);
   const [rowToDelete, setRowToDelete] = useState(undefined);
   const [totals, setTotals] = useState([0, 0, 0]);
@@ -171,7 +173,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
 
   const createBirdInfo = row => {
     const birdInfo = [
-      ['Time', row.time + row.meridiem],
+      ['Time', row.time],
       ['Map #', row.map],
       [
         'GPS',
@@ -309,14 +311,22 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
           <Box overflow="hidden" border="1px solid darkgray" rounded="md">
             <Accordion as={Table} allowToggle width="100%" reduceMotion>
               <Thead bg="ochGrey">
-                <tr>
+                <Tr>
                   <Th width="0" />
-                  <Th color="#FDFDFD">Map #</Th>
-                  <Th color="#FDFDFD">Adults</Th>
-                  <Th color="#FDFDFD">Fledges</Th>
-                  <Th color="#FDFDFD">Chicks</Th>
+                  <Th textAlign="center" color="#FDFDFD">
+                    Map #
+                  </Th>
+                  <Th textAlign="center" color="#FDFDFD">
+                    Adults
+                  </Th>
+                  <Th textAlign="center" color="#FDFDFD">
+                    Fledges
+                  </Th>
+                  <Th textAlign="center" color="#FDFDFD">
+                    Chicks
+                  </Th>
                   <Th width="0" />
-                </tr>
+                </Tr>
               </Thead>
               {data.length === 0 && (
                 <Tbody>
@@ -380,10 +390,18 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
                             </Menu>
                           )}
                         </Td>
-                        <Td borderBottomWidth="0">{n + 1}</Td>
-                        <Td borderBottomWidth="0">{row.totalAdults}</Td>
-                        <Td borderBottomWidth="0">{row.totalFledges}</Td>
-                        <Td borderBottomWidth="0">{row.totalChicks}</Td>
+                        <Td textAlign="center" borderBottomWidth="0">
+                          {n + 1}
+                        </Td>
+                        <Td textAlign="center" borderBottomWidth="0">
+                          {row.totalAdults}
+                        </Td>
+                        <Td textAlign="center" borderBottomWidth="0">
+                          {row.totalFledges}
+                        </Td>
+                        <Td textAlign="center" borderBottomWidth="0">
+                          {row.totalChicks}
+                        </Td>
                         <Td width="0" borderBottomWidth="0">
                           <AccordionButton fontSize="2xl">
                             <AccordionIcon />
@@ -409,13 +427,13 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, isDisabled, isTemplat
                     Total
                   </Th>
                   <Th borderBottom="0" />
-                  <Th borderBottom="0" color="#FDFDFD">
+                  <Th textAlign="center" borderBottom="0" color="#FDFDFD">
                     {totals[0]}
                   </Th>
-                  <Th borderBottom="0" color="#FDFDFD">
+                  <Th textAlign="center" borderBottom="0" color="#FDFDFD">
                     {totals[1]}
                   </Th>
-                  <Th borderBottom="0" color="#FDFDFD">
+                  <Th textAlign="center" borderBottom="0" color="#FDFDFD">
                     {totals[2]}
                   </Th>
                   <Th width="0" />
@@ -522,6 +540,7 @@ ListedSpeciesTab.propTypes = {
   tab: PropTypes.number.isRequired,
   speciesName: PropTypes.string.isRequired,
   speciesCode: PropTypes.string.isRequired,
+  speciesId: PropTypes.string.isRequired,
   showHeader: PropTypes.bool,
   isDisabled: PropTypes.bool,
   isTemplate: PropTypes.bool,

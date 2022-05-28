@@ -15,6 +15,7 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Stack,
   Table,
   Tbody,
   Td,
@@ -25,7 +26,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FiExternalLink } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
@@ -34,67 +35,95 @@ import EditSpeciesModal from './EditSpeciesModal';
 
 const FORM_PREFIX = 'additionalSpecies.';
 
-const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate }) => {
+const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) => {
   const { getValues, setValue } = useFormContext();
-  const [species, setSpecies] = useState(getValues(`${FORM_PREFIX}data`) || []);
+  const [speciesEntries, setSpeciesEntries] = useState(getValues(`${FORM_PREFIX}entries`) || []);
 
   useEffect(() => {
-    setValue(`${FORM_PREFIX}data`, species);
-  }, [species]);
+    setValue(`${FORM_PREFIX}entries`, speciesEntries);
+  }, [speciesEntries]);
 
-  const handleAddRow = newSpecie => {
-    setSpecies(prevSpecies => {
-      return [...prevSpecies, newSpecie];
+  const speciesOptions = useMemo(
+    () =>
+      species.map(s => ({
+        value: s._id,
+        label: `${s.name} (${s.code})`,
+      })),
+    [species],
+  );
+
+  const getSpeciesLabel = speciesId => speciesOptions.find(s => s.value === speciesId)?.label;
+
+  const handleAddRow = newSpecies => {
+    setSpeciesEntries(prevSpecies => {
+      const existingIndex = speciesEntries.findIndex(s => newSpecies.species === s.species);
+      if (existingIndex !== -1) {
+        const newEntries = [...speciesEntries];
+        newEntries[existingIndex].count += newSpecies.count;
+        if (newSpecies.notes !== '') {
+          if (newEntries[existingIndex].notes !== '') {
+            newEntries[existingIndex].notes += `\n${newSpecies.notes}`;
+          } else {
+            newEntries[existingIndex].notes = newSpecies.notes;
+          }
+        }
+        return newEntries;
+      }
+      return [...prevSpecies, newSpecies];
     });
   };
 
-  const handleEditRow = updatedSpecie => {
-    const oldSpecieIndex = species.findIndex(specie => {
-      return updatedSpecie.oldName === specie.name;
-    });
-    const newRows = [...species];
-    const updated = updatedSpecie;
-    delete updated.oldName;
-    newRows[oldSpecieIndex] = updated;
-
-    setSpecies(newRows);
+  const handleDeleteRow = speciesId => {
+    setSpeciesEntries(entries => entries.filter(s => s.species !== speciesId));
   };
 
-  const handleDeleteRows = specieName => {
-    const newRows = species.filter(specie => specie.name !== specieName);
-    setSpecies(newRows);
-  };
-
-  const getSpecie = name => {
-    const specie = species.filter(currSpecie => {
-      return currSpecie.name === name;
+  const handleEditRow = newSpecies => {
+    const { oldId } = newSpecies;
+    const newRow = newSpecies;
+    delete newRow.oldId;
+    const indexToModify = speciesEntries.findIndex(s => oldId === s.species);
+    setSpeciesEntries(prevSpecies => {
+      let newEntries = [...prevSpecies];
+      if (oldId !== newRow.species) {
+        // if we're changing the species ID, check if the new species is already in the table
+        const newSpeciesIndex = prevSpecies.findIndex(s => newRow.species === s.species);
+        if (newSpeciesIndex !== -1) {
+          // if it is, merge the two rows
+          newRow.count += prevSpecies[newSpeciesIndex].count;
+          if (prevSpecies[newSpeciesIndex].notes) {
+            newRow.notes += `\n${prevSpecies[newSpeciesIndex].notes}`;
+          }
+          newEntries = newEntries.filter(s => s.species !== newRow.species);
+        }
+      }
+      newEntries[indexToModify] = newRow;
+      return newEntries;
     });
-    return specie[0];
   };
 
   const createTable = data => {
-    return data.map((row, n) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <AccordionItem key={n} as={Tbody}>
+    return data.map(row => (
+      <AccordionItem key={row.species} as={Tbody}>
         {({ isExpanded }) => (
           <>
             <Tr>
               <Td border="none">
                 {!isDisabled && (
                   <EditSpeciesModal
-                    specie={getSpecie(row.name)}
+                    speciesRow={row}
                     editRow={handleEditRow}
-                    deleteRow={handleDeleteRows}
+                    deleteRow={handleDeleteRow}
+                    speciesOptions={speciesOptions}
                   />
                 )}
               </Td>
               <Td border="none">
                 <Text fontSize="1.05em" color="#2D3748" fontWeight={450}>
-                  {row.name}
+                  {getSpeciesLabel(row.species)}
                 </Text>
               </Td>
               <Td border="none" color="#2D3748" fontWeight={450}>
-                {row.total}
+                {row.count}
               </Td>
               <Td border="none">
                 <Flex justifyContent="flex-end">

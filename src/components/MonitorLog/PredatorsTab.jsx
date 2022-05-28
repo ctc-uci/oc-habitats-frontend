@@ -20,23 +20,13 @@ import { useFormContext } from 'react-hook-form';
 import { FiExternalLink } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
-const FORM_PREFIX = 'predators.';
+const FORM_PREFIX = 'predators';
 
-const PREDATORS = [
-  ['Corvid: American Crow', 'crow'],
-  ['Corvid: Common Raven', 'raven'],
-  ['Raptor', 'raptor'],
-  ['Horse', 'horse'],
-  ['Coyote', 'coyote'],
-  ['Fox', 'fox'],
-  ['Cat', 'cat'],
-];
-
-const PredatorField = ({ predatorName, predatorId, isDisabled }) => {
+const PredatorField = ({ predatorName, predatorId, isDisabled, predatorIndex }) => {
   const { setValue, getValues } = useFormContext();
 
   return (
-    <GridItem colSpan={1} rowSpan={1} width="200px">
+    <GridItem colSpan={1} rowSpan={1} width={{ md: '90%', base: '80%' }}>
       <VStack spacing="8px" align="left">
         <Text fontWeight="500" fontSize="md">
           {predatorName}
@@ -44,8 +34,10 @@ const PredatorField = ({ predatorName, predatorId, isDisabled }) => {
         <NumberInput
           min={0}
           isDisabled={isDisabled}
-          onChange={(_, val) => setValue(FORM_PREFIX + predatorId, val)}
-          defaultValue={getValues(FORM_PREFIX + predatorId) || 0}
+          onChange={(_, val) =>
+            setValue(`${FORM_PREFIX}[${predatorIndex}]`, { species: predatorId, count: val })
+          }
+          defaultValue={getValues(`${FORM_PREFIX}[${predatorIndex}]`)?.count || 0}
         >
           <NumberInputField />
           <NumberInputStepper>
@@ -61,10 +53,11 @@ const PredatorField = ({ predatorName, predatorId, isDisabled }) => {
 PredatorField.propTypes = {
   predatorName: PropTypes.string.isRequired,
   predatorId: PropTypes.string.isRequired,
+  predatorIndex: PropTypes.number.isRequired,
   isDisabled: PropTypes.bool.isRequired,
 };
 
-const PredatorsTab = ({ showHeader, isDisabled, isTemplate }) => {
+const PredatorsTab = ({ showHeader, isDisabled, isTemplate, predators }) => {
   const { register } = useFormContext();
   return (
     <>
@@ -90,22 +83,41 @@ const PredatorsTab = ({ showHeader, isDisabled, isTemplate }) => {
           </HStack>
         </>
       )}
-      <VStack spacing="23px" align="left">
-        {showHeader && (
-          <Text fontWeight="600" fontSize="2xl">
-            Predators
+      <SimpleGrid
+        columns={{ md: 4, base: 1 }}
+        spacingX="64px"
+        spacingY={{ md: '68px', base: '30px' }}
+      >
+        {predators.map(({ name: predatorName, _id }, num) => (
+          <PredatorField
+            key={_id}
+            predatorIndex={num}
+            predatorName={predatorName}
+            predatorId={_id}
+            isDisabled={isDisabled}
+          />
+        ))}
+      </SimpleGrid>
+      <Spacer />
+      <VStack spacing="8px" align="left">
+        <HStack spacing={{ md: '380' }} justify={{ base: 'space-between', md: 'start' }}>
+          <Text fontWeight="500" fontSize="md">
+            Other Predator(s)
           </Text>
-        )}
-        <SimpleGrid columns={4} spacingX="64px" spacingY="68px">
-          {PREDATORS.map(([name, value]) => (
-            <PredatorField
-              key={value}
-              predatorName={name}
-              predatorId={value}
-              isDisabled={isDisabled}
-            />
-          ))}
-        </SimpleGrid>
+          <Tooltip
+            label="Describe any potential predator species not listed above.
+              e.g. Unicorn - 2 "
+            placement="top"
+          >
+            <InfoIcon />
+          </Tooltip>
+        </HStack>
+        <Textarea
+          width={{ md: '536px', base: '100%' }}
+          placeholder="Type here..."
+          {...register(`${FORM_PREFIX}Other`)}
+        />
+        <Spacer />
         <Spacer />
         <VStack spacing="8px" align="left">
           <HStack spacing="390">
@@ -139,6 +151,12 @@ PredatorsTab.propTypes = {
   isDisabled: PropTypes.bool,
   showHeader: PropTypes.bool,
   isTemplate: PropTypes.bool,
+  predators: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      _id: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default PredatorsTab;
