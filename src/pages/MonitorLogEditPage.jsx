@@ -39,13 +39,15 @@ const MonitorLogEditPage = () => {
           >
             <HStack>
               <Select
-                placeholder="Select option"
                 maxW="300px"
                 value={currentTemplate}
                 onChange={e => {
                   setCurrentTemplate(e.target.value);
                 }}
               >
+                <option value="" disabled>
+                  Select option
+                </option>
                 <option value="general">General Information </option>
                 <option value="listed-species">Listed Species</option>
                 <option value="non-listed">Non-Listed Species</option>
