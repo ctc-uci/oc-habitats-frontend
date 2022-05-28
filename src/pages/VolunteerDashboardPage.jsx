@@ -29,7 +29,13 @@ import { OCHBackend } from '../common/utils';
 // TODO: replace notification
 const Toast = props => {
   const [closed, setClosed] = useState();
-  const { title, description, status, variant, closeButton, goToLogButton } = props;
+  const { id, title, description, status, variant, closeButton, goToLogButton } = props;
+
+  const close = () => {
+    setClosed(true);
+    OCHBackend.delete(`/notification/${id}`, { withCredentials: true });
+  };
+
   return closed ? (
     ''
   ) : (
@@ -39,7 +45,7 @@ const Toast = props => {
         <AlertTitle>{title}</AlertTitle>
         <AlertDescription display="block">{description}</AlertDescription>
         {closeButton && (
-          <CloseButton position="absolute" right="8px" top="8px" onClick={() => setClosed(true)} />
+          <CloseButton position="absolute" right="8px" top="8px" onClick={() => close()} />
         )}
         {goToLogButton && (
           <Button float="right" colorScheme="red" size="sm" rightIcon={<ArrowForwardIcon />}>
@@ -54,6 +60,7 @@ const Toast = props => {
 const VolunteerDashboardPage = () => {
   const [userData, setUserData] = useState(null);
   const [userSubmissions, setUserSubmissions] = useState([]);
+  const [userNotifications, setUserNotifications] = useState([]);
 
   // Get data from backend
   useEffect(async () => {
@@ -70,6 +77,31 @@ const VolunteerDashboardPage = () => {
       console.log(err);
     }
   }, []);
+
+  useEffect(async () => {
+    try {
+      const notificationsRes = await OCHBackend.get('/notification/', { withCredentials: true });
+      setUserNotifications(notificationsRes.data);
+    } catch (err) {
+      // TODO: handle error
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+  }, []);
+
+  const Notifications = () => {
+    return userNotifications.map(notification => (
+      <Toast
+        key={notification._id}
+        id={notification._id}
+        title={notification.title}
+        description={notification.message}
+        status={notification.type === 'MONITOR_LOG_APPROVED' ? 'success' : 'error'}
+        variant="left-accent"
+        closeButton={notification.type === 'MONITOR_LOG_APPROVED' ? 'true' : 'false'}
+      />
+    ));
+  };
 
   const Segments = () => {
     if (userData.segments.length === 0) {
@@ -112,7 +144,7 @@ const VolunteerDashboardPage = () => {
         <UnsubmittedLogDraft
           // eslint-disable-next-line react/no-array-index-key
           key={idx}
-          segment={draft.segment.segmentId}
+          segment={draft.segment ? draft.segment.segmentId : ''}
           date={draft.date}
           lastSaved={draft.lastEditedAt}
         />
@@ -164,36 +196,7 @@ const VolunteerDashboardPage = () => {
         Notifications
       </Heading>
       <VStack spacing="5px" align="left">
-        <Toast
-          title="You have submitted a log for: OC09c, OC09b"
-          description="You have not submitted a log for: OC01"
-          status="info"
-          variant="left-accent"
-          closeButton={false}
-        />
-        <Toast
-          title="Your monitor log for OC09a on 02-16-2022 has been approved!"
-          description="Thank you for your hard work, keep it up!"
-          status="success"
-          variant="left-accent"
-          closeButton
-        />
-        <Toast
-          title="Monitor logs for segment(s) OC01 have not been submitted yet."
-          description="Please submit these logs by 02-28-2022 at 12:00PM."
-          status="warning"
-          variant="left-accent"
-          closeButton
-        />
-        <Toast
-          title="Edits have been requested for your OC09b log on 02-16-2022"
-          description="Request Reason: [Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-           eiusmod tempor incididunt ut labore et dolore magna aliqua. Diam volutpat commodo
-           sed egestas egestas fringilla.]"
-          status="error"
-          variant="left-accent"
-          goToLogButton
-        />
+        {Notifications()}
       </VStack>
       <br />
       <Heading size="md">Segment Assignment(s)</Heading>
