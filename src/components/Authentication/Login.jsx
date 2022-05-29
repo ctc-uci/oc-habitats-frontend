@@ -1,8 +1,7 @@
 /* eslint-disable react/no-children-prop */
 import React, { useState } from 'react';
-import { Link as ReachLink } from 'react-router-dom';
+import { Link as ReachLink, useNavigate } from 'react-router-dom';
 import {
-  Box,
   FormControl,
   Image,
   FormLabel,
@@ -12,11 +11,14 @@ import {
   Button,
   Flex,
   Link,
+  Text,
   Center,
+  Container,
 } from '@chakra-ui/react';
 import { instanceOf } from 'prop-types';
 import { Cookies, withCookies } from '../../common/cookie_utils';
-import { logInWithEmailAndPassword, useNavigate } from '../../common/auth_utils';
+import { logInWithEmailAndPassword } from '../../common/auth_utils';
+import authErrors from '../../common/auth_errors';
 
 import OCHLogo from '../../assets/OCH_Logo_SVG.svg';
 
@@ -29,78 +31,91 @@ const Login = ({ cookies }) => {
 
   /**
    * This function handles logging in with email/password (standard log in)
-   * If the user signs in successfully, they are redirected to /logout, otherwise they are redirected to the login screen
+   * If the user signs in successfully, they are redirected to /, otherwise they are redirected to the login screen
    * @param {Event} e
    */
   const handleSubmit = async e => {
     try {
       e.preventDefault();
-      await logInWithEmailAndPassword(email, password, '/logout', navigate, cookies);
+      await logInWithEmailAndPassword(email, password, navigate, cookies);
+      navigate('/');
     } catch (err) {
-      setErrorMessage(err.message);
+      const error = err.code.slice(5);
+      if (authErrors[error]) {
+        setErrorMessage(authErrors[error]);
+      } else {
+        setErrorMessage(err.message);
+      }
     }
   };
 
   return (
-    <Box w="100%" px={4} mb={{ sm: '70px', md: 0 }}>
+    <Container maxW="container.xl" centerContent>
       <Flex
         bg="rgba(43, 192, 227, .10)"
         borderRadius="6px"
-        w={{ xl: '50%', lg: '60%' }}
+        spacing="40px"
+        p={{ md: 20, base: 5 }}
+        w={{ md: '760px', base: '90vw' }}
         justifyContent="center"
-        alignItems="center"
-        mx={{ xl: 'auto', lg: 'auto', md: 'auto' }}
         my="5%"
         direction="column"
-        p={{ md: '90px 20px', sm: '45px 10px' }}
       >
         <Center width="100%" mb={{ sm: 10, lg: 20 }}>
           <Image src={OCHLogo} alt="OCH Logo" w="80%" />
         </Center>
-        <FormControl>
-          <FormLabel htmlFor="email">OC Habitats Email</FormLabel>
-          <Input
-            id="email"
-            bg="white"
-            onChange={({ target }) => setEmail(target.value)}
-            mb="30px"
-            w="100%"
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="password">Password</FormLabel>
-          <InputGroup w="100%">
+        <form onSubmit={handleSubmit}>
+          <FormControl>
+            <FormLabel htmlFor="email">OC Habitats Email</FormLabel>
             <Input
-              type={showPassword ? 'text' : 'password'}
-              onChange={({ target }) => setPassword(target.value)}
+              id="email"
               bg="white"
+              onChange={({ target }) => setEmail(target.value)}
+              mb="30px"
+              w="100%"
             />
-            <InputRightAddon
-              children={`${showPassword ? 'Hide' : 'Show'}`}
-              onClick={() => setShowPassword(!showPassword)}
-            />
-          </InputGroup>
-        </FormControl>
-        <Link mt="30px" as={ReachLink} to="/forgot-password" textDecoration="underline">
-          Forgot Your Password?
-        </Link>
-        <Button
-          bg="#2BC0E3"
-          color="white"
-          onClick={handleSubmit}
-          mt="10px"
-          w={{ md: '200px', sm: '80%' }}
-          alignSelf={{ md: 'flex-end', sm: 'center' }}
-          px="10px"
-          isDisabled={!(email && password)}
-          _hover={{ _disabled: { opacity: 0.38, cursor: 'not-allowed' } }}
-        >
-          Sign In
-        </Button>
-        <br />
-        {errorMessage && <p>{errorMessage}</p>}
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <InputGroup w="100%" cursor="pointer">
+              <Input
+                type={showPassword ? 'text' : 'password'}
+                onChange={({ target }) => setPassword(target.value)}
+                bg="white"
+              />
+              <InputRightAddon
+                children={`${showPassword ? 'Hide' : 'Show'}`}
+                onClick={() => setShowPassword(!showPassword)}
+              />
+            </InputGroup>
+          </FormControl>
+          <Flex direction="column">
+            <Link mt="30px" as={ReachLink} to="/forgot-password" textDecoration="underline">
+              Forgot Your Password?
+            </Link>
+            <Button
+              type="submit"
+              bg="ochBlue"
+              color="white"
+              mt={4}
+              w={{ md: '200px', base: '100%' }}
+              alignSelf={{ md: 'flex-end', base: 'center' }}
+              px="10px"
+              isDisabled={!(email && password)}
+              _hover={{ _disabled: { opacity: 0.38, cursor: 'not-allowed' } }}
+            >
+              Sign In
+            </Button>
+          </Flex>
+          <br />
+          {errorMessage && (
+            <Text mt="2" color="red">
+              {errorMessage}
+            </Text>
+          )}
+        </form>
       </Flex>
-    </Box>
+    </Container>
   );
 };
 

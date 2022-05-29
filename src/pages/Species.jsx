@@ -2,9 +2,9 @@ import { Box, Center, Flex, Stack, Text, VStack, HStack } from '@chakra-ui/react
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import DropdownSearch from '../components/DropdownSearch';
-import SpeciesList from '../components/SpeciesList';
-import NewSpeciesModal from '../components/NewSpeciesModal';
-import NewPredatorModal from '../components/NewPredatorModal';
+import SpeciesList from '../components/Species/SpeciesList';
+import NewSpeciesModal from '../components/Species/NewSpeciesModal';
+import NewPredatorModal from '../components/Species/NewPredatorModal';
 
 const initialData = {
   endangered: {
@@ -68,21 +68,24 @@ const Species = () => {
           id: 'listed',
           title: 'Listed Species',
           text: 'Note: Adding a listed species will create a new section on the monitor log.',
-          speciesIds: res.data.filter(specie => specie.isListed && !specie.isPredator),
+          speciesIds: res.data.filter(specie => specie.category === 'LISTED'),
         },
         predators: {
           id: 'predators',
           title: 'Predators',
           text: 'Note: To mark a tracked non-listed species as a predator, click on the species, select "Edit", and select "Yes" on the "Is a Predator" field.',
           speciesIds: res.data.filter(
-            specie => specie.isPredator && (!specie.isListed || specie.isNeither),
+            specie =>
+              specie.category === 'JUST_PREDATOR' || specie.category === 'NON_LISTED_PREDATOR',
           ),
         },
         nonListed: {
           id: 'nonListed',
           title: 'Non-Listed Species',
           text: '',
-          speciesIds: res.data.filter(specie => !specie.isListed && !specie.isNeither),
+          speciesIds: res.data.filter(
+            specie => specie.category === 'NON_LISTED' || specie.category === 'NON_LISTED_PREDATOR',
+          ),
         },
       };
       Object.entries(formattedData).forEach(column => {
@@ -108,9 +111,7 @@ const Species = () => {
     await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
       name: newSpecies.name,
       code: newSpecies.code,
-      isListed: newSpecies.group === 'listed',
-      isPredator: newSpecies.predator === 'Yes',
-      isNeither: newSpecies.group !== 'nonListed',
+      category: newSpecies.category,
       isAssigned: false,
     });
     setChange(!change);
@@ -120,9 +121,7 @@ const Species = () => {
     await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
       name: newSpecies.name,
       code: newSpecies.code,
-      isPredator: true,
-      // if isNeither is true the predator is neither non listed nor listed
-      isNeither: newSpecies.group !== 'nonListed',
+      category: newSpecies.category,
       isAssigned: false,
     });
     setChange(!change);
@@ -133,9 +132,7 @@ const Species = () => {
     await axios.put(`${process.env.REACT_APP_API_URL}/species/${oldSpecies._id}`, {
       name: newSpecies.name,
       code: newSpecies.code,
-      isListed: newSpecies.group === 'listed',
-      isPredator: newSpecies.predator === 'Yes',
-      isNeither: newSpecies.group !== 'nonListed',
+      category: newSpecies.category,
       isAssigned: false,
     });
     setChange(c => !c);
@@ -146,10 +143,10 @@ const Species = () => {
     await axios.delete(`${process.env.REACT_APP_API_URL}/species/${deletedSpecie}`);
     setChange(c => !c);
   };
-
+  const isAdmin = true;
   return (
     <Center>
-      <Stack w="container.xl" justify-content="center" mb="4em">
+      <Stack w="container.xl" justify-content="center" mb="4em" mx="1.5em">
         <VStack align="left" spacing="1.5em" w="100%">
           <Text fontWeight="600" fontSize="36px" mt="40px">
             Species List
@@ -158,14 +155,16 @@ const Species = () => {
             <strong>Search for a Species:</strong>
             <HStack>
               <Box w="100%">
-                <Flex justifyContent="space-between" flexDir="row">
-                  <Box w="32.5%">
+                <Flex justifyContent="space-between" flexDir={{ md: 'row', base: 'column' }}>
+                  <Box w={{ md: '32.5%', base: '100%' }} my={{ md: '0', base: '5' }}>
                     <DropdownSearch options={options} handleSelectedValue={highlightSearch} />
                   </Box>
-                  <HStack>
-                    <NewSpeciesModal addNewSpecies={addNewSpecies} />
-                    <NewPredatorModal addNewPredator={addNewPredator} />
-                  </HStack>
+                  {isAdmin && (
+                    <HStack>
+                      <NewSpeciesModal addNewSpecies={addNewSpecies} />
+                      <NewPredatorModal addNewPredator={addNewPredator} />
+                    </HStack>
+                  )}
                 </Flex>
               </Box>
             </HStack>
@@ -176,4 +175,5 @@ const Species = () => {
     </Center>
   );
 };
+
 export default Species;

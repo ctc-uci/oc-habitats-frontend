@@ -6,6 +6,8 @@ import EditSpeciesModal from './EditSpeciesModal';
 import DeleteSpeciesModal from './DeleteSpeciesModal';
 
 const SpeciesItem = ({ specie, index, searchItem, col, editSpecies, deleteSpecies }) => {
+  // this is hardcoded to be false change with context
+  const isAdmin = true;
   return (
     <div draggableId={specie} index={index}>
       <Menu>
@@ -22,24 +24,32 @@ const SpeciesItem = ({ specie, index, searchItem, col, editSpecies, deleteSpecie
             {specie.name}
           </Text>
         </MenuButton>
-        {col === 'predators' && (
+        {col === 'predators' && isAdmin && (
           <MenuList>
-            <EditSpeciesModal editSpecies={editSpecies} specie={specie} predOrSpecies="Predator" />
-            <DeleteSpeciesModal
-              deleteSpecies={deleteSpecies}
-              specie={specie}
-              predOrSpecies="Predator"
-            />
+            <>
+              <EditSpeciesModal
+                editSpecies={editSpecies}
+                specie={specie}
+                predOrSpecies="Predator"
+              />
+              <DeleteSpeciesModal
+                deleteSpecies={deleteSpecies}
+                specie={specie}
+                predOrSpecies="Predator"
+              />
+            </>
           </MenuList>
         )}
-        {col !== 'predators' && (
+        {col !== 'predators' && isAdmin && (
           <MenuList>
-            <EditSpeciesModal editSpecies={editSpecies} specie={specie} predOrSpecies="Species" />
-            <DeleteSpeciesModal
-              deleteSpecies={deleteSpecies}
-              specie={specie}
-              predOrSpecies="Species"
-            />
+            <>
+              <EditSpeciesModal editSpecies={editSpecies} specie={specie} predOrSpecies="Species" />
+              <DeleteSpeciesModal
+                deleteSpecies={deleteSpecies}
+                specie={specie}
+                predOrSpecies="Species"
+              />
+            </>
           </MenuList>
         )}
       </Menu>

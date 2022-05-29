@@ -9,16 +9,14 @@ import {
   HStack,
   Input,
   Select as ChakraSelect,
-  Table,
+  Stack,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Tbody,
-  Td,
   Text,
-  Thead,
-  Tr,
+  useMediaQuery,
+  VStack,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
@@ -51,6 +49,7 @@ const BandingSection = () => {
   // watch the 4 bands on the current tab so we can generate the band code
   const currentBandTab = watch(`bandTabs.${activeTabIndex}`);
   const currentBandTabCode = generateBandingCode(currentBandTab);
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const addBirdBandTab = () => {
     const newTab = {};
@@ -77,7 +76,7 @@ const BandingSection = () => {
           key={d.id}
           onClose={() => removeBirdBandTab(i)}
         >
-          Banded Bird {i + 1}
+          Bird {i + 1}
         </CloseableTab>
       );
     });
@@ -86,17 +85,25 @@ const BandingSection = () => {
   return (
     <CollapsibleSection title="Banding" limitWidth={false}>
       <HStack align="start">
-        <Text fontWeight="semibold">Note:</Text>
-        <Box>
-          <Text>
-            If there is an alphanumeric band, select the color(s) of the band and input the
-            alphanumeric code in the text field “Alphanumeric”.
+        <Text fontWeight="semibold" fontSize={{ md: 'md', base: 'sm' }}>
+          Note:
+        </Text>
+        {isMobile ? (
+          <Text fontSize="sm">
+            Input the bands in top to bottom order (from the bird&apos;s perspective)
           </Text>
-          <Text>
-            If there is an alphanumeric flag on the bird’s leg, check the “Is an Alphanumeric Flag”
-            box.
-          </Text>
-        </Box>
+        ) : (
+          <Box>
+            <Text>
+              If there is an alphanumeric band, select the color(s) of the band and input the
+              alphanumeric code in the text field “Alphanumeric”.
+            </Text>
+            <Text>
+              If there is an alphanumeric flag on the bird’s leg, check the “Is an Alphanumeric
+              Flag” box.
+            </Text>
+          </Box>
+        )}
       </HStack>
       <HStack marginTop="18px" />
       <Tabs
@@ -121,89 +128,74 @@ const BandingSection = () => {
               onClick={addBirdBandTab}
               variant="outline"
               borderRadius="full"
-              colorScheme="cyan"
-              minWidth="180px"
+              color="ochBluePress"
+              borderColor="ochBluePress"
+              minWidth="130px"
             >
-              Add Banded Bird +
+              Add Bird +
             </Button>
           </HStack>
         </TabList>
         <TabPanels>
           {birdBandTabs.map((birdBandTab, tabIndex) => (
-            <TabPanel bgColor="gray.50" key={birdBandTab.id} padding={4} marginTop={2} rounded="md">
-              <Grid templateColumns={['repeat(1,1fr)', '', 'repeat(2, 1fr)']} gap="2em">
+            <TabPanel bgColor="gray.50" key={birdBandTab.id} padding={4} marginTop={4} rounded="md">
+              <Grid templateColumns={{ md: 'repeat(2, 1fr)', base: 'repeat(1, 1fr)' }} gap="2em">
                 {BAND_POSITIONS.map(({ label: bandPosition, value: bandPositionValue }) => (
                   <GridItem key={bandPosition}>
                     <Text fontWeight="semibold" fontSize="md" mb="2">
                       {bandPosition} Band
                     </Text>
-                    <Table variant="unstyled" size="sm">
-                      <Thead>
-                        <Tr>
-                          <Td width="25%" p="0" pr="4">
-                            <Text fontSize="sm" mb="1">
-                              Position on leg
-                            </Text>
-                          </Td>
-                          <Td width="45%" p="0" pr="4">
-                            <Text fontSize="sm" mb="1">
-                              Color(s)
-                            </Text>
-                          </Td>
-                          <Td width="30%" p="0">
-                            <Text fontSize="sm" mb="1">
-                              Alphanumeric code
-                            </Text>
-                          </Td>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        <Tr>
-                          <Td p="0" pr="4" verticalAlign="top">
-                            <ChakraSelect
-                              placeholder="Select..."
-                              bgColor="white"
-                              {...register(
-                                `bandTabs.${tabIndex}.${bandPositionValue}.verticalPosition`,
-                              )}
-                            >
-                              <option value="ABOVE">Above ankle</option>
-                              <option value="BELOW">Below ankle</option>
-                            </ChakraSelect>
-                          </Td>
-                          <Td p="0" pr="4" verticalAlign="top">
-                            <Box bgColor="white">
-                              <BandingColorSelect
-                                name={`bandTabs.${tabIndex}.${bandPositionValue}.colors`}
-                              />
-                            </Box>
-                          </Td>
-                          <Td p="0" verticalAlign="top">
-                            <Input
-                              bgColor="white"
-                              {...register(
-                                `bandTabs.${tabIndex}.${bandPositionValue}.alphanumeric`,
-                              )}
-                            />
-                          </Td>
-                        </Tr>
-                        <Tr>
-                          <Td px="0" py="2" colSpan={3}>
-                            <Checkbox
-                              {...register(`bandTabs.${tabIndex}.${bandPositionValue}.flag`)}
-                            >
-                              Is an Alphanumeric Flag
-                            </Checkbox>
-                          </Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
+                    <Stack direction={{ md: 'row', base: 'column' }}>
+                      <VStack align="start" spacing="0">
+                        <Text fontSize="sm" mb="1" display="flex">
+                          Position on leg
+                        </Text>
+                        <ChakraSelect
+                          placeholder="Select..."
+                          bgColor="white"
+                          {...register(
+                            `bandTabs.${tabIndex}.${bandPositionValue}.verticalPosition`,
+                          )}
+                        >
+                          <option value="ABOVE">Above ankle</option>
+                          <option value="BELOW">Below ankle</option>
+                        </ChakraSelect>
+                      </VStack>
+                      <VStack align="start" spacing="0" w={{ md: '45%', base: '100%' }}>
+                        <Text fontSize="sm" mb="1" display="flex">
+                          Color(s)
+                        </Text>
+                        <Box bgColor="white" w="100%">
+                          <BandingColorSelect
+                            name={`bandTabs.${tabIndex}.${bandPositionValue}.colors`}
+                          />
+                        </Box>
+                      </VStack>
+                      <VStack align="start" spacing="0" w={{ md: '30%', base: '100%' }}>
+                        <Text fontSize="sm" mb="1">
+                          Alphanumeric
+                        </Text>
+                        <Input
+                          bgColor="white"
+                          placeholder="Optional"
+                          {...register(`bandTabs.${tabIndex}.${bandPositionValue}.alphanumeric`)}
+                        />
+                      </VStack>
+                    </Stack>
+                    <Checkbox
+                      mt="10px"
+                      {...register(`bandTabs.${tabIndex}.${bandPositionValue}.flag`)}
+                    >
+                      Is an Alphanumeric Flag
+                    </Checkbox>
                   </GridItem>
                 ))}
                 <GridItem>
-                  <FormLabel>Generated Banding Code</FormLabel>
+                  <FormLabel fontSize="16px">Banding Code (Auto-generated)</FormLabel>
 
-                  <Code fontSize="lg">{currentBandTabCode}</Code>
+                  <Code w="250px" fontSize="lg" p={1}>
+                    {currentBandTabCode}
+                  </Code>
                 </GridItem>
               </Grid>
             </TabPanel>

@@ -13,14 +13,14 @@ const SpeciesList = ({ species, colID, searchItem, editSpecies, deleteSpecies })
       bgColor="#F7F7F7"
       justifyContent="center"
     >
-      <VStack w="93%" align="left" m="1.75em 0" spacing="1.6em">
+      <VStack w="93%" align="left" m={{ md: '1.75em 0', base: '1em 0' }} spacing="1.6em">
         <Grid
-          templateColumns="repeat(3, 1fr)"
+          templateColumns={{ md: 'repeat(3, 1fr)', base: 'repeat(1, 1fr)' }}
           autoFlow="row dense"
           w="100%"
           columnGap="5em"
-          rowGap="1em"
-          minHeight="7em"
+          rowGap={{ md: '1em', base: '.5em' }}
+          minHeight={{ md: '7em', base: '.5em' }}
         >
           {species.map((specie, index) => {
             return (

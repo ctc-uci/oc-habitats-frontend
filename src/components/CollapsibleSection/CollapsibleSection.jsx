@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Heading,
-  HStack,
+  Stack,
   VStack,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
@@ -16,7 +16,7 @@ const CollapsibleSection = ({ title, children, limitWidth, rightElement }) => {
     <VStack w="100%" align="start" spacing="2em" maxW={limitWidth ? '900px' : ''}>
       <Accordion allowMultiple="true" defaultIndex={[0]} width="100%">
         <AccordionItem borderColor="white" spacing={10}>
-          <HStack marginBottom="4">
+          <Stack direction={{ md: 'row', base: 'column' }} marginBottom="4">
             <AccordionButton
               padding="0"
               _focus={{ boxShadow: 'none' }}
@@ -28,7 +28,7 @@ const CollapsibleSection = ({ title, children, limitWidth, rightElement }) => {
               <AccordionIcon />
             </AccordionButton>
             {rightElement}
-          </HStack>
+          </Stack>
 
           <AccordionPanel padding="0" width="100%">
             {children}
