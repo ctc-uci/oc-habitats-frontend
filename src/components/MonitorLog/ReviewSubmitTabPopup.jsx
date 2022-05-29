@@ -7,26 +7,42 @@ import {
   ModalFooter,
   useDisclosure,
   Button,
+  Image,
+  Center,
+  Text,
+  ButtonGroup,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { FiCheck } from 'react-icons/fi';
-import { React, useState, useEffect } from 'react';
+import { React, useState } from 'react';
+import { Link } from 'react-router-dom';
+import confirmSubmission from '../../assets/confirmSubmission.svg';
+import monitorLogSubmissionComplete from '../../assets/monitorLogSubmissionComplete.svg';
 
 const SubmitSurvey = ({ setModalStep, onClose, submit }) => {
-  console.log('entered');
   return (
     <>
       <ModalHeader>Are you sure you want to submit your survey log?</ModalHeader>
+      <ModalBody>
+        <Center>
+          <Image maxH="270px" maxW="300px" src={confirmSubmission} alt="Are you sure?" />
+        </Center>
+      </ModalBody>
       <ModalFooter>
-        <Button onClick={() => onClose()}>No</Button>
-        <Button
-          onClick={() => {
-            submit();
-            setModalStep('submitted');
-          }}
-        >
-          Yes, Submit My Log
-        </Button>
+        <ButtonGroup gap="2">
+          <Button onClick={() => onClose()}>No</Button>
+          <Button
+            type="submit"
+            colorScheme="green"
+            onClick={() => {
+              submit();
+              setModalStep('submitted');
+            }}
+            variant="solidNoHover"
+          >
+            Yes, Submit My Log
+          </Button>
+        </ButtonGroup>
       </ModalFooter>
     </>
   );
@@ -35,9 +51,19 @@ const SubmitSurvey = ({ setModalStep, onClose, submit }) => {
 const Submitted = ({ onClose }) => {
   return (
     <>
-      <ModalBody>Congratulations! You’ve submitted your monitor log for review.</ModalBody>
+      <ModalBody>
+        <Center>
+          <Text fontSize="2xl">Congratulations! You’ve submitted your monitor log for review.</Text>
+        </Center>
+        <br />
+        <Center>
+          <Image maxH="326px" maxW="362px" src={monitorLogSubmissionComplete} alt="Confirmation" />
+        </Center>
+      </ModalBody>
       <ModalFooter>
-        <Button onClick={onClose}>Close</Button>
+        <Link to="/">
+          <Button onClick={onClose}>Close</Button>
+        </Link>
       </ModalFooter>
     </>
   );
@@ -47,9 +73,9 @@ function ReturnPopup({ submitForm }) {
   const [modalStep, setModalStep] = useState('submitSurvey');
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  useEffect(() => {
-    setModalStep('reminderSelect');
-  });
+  // useEffect(() => {
+  //   setModalStep('reminderSelect');
+  // });
 
   const modalContent = {
     submitSurvey: (
@@ -58,7 +84,6 @@ function ReturnPopup({ submitForm }) {
     submitted: <Submitted onSubmit={submitForm} onClose={onClose} />,
   };
 
-  console.log('Entered Popup');
   return (
     <>
       <Button colorScheme="green" type="submit" onClick={onOpen}>

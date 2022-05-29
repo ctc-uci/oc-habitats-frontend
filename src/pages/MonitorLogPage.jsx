@@ -22,6 +22,7 @@ import {
   AlertTitle,
   AlertIcon,
   AlertDescription,
+  ButtonGroup,
 } from '@chakra-ui/react';
 import { React, useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -38,6 +39,7 @@ import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
 import PredatorsTab from '../components/MonitorLog/PredatorsTab';
 import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
 import ReviewSubmitTabPopup from '../components/MonitorLog/ReviewSubmitTabPopup';
+import EditLogPopup from '../components/MonitorLog/EditLogPopup';
 
 const MonitorTabButton = props => {
   // eslint-disable-next-line react/prop-types
@@ -85,6 +87,7 @@ const MonitorLogPage = ({ mode }) => {
     if (mode === 'edit' || mode === 'review') {
       try {
         const submission = await OCHBackend.get(`submission/${userData.id}`);
+        console.log(submission.data);
         submission.data.date = parseISO(submission.data.date);
         formMethods.reset(submission.data);
         setSubmissionData(submission.data);
@@ -310,7 +313,7 @@ const MonitorLogPage = ({ mode }) => {
             h="16"
             zIndex="banner"
           >
-            <Flex width="100%" maxWidth="1500px" p="32px">
+            <Flex width="100%" p="32px">
               <Button
                 onClick={returnToTop}
                 variant="outline"
@@ -320,11 +323,19 @@ const MonitorLogPage = ({ mode }) => {
                 Return to Top <FiArrowUp style={{ marginLeft: '4px' }} />
               </Button>
               <Spacer />
-              {activeTab !== totalTabs - 1 && (
+              {mode === 'review' && (
+                <ButtonGroup>
+                  <EditLogPopup user={userData.id} />
+                  <Button type="submit">Approve</Button>
+                </ButtonGroup>
+              )}
+              {activeTab !== totalTabs - 1 && mode !== 'review' && (
                 <Button
                   colorScheme="cyan"
                   type="submit"
-                  //  onClick={handleSubmit}
+                  onClick={() => {
+                    console.log(formMethods.getValues());
+                  }}
                 >
                   {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
                   Save Changes
