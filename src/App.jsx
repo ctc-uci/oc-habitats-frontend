@@ -25,7 +25,7 @@ import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import Numbers from './pages/EmergencyNumbers';
-import ErrorPage from './pages/404ErrorPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
@@ -58,7 +58,7 @@ function App() {
                 />
                 <Routes>
                   {/* Add routes as needed; route names subject to change */}
-                  <Route exact path="/error" element={<ErrorPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
                   <Route path="/register/:inviteID" element={<InviteLandingPage />} />
                   <Route exact path="/invite" element={<AdminInviteModal />} />
                   <Route
