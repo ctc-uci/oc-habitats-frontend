@@ -29,39 +29,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
   const [additionalQuestions, setAdditionalQuestions] = useState([]);
   const [tabEdited, setTabEdited] = useState(false);
   const [questionAdded, setQuestionAdded] = useState(false);
-  // commented for prettier
-  // const [isLoading, setIsLoading] = useState(true);
   const { control, register } = useFormContext();
-  // const editQuestionModal = useDisclosure();
-
-  // states for editQuestion modal
-  // const [newTitle, setNewTitle] = useState();
-  // const [newFieldType, setNewFieldType] = useState();
-  // const [newTooltip, setNewTooltip] = useState();
-  // const [fieldToEdit, setFieldToEdit] = useState();
-
-  // const updateQuestion = async () => {
-  //   console.log(`updateQuestion called with fieldId: ${idOfFieldBeingEdited}`);
-  //   console.log(`fieldBody: ${newTitle}, ${newFieldType}, ${newTooltip}`);
-  //   await OCHBackend.put('/forms/update/field', {
-  //     type: 'general',
-  //     fieldId: idOfFieldBeingEdited,
-  //     fieldBody: {
-  //       title: newTitle,
-  //       fieldType: newFieldType,
-  //       tooltip: newTooltip,
-  //     },
-  //   });
-  //   editQuestionModal.onClose();
-  // };
-
-  // const deleteQuestion = async () => {
-  //   await OCHBackend.delete('/forms/delete/field', {
-  //     formType: 'general',
-  //     fieldId: idOfFieldBeingEdited,
-  //   });
-  //   editQuestionModal.onClose();
-  // };
 
   const toggleTabEdited = () => {
     setTabEdited(!tabEdited);
@@ -126,13 +94,13 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
               <Text fontWeight="500" fontSize="md">
                 Survey Segment
               </Text>
-              <Select disabled={isDisabled} {...register('segment')}>
-                {assignedSegments.map(segment => (
-                  <option value={segment.segmentId} key={segment.segmentId}>
-                    {segment.segmentId} - {segment.name}
-                  </option>
-                ))}
-              </Select>
+              <ReactHookFormSelect
+                name="segment"
+                options={segmentOptions}
+                optionKey="value"
+                isDisabled={isDisabled}
+                size="md"
+              />
               {isTemplate && <Text color="#718096">Static</Text>}
             </VStack>
           </GridItem>
@@ -326,84 +294,6 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
           />
         </VStack>
       </VStack>
-
-      {/* EDIT QUESTION MODAL STARTS HERE */}
-      {/* <Modal
-        w="460px"
-        h="562px"
-        bgColor="rgba(253, 253, 253, 1)"
-        px="15px"
-        py="10px"
-        isOpen={editQuestionModal.isOpen}
-        onClose={editQuestionModal.onClose}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Edit Question</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Box>
-              <FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="title">Question Title</FormLabel>
-                  <Input
-                    id="title"
-                    type="text"
-                    value={newTitle}
-                    placeholder="Question Title"
-                    onChange={({ target }) => setNewTitle(target.value)}
-                    w="412px"
-                    mb="20px"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="type">Question Type</FormLabel>
-                  <RadioGroup
-                    id="type"
-                    onChange={e => setNewFieldType(e)}
-                    value={newFieldType}
-                    maxW="700px"
-                    defaultValue="TEXT"
-                  >
-                    <HStack spacing="2px" mb="10px">
-                      <Radio value="TEXT" mr="10px">
-                        Text Input
-                      </Radio>
-                      <Radio value="NUMBER">Number Input</Radio>
-                    </HStack>
-                  </RadioGroup>
-                  <FormControl>
-                    <FormLabel>Tooltip (Optional)</FormLabel>
-                    <Textarea
-                      value={newTooltip}
-                      onChange={({ target }) => setNewTooltip(target.value)}
-                      placeholder="Type here..."
-                      w="412px"
-                      h="128px"
-                      mb="60px"
-                    />
-                    <VStack>
-                      <Button w="412px" h="40px" bgColor="ochBlue" onClick={updateQuestion}>
-                        Save Changes
-                      </Button>
-                      <Button
-                        w="412px"
-                        h="40px"
-                        bgColor="white"
-                        border="1px solid #C53030"
-                        color="#C53030"
-                        onClick={deleteQuestion}
-                      >
-                        Delete Question
-                      </Button>
-                    </VStack>
-                  </FormControl>
-                </FormControl>
-              </FormControl>
-            </Box>
-          </ModalBody>
-        </ModalContent>
-      </Modal> */}
     </div>
   );
 }

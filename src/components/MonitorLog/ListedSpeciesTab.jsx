@@ -9,8 +9,6 @@ import {
   Center,
   Collapse,
   FormControl,
-  Grid,
-  GridItem,
   HStack,
   Icon,
   IconButton,
@@ -47,7 +45,7 @@ import {
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { useFormContext, useForm } from 'react-hook-form';
+import { useFormContext, useForm, FormProvider } from 'react-hook-form';
 import { FiEdit3, FiExternalLink } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import ListedSpeciesPopup from '../ListedSpecies/ListedSpeciesPopup';
@@ -70,7 +68,7 @@ const ListedSpeciesTab = ({
   isDisabled,
   isTemplate,
 }) => {
-  const formPrefix = `listedSpecies.${tab}.`;
+  const formPrefix = `listedSpecies[${tab}].`;
 
   const { isOpen, onOpen: openPopup, onClose } = useDisclosure();
   const { setValue, getValues } = useFormContext();
@@ -86,7 +84,7 @@ const ListedSpeciesTab = ({
 
   const toast = useToast();
 
-  const formMethods = useForm({
+  const nestedForm = useForm({
     defaultValues: {
       totalAdults: 1,
       totalFledges: 0,
@@ -108,6 +106,10 @@ const ListedSpeciesTab = ({
     },
   });
 
+  useEffect(() => {
+    setValue(`${formPrefix}species`, speciesId);
+  }, []);
+
   const toggleTabEdited = () => {
     setTabEdited(!tabEdited);
   };
@@ -116,25 +118,27 @@ const ListedSpeciesTab = ({
     setQuestionAdded(!questionAdded);
   };
 
-  useEffect(async () => {
-    const newQuestions = await OCHBackend.get(`/forms/listed-species`);
-    const questions = await newQuestions.data;
-    setAdditionalQuestions(questions.additionalFields);
-
+  useEffect(() => {
     setTotals(
       data
         .map(row => [row.totalAdults, row.totalFledges, row.totalChicks])
         .reduce((l, r) => [l[0] + r[0], l[1] + r[1], l[2] + r[2]], [0, 0, 0]),
     );
-    setValue(`${formPrefix}data`, data);
+    setValue(`${formPrefix}entries`, data);
+  }, [data]);
+
+  useEffect(async () => {
+    const newQuestions = await OCHBackend.get(`/forms/listed-species`);
+    const questions = await newQuestions.data;
+    setAdditionalQuestions(questions.additionalFields);
 
     // querying listed species from backend and wrangling with the data
     const species = await OCHBackend.get('/species/');
-    const speciesData = await species.data;
-    const filteredSpeciesData = speciesData.filter(el => el.isListed);
+    const speciesData = species.data;
+    const filteredSpeciesData = speciesData.filter(el => el.isListed && !el.isPredator);
     const mappedSpecies = filteredSpeciesData.map(el => `${el.name} (${el.code})`);
     setListedSpeciesList(mappedSpecies);
-  }, [data, questionAdded, tabEdited]);
+  }, [questionAdded, tabEdited]);
 
   const addRow = formData => {
     if (formData.editing !== undefined) {
@@ -246,11 +250,11 @@ const ListedSpeciesTab = ({
           <NewQuestionModal currentTemplate="listed-species" refreshTrigger={toggleQuestionAdded} />
         </HStack>
       ) : (
-        // {showHeader && (
-        <Text fontWeight="600" fontSize="2xl">
-          {speciesName}s
-        </Text>
-        // )}
+        showHeader && (
+          <Text fontWeight="600" fontSize="2xl">
+            {speciesName}s
+          </Text>
+        )
       )}
       {isTemplate && (
         <>
@@ -526,28 +530,26 @@ const ListedSpeciesTab = ({
             The questions below are shown when a new row is added to the monitor log species
             tracker.
           </Text>
-          <VStack align="start" spacing="4em">
-            <GeneralListedInformation
-              refreshTrigger={toggleTabEdited}
-              additionalQuestions={additionalQuestions}
-              isTemplate
-            />
-            <Location isTemplate />
-            <SexSection isTemplate />
-            <BehaviorsSection
-              behaviorOptions={options.behavior}
-              nestingOptions={options.nesting}
-              isTemplate
-            />
-            <BandingSection />
-            <CollapsibleSection title="Additional Notes (Optional)">
-              <Textarea
-                h="10em"
-                placeholder="Type Here..."
-                {...formMethods.register('additionalNotes')}
+          <FormProvider {...nestedForm}>
+            <VStack align="start" spacing="4em">
+              <GeneralListedInformation
+                refreshTrigger={toggleTabEdited}
+                additionalQuestions={additionalQuestions}
+                isTemplate
               />
-            </CollapsibleSection>
-          </VStack>
+              <Location isTemplate />
+              <SexSection isTemplate />
+              <BehaviorsSection
+                behaviorOptions={options.behavior}
+                nestingOptions={options.nesting}
+                isTemplate
+              />
+              <BandingSection />
+              <CollapsibleSection title="Additional Notes (Optional)">
+                <Textarea h="10em" placeholder="Type Here..." />
+              </CollapsibleSection>
+            </VStack>
+          </FormProvider>
         </>
       )}
     </>

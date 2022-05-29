@@ -1,7 +1,6 @@
 import { Box, Center, Flex, Stack, Text, VStack, HStack } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import DropdownSearch from '../components/DropdownSearch';
 import SpeciesList from '../components/SpeciesList';
 import NewSpeciesModal from '../components/NewSpeciesModal';

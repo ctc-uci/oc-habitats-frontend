@@ -1,30 +1,25 @@
-/* eslint-disable no-console */
 /* eslint-disable react/no-children-prop */
-import React, { useState } from 'react';
-import { Link as ReachLink, useNavigate } from 'react-router-dom';
 import {
-  Box,
-  FormControl,
-  Image,
-  FormLabel,
-  InputGroup,
-  Input,
-  InputRightAddon,
   Button,
-  Flex,
-  Link,
-  Text,
   Center,
   Container,
-  Stack,
+  Flex,
+  FormControl,
+  FormLabel,
+  Image,
+  Input,
+  InputGroup,
+  InputRightAddon,
+  Link,
+  Text,
 } from '@chakra-ui/react';
 import { instanceOf } from 'prop-types';
-import { useForm } from 'react-hook-form';
-import { Cookies, withCookies } from '../../common/cookie_utils';
-import { logInWithEmailAndPassword } from '../../common/auth_utils';
-import authErrors from '../../common/auth_errors';
-
+import React, { useState } from 'react';
+import { Link as ReachLink, useNavigate } from 'react-router-dom';
 import OCHLogo from '../../assets/OCH_Logo_SVG.svg';
+import authErrors from '../../common/auth_errors';
+import { logInWithEmailAndPassword } from '../../common/auth_utils';
+import { Cookies, withCookies } from '../../common/cookie_utils';
 
 const Login = ({ cookies }) => {
   const navigate = useNavigate();
@@ -32,19 +27,13 @@ const Login = ({ cookies }) => {
   const [password, setPassword] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-  const {
-    register,
-    handleSubmit,
-    // commented for prettier
-    // formState: { errors },
-  } = useForm();
 
   /**
    * This function handles logging in with email/password (standard log in)
    * If the user signs in successfully, they are redirected to /, otherwise they are redirected to the login screen
    * @param {Event} e
    */
-  const handleFormSubmission = async data => {
+  const handleSubmit = async e => {
     try {
       e.preventDefault();
       await logInWithEmailAndPassword(email, password, navigate, cookies);

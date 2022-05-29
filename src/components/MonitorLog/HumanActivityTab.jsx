@@ -87,6 +87,7 @@ HumanActivityField.propTypes = {
   activityDesc: PropTypes.string.isRequired,
   activityId: PropTypes.string.isRequired,
   isDisabled: PropTypes.bool.isRequired,
+  isTemplate: PropTypes.bool.isRequired,
 };
 
 const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
@@ -136,7 +137,11 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
             Human Activity
           </Text>
         )}
-        <SimpleGrid columns={3} spacingX="64px" spacingY="68px">
+        <SimpleGrid
+          columns={{ md: 3, base: 1 }}
+          spacingX="64px"
+          spacingY={{ md: '68px', base: '30px' }}
+        >
           {HUMAN_ACTIVITIES.map(([name, desc, value]) => (
             <HumanActivityField
               key={value}
@@ -148,7 +153,11 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
             />
           ))}
         </SimpleGrid>
-        <SimpleGrid columns={3} spacingX="64px" spacingY="68px">
+        <SimpleGrid
+          columns={{ md: 3, base: 1 }}
+          spacingX="64px"
+          spacingY={{ md: '68px', base: '30px' }}
+        >
           {additionalQuestions.map(question => {
             return (
               <NonStaticHumanActivity
@@ -176,42 +185,23 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
             placeholder="Type here..."
             {...register(`${FORM_PREFIX}outreach`)}
           />
-          <Spacer />
-          <Spacer />
         </VStack>
         <VStack spacing="8px" align="left">
-          <Text fontWeight="500" fontSize="md">
-            Other Notes
-          </Text>
+          <Flex>
+            <Text fontWeight="500" fontSize="md">
+              Other Notes
+            </Text>
+            <Spacer />
+            <Tooltip label="Note how many people and what topics (e.g. environmental concerns, surveying, the habitats, etc) you discussed with members of the public.">
+              <InfoIcon />
+            </Tooltip>
+          </Flex>
           <Textarea
             disabled={isDisabled}
             placeholder="Type here..."
             {...register(`${FORM_PREFIX}otherNotes`)}
           />
-          <Spacer />
-          <Tooltip label="Note how many people and what topics (e.g. environmental concerns, surveying, the habitats, etc) you discussed with members of the public.">
-            <InfoIcon />
-          </Tooltip>
         </VStack>
-        <Textarea
-          disabled={isDisabled}
-          placeholder="Type here..."
-          {...register(`${FORM_PREFIX}outreach`)}
-        />
-        <Spacer />
-        <Spacer />
-      </VStack>
-      <VStack spacing="8px" align="left">
-        <Text fontWeight="500" fontSize="md">
-          Other Notes
-        </Text>
-        <Textarea
-          disabled={isDisabled}
-          placeholder="Type here..."
-          {...register(`${FORM_PREFIX}otherNotes`)}
-        />
-        <Spacer />
-        <Spacer />
       </VStack>
     </>
   );
@@ -226,13 +216,6 @@ HumanActivityTab.defaultProps = {
 HumanActivityTab.propTypes = {
   isDisabled: PropTypes.bool,
   showHeader: PropTypes.bool,
-  isTemplate: PropTypes.bool,
-};
-
-HumanActivityField.defaultProps = {
-  isTemplate: false,
-};
-HumanActivityField.propTypes = {
   isTemplate: PropTypes.bool,
 };
 

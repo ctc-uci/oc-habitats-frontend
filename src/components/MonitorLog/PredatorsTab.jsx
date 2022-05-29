@@ -57,7 +57,7 @@ PredatorField.propTypes = {
   isDisabled: PropTypes.bool.isRequired,
 };
 
-const PredatorsTab = ({ showHeader, isDisabled, isTemplate, predators }) => {
+const PredatorsTab = ({ showHeader, isDisabled, predators, isTemplate }) => {
   const { register } = useFormContext();
   return (
     <>
@@ -83,50 +83,36 @@ const PredatorsTab = ({ showHeader, isDisabled, isTemplate, predators }) => {
           </HStack>
         </>
       )}
-      <SimpleGrid
-        columns={{ md: 4, base: 1 }}
-        spacingX="64px"
-        spacingY={{ md: '68px', base: '30px' }}
-      >
-        {predators.map(({ name: predatorName, _id }, num) => (
-          <PredatorField
-            key={_id}
-            predatorIndex={num}
-            predatorName={predatorName}
-            predatorId={_id}
-            isDisabled={isDisabled}
-          />
-        ))}
-      </SimpleGrid>
-      <Spacer />
-      <VStack spacing="8px" align="left">
-        <HStack spacing={{ md: '380' }} justify={{ base: 'space-between', md: 'start' }}>
-          <Text fontWeight="500" fontSize="md">
-            Other Predator(s)
+      <VStack spacing="23px" align="left">
+        {showHeader && (
+          <Text fontWeight="600" fontSize="2xl">
+            Predators
           </Text>
-          <Tooltip
-            label="Describe any potential predator species not listed above.
-              e.g. Unicorn - 2 "
-            placement="top"
-          >
-            <InfoIcon />
-          </Tooltip>
-        </HStack>
-        <Textarea
-          width={{ md: '536px', base: '100%' }}
-          placeholder="Type here..."
-          {...register(`${FORM_PREFIX}Other`)}
-        />
-        <Spacer />
+        )}
+        <SimpleGrid
+          columns={{ md: 4, base: 1 }}
+          spacingX="64px"
+          spacingY={{ md: '68px', base: '30px' }}
+        >
+          {predators.map(({ name: predatorName, _id }, num) => (
+            <PredatorField
+              key={_id}
+              predatorIndex={num}
+              predatorName={predatorName}
+              predatorId={_id}
+              isDisabled={isDisabled}
+            />
+          ))}
+        </SimpleGrid>
         <Spacer />
         <VStack spacing="8px" align="left">
-          <HStack spacing="390">
+          <HStack spacing={{ md: '380' }} justify={{ base: 'space-between', md: 'start' }}>
             <Text fontWeight="500" fontSize="md">
               Other Predator(s)
             </Text>
             <Tooltip
               label="Describe any potential predator species not listed above.
-                e.g. Unicorn - 2 "
+              e.g. Unicorn - 2 "
               placement="top"
             >
               <InfoIcon />

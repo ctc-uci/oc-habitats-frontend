@@ -25,7 +25,7 @@ const MonitorLogEditPage = () => {
     <Flex w="100%" justifyContent="center">
       <Box w="1500px">
         <FormProvider {...formMethods}>
-          <Heading ref={topRef} px="32px" fontWeight="600" fontSize="36px" mb="40px" mt="40px">
+          <Heading ref={topRef} fontWeight="600" fontSize="36px" mb="40px" mt="40px">
             Monitor Log Template
           </Heading>
           <Tabs

@@ -23,26 +23,35 @@ const NavbarLink = ({ text, path = '/', isAdmin, changesMade }) => {
     }
     return {};
   };
+
   return (
     <Center
       h="inherit"
       paddingX={5}
       borderTop="5px solid transparent"
       borderBottom="5px solid"
-      borderBottomColor={current === path ? 'ochBlue' : 'transparent'}
-      _hover={{ transitionDuration: '0.25s', color: 'ochOrange' }}
+      borderBottomColor={
+        current === path || (current === '/edit-log-template' && text === 'Monitor Logs')
+          ? 'ochBlue'
+          : 'transparent'
+      }
+      transitionDuration="0.25s"
+      _hover={{ color: 'ochOrange' }}
       fontWeight={500}
       whiteSpace="nowrap"
     >
       {isAdmin && text === 'Monitor Logs' ? (
         <>
-          <Menu isOpen={isOpen}>
-            <Link to={path}>
-              <MenuButton onMouseEnter={onOpen}>
-                <Text fontWeight={500}>{text}</Text>
-              </MenuButton>
-            </Link>
-            <MenuList onMouseLeave={onClose} boxShadow="base" bgColor="#FDFDFD">
+          <Menu isOpen={isOpen} offset={0}>
+            <MenuButton py="2" onMouseEnter={onOpen} onMouseLeave={onClose}>
+              <Text fontWeight={500}>{text}</Text>
+            </MenuButton>
+            <MenuList
+              onMouseEnter={onOpen}
+              onMouseLeave={onClose}
+              boxShadow="base"
+              bgColor="#FDFDFD"
+            >
               <Link to={path}>
                 <Text color="black" fontWeight={400} ml="17px" mr="17px" mb="17px">
                   View Submissions

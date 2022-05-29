@@ -1,12 +1,10 @@
 import { FormControl, FormLabel, Grid, GridItem, Text } from '@chakra-ui/react';
-import { Select } from 'chakra-react-select';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import ReactHookFormSelect from '../../common/ReactHookFormSelect';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 
 const BehaviorsSection = ({ behaviorOptions, nestingOptions, isTemplate }) => {
-  const { control } = useFormContext();
   const behaviorDropdown = behaviorOptions.map(behavior => ({
     label: behavior,
     value: behavior,
@@ -61,8 +59,6 @@ BehaviorsSection.defaultProps = {
 BehaviorsSection.propTypes = {
   behaviorOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
   nestingOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
-  nesting: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setNesting: PropTypes.func.isRequired,
   isTemplate: PropTypes.bool,
 };
 

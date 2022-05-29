@@ -7,8 +7,6 @@ import {
   Box,
   Flex,
   FormControl,
-  Grid,
-  GridItem,
   HStack,
   NumberDecrementStepper,
   NumberIncrementStepper,
@@ -51,8 +49,6 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
       })),
     [species],
   );
-
-  console.log(getValues());
 
   const getSpeciesLabel = speciesId => speciesOptions.find(s => s.value === speciesId)?.label;
 
@@ -210,7 +206,7 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
                   },
                 }}
               >
-                <Accordion as={Table} allowToggle reduceMotion>
+                <Accordion as={Table} width="100%" allowToggle reduceMotion>
                   <Thead w="100%" bg="#4E4E4E" borderColor="gray.200">
                     <Tr>
                       <Th w="8%" bgColor="none" />

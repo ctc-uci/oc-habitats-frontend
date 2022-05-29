@@ -281,6 +281,7 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question, isD
 NonStaticQuestion.defaultProps = {
   formType: null,
   isTemplate: false,
+  isDisabled: false,
 };
 NonStaticQuestion.propTypes = {
   refreshTrigger: PropTypes.func.isRequired,

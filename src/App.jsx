@@ -25,7 +25,6 @@ import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
-import NewQuestionModal from './components/NewQuestionModal';
 import Numbers from './pages/EmergencyNumbers';
 
 import AdminInviteModal from './components/Authentication/AdminInviteModal';

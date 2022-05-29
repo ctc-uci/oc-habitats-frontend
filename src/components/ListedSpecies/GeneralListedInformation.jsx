@@ -41,13 +41,13 @@ const GeneralListedInformation = ({ refreshTrigger, additionalQuestions, isTempl
   return (
     <>
       <CollapsibleSection title="General Information">
-        <Stack direction={['column', 'row']} w="100%" spacing="2em">
+        <Stack direction={{ md: 'row', base: 'column' }} w="100%" spacing="2em">
           <FormControl>
             <FormLabel>
               # of Adults
               <NumberInput
                 min={1}
-                defaultValue={getValues().totalAdults}
+                defaultValue={getValues('totalAdults')}
                 onChange={val => setValue('totalAdults', parseInt(val, 10), { shouldDirty: true })}
               >
                 <NumberInputField />
@@ -70,7 +70,7 @@ const GeneralListedInformation = ({ refreshTrigger, additionalQuestions, isTempl
               <NumberInput
                 min={0}
                 onChange={val => setValue('totalFledges', parseInt(val, 10), { shouldDirty: true })}
-                defaultValue={getValues().totalFledges}
+                defaultValue={getValues('totalFledges')}
               >
                 <NumberInputField />
                 <NumberInputStepper>
@@ -87,7 +87,7 @@ const GeneralListedInformation = ({ refreshTrigger, additionalQuestions, isTempl
               <NumberInput
                 min={0}
                 onChange={val => setValue('totalChicks', parseInt(val, 10), { shouldDirty: true })}
-                defaultValue={getValues().totalChicks}
+                defaultValue={getValues('totalChicks')}
               >
                 <NumberInputField />
                 <NumberInputStepper>
@@ -102,7 +102,7 @@ const GeneralListedInformation = ({ refreshTrigger, additionalQuestions, isTempl
 
         <br />
 
-        <Stack direction={['column', 'row']} w="100%" spacing="2em">
+        <Stack direction={{ md: 'row', base: 'column' }} w="100%" spacing="2em">
           <FormControl>
             <FormLabel>
               Time
