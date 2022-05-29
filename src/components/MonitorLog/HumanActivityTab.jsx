@@ -149,7 +149,6 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
           <Text fontWeight="600" fontSize="2xl">
             Human Activity
           </Text>
-<<<<<<< HEAD
         )}
         <SimpleGrid
           columns={{ md: 3, base: 1 }}
@@ -184,31 +183,6 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
             );
           })}
         </SimpleGrid>
-||||||| parent of c180dcc (fix)
-          <Spacer />
-          <Tooltip label="Note how many people and what topics (e.g. environmental concerns, surveying, the habitats, etc) you discussed with members of the public.">
-            <InfoIcon />
-          </Tooltip>
-        </Flex>
-        <Textarea
-          disabled={isDisabled}
-          placeholder="Type here..."
-          {...register(`${FORM_PREFIX}outreach`)}
-        />
-        <Spacer />
-=======
-          <Spacer />
-          <Tooltip label="Note how many people and what topics (e.g. environmental concerns, surveying, the habitats, etc) you discussed with members of the public.">
-            <InfoIcon />
-          </Tooltip>
-        </Flex>
-        <Textarea
-          disabled={isDisabled}
-          placeholder="Type here..."
-          {...register(`${FORM_PREFIX}Outreach`)}
-        />
-        <Spacer />
->>>>>>> c180dcc (fix)
         <Spacer />
         <VStack spacing="8px" align="left">
           <Flex>
@@ -243,37 +217,7 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
           />
         </VStack>
       </VStack>
-<<<<<<< HEAD
     </>
-||||||| parent of c180dcc (fix)
-      <VStack spacing="8px" align="left">
-        <Text fontWeight="500" fontSize="md">
-          Other Notes
-        </Text>
-        <Textarea
-          disabled={isDisabled}
-          placeholder="Type here..."
-          {...register(`${FORM_PREFIX}otherNotes`)}
-        />
-        <Spacer />
-        <Spacer />
-      </VStack>
-    </VStack>
-=======
-      <VStack spacing="8px" align="left">
-        <Text fontWeight="500" fontSize="md">
-          Other Notes
-        </Text>
-        <Textarea
-          disabled={isDisabled}
-          placeholder="Type here..."
-          {...register(`${FORM_PREFIX}OtherNotes`)}
-        />
-        <Spacer />
-        <Spacer />
-      </VStack>
-    </VStack>
->>>>>>> c180dcc (fix)
   );
 };
 
