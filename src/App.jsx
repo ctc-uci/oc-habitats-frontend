@@ -154,6 +154,7 @@ function App() {
                   <Route exact path="/map" />
                   <Route exact path="/logs" element={<AdminPage />} />
                   <Route exact path="/common-table-example" element={<CommonTableExample />} />
+                  <Route exact path="/edit-log-template" element={<MonitorLogEditPage />} />
                 </Routes>
               </Box>
               <Routes>

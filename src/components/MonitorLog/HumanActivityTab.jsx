@@ -175,7 +175,6 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
             disabled={isDisabled}
             placeholder="Type here..."
             {...register(`${FORM_PREFIX}outreach`)}
-
           />
           <Spacer />
           <Spacer />
@@ -193,7 +192,7 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
           <Tooltip label="Note how many people and what topics (e.g. environmental concerns, surveying, the habitats, etc) you discussed with members of the public.">
             <InfoIcon />
           </Tooltip>
-        </Flex>
+        </VStack>
         <Textarea
           disabled={isDisabled}
           placeholder="Type here..."

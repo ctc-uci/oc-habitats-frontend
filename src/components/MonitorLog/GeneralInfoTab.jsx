@@ -286,7 +286,11 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
             </VStack>
           </GridItem>
         </SimpleGrid>
-        <SimpleGrid columns={4} spacingX="25px" spacingY="68px">
+        <SimpleGrid
+          columns={{ md: 4, base: 1 }}
+          spacingX="64px"
+          spacingY={{ md: '68px', base: '30px' }}
+        >
           {additionalQuestions.map(question => {
             return (
               <NonStaticQuestion
@@ -295,6 +299,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
                 question={question}
                 formType="general"
                 isTemplate={isTemplate}
+                isDisabled={isDisabled}
               />
             );
           })}

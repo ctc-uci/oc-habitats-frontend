@@ -52,6 +52,8 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
     [species],
   );
 
+  console.log(getValues());
+
   const getSpeciesLabel = speciesId => speciesOptions.find(s => s.value === speciesId)?.label;
 
   const handleAddRow = newSpecies => {
@@ -190,9 +192,24 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
           </Text>
         )}
         <FormControl>
-          <Grid marginTop="20px" minH="200px" templateColumns="repeat(6, 1fr)" gap="150">
-            <GridItem colSpan={3}>
-              <Box overflow="hidden" border="1px solid darkgray" rounded="md" mb="4">
+          <Stack
+            mt="20px"
+            minH="200px"
+            direction={{ lg: 'row', base: 'column' }}
+            spacing={{ lg: '100px', base: '30px' }}
+          >
+            <VStack w={{ lg: '650px', base: '100%' }} align="start">
+              <Box
+                w="100%"
+                border="1px solid darkgray"
+                rounded="md"
+                overflow="scroll"
+                css={{
+                  '&::-webkit-scrollbar': {
+                    display: 'none',
+                  },
+                }}
+              >
                 <Accordion as={Table} allowToggle reduceMotion>
                   <Thead w="100%" bg="#4E4E4E" borderColor="gray.200">
                     <Tr>
@@ -227,54 +244,63 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
                       </Tr>
                     </Tbody>
                   )}
-                  {createTable(species)}
+                  {speciesEntries.length === 0 && (
+                    <Tbody>
+                      <Tr>
+                        <Td colSpan={4} textAlign="center">
+                          No species added
+                        </Td>
+                      </Tr>
+                    </Tbody>
+                  )}
+                  {createTable(speciesEntries)}
                 </Accordion>
               </Box>
-              {!isDisabled && <AddSpeciesModal addNewRow={handleAddRow} />}
-            </GridItem>
-            <GridItem colSpan="2">
-              <VStack alignItems="start">
-                <Text fontWeight="600" fontSize="xl">
-                  Injured Terrestrial Wildlife
-                </Text>
-                <Text>
-                  To report sick or injured terrestrial wildlife, contact the WWCC at 714.374.5587
-                </Text>
-                <FormControl>
-                  <NumberInput
-                    min={0}
-                    isDisabled={isDisabled}
-                    onChange={val => setValue(`${FORM_PREFIX}injuredCount`, parseInt(val, 10))}
-                    defaultValue={getValues(`${FORM_PREFIX}injuredCount`) || 0}
-                  >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </FormControl>
+              {!isDisabled && (
+                <AddSpeciesModal addNewRow={handleAddRow} speciesOptions={speciesOptions} />
+              )}
+            </VStack>
+            <VStack alignItems="start" maxW="768px">
+              <Text fontWeight="600" fontSize="xl">
+                Injured Terrestrial Wildlife
+              </Text>
+              <Text>
+                To report sick or injured terrestrial wildlife, contact the WWCC at 714.374.5587
+              </Text>
+              <FormControl>
+                <NumberInput
+                  min={0}
+                  isDisabled={isDisabled}
+                  onChange={val => setValue(`${FORM_PREFIX}injuredCount`, parseInt(val, 10))}
+                  defaultValue={getValues(`${FORM_PREFIX}injuredCount`) || 0}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
 
-                <Text fontWeight="600" fontSize="xl">
-                  Beach Cast
-                </Text>
-                <FormControl>
-                  <NumberInput
-                    min={0}
-                    isDisabled={isDisabled}
-                    onChange={val => setValue(`${FORM_PREFIX}beachCast`, parseInt(val, 10))}
-                    defaultValue={getValues(`${FORM_PREFIX}beachCast`) || 0}
-                  >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </FormControl>
-              </VStack>
-            </GridItem>
-          </Grid>
+              <Text fontWeight="600" fontSize="xl">
+                Beach Cast
+              </Text>
+              <FormControl>
+                <NumberInput
+                  min={0}
+                  isDisabled={isDisabled}
+                  onChange={val => setValue(`${FORM_PREFIX}beachCast`, parseInt(val, 10))}
+                  defaultValue={getValues(`${FORM_PREFIX}beachCast`) || 0}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+            </VStack>
+          </Stack>
         </FormControl>
       </VStack>
     </>
@@ -291,6 +317,12 @@ AdditionalSpeciesTab.propTypes = {
   isDisabled: PropTypes.bool,
   showHeader: PropTypes.bool,
   isTemplate: PropTypes.bool,
+  species: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      _id: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default AdditionalSpeciesTab;

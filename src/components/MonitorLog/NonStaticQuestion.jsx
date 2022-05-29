@@ -39,7 +39,7 @@ import { FiArrowLeft } from 'react-icons/fi';
 import { InfoIcon } from '@chakra-ui/icons';
 import { OCHBackend } from '../../common/utils';
 
-function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
+function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question, isDisabled }) {
   const [newTitle, setNewTitle] = useState();
   const [newTitleLength, setNewTitleLength] = useState(0);
   const [newFieldType, setNewFieldType] = useState();
@@ -115,9 +115,9 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question }) {
               </Flex>
             )}
             {question.fieldType === 'TEXT' ? (
-              <Input type="text" />
+              <Input type="text" isDisabled={isDisabled} />
             ) : (
-              <NumberInput allowMouseWheel>
+              <NumberInput allowMouseWheel isDisabled={isDisabled}>
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -287,6 +287,7 @@ NonStaticQuestion.propTypes = {
   question: PropTypes.object.isRequired,
   formType: PropTypes.string,
   isTemplate: PropTypes.bool,
+  isDisabled: PropTypes.bool,
 };
 
 export default NonStaticQuestion;

@@ -61,7 +61,15 @@ import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import NewQuestionModal from '../NewQuestionModal';
 import { OCHBackend } from '../../common/utils';
 
-const ListedSpeciesTab = ({ tab, speciesName, speciesCode,speciesId, showHeader, isDisabled, isTemplate }) => {
+const ListedSpeciesTab = ({
+  tab,
+  speciesName,
+  speciesCode,
+  speciesId,
+  showHeader,
+  isDisabled,
+  isTemplate,
+}) => {
   const formPrefix = `listedSpecies.${tab}.`;
 
   const { isOpen, onOpen: openPopup, onClose } = useDisclosure();
@@ -193,8 +201,9 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode,speciesId, showHeader,
           <div># of Male Chicks</div>
         </div>,
         <div>
-          {row.sex.slice(0, 3).map(sex => (
-            <div key={sex}>{sex}</div>
+          {row.sex.slice(0, 3).map((sex, idx) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={idx}>{sex}</div>
           ))}
         </div>,
       ],
@@ -306,9 +315,24 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode,speciesId, showHeader,
         </>
       )}
 
-      <Grid marginTop="20px" minH="200px" templateColumns="repeat(6, 1fr)" gap="150">
-        <GridItem colSpan="3">
-          <Box overflow="hidden" border="1px solid darkgray" rounded="md">
+      <Stack
+        mt="20px"
+        minH="200px"
+        direction={{ lg: 'row', base: 'column' }}
+        spacing={{ lg: '100px', base: '30px' }}
+      >
+        <VStack w={{ lg: '650px', base: '100%' }} align="start">
+          <Box
+            w="100%"
+            border="1px solid darkgray"
+            rounded="md"
+            overflow="scroll"
+            css={{
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+            }}
+          >
             <Accordion as={Table} allowToggle width="100%" reduceMotion>
               <Thead bg="ochGrey">
                 <Tr>
@@ -465,8 +489,8 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode,speciesId, showHeader,
               </Modal>
             </>
           )}
-        </GridItem>
-        <GridItem colSpan="2">
+        </VStack>
+        <VStack alignItems="start" maxW="768px">
           <VStack alignItems="start">
             {isTemplate ? (
               <Text fontWeight="600" fontSize="xl">
@@ -494,8 +518,8 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode,speciesId, showHeader,
               </NumberInput>
             </FormControl>
           </VStack>
-        </GridItem>
-      </Grid>
+        </VStack>
+      </Stack>
       {isTemplate && (
         <>
           <Text mt="120px" mb="30px" fontWeight="500">
