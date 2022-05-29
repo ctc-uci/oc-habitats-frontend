@@ -113,7 +113,9 @@ function EditSpeciesModal({ editSpecies, specie, predOrSpecies }) {
                     Species Type
                   </Text>
                   <RadioGroup
-                    value={speciesCategory}
+                    value={
+                      speciesCategory === 'NON_LISTED_PREDATOR' ? 'NON_LISTED' : speciesCategory
+                    }
                     onChange={val => setSpeciesCategory(val)}
                     as={HStack}
                     spacing={10}
