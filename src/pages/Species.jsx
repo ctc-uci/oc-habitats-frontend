@@ -155,8 +155,8 @@ const Species = () => {
             <strong>Search for a Species:</strong>
             <HStack>
               <Box w="100%">
-                <Flex justifyContent="space-between" flexDir={{ md: 'row', sm: 'column' }}>
-                  <Box w={{ md: '32.5%', sm: '100%' }} my={{ md: '0', sm: '5' }}>
+                <Flex justifyContent="space-between" flexDir={{ md: 'row', base: 'column' }}>
+                  <Box w={{ md: '32.5%', base: '100%' }} my={{ md: '0', base: '5' }}>
                     <DropdownSearch options={options} handleSelectedValue={highlightSearch} />
                   </Box>
                   {isAdmin && (
