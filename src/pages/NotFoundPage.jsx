@@ -11,7 +11,7 @@ const VolunteerDashboardPage = () => {
   };
 
   return (
-    <Box textAlign="left" w="658px" position="absolute" top="15%" left="4%">
+    <Box textAlign="left" position="absolute" top="15%" left="4%">
       <Text fontSize="60px" fontFamily="Inter" fontWeight="bold">
         404 Error
       </Text>
