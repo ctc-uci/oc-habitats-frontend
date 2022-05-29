@@ -231,15 +231,6 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
                       <Th />
                     </Tr>
                   </Thead>
-                  {species.length === 0 && (
-                    <Tbody>
-                      <Tr>
-                        <Td colSpan={4} textAlign="center">
-                          No species added
-                        </Td>
-                      </Tr>
-                    </Tbody>
-                  )}
                   {speciesEntries.length === 0 && (
                     <Tbody>
                       <Tr>
@@ -307,6 +298,7 @@ AdditionalSpeciesTab.defaultProps = {
   isDisabled: false,
   showHeader: true,
   isTemplate: false,
+  species: [],
 };
 
 AdditionalSpeciesTab.propTypes = {
@@ -318,7 +310,7 @@ AdditionalSpeciesTab.propTypes = {
       name: PropTypes.string,
       _id: PropTypes.string,
     }),
-  ).isRequired,
+  ),
 };
 
 export default AdditionalSpeciesTab;
