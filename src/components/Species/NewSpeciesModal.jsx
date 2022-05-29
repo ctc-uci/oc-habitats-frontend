@@ -23,20 +23,22 @@ function NewSpeciesModal({ addNewSpecies }) {
   const [isToggled, setIsToggled] = useState(false);
   const [speciesName, setSpeciesName] = useState(null);
   const [speciesCode, setSpeciesCode] = useState(null);
-  const [speciesGroup, setSpeciesGroup] = useState(null);
-  const [speciesPredator, setSpeciesPredator] = useState(null);
+  const [speciesCategory, setSpeciesCategory] = useState(null);
+  // const [speciesPredator, setSpeciesPredator] = useState(null);
   const [isValid, setIsValid] = useState(true);
 
   const checkInput = () => {
-    if (speciesName && speciesCode && speciesGroup) {
+    if (speciesName && speciesCode && speciesCategory) {
       addNewSpecies({
         name: speciesName,
         code: speciesCode,
-        group: speciesGroup,
-        predator: speciesPredator,
+        category: speciesCategory,
       });
       setIsValid(true);
       setIsToggled(!isToggled);
+      setSpeciesName(null);
+      setSpeciesCode(null);
+      setSpeciesCategory(null);
     } else setIsValid(false);
   };
 
@@ -85,32 +87,32 @@ function NewSpeciesModal({ addNewSpecies }) {
               </Text>
               <RadioGroup
                 defaultValue=""
-                onChange={val => setSpeciesGroup(val)}
+                onChange={val => setSpeciesCategory(val)}
                 as={HStack}
                 spacing={10}
               >
-                <Radio color="#3182CE" value="nonListed">
+                <Radio color="#3182CE" value="NON_LISTED">
                   <Text fontWeight={475}>Non-Listed</Text>
                 </Radio>
-                <Radio color="#3182CE" value="listed">
+                <Radio color="#3182CE" value="LISTED">
                   <Text fontWeight={475}>Listed</Text>
                 </Radio>
               </RadioGroup>
-              {speciesGroup === 'nonListed' && (
+              {speciesCategory && speciesCategory !== 'LISTED' && (
                 <>
                   <Text fontWeight={550} fontSize="18px">
                     Is a Predator
                   </Text>
                   <RadioGroup
                     defaultValue=""
-                    onChange={val => setSpeciesPredator(val)}
+                    onChange={val => setSpeciesCategory(val)}
                     as={HStack}
                     spacing={10}
                   >
-                    <Radio color="#3182CE" value="No">
+                    <Radio color="#3182CE" value="NON_LISTED">
                       <Text fontWeight={475}>No</Text>
                     </Radio>
-                    <Radio color="#3182CE" value="Yes">
+                    <Radio color="#3182CE" value="NON_LISTED_PREDATOR">
                       <Text fontWeight={475}>Yes</Text>
                     </Radio>
                   </RadioGroup>

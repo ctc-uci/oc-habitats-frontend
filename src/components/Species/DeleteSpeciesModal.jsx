@@ -17,11 +17,6 @@ import {
 
 function DeleteSpeciesModal({ deleteSpecies, specie, predOrSpecies }) {
   const [isToggled, setIsToggled] = useState(false);
-  // const [speciesName] = useState(specie.name);
-  // const [speciesCode] = useState(specie.code);
-  // const [speciesGroup] = useState(specie.isListed ? 'listed' : 'nonListed');
-  // const [speciesPredator] = useState(specie.isPredator ? 'Yes' : 'No');
-
   const [isValid, setIsValid] = useState(true);
   const checkDelete = () => {
     // eslint-disable-next-line dot-notation
