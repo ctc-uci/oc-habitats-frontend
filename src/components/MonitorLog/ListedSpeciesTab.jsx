@@ -488,6 +488,7 @@ const ListedSpeciesTab = ({
                     adultName={speciesName}
                     addRow={addRow}
                     prefilledData={rowToEdit}
+                    additionalQuestions={additionalQuestions}
                   />
                 </ModalContent>
               </Modal>
