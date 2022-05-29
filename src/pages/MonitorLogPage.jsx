@@ -40,6 +40,7 @@ import PredatorsTab from '../components/MonitorLog/PredatorsTab';
 import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
 import ReviewSubmitTabPopup from '../components/MonitorLog/ReviewSubmitTabPopup';
 import EditLogPopup from '../components/MonitorLog/EditLogPopup';
+import EditLogFooter from '../components/MonitorLog/EditLogFooter';
 
 const MonitorTabButton = props => {
   // eslint-disable-next-line react/prop-types
@@ -326,27 +327,28 @@ const MonitorLogPage = ({ mode }) => {
               {mode === 'review' && (
                 <ButtonGroup>
                   <EditLogPopup user={userData.id} />
-                  <Button type="submit">Approve</Button>
+                  <Button
+                    type="submit"
+                    onClick={() => {
+                      formMethods.setValue({
+                        status: 'APPROVED',
+                      });
+                      submitForm();
+                    }}
+                  >
+                    Approve
+                  </Button>
                 </ButtonGroup>
               )}
-              {activeTab !== totalTabs - 1 && mode !== 'review' && (
-                <Button
-                  colorScheme="cyan"
-                  type="submit"
-                  onClick={() => {
-                    console.log(formMethods.getValues());
-                  }}
-                >
-                  {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
-                  Save Changes
-                </Button>
+              {activeTab !== totalTabs - 1 && mode === 'edit' && (
+                <EditLogFooter
+                  role={userDataContext.userData.role}
+                  submitForm={submitForm}
+                  formMethods={formMethods}
+                />
               )}
               {activeTab === totalTabs - 1 && (
-                // <Button colorScheme="green" type="submit" onClick={submitForm}>
-                //   {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
-                //   Submit Log <FiCheck style={{ marginLeft: '4px' }} />
-                // </Button>
-                <ReviewSubmitTabPopup submitForm={submitForm} />
+                <ReviewSubmitTabPopup submitForm={submitForm} formMethods={formMethods} />
               )}
             </Flex>
           </Flex>
