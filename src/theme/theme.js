@@ -7,12 +7,21 @@ const theme = extendTheme({
   },
   colors: {
     ochBlue: '#2BC0E3',
+    ochBlueHover: '#1E879F',
     ochGrey: '#4E4E4E',
     ochOrange: '#F49923',
     ochBlack: '#231F20',
     ochRed: '#C53030',
     ochLightGrey: '#EDF2F7',
     ochPurple: '#6B46C1',
+    ochBluePress: '#156071',
+  },
+  breakpoints: {
+    sm: '320px',
+    md: '768px',
+    lg: '960px',
+    xl: '1200px',
+    '2xl': '1536px',
   },
   components: {
     Badge: {

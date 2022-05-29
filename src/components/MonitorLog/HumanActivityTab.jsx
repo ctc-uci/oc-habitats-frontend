@@ -48,11 +48,11 @@ const HumanActivityField = ({ activityName, activityDesc, activityId, isDisabled
 
   return (
     <GridItem colSpan={1}>
-      <VStack spacing="8px" align="left">
+      <VStack spacing={{ md: '8px', base: '5px' }} align="left">
         <Text fontWeight="500" fontSize="md">
           {activityName}
         </Text>
-        <Text minHeight="50px">
+        <Text minHeight="45px" fontSize="sm">
           {activityDesc}
           {activityId === 'speedingVehicles' && (
             <>
@@ -189,9 +189,31 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
             {...register(`${FORM_PREFIX}otherNotes`)}
           />
           <Spacer />
-          <Spacer />
+          <Tooltip label="Note how many people and what topics (e.g. environmental concerns, surveying, the habitats, etc) you discussed with members of the public.">
+            <InfoIcon />
+          </Tooltip>
         </VStack>
+        <Textarea
+          disabled={isDisabled}
+          placeholder="Type here..."
+          {...register(`${FORM_PREFIX}outreach`)}
+        />
+        <Spacer />
+        <Spacer />
       </VStack>
+      <VStack spacing="8px" align="left">
+        <Text fontWeight="500" fontSize="md">
+          Other Notes
+        </Text>
+        <Textarea
+          disabled={isDisabled}
+          placeholder="Type here..."
+          {...register(`${FORM_PREFIX}otherNotes`)}
+        />
+        <Spacer />
+        <Spacer />
+      </VStack>
+      <Spacer />
     </>
   );
 };

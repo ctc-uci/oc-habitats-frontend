@@ -1,11 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useLocation, Link } from 'react-router-dom';
-import { Center, Menu, MenuButton, MenuList, useDisclosure, Text } from '@chakra-ui/react';
 
-const NavbarLink = ({ text, path = '/', isAdmin }) => {
+import {
+  Center,
+  Menu,
+  MenuButton,
+  MenuList,
+  useDisclosure,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
+import Toast from '../Toast';
+
+const NavbarLink = ({ text, path = '/', changesMade, isAdmin }) => {
   const current = useLocation().pathname;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+  const handleOnClick = e => {
+    if (changesMade) {
+      e.preventDefault();
+      return Toast(toast, 'unsaved');
+    }
+    return {};
+  };
+
   return (
     <Center
       h="inherit"
@@ -40,7 +59,9 @@ const NavbarLink = ({ text, path = '/', isAdmin }) => {
           </Menu>
         </>
       ) : (
-        <Link to={path}>{text}</Link>
+        <Link to={path} onClick={handleOnClick}>
+          {text}
+        </Link>
       )}
     </Center>
   );
@@ -53,6 +74,7 @@ NavbarLink.propTypes = {
   text: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
   isAdmin: PropTypes.bool,
+  changesMade: PropTypes.bool.isRequired,
 };
 
 export default NavbarLink;

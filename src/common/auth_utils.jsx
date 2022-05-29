@@ -13,6 +13,9 @@ import {
   sendPasswordResetEmail,
   confirmPasswordReset,
   applyActionCode,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  updatePassword,
 } from 'firebase/auth';
 
 import { useNavigate } from 'react-router-dom';
@@ -78,6 +81,8 @@ const refreshToken = async () => {
   const currentUser = await getCurrentUser(auth);
   if (currentUser) {
     const refreshT = currentUser.refreshToken;
+    const currentUserId = currentUser.uid;
+
     const {
       data: { access_token: idToken },
     } = await axios.post(refreshUrl, {
@@ -86,10 +91,7 @@ const refreshToken = async () => {
     });
     // Sets the appropriate cookies after refreshing access token
     setCookie(cookieKeys.ACCESS_TOKEN, idToken, cookieConfig);
-    const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`);
-    console.log(user.data.user);
-    setCookie(cookieKeys.ROLE, user.data.role, cookieConfig);
-    return idToken;
+    return { idToken, currentUserId };
   }
   return null;
 };
@@ -113,7 +115,6 @@ const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
       isActive: true,
       isTrainee: false,
       registered: true,
-      segments: null,
     });
   } catch (err) {
     throw new Error(err.message);
@@ -129,7 +130,7 @@ const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
  * @param {Cookies} cookies The user's cookies to populate
  * @returns A boolean indicating whether or not the log in was successful
  */
-const logInWithEmailAndPassword = async (email, password, redirectPath, navigate, cookies) => {
+const logInWithEmailAndPassword = async (email, password, navigate, cookies) => {
   await signInWithEmailAndPassword(auth, email, password);
   // Check if the user has verified their email.
   if (!auth.currentUser.emailVerified) {
@@ -139,8 +140,7 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
   const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`);
   console.log('Current user: ');
   console.table(user.data);
-  cookies.set(cookieKeys.ROLE, user.data.role, cookieConfig);
-  navigate(redirectPath);
+  return user.data;
 };
 
 /**
@@ -170,6 +170,7 @@ const createUser = async (email, password, firstName, lastName, role) => {
     const user = await createUserInFirebase(email, password);
     await createUserInDB(email, user.data.uid, role, firstName, lastName);
   } catch (err) {
+    // TODO: delete firebase account incase of error
     throw new Error(err.message);
   }
 };
@@ -207,10 +208,10 @@ const registerWithEmailAndPassword = async (
  */
 const sendPasswordReset = async email => {
   const user = await OCHBackend.get(`/users/email/${email}`);
-  if (user.response.status !== 200 || !user || !user.data) {
-    throw new Error(`There is no account associated with the email ${email}.`);
-  } else {
+  if (user) {
     await sendPasswordResetEmail(auth, email);
+  } else {
+    throw new Error(`There is no account associated with the email ${email}.`);
   }
 };
 
@@ -301,6 +302,36 @@ const addAuthInterceptor = axiosInstance => {
   );
 };
 
+/**
+ * Cross checks old password by reauthenticating with firebase and applying changes afterwards
+ * @param {string} newPassword Password that the user wants to change to
+ * @param {string} oldPassword Previous password used to check with firebase
+ */
+const updateUserPassword = async (newPassword, oldPassword) => {
+  const user = auth.currentUser;
+
+  const cred = EmailAuthProvider.credential(user.email, oldPassword);
+
+  try {
+    await reauthenticateWithCredential(user, cred);
+    // User entered correct credentials
+    // Update password
+    await updatePassword(auth.currentUser, newPassword);
+    console.log('password updated succesfully');
+    return 'success';
+  } catch (e) {
+    console.log(e.code, e.message);
+    // Could be incorrect credentials
+    if (e.code === 'auth/wrong-password') {
+      return 'password';
+    }
+    if (e.code === 'auth/weak-password') {
+      return 'weak';
+    }
+    return 'error';
+  }
+};
+
 addAuthInterceptor(OCHBackend);
 
 // -------- ADMIN INVITE ROUTES START HERE ------------------------------------------
@@ -345,4 +376,5 @@ export {
   confirmNewPassword,
   confirmVerifyEmail,
   initiateInviteProcess,
+  updateUserPassword,
 };

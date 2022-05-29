@@ -26,53 +26,44 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { CloseIcon, DeleteIcon } from '@chakra-ui/icons';
-import { FiEdit2 } from 'react-icons/fi';
+import { FiEdit3 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
-import { RiSaveFill } from 'react-icons/ri';
 import DropdownSearch from '../DropdownSearch';
 import DeleteSpeciesModal from './DeleteSpeciesModal';
 
-const options = [
-  { value: 'Plover: Snowy (WSPL)', label: 'Plover: Snowy (WSPL)' },
-  { value: 'end2', label: 'end2' },
-  { value: 'end3', label: 'end3' },
-  { value: 'add1', label: 'add1' },
-  { value: 'add2', label: 'add2' },
-  { value: 'add3', label: 'add3' },
-];
+const EditSpeciesModal = ({ speciesRow, editRow, deleteRow, speciesOptions }) => {
+  const getSpeciesObj = speciesId => speciesOptions.find(s => s.value === speciesId);
 
-const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDelete, setIsDelete] = useState(false);
-  const [specieName, setSpecieName] = useState(specie.name);
-  const [totalSighted, setTotalSighted] = useState(specie.total);
-  const [notes, setNotes] = useState(specie.notes);
+  const [selectedSpecies, setSelectedSpecies] = useState(getSpeciesObj(speciesRow.species));
+  const [totalSighted, setTotalSighted] = useState(speciesRow.count);
+  const [notes, setNotes] = useState(speciesRow.notes);
 
   const updateSpecies = () => {
-    editRow({ oldName: specie.name, name: specieName, total: totalSighted, notes });
+    editRow({
+      oldId: speciesRow.species,
+      species: selectedSpecies.value,
+      count: parseInt(totalSighted, 10),
+      notes,
+    });
     onClose();
   };
 
   const deleteSpecie = () => {
-    deleteRow(specie.name);
+    deleteRow(speciesRow.species);
     onClose();
   };
 
   return (
     <div>
-      <IconButton
-        size="md"
-        w="2.75em"
-        h="2.75em"
-        icon={<Icon as={FiEdit2} w="1.5em" h="1.5em" />}
-        onClick={onOpen}
-      />
+      <IconButton size="md" icon={<Icon as={FiEdit3} w="1.5em" h="1.5em" />} onClick={onOpen} />
       <Modal isOpen={isOpen} isCentered size="md">
         <ModalOverlay />
         {isDelete ? (
           <DeleteSpeciesModal
             setIsShowing={setIsDelete}
-            species={specieName}
+            speciesName={getSpeciesObj(speciesRow.species)?.label}
             deleteSpecie={deleteSpecie}
           />
         ) : (
@@ -114,10 +105,10 @@ const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
                       </FormLabel>
                       <VStack w="full" h="100%" position="relative" alignItems>
                         <DropdownSearch
-                          options={options}
+                          options={speciesOptions}
                           onChange={opt => opt.label}
-                          value={specieName}
-                          handleSelectedValue={setSpecieName}
+                          value={selectedSpecies}
+                          handleSelectedValue={setSelectedSpecies}
                         />
                       </VStack>
                     </GridItem>
@@ -159,16 +150,7 @@ const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
                 </VStack>
               </ModalBody>
               <ModalFooter mb="1em">
-                <VStack w="100%">
-                  <Button
-                    rightIcon={<RiSaveFill />}
-                    bgColor="#2BC0E3"
-                    fontWeight="600"
-                    w="100%"
-                    onClick={updateSpecies}
-                  >
-                    Save
-                  </Button>
+                <HStack w="75%">
                   <Button
                     w="100%"
                     fontWeight="600"
@@ -182,7 +164,10 @@ const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
                   >
                     Delete
                   </Button>
-                </VStack>
+                  <Button bgColor="#2BC0E3" fontWeight="600" w="100%" onClick={updateSpecies}>
+                    Save Changes
+                  </Button>
+                </HStack>
               </ModalFooter>
             </Container>
           </ModalContent>
@@ -192,16 +177,20 @@ const EditSpeciesModal = ({ specie, editRow, deleteRow }) => {
   );
 };
 
-EditSpeciesModal.defaultProps = {
-  specie: PropTypes.object,
-  editRow: PropTypes.func,
-  deleteRow: PropTypes.func,
-};
-
 EditSpeciesModal.propTypes = {
-  specie: PropTypes.object,
-  editRow: PropTypes.func,
-  deleteRow: PropTypes.func,
+  speciesRow: PropTypes.shape({
+    species: PropTypes.string,
+    count: PropTypes.number,
+    notes: PropTypes.string,
+  }).isRequired,
+  editRow: PropTypes.func.isRequired,
+  deleteRow: PropTypes.func.isRequired,
+  speciesOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default EditSpeciesModal;

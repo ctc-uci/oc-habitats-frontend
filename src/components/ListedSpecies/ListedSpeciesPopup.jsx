@@ -42,7 +42,6 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
       totalFledges: 0,
       totalChicks: 0,
       time: '07:00',
-      meridiem: 'AM',
       map: '1',
       habitat: '',
       sex: [0, 0, 0, 0, 0, 0],
@@ -77,7 +76,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
     const formData = formMethods.getValues();
     let valid = true;
     for (let i = 0; i < formData.bandTabs.length; i += 1) {
-      const row = [...Array(4)].map((_, n) => formData.bandTabs[i][n]);
+      const row = formData.bandTabs[i];
       const code = generateBandingCode(row);
       formData.bandTabs[i].code = code;
       if (code === 'invalid' || code === 'Top band must be above bottom band') {
@@ -106,7 +105,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
       <HStack w="100%" ref={topRef}>
         <Flex mt="16px" w="100%">
           <IconButton
-            icon={<ArrowBackIcon boxSize={10} />}
+            icon={<ArrowBackIcon boxSize={{ md: 10, base: 7 }} />}
             bgColor="transparent"
             onClick={checkUnsavedChanges}
             left="16px"
@@ -136,6 +135,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
             right="16px"
             spacing="8px"
             separator={<ChevronRightIcon color="gray.500" />}
+            fontSize={{ md: 'md', base: 'xs' }}
           >
             <BreadcrumbItem>
               <BreadcrumbLink onClick={checkUnsavedChanges}>Survey Log</BreadcrumbLink>
@@ -152,7 +152,7 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
           <Heading as="h1">Add {adultName}</Heading>
         </Stack>
         <form onSubmit={handleSubmit}>
-          <VStack align="start" spacing="4em">
+          <VStack align="start" spacing={{ md: '4em', base: '2em' }}>
             <GeneralListedInformation speciesName={adultName} />
             <Location />
             <SexSection />

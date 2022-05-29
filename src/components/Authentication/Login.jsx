@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
 /* eslint-disable react/no-children-prop */
 import React, { useState } from 'react';
-import { Link as ReachLink } from 'react-router-dom';
+import { Link as ReachLink, useNavigate } from 'react-router-dom';
 import {
+  Box,
   FormControl,
   Image,
   FormLabel,
@@ -12,14 +13,18 @@ import {
   Button,
   Flex,
   Link,
+  Text,
   Center,
+  Container,
+  Stack,
 } from '@chakra-ui/react';
 import { instanceOf } from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { Cookies, withCookies } from '../../common/cookie_utils';
-import { logInWithEmailAndPassword, useNavigate } from '../../common/auth_utils';
+import { logInWithEmailAndPassword } from '../../common/auth_utils';
+import authErrors from '../../common/auth_errors';
 
-import OCHLogo from '../../assets/OCHlogo.png';
+import OCHLogo from '../../assets/OCH_Logo_SVG.svg';
 
 const Login = ({ cookies }) => {
   const navigate = useNavigate();
@@ -36,7 +41,7 @@ const Login = ({ cookies }) => {
 
   /**
    * This function handles logging in with email/password (standard log in)
-   * If the user signs in successfully, they are redirected to /logout, otherwise they are redirected to the login screen
+   * If the user signs in successfully, they are redirected to /, otherwise they are redirected to the login screen
    * @param {Event} e
    */
   const handleFormSubmission = async data => {
@@ -44,7 +49,12 @@ const Login = ({ cookies }) => {
       console.log(data);
       await logInWithEmailAndPassword(data.email, data.password, '/logout', navigate, cookies);
     } catch (err) {
-      setErrorMessage(err.message);
+      const error = err.code.slice(5);
+      if (authErrors[error]) {
+        setErrorMessage(authErrors[error]);
+      } else {
+        setErrorMessage(err.message);
+      }
     }
   };
 

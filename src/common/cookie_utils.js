@@ -18,7 +18,6 @@ const cookieConfig = {
  */
 const cookieKeys = {
   ACCESS_TOKEN: 'accessToken',
-  ROLE: 'role',
 };
 
 /**
