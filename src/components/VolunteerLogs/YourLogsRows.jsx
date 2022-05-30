@@ -1,6 +1,6 @@
 import { React } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Badge, Text, HStack } from '@chakra-ui/react';
+import { Checkbox, Badge, Text } from '@chakra-ui/react';
 
 const DateFormat = ({ date }) => {
   return new Date(date).toLocaleDateString();
@@ -85,24 +85,6 @@ const ApplyBadge = ({ approval }) => {
   return <Text fontSize="xs">{approval}</Text>;
 };
 
-const VolunteerColumn = ({ data }) => {
-  return (
-    <HStack>
-      <Text>
-        {data.submitter?.firstName} {data.submitter?.lastName}
-      </Text>
-      {data.isSubmittedByTrainee && (
-        <Badge variant="solid" colorScheme="orange">
-          IN TRAINING
-        </Badge>
-      )}
-    </HStack>
-  );
-};
-DateFormat.propTypes = {
-  date: PropTypes.string.isRequired,
-};
-
 Check.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   checked: PropTypes.object.isRequired,
@@ -126,9 +108,4 @@ ApplyBadge.propTypes = {
   approval: PropTypes.string.isRequired,
 };
 
-VolunteerColumn.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  data: PropTypes.object.isRequired,
-};
-
-export { DateFormat, Check, AllCheck, ApplyBadge, VolunteerColumn };
+export { DateFormat, Check, AllCheck, ApplyBadge };

@@ -20,7 +20,7 @@ const Navbar = ({ isAdmin, onAdminPortal, setOnAdminPortal, changesMade }) => {
   ];
 
   const volunteer = [
-    { text: 'Monitor Logs', path: '/logs' },
+    { text: 'Monitor Logs', path: '/your-logs' },
     { text: 'Species Catalog', path: '/species' },
     { text: 'Sections & Segments', path: '/sections' },
     { text: 'Emergency Numbers', path: '/numbers' },

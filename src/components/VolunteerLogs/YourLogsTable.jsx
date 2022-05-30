@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination, useSortBy } from 'react-table';
-import { Table, Tr, Td, Tbody, Spinner, Box } from '@chakra-ui/react';
+import { Table, Tr, Td, Tbody, Spinner } from '@chakra-ui/react';
 import AdminPageHeader from './YourLogsTableHeader';
 import Pagination from '../AdminPageTable/Pagination';
 import CellStructure from './YourLogsStructure';
@@ -19,8 +19,6 @@ const YourLogsTable = ({
   setAllChecked,
   setFetchSettings,
 }) => {
-  console.log(tableData);
-
   const columns = useMemo(
     () => CellStructure(checked, setChecked, allChecked, setAllChecked),
     [checked, setChecked, allChecked, setAllChecked],

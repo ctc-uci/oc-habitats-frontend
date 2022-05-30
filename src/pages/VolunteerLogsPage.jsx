@@ -9,6 +9,7 @@ import YourLogsTable from '../components/VolunteerLogs/YourLogsTable';
 // TO-DO:
 //    - fix checkboxes
 //    - export selected logs
+//    - connect edit log button
 //    - disable sort on monitor partners
 //    - check + fix multiple monitor partners
 //    - clean up
