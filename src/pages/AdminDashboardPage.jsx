@@ -367,6 +367,7 @@ const AdminDashboardPage = () => {
       const unassigned = await OCHBackend.get('/segments/unassigned');
       setUnassignedSegments(unassigned.data);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
     }
   }, []);

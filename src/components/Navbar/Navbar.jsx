@@ -62,7 +62,13 @@ const Navbar = ({ isAdmin, onAdminPortal, setOnAdminPortal, changesMade }) => {
       <HStack h="inherit" spacing={6} pr={4}>
         {isAdmin && onAdminPortal
           ? admin.map(a => (
-              <NavbarLink key={a.text} text={a.text} path={a.path} changesMade={changesMade} />
+              <NavbarLink
+                key={a.text}
+                text={a.text}
+                path={a.path}
+                isAdmin
+                changesMade={changesMade}
+              />
             ))
           : volunteer.map(v => (
               <NavbarLink key={v.text} text={v.text} path={v.path} changesMade={changesMade} />
