@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Stack, Text, VStack, Center } from '@chakra-ui/react';
+import { Box, Stack, Text, VStack } from '@chakra-ui/react';
 import NewNumberModal from '../components/NumberModals/NewNumberModal';
 import { OCHBackend } from '../common/utils';
 import EmergencyContactTable from '../components/NumberModals/EmergencyContactTable';
@@ -34,8 +34,8 @@ const Numbers = () => {
   }, []);
 
   return (
-    <Center>
-      <Stack w="container.xl" justify-content="center" mb="4em">
+    <Box mx={{ md: '10%', base: '10px' }} mb={{ md: 10, base: 20 }}>
+      <Stack justify-content="center" mb="4em">
         <VStack align="left" spacing="1.5em" w="100%">
           <Text fontWeight="600" fontSize="36px" mt="40px">
             Emergency Numbers
@@ -50,7 +50,7 @@ const Numbers = () => {
               <NewNumberModal addNewNumber={addNewNumber} />
             </VStack>
           )}
-          <Box w="900px">
+          <Box maxW="1000px" w={{ base: '100%' }}>
             <EmergencyContactTable
               tableData={tableData}
               setTableData={setTableData}
@@ -59,7 +59,7 @@ const Numbers = () => {
           </Box>
         </VStack>
       </Stack>
-    </Center>
+    </Box>
   );
 };
 

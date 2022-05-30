@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Flex,
+  Text,
   Tbody,
   Th,
   Tr,
@@ -12,6 +14,7 @@ import {
   IconButton,
   MenuButton,
   useDisclosure,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
@@ -22,11 +25,11 @@ import DeleteNumberModal from './DeleteNumberModal';
 import EditNumberModal from './EditNumberModal';
 
 const EmergencyContactTable = ({ tableData, setTableData, admin }) => {
-  console.log(admin);
   const [numberId, setNumberId] = useState(-1);
   const [rowData, setRowData] = useState({});
   const editModalDisclosure = useDisclosure();
   const deleteModalDisclosure = useDisclosure();
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const openModalWithData = (dataRow, openFunc) => {
     setNumberId(dataRow._id);
@@ -63,17 +66,28 @@ const EmergencyContactTable = ({ tableData, setTableData, admin }) => {
         <CommonTableHeader>
           <Th fontWeight="500">Contact Name</Th>
           <Th>Number</Th>
-          <Th> </Th>
-          <Th> </Th>
+          <Th p={isMobile && !admin ? '0px' : 'default'} />
+          <Th p={isMobile ? '0px' : 'default'} />
         </CommonTableHeader>
         <Tbody>
           {tableData.map(row => (
             <Tr key={row._id}>
-              <Td fontWeight="500">{row.name}</Td>
-              <Td>{row.number}</Td>
-              <Td colSpan={admin ? 1 : 2}>{row.note}</Td>
+              <Td fontWeight="500" w={{ md: '25%', base: '40%' }}>
+                {row.name}
+              </Td>
+              <Td>
+                {!isMobile ? (
+                  row.number
+                ) : (
+                  <Flex direction="column" gap="16px">
+                    {row.number}
+                    <Text>{row.note}</Text>
+                  </Flex>
+                )}
+              </Td>
+              {!isMobile && <Td colSpan={admin ? 1 : 2}>{row.note}</Td>}
               {admin && (
-                <Td>
+                <Td p={2}>
                   <Menu isLazy autoSelect={false}>
                     <MenuButton>
                       <IconButton icon={<BsThreeDotsVertical />} bg="transparent" />
