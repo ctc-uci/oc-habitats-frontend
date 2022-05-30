@@ -69,7 +69,7 @@ const ApplyBadge = ({ approval }) => {
   if (approval === 'RESUBMITTED') {
     return (
       <Badge variant="solid" colorScheme="purple">
-        {approval}
+        RESUBMITTED
       </Badge>
     );
   }
@@ -102,15 +102,14 @@ const Partners = ({ sessionPartners }) => {
 };
 
 const EditButton = ({ logId, approval }) => {
+  // console.log(logId);
   if (approval === 'APPROVED') {
     return '';
   }
 
-  // console.log(logId);
-
   return (
     <Button bgColor="transparent" minW={2} h={6} px={2}>
-      <Icon h={5} w={5} as={FiEdit3} />
+      <Icon h={{ md: 5, base: 4 }} w={{ md: 5, base: 4 }} as={FiEdit3} />
     </Button>
   );
 };

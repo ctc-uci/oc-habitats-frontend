@@ -42,7 +42,12 @@ const YourLogsTable = ({
     {
       columns,
       data: tableData.results,
-      initialState: { pageIndex: 0, pageSize: 10, sortBy: [{ id: 'submittedAt', desc: false }] },
+      initialState: {
+        hiddenColumns: ['statusAndEdit'],
+        pageIndex: 0,
+        pageSize: 10,
+        sortBy: [{ id: 'submittedAt', desc: false }],
+      },
       manualPagination: true,
       manualSortBy: true,
       pageCount: controlledPageCount,
@@ -59,10 +64,13 @@ const YourLogsTable = ({
   useEffect(() => {
     const hiddenColumns = [];
     if (isMobile) {
-      hiddenColumns.push('segmentName', 'submittedAt', 'partners');
+      hiddenColumns.push('segmentName', 'submittedAt', 'status', 'partners', 'edit');
+    } else {
+      // hide combined column?
+      hiddenColumns.push('statusAndEdit');
     }
     setHiddenColumns(hiddenColumns);
-  }, [isMobile]);
+  }, [isMobile, checked, allChecked]);
 
   return (
     <>

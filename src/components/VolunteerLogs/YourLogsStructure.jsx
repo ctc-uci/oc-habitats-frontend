@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Flex } from '@chakra-ui/react';
 import { ApplyBadge, DateFormat, Check, AllCheck, Partners, EditButton } from './YourLogsRows';
 
 const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
@@ -52,12 +53,25 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       Cell: props => (props.value ? <Partners sessionPartners={props.value} /> : ''),
     },
     {
-      id: 'review',
+      id: 'edit',
       Header: '',
       accessor: '_id',
       disableSortBy: true,
       Cell: props => (
         <EditButton logId={props.row.original._id} approval={props.row.original.status} />
+      ),
+    },
+    {
+      // combined approval status and edit
+      id: 'statusAndEdit',
+      Header: 'Approval Status',
+      accessor: 'status',
+      disableSortBy: true,
+      Cell: props => (
+        <Flex direction="row" justify="space-between" align="center">
+          <ApplyBadge approval={props.row.original.status} />
+          <EditButton logId={props.row.original._id} approval={props.row.original.status} />
+        </Flex>
       ),
     },
   ];

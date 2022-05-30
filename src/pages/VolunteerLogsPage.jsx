@@ -54,7 +54,7 @@ const VolunteerLogs = () => {
       m.set(data.results[i]._id, false);
     }
     setChecked(m);
-  }, [data]);
+  }, []);
 
   const checkCount = () => {
     let count = 0;
