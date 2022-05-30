@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Badge, Box, Container, Heading, Text, useMediaQuery } from '@chakra-ui/react';
-import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
+import { Box, Container, Heading } from '@chakra-ui/react';
 import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
+import YourLogsDescriptions from '../components/VolunteerLogs/YourLogsDescription';
 import YourLogsTable from '../components/VolunteerLogs/YourLogsTable';
 import ExportLogsModal from '../components/AdminPageTable/ExportLogsModal';
 
 // TO-DO:
-//    - fix checkboxes
 //    - export selected logs
 //    - connect edit log button
 //    - clean up
@@ -24,8 +23,6 @@ const VolunteerLogs = () => {
 
   const user = useUserContext();
   const submitterQuery = `${user.userData.firstName} ${user.userData.lastName}`;
-
-  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const getSubmissions = async () => {
     try {
@@ -74,48 +71,7 @@ const VolunteerLogs = () => {
       <Heading mt="40px" mb="20px">
         Your Monitor Logs
       </Heading>
-      <Text>
-        Click on a row to view that monitor log. You may edit and resubmit logs with these approval
-        statuses:{' '}
-        <Badge variant="solid" colorScheme="red">
-          Edits Requested
-        </Badge>
-        ,{' '}
-        <Badge variant="solid" colorScheme="purple">
-          Resubmitted
-        </Badge>
-        ,{' '}
-        <Badge variant="solid" colorScheme="blue">
-          Under Review
-        </Badge>
-        ,{' '}
-        <Badge variant="solid" colorScheme="gray">
-          Draft
-        </Badge>
-      </Text>
-
-      {!isMobile && (
-        <Text>
-          Click on a column header (e.g.{' '}
-          <Badge px={0} variant="solid" bg="transparent" textColor="black">
-            Date
-          </Badge>
-          ) to sort by descending <ArrowDownIcon /> or ascending <ArrowUpIcon />. Sorting is
-          alphanumeric for{' '}
-          <Badge px={0} variant="solid" bg="transparent" textColor="black">
-            segment
-          </Badge>
-          ,{' '}
-          <Badge px={0} variant="solid" bg="transparent" textColor="black">
-            segment name
-          </Badge>
-          , and{' '}
-          <Badge px={0} variant="solid" bg="transparent" textColor="black">
-            approval status
-          </Badge>
-          .
-        </Text>
-      )}
+      <YourLogsDescriptions />
 
       <Box my="20px">
         <ExportLogsModal count={checkCount()} />
@@ -132,14 +88,7 @@ const VolunteerLogs = () => {
         setFetchSettings={setFetchSettings}
       />
 
-      <Box h="20px" />
-      <Text as="i">
-        Any person gathering and/or submitting data in this document acknowledges that the data is
-        solely owned by OC Habitats&trade; and is copyright protected. Data is not to be shared with
-        other organizations absent written permission from OC Habitats&trade;. &copy;2022 OC
-        Habitats&trade;. All Rights Reserved. If you have questions, please contact OC Habitats at
-        949.697.8651 or och@ochabitats.org.
-      </Text>
+      <YourLogsDescriptions copyright />
     </Container>
   );
 };
