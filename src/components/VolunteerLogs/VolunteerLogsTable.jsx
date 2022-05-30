@@ -3,9 +3,9 @@ import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination, useSortBy } from 'react-table';
 import { Table, Tr, Td, Tbody, Spinner, useMediaQuery } from '@chakra-ui/react';
-import VolunteerLogsTableHeader from './VolunteerLogsTableHeader.jsx';
+import VolunteerLogsTableHeader from './VolunteerLogsTableHeader';
 import Pagination from '../../common/TablePagination';
-import CellStructure from './VolunteerLogsStructure.jsx';
+import CellStructure from './VolunteerLogsStructure';
 
 /* eslint-enable react/destructuring-assignment, react/prop-types */
 
