@@ -70,22 +70,19 @@ function NewNumberModal({ addNewNumber }) {
                 <Text fontWeight={500} fontSize="16px">
                   Contact Name
                 </Text>
-                <Input style={{ width: '30em' }} onChange={e => setName(e.target.value)} />
+                <Input w="100%" onChange={e => setName(e.target.value)} />
               </VStack>
               <VStack align="left">
                 <Text fontWeight={500} fontSize="16px">
                   Contact Number
                 </Text>
-                <Input style={{ width: '30em' }} onChange={e => setNumber(e.target.value)} />
+                <Input w="100%" onChange={e => setNumber(e.target.value)} />
               </VStack>
               <VStack align="left">
                 <Text fontWeight={500} fontSize="16px">
                   Additional Note (Optional)
                 </Text>
-                <Textarea
-                  style={{ width: '30em', height: '8em' }}
-                  onChange={e => setNote(e.target.value)}
-                />
+                <Textarea w="100%" onChange={e => setNote(e.target.value)} />
               </VStack>
             </Stack>
           </ModalBody>
