@@ -30,12 +30,15 @@ const Check = ({ checked, setChecked, id }) => {
 const AllCheck = ({ checked, setChecked, allChecked, setAllChecked }) => {
   const handleAllChecked = () => {
     const newCheckedData = new Map(checked);
+    console.log(newCheckedData);
     if (allChecked) {
       newCheckedData.forEach((value, keys) => {
+        console.log(value);
         newCheckedData.set(keys, false);
       });
     } else {
       newCheckedData.forEach((value, keys) => {
+        console.log(value);
         newCheckedData.set(keys, true);
       });
     }
@@ -103,7 +106,7 @@ const EditButton = ({ logId, approval }) => {
     return '';
   }
 
-  console.log(logId);
+  // console.log(logId);
 
   return (
     <Button bgColor="transparent" minW={2} h={6} px={2}>

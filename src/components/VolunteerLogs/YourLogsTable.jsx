@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination, useSortBy } from 'react-table';
 import { Table, Tr, Td, Tbody, Spinner, useMediaQuery } from '@chakra-ui/react';
-import AdminPageHeader from './YourLogsTableHeader';
+import YourLogsTableHeader from './YourLogsTableHeader';
 import Pagination from '../../common/TablePagination';
 import CellStructure from './YourLogsStructure';
 
@@ -67,7 +67,7 @@ const YourLogsTable = ({
   return (
     <>
       <Table variant="striped" {...getTableProps()}>
-        <AdminPageHeader headerGroups={headerGroups} />
+        <YourLogsTableHeader headerGroups={headerGroups} />
         <Tbody {...getTableBodyProps()}>
           {isLoading && (
             <Tr>

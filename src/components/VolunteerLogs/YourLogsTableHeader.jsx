@@ -16,7 +16,7 @@ ArrowIcon.propTypes = {
 };
 
 // header portion of table where user can sort data
-const AdminPageHeader = ({ headerGroups }) => {
+const YourLogsTableHeader = ({ headerGroups }) => {
   return (
     <Thead>
       {headerGroups.map(headerGroup => (
@@ -37,9 +37,9 @@ const AdminPageHeader = ({ headerGroups }) => {
   );
 };
 
-AdminPageHeader.propTypes = {
+YourLogsTableHeader.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   headerGroups: PropTypes.array.isRequired,
 };
 
-export default AdminPageHeader;
+export default YourLogsTableHeader;

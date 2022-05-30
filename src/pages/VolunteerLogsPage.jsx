@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Badge, Box, Button, Container, Heading, Icon, Text } from '@chakra-ui/react';
+import { Badge, Box, Container, Heading, Text, useMediaQuery } from '@chakra-ui/react';
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
-import { CgSoftwareUpload } from 'react-icons/cg';
 import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 import YourLogsTable from '../components/VolunteerLogs/YourLogsTable';
@@ -26,6 +25,8 @@ const VolunteerLogs = () => {
   const user = useUserContext();
   const submitterQuery = `${user.userData.firstName} ${user.userData.lastName}`;
 
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
   const getSubmissions = async () => {
     try {
       setDataLoaded(false);
@@ -49,6 +50,14 @@ const VolunteerLogs = () => {
   useEffect(() => {
     getSubmissions();
   }, [fetchSettings]);
+
+  useEffect(() => {
+    const m = new Map();
+    for (let i = 0; i < data.results.length; i += 1) {
+      m.set(data.results[i]._id, false);
+    }
+    setChecked(m);
+  }, [data]);
 
   const checkCount = () => {
     let count = 0;
@@ -84,26 +93,29 @@ const VolunteerLogs = () => {
           Draft
         </Badge>
       </Text>
-      <Text>
-        Click on a column header (e.g.{' '}
-        <Badge px={0} variant="solid" bg="transparent" textColor="black">
-          Date
-        </Badge>
-        ) to sort by descending <ArrowDownIcon /> or ascending <ArrowUpIcon />. Sorting is
-        alphanumeric for{' '}
-        <Badge px={0} variant="solid" bg="transparent" textColor="black">
-          segment
-        </Badge>
-        ,{' '}
-        <Badge px={0} variant="solid" bg="transparent" textColor="black">
-          segment name
-        </Badge>
-        , and{' '}
-        <Badge px={0} variant="solid" bg="transparent" textColor="black">
-          approval status
-        </Badge>
-        .
-      </Text>
+
+      {!isMobile && (
+        <Text>
+          Click on a column header (e.g.{' '}
+          <Badge px={0} variant="solid" bg="transparent" textColor="black">
+            Date
+          </Badge>
+          ) to sort by descending <ArrowDownIcon /> or ascending <ArrowUpIcon />. Sorting is
+          alphanumeric for{' '}
+          <Badge px={0} variant="solid" bg="transparent" textColor="black">
+            segment
+          </Badge>
+          ,{' '}
+          <Badge px={0} variant="solid" bg="transparent" textColor="black">
+            segment name
+          </Badge>
+          , and{' '}
+          <Badge px={0} variant="solid" bg="transparent" textColor="black">
+            approval status
+          </Badge>
+          .
+        </Text>
+      )}
 
       <Box my="20px">
         <ExportLogsModal count={checkCount()} />
