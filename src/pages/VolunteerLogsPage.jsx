@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Badge, Container, Heading, Text } from '@chakra-ui/react';
+import { Badge, Box, Button, Container, Heading, Icon, Text } from '@chakra-ui/react';
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
+import { CgSoftwareUpload } from 'react-icons/cg';
 import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 import YourLogsTable from '../components/VolunteerLogs/YourLogsTable';
+
+// TO-DO:
+//    - fix checkboxes
+//    - export selected logs
+//    - disable sort on monitor partners
+//    - check + fix multiple monitor partners
+//    - clean up
+//    - mobile
 
 const VolunteerLogs = () => {
   const [data, setData] = useState({ results: [], total: 0 });
@@ -82,6 +91,10 @@ const VolunteerLogs = () => {
         .
       </Text>
 
+      <Button my="20px" bgColor="ochBluePress" color="white" _hover={{ opacity: 0.8 }}>
+        Export Selected Logs <Icon ml="6px" w={5} h={5} as={CgSoftwareUpload} />
+      </Button>
+
       <YourLogsTable
         tableData={data}
         pageCount={pageCount}
@@ -93,12 +106,13 @@ const VolunteerLogs = () => {
         setFetchSettings={setFetchSettings}
       />
 
+      <Box h="20px" />
       <Text as="i">
         Any person gathering and/or submitting data in this document acknowledges that the data is
-        solely owned by OC HabitatsTM and is copyright protected. Data is not to be shared with
-        other organizations absent written permission from OC HabitatsTM. ©2022 OC HabitatsTM. All
-        Rights Reserved. If you have questions, please contact OC Habitats at 949.697.8651 or
-        och@ochabitats.org.
+        solely owned by OC Habitats&trade; and is copyright protected. Data is not to be shared with
+        other organizations absent written permission from OC Habitats&trade;. &copy;2022 OC
+        Habitats&trade;. All Rights Reserved. If you have questions, please contact OC Habitats at
+        949.697.8651 or och@ochabitats.org.
       </Text>
     </Container>
   );
