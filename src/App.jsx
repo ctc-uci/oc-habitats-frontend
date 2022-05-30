@@ -25,6 +25,7 @@ import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import Numbers from './pages/EmergencyNumbers';
+import VolunteerLogs from './pages/VolunteerLogsPage';
 
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
@@ -123,6 +124,17 @@ function App() {
                   <Route exact path="/numbers" element={<Numbers />} />
                   <Route exact path="/map" />
                   <Route exact path="/logs" element={<AdminPage />} />
+                  <Route
+                    exact
+                    path="/your-logs"
+                    element={
+                      <ProtectedRoute
+                        Component={VolunteerLogs}
+                        path="/logout"
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
+                    }
+                  />
                   <Route exact path="/common-table-example" element={<CommonTableExample />} />
                   <Route
                     path="/user-context-example"
