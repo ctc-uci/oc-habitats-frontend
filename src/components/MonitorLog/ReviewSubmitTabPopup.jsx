@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 import confirmSubmission from '../../assets/confirmSubmission.svg';
 import monitorLogSubmissionComplete from '../../assets/monitorLogSubmissionComplete.svg';
 
-const SubmitSurvey = ({ setModalStep, onClose, submit }) => {
+const SubmitSurvey = ({ setModalStep, onClose, submit, formMethods }) => {
   return (
     <>
       <ModalHeader>Are you sure you want to submit your survey log?</ModalHeader>
@@ -35,6 +35,9 @@ const SubmitSurvey = ({ setModalStep, onClose, submit }) => {
             type="submit"
             colorScheme="green"
             onClick={() => {
+              formMethods.setValue({
+                status: 'UNDER_REVIEW',
+              });
               submit();
               setModalStep('submitted');
             }}
@@ -69,7 +72,7 @@ const Submitted = ({ onClose }) => {
   );
 };
 
-function ReturnPopup({ submitForm }) {
+function ReturnPopup({ submitForm, formMethods }) {
   const [modalStep, setModalStep] = useState('submitSurvey');
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -79,7 +82,12 @@ function ReturnPopup({ submitForm }) {
 
   const modalContent = {
     submitSurvey: (
-      <SubmitSurvey setModalStep={setModalStep} onClose={onClose} submit={submitForm} />
+      <SubmitSurvey
+        setModalStep={setModalStep}
+        onClose={onClose}
+        submit={submitForm}
+        formMethods={formMethods}
+      />
     ),
     submitted: <Submitted onSubmit={submitForm} onClose={onClose} />,
   };
@@ -103,6 +111,8 @@ SubmitSurvey.propTypes = {
   setModalStep: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  formMethods: PropTypes.object.isRequired,
 };
 
 Submitted.propTypes = {
@@ -111,6 +121,8 @@ Submitted.propTypes = {
 
 ReturnPopup.propTypes = {
   submitForm: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  formMethods: PropTypes.object.isRequired,
 };
 
 export default ReturnPopup;

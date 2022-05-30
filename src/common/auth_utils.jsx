@@ -13,6 +13,9 @@ import {
   sendPasswordResetEmail,
   confirmPasswordReset,
   applyActionCode,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  updatePassword,
 } from 'firebase/auth';
 
 import { useNavigate } from 'react-router-dom';
@@ -205,10 +208,10 @@ const registerWithEmailAndPassword = async (
  */
 const sendPasswordReset = async email => {
   const user = await OCHBackend.get(`/users/email/${email}`);
-  if (user.response.status !== 200 || !user || !user.data) {
-    throw new Error(`There is no account associated with the email ${email}.`);
-  } else {
+  if (user) {
     await sendPasswordResetEmail(auth, email);
+  } else {
+    throw new Error(`There is no account associated with the email ${email}.`);
   }
 };
 
@@ -299,6 +302,36 @@ const addAuthInterceptor = axiosInstance => {
   );
 };
 
+/**
+ * Cross checks old password by reauthenticating with firebase and applying changes afterwards
+ * @param {string} newPassword Password that the user wants to change to
+ * @param {string} oldPassword Previous password used to check with firebase
+ */
+const updateUserPassword = async (newPassword, oldPassword) => {
+  const user = auth.currentUser;
+
+  const cred = EmailAuthProvider.credential(user.email, oldPassword);
+
+  try {
+    await reauthenticateWithCredential(user, cred);
+    // User entered correct credentials
+    // Update password
+    await updatePassword(auth.currentUser, newPassword);
+    console.log('password updated succesfully');
+    return 'success';
+  } catch (e) {
+    console.log(e.code, e.message);
+    // Could be incorrect credentials
+    if (e.code === 'auth/wrong-password') {
+      return 'password';
+    }
+    if (e.code === 'auth/weak-password') {
+      return 'weak';
+    }
+    return 'error';
+  }
+};
+
 addAuthInterceptor(OCHBackend);
 
 // -------- ADMIN INVITE ROUTES START HERE ------------------------------------------
@@ -343,4 +376,5 @@ export {
   confirmNewPassword,
   confirmVerifyEmail,
   initiateInviteProcess,
+  updateUserPassword,
 };
