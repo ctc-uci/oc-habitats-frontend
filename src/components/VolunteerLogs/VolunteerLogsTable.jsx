@@ -3,13 +3,13 @@ import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination, useSortBy } from 'react-table';
 import { Table, Tr, Td, Tbody, Spinner, useMediaQuery } from '@chakra-ui/react';
-import YourLogsTableHeader from './YourLogsTableHeader';
+import VolunteerLogsTableHeader from './VolunteerLogsTableHeader.jsx';
 import Pagination from '../../common/TablePagination';
-import CellStructure from './YourLogsStructure';
+import CellStructure from './VolunteerLogsStructure.jsx';
 
 /* eslint-enable react/destructuring-assignment, react/prop-types */
 
-const YourLogsTable = ({
+const VolunteerLogsTable = ({
   tableData,
   pageCount: controlledPageCount,
   checked,
@@ -75,18 +75,18 @@ const YourLogsTable = ({
   return (
     <>
       <Table variant="striped" {...getTableProps()}>
-        <YourLogsTableHeader headerGroups={headerGroups} />
+        <VolunteerLogsTableHeader headerGroups={headerGroups} />
         <Tbody {...getTableBodyProps()}>
           {isLoading && (
             <Tr>
-              <Td colSpan="6" textAlign="center" py="10">
+              <Td colSpan="100%" textAlign="center" py="10">
                 <Spinner />
               </Td>
             </Tr>
           )}
           {!isLoading && page.length === 0 && (
             <Tr>
-              <Td colSpan="6" textAlign="center" py="10">
+              <Td colSpan="100%" textAlign="center" py="10">
                 No results
               </Td>
             </Tr>
@@ -122,7 +122,7 @@ const YourLogsTable = ({
   );
 };
 
-YourLogsTable.propTypes = {
+VolunteerLogsTable.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   checked: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
@@ -135,4 +135,4 @@ YourLogsTable.propTypes = {
   setFetchSettings: PropTypes.func.isRequired,
 };
 
-export default YourLogsTable;
+export default VolunteerLogsTable;

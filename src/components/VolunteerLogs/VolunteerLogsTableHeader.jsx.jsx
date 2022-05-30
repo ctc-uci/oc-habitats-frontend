@@ -11,12 +11,13 @@ const ArrowIcon = ({ down }) => {
   }
   return <FiArrowUp size="1em" style={style} />;
 };
+
 ArrowIcon.propTypes = {
   down: PropTypes.bool.isRequired,
 };
 
 // header portion of table where user can sort data
-const YourLogsTableHeader = ({ headerGroups }) => {
+const VolunteerLogsTableHeader = ({ headerGroups }) => {
   return (
     <Thead>
       {headerGroups.map(headerGroup => (
@@ -37,9 +38,9 @@ const YourLogsTableHeader = ({ headerGroups }) => {
   );
 };
 
-YourLogsTableHeader.propTypes = {
+VolunteerLogsTableHeader.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   headerGroups: PropTypes.array.isRequired,
 };
 
-export default YourLogsTableHeader;
+export default VolunteerLogsTableHeader;

@@ -30,15 +30,12 @@ const Check = ({ checked, setChecked, id }) => {
 const AllCheck = ({ checked, setChecked, allChecked, setAllChecked }) => {
   const handleAllChecked = () => {
     const newCheckedData = new Map(checked);
-    console.log(newCheckedData);
     if (allChecked) {
       newCheckedData.forEach((value, keys) => {
-        console.log(value);
         newCheckedData.set(keys, false);
       });
     } else {
       newCheckedData.forEach((value, keys) => {
-        console.log(value);
         newCheckedData.set(keys, true);
       });
     }
@@ -73,6 +70,7 @@ const ApplyBadge = ({ approval }) => {
       </Badge>
     );
   }
+
   if (approval === 'EDITS_REQUESTED') {
     return (
       <Badge variant="solid" colorScheme="red">
@@ -88,6 +86,7 @@ const ApplyBadge = ({ approval }) => {
       </Badge>
     );
   }
+
   return <Text fontSize="xs">{approval}</Text>;
 };
 

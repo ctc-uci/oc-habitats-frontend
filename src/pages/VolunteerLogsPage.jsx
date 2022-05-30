@@ -3,14 +3,12 @@ import { Box, Container, Heading } from '@chakra-ui/react';
 import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 import YourLogsDescriptions from '../components/VolunteerLogs/YourLogsDescription';
-import YourLogsTable from '../components/VolunteerLogs/YourLogsTable';
+import VolunteerLogsTable from '../components/VolunteerLogs/VolunteerLogsTable';
 import ExportLogsModal from '../components/AdminPageTable/ExportLogsModal';
 
-// TO-DO:
+// TO DO:
 //    - export selected logs
 //    - connect edit log button
-//    - clean up
-//    - mobile
 
 const VolunteerLogs = () => {
   const [data, setData] = useState({ results: [], total: 0 });
@@ -54,7 +52,7 @@ const VolunteerLogs = () => {
       m.set(data.results[i]._id, false);
     }
     setChecked(m);
-  }, []);
+  }, [data]);
 
   const checkCount = () => {
     let count = 0;
@@ -77,7 +75,7 @@ const VolunteerLogs = () => {
         <ExportLogsModal count={checkCount()} />
       </Box>
 
-      <YourLogsTable
+      <VolunteerLogsTable
         tableData={data}
         pageCount={pageCount}
         checked={checked}

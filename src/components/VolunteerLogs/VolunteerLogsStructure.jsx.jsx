@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Flex } from '@chakra-ui/react';
-import { ApplyBadge, DateFormat, Check, AllCheck, Partners, EditButton } from './YourLogsRows';
+import { ApplyBadge, DateFormat, Check, AllCheck, Partners, EditButton } from './VolunteerLogsRows';
 
 const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
   /* eslint-disable react/destructuring-assignment, react/prop-types */
@@ -62,7 +62,7 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       ),
     },
     {
-      // combined approval status and edit
+      // combined approval status and edit for mobile table
       id: 'statusAndEdit',
       Header: 'Approval Status',
       accessor: 'status',
