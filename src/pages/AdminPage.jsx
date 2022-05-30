@@ -69,8 +69,8 @@ const AdminPage = () => {
 
   useEffect(() => {
     const m = new Map();
-    for (let i = 0; i < data.length; i += 1) {
-      m.set(data[i]._id, false);
+    for (let i = 0; i < data.results.length; i += 1) {
+      m.set(data.results[i]._id, false);
     }
     setChecked(m);
   }, [segmentFilter, dateFilter, approvalFilter, searchFilter]);
