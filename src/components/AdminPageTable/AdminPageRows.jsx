@@ -49,7 +49,7 @@ const ApplyBadge = ({ approval }) => {
   if (approval === 'UNDER_REVIEW') {
     return (
       <Badge variant="solid" colorScheme="blue">
-        UNDER REVIEW
+        READY TO REVIEW
       </Badge>
     );
   }
@@ -64,6 +64,20 @@ const ApplyBadge = ({ approval }) => {
     return (
       <Badge variant="solid" colorScheme="red">
         EDITS REQUESTED
+      </Badge>
+    );
+  }
+  if (approval === 'APPROVED') {
+    return (
+      <Badge variant="solid" colorScheme="green">
+        APPROVED
+      </Badge>
+    );
+  }
+  if (approval === 'UNSUBMITTED') {
+    return (
+      <Badge variant="solid" colorScheme="gray">
+        DRAFT
       </Badge>
     );
   }
