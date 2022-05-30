@@ -5,13 +5,12 @@ import { CgSoftwareUpload } from 'react-icons/cg';
 import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 import YourLogsTable from '../components/VolunteerLogs/YourLogsTable';
+import ExportLogsModal from '../components/AdminPageTable/ExportLogsModal';
 
 // TO-DO:
 //    - fix checkboxes
 //    - export selected logs
 //    - connect edit log button
-//    - disable sort on monitor partners
-//    - check + fix multiple monitor partners
 //    - clean up
 //    - mobile
 
@@ -51,6 +50,16 @@ const VolunteerLogs = () => {
     getSubmissions();
   }, [fetchSettings]);
 
+  const checkCount = () => {
+    let count = 0;
+    checked.forEach(val => {
+      if (val) {
+        count += 1;
+      }
+    });
+    return count;
+  };
+
   return (
     <Container maxW="container.xl">
       <Heading mt="40px" mb="20px">
@@ -61,6 +70,10 @@ const VolunteerLogs = () => {
         statuses:{' '}
         <Badge variant="solid" colorScheme="red">
           Edits Requested
+        </Badge>
+        ,{' '}
+        <Badge variant="solid" colorScheme="purple">
+          Resubmitted
         </Badge>
         ,{' '}
         <Badge variant="solid" colorScheme="blue">
@@ -92,9 +105,9 @@ const VolunteerLogs = () => {
         .
       </Text>
 
-      <Button my="20px" bgColor="ochBluePress" color="white" _hover={{ opacity: 0.8 }}>
-        Export Selected Logs <Icon ml="6px" w={5} h={5} as={CgSoftwareUpload} />
-      </Button>
+      <Box my="20px">
+        <ExportLogsModal count={checkCount()} />
+      </Box>
 
       <YourLogsTable
         tableData={data}

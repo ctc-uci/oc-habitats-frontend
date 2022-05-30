@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useTable, usePagination, useSortBy } from 'react-table';
 import { Table, Tr, Td, Tbody, Spinner } from '@chakra-ui/react';
 import AdminPageHeader from './AdminPageHeader';
-import Pagination from './Pagination';
+import Pagination from '../../common/TablePagination';
 import CellStructure from './AdminPageStructure';
 
 /* eslint-enable react/destructuring-assignment, react/prop-types */

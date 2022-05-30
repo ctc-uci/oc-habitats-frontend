@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@chakra-ui/react';
-import { FiEdit3 } from 'react-icons/fi';
-import { ApplyBadge, DateFormat, Check, AllCheck } from './YourLogsRows';
+import { ApplyBadge, DateFormat, Check, AllCheck, Partners, EditButton } from './YourLogsRows';
 
 const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
   /* eslint-disable react/destructuring-assignment, react/prop-types */
@@ -43,23 +41,23 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       id: 'status',
       Header: 'Approval Status',
       accessor: 'status',
+      minWidth: 100,
       Cell: ({ value }) => <ApplyBadge approval={value} />,
     },
     {
       id: 'partners',
       Header: 'Monitor Partners',
       accessor: 'sessionPartners',
-      Cell: props => <p>{`${props.value.firstName.charAt(0)}. ${props.value.lastName}`}</p>,
+      disableSortBy: true,
+      Cell: props => (props.value ? <Partners sessionPartners={props.value} /> : ''),
     },
     {
       id: 'review',
       Header: '',
       accessor: '_id',
       disableSortBy: true,
-      Cell: ({ value }) => (
-        <Button approval={value} bgColor="transparent">
-          <FiEdit3 />
-        </Button>
+      Cell: props => (
+        <EditButton logId={props.row.original._id} approval={props.row.original.status} />
       ),
     },
   ];

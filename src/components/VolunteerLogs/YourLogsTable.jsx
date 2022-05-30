@@ -2,9 +2,9 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination, useSortBy } from 'react-table';
-import { Table, Tr, Td, Tbody, Spinner } from '@chakra-ui/react';
+import { Table, Tr, Td, Tbody, Spinner, useMediaQuery } from '@chakra-ui/react';
 import AdminPageHeader from './YourLogsTableHeader';
-import Pagination from '../AdminPageTable/Pagination';
+import Pagination from '../../common/TablePagination';
 import CellStructure from './YourLogsStructure';
 
 /* eslint-enable react/destructuring-assignment, react/prop-types */
@@ -19,6 +19,8 @@ const YourLogsTable = ({
   setAllChecked,
   setFetchSettings,
 }) => {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
   const columns = useMemo(
     () => CellStructure(checked, setChecked, allChecked, setAllChecked),
     [checked, setChecked, allChecked, setAllChecked],
@@ -34,6 +36,7 @@ const YourLogsTable = ({
     nextPage,
     previousPage,
     setPageSize,
+    setHiddenColumns,
     state: { pageIndex, pageSize, sortBy },
   } = useTable(
     {
@@ -51,6 +54,15 @@ const YourLogsTable = ({
   useEffect(() => {
     setFetchSettings({ pageIndex, pageSize, sortBy });
   }, [pageIndex, pageSize, sortBy]);
+
+  // set hidden table columns, depending on user role and mobile
+  useEffect(() => {
+    const hiddenColumns = [];
+    if (isMobile) {
+      hiddenColumns.push('segmentName', 'submittedAt', 'partners');
+    }
+    setHiddenColumns(hiddenColumns);
+  }, [isMobile]);
 
   return (
     <>

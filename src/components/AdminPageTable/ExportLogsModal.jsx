@@ -11,8 +11,9 @@ import {
   ModalFooter,
   useToast,
   useDisclosure,
+  Icon,
 } from '@chakra-ui/react';
-import { BiExport } from 'react-icons/bi';
+import { CgSoftwareUpload } from 'react-icons/cg';
 
 // modal for the export selected logs button
 const ExportLogsModal = ({ count }) => {
@@ -37,7 +38,12 @@ const ExportLogsModal = ({ count }) => {
 
   return (
     <>
-      <Button onClick={onExportOpen} variant="solidNoHover" bg="ochBlue" rightIcon={<BiExport />}>
+      <Button
+        onClick={onExportOpen}
+        variant="solidNoHover"
+        bg="ochBlue"
+        rightIcon={<CgSoftwareUpload />}
+      >
         Export Selected Logs
       </Button>
 
