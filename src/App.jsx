@@ -65,7 +65,11 @@ function App() {
                   <Route
                     exact
                     path="/"
-                    element={<HomePage isAdmin={isAdmin} onAdminPortal={onAdminPortal} />}
+                    element={
+                      <ProtectedRoute redirectPath="/login" roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
+                        <HomePage isAdmin={isAdmin} onAdminPortal={onAdminPortal} />
+                      </ProtectedRoute>
+                    }
                   />
                   <Route
                     exact
@@ -91,11 +95,9 @@ function App() {
                     exact
                     path="/review-log/:id"
                     element={
-                      <ProtectedRoute
-                        Component={() => <MonitorLogPage mode="review" />}
-                        redirectPath="/login"
-                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
-                      />
+                      <ProtectedRoute redirectPath="/login" roles={[ADMIN_ROLE]}>
+                        <MonitorLogPage mode="review" />
+                      </ProtectedRoute>
                     }
                   />
                   <Route
@@ -104,12 +106,15 @@ function App() {
                     element={
                       <ProtectedRoute
                         Component={SectionPage}
-                        redirectPath="/login"
                         roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
                       />
                     }
                   />
-                  <Route exact path="/species" element={<Species />} />
+                  <Route
+                    exact
+                    path="/species"
+                    element={<ProtectedRoute Component={Species} roles={[ADMIN_ROLE]} />}
+                  />
                   {/* Admin only routes (TO DO, make admin only) */}
                   <Route exact path="/people" element={<PeoplePage />} />
                   <Route
@@ -118,24 +123,26 @@ function App() {
                     element={
                       <ProtectedRoute
                         Component={MonitorLogPage}
-                        redirectPath="/login"
                         roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
                       />
                     }
                   />
-                  <Route exact path="/numbers" element={<Numbers />} />
-                  <Route exact path="/map" />
-                  <Route exact path="/logs" element={<AdminPage />} />
-                  <Route exact path="/common-table-example" element={<CommonTableExample />} />
                   <Route
-                    path="/user-context-example"
+                    exact
+                    path="/edit-log-template"
+                    element={<ProtectedRoute Component={MonitorLogEditPage} roles={[ADMIN_ROLE]} />}
+                  />
+                  <Route
+                    exact
+                    path="/numbers"
                     element={
-                      <ProtectedRoute
-                        Component={UserContextExample}
-                        redirectPath="/logout"
-                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
-                      />
+                      <ProtectedRoute Component={Numbers} roles={[ADMIN_ROLE, VOLUNTEER_ROLE]} />
                     }
+                  />
+                  <Route
+                    exact
+                    path="/logs"
+                    element={<ProtectedRoute Component={AdminPage} roles={[ADMIN_ROLE]} />}
                   />
                   {/* NEW AUTH ROUTES */}
                   <Route path="/login" element={<Login />} />
@@ -151,11 +158,18 @@ function App() {
                       />
                     }
                   />
-                  {/* <Route path="/new-user" element={<NewUser />} /> */}
-                  <Route exact path="/map" />
-                  <Route exact path="/logs" element={<AdminPage />} />
+                  {/* TEST ROUTES TO REMOVE */}
                   <Route exact path="/common-table-example" element={<CommonTableExample />} />
-                  <Route exact path="/edit-log-template" element={<MonitorLogEditPage />} />
+                  <Route
+                    path="/user-context-example"
+                    element={
+                      <ProtectedRoute
+                        Component={UserContextExample}
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
+                    }
+                  />
+                  <Route exact path="/common-table-example" element={<CommonTableExample />} />
                 </Routes>
               </Box>
               <Routes>
