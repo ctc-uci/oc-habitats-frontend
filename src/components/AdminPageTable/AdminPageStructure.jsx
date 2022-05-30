@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@chakra-ui/react';
+import { chakra, Button } from '@chakra-ui/react';
+import { FiArrowRight } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { ApplyBadge, DateFormat, Check, AllCheck, VolunteerColumn } from './AdminPageRows';
 
 const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
@@ -52,7 +54,16 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       Header: '',
       accessor: '_id',
       disableSortBy: true,
-      Cell: ({ value }) => <Button approval={value}>Review</Button>,
+      Cell: ({ value }) => (
+        <Link to={`/review-log/${value}`}>
+          <Button bg="transparent" approval={value}>
+            Review{' '}
+            <chakra.span ml="2">
+              <FiArrowRight />
+            </chakra.span>
+          </Button>
+        </Link>
+      ),
     },
   ];
   return cellStructure;
