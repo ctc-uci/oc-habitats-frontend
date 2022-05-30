@@ -12,7 +12,7 @@ import EmergencyContactTable from '../components/NumberModals/EmergencyContactTa
 // - Clean up modal opening logic
 // - Maybe look into React Hook Form for validation
 
-const Numbers = props => {
+const Numbers = () => {
   const [change, setChange] = useState(true);
   const [tableData, setTableData] = useState([]);
 
