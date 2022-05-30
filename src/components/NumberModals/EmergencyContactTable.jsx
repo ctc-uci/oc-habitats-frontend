@@ -21,7 +21,8 @@ import { CommonTableHeader } from '../../common/CommonTable/CommonTableHeader';
 import DeleteNumberModal from './DeleteNumberModal';
 import EditNumberModal from './EditNumberModal';
 
-const EmergencyContactTable = ({ tableData, setTableData }) => {
+const EmergencyContactTable = ({ tableData, setTableData, admin }) => {
+  console.log(admin);
   const [numberId, setNumberId] = useState(-1);
   const [rowData, setRowData] = useState({});
   const editModalDisclosure = useDisclosure();
@@ -70,25 +71,27 @@ const EmergencyContactTable = ({ tableData, setTableData }) => {
             <Tr key={row._id}>
               <Td fontWeight="500">{row.name}</Td>
               <Td>{row.number}</Td>
-              <Td>{row.note}</Td>
-              <Td>
-                <Menu isLazy autoSelect={false}>
-                  <MenuButton>
-                    <IconButton icon={<BsThreeDotsVertical />} bg="transparent" />
-                  </MenuButton>
-                  <MenuList>
-                    <MenuItem onClick={() => openModalWithData(row, editModalDisclosure.onOpen)}>
-                      Edit Contact
-                    </MenuItem>
-                    <MenuItem
-                      color="red.600"
-                      onClick={() => openModalWithData(row, deleteModalDisclosure.onOpen)}
-                    >
-                      Delete Contact
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
-              </Td>
+              <Td colSpan={admin ? 1 : 2}>{row.note}</Td>
+              {admin && (
+                <Td>
+                  <Menu isLazy autoSelect={false}>
+                    <MenuButton>
+                      <IconButton icon={<BsThreeDotsVertical />} bg="transparent" />
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem onClick={() => openModalWithData(row, editModalDisclosure.onOpen)}>
+                        Edit Contact
+                      </MenuItem>
+                      <MenuItem
+                        color="red.600"
+                        onClick={() => openModalWithData(row, deleteModalDisclosure.onOpen)}
+                      >
+                        Delete Contact
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                </Td>
+              )}
             </Tr>
           ))}
         </Tbody>
@@ -101,6 +104,7 @@ EmergencyContactTable.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   tableData: PropTypes.arrayOf(PropTypes.object).isRequired,
   setTableData: PropTypes.func.isRequired,
+  admin: PropTypes.bool.isRequired,
 };
 
 export default EmergencyContactTable;
