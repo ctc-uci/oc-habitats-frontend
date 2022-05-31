@@ -19,6 +19,7 @@ import logo from '../../assets/OCH_Logo_SVG.svg';
 
 const NavbarMobile = ({ isAdmin, onAdminPortal, setOnAdminPortal }) => {
   // TO DO: get profile image and name
+  console.log(onAdminPortal);
 
   const admin = [
     { text: 'Monitor Logs', path: '/logs' },
@@ -61,7 +62,7 @@ const NavbarMobile = ({ isAdmin, onAdminPortal, setOnAdminPortal }) => {
           <FiMenu size="32" />
         </MenuButton>
         <MenuList>
-          {!isAdmin && (
+          {!onAdminPortal && (
             <MenuItem>
               <Spacer />
               <Link to="/create-log">
@@ -78,7 +79,7 @@ const NavbarMobile = ({ isAdmin, onAdminPortal, setOnAdminPortal }) => {
               <Spacer />
             </MenuItem>
           )}
-          {isAdmin
+          {isAdmin && onAdminPortal
             ? admin.map(a => <NavbarLinkMobile key={a.text} text={a.text} path={a.path} />)
             : volunteer.map(v => <NavbarLinkMobile key={v.text} text={v.text} path={v.path} />)}
         </MenuList>
