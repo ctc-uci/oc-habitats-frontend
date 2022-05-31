@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Stack, Text, VStack } from '@chakra-ui/react';
+import { Box, Heading, Stack, Text, VStack } from '@chakra-ui/react';
 import NewNumberModal from '../components/NumberModals/NewNumberModal';
 import { OCHBackend } from '../common/utils';
 import EmergencyContactTable from '../components/NumberModals/EmergencyContactTable';
@@ -34,32 +34,41 @@ const Numbers = () => {
   }, []);
 
   return (
-    <Box mx={{ md: '10%', base: '10px' }} mb={{ md: 10, base: 20 }}>
-      <Stack justify-content="center" mb="4em">
-        <VStack align="left" spacing="1.5em" w="100%">
-          <Text fontWeight="600" fontSize="36px" mt="40px">
-            Emergency Numbers
-          </Text>
-          <Text fontWeight="500" fontSize="16px" mt="24px">
+    <Stack
+      mx={{ md: '10%', base: '10px' }}
+      mb={{ md: 10, base: 20 }}
+      spacing="20px"
+      maxW="1000px"
+      align="flex-start"
+    >
+      <Heading mt="20px">Emergency Numbers</Heading>
+      <Stack
+        w="100%"
+        direction={{ md: 'row', base: 'column' }}
+        justify="space-between"
+        align={{ md: 'flex-end', base: 'flex-start' }}
+      >
+        <Text p={0}>
+          <Text>
             In the case of an emergency or situation beyond your authorizations, call for
             assistance.
           </Text>
-          <Text>REMEMBER, YOUR SAFETY IS OUR PRIORITY.</Text>
-          {user.userData.role === 'admin' && (
-            <VStack spacing={2} align="stretch">
-              <NewNumberModal addNewNumber={addNewNumber} />
-            </VStack>
-          )}
-          <Box maxW="1000px" w={{ base: '100%' }}>
-            <EmergencyContactTable
-              tableData={tableData}
-              setTableData={setTableData}
-              admin={user.userData.role === 'admin'}
-            />
-          </Box>
-        </VStack>
+          <Text fontWeight="500">REMEMBER, YOUR SAFETY IS OUR PRIORITY.</Text>
+        </Text>
+        {user.userData.role === 'admin' && (
+          <VStack spacing={2} align="stretch">
+            <NewNumberModal addNewNumber={addNewNumber} />
+          </VStack>
+        )}
       </Stack>
-    </Box>
+      <Box maxW="1000px" w={{ base: '100%' }}>
+        <EmergencyContactTable
+          tableData={tableData}
+          setTableData={setTableData}
+          admin={user.userData.role === 'admin'}
+        />
+      </Box>
+    </Stack>
   );
 };
 
