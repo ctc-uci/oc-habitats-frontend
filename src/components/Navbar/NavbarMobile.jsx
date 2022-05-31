@@ -19,7 +19,6 @@ import logo from '../../assets/OCH_Logo_SVG.svg';
 
 const NavbarMobile = ({ isAdmin, onAdminPortal, setOnAdminPortal }) => {
   // TO DO: get profile image and name
-  console.log(onAdminPortal);
 
   const admin = [
     { text: 'Monitor Logs', path: '/logs' },
