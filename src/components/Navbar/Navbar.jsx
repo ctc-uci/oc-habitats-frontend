@@ -46,6 +46,7 @@ const Navbar = ({ onAdminPortal, setOnAdminPortal, changesMade }) => {
       isAdmin={isAdmin}
       onAdminPortal={onAdminPortal}
       setOnAdminPortal={setOnAdminPortal}
+      isLoggedin={isLoggedIn}
     />
   ) : (
     <Flex
