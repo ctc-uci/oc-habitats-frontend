@@ -1,27 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Heading, Stack, Text, VStack } from '@chakra-ui/react';
+import { Box, Heading, Stack, Text, VStack, useToast } from '@chakra-ui/react';
 import NewNumberModal from '../components/NumberModals/NewNumberModal';
 import { OCHBackend } from '../common/utils';
 import EmergencyContactTable from '../components/NumberModals/EmergencyContactTable';
 import { useUserContext } from '../common/UserContext/UserContext';
-
-// TODO:
-// - Convert EditAndDeleteModal to arrow function
-// - Replace Popover with Chakra Menu
 
 const Numbers = () => {
   const [change, setChange] = useState(true);
   const [tableData, setTableData] = useState([]);
 
   const user = useUserContext();
+  const toast = useToast();
 
   const addNewNumber = async newNumber => {
-    await OCHBackend.post('/numbers', {
-      name: newNumber.name,
-      number: newNumber.number,
-      note: newNumber.note,
-    });
-    setChange(!change);
+    try {
+      await OCHBackend.post('/numbers', {
+        name: newNumber.name,
+        number: newNumber.number,
+        note: newNumber.note,
+      });
+      setChange(!change);
+      toast({
+        title: 'New contact added',
+        description: `${newNumber.name} (${newNumber.number}) is now a contact.`,
+        status: 'success',
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: 'Unable to add new contact',
+        description: err?.message,
+        status: 'error',
+        isClosable: true,
+      });
+    }
   };
 
   useEffect(async () => {

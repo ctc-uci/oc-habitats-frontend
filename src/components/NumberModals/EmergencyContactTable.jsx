@@ -14,6 +14,7 @@ import {
   IconButton,
   MenuButton,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
@@ -28,6 +29,7 @@ const EmergencyContactTable = ({ tableData, admin, change, setChange }) => {
   const [rowData, setRowData] = useState({});
   const editModalDisclosure = useDisclosure();
   const deleteModalDisclosure = useDisclosure();
+  const toast = useToast();
 
   const openModalWithData = (dataRow, openFunc) => {
     setNumberId(dataRow._id);
@@ -36,17 +38,43 @@ const EmergencyContactTable = ({ tableData, admin, change, setChange }) => {
   };
 
   const editNumber = async updatedNumber => {
-    await OCHBackend.put(`/numbers/${numberId}`, {
-      name: updatedNumber.name,
-      number: updatedNumber.number,
-      note: updatedNumber.note,
-    });
-    setChange(!change);
+    try {
+      await OCHBackend.put(`/numbers/${numberId}`, {
+        name: updatedNumber.name,
+        number: updatedNumber.number,
+        note: updatedNumber.note,
+      });
+      setChange(!change);
+      toast({
+        title: `${updatedNumber.name}'s contact has been updated`,
+        status: 'success',
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: `${updatedNumber.name}'s contact could not be updated`,
+        status: 'error',
+        isClosable: true,
+      });
+    }
   };
 
   const deleteNumber = async () => {
-    await OCHBackend.delete(`/numbers/${numberId}`);
-    setChange(!change);
+    try {
+      await OCHBackend.delete(`/numbers/${numberId}`);
+      setChange(!change);
+      toast({
+        title: `Successfully deleted a contact`,
+        status: 'success',
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: `Unable to delete contact`,
+        status: 'error',
+        isClosable: true,
+      });
+    }
   };
 
   return (
