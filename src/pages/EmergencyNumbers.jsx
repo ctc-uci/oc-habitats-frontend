@@ -6,12 +6,8 @@ import EmergencyContactTable from '../components/NumberModals/EmergencyContactTa
 import { useUserContext } from '../common/UserContext/UserContext';
 
 // TODO:
-// - Move components into their own files/out of other components (EmergencyContactTable)
-// - Remove change, numbers state variable
 // - Convert EditAndDeleteModal to arrow function
 // - Replace Popover with Chakra Menu
-// - Clean up modal opening logic
-// - Maybe look into React Hook Form for validation
 
 const Numbers = () => {
   const [change, setChange] = useState(true);
@@ -31,7 +27,7 @@ const Numbers = () => {
   useEffect(async () => {
     const res = await OCHBackend.get('/numbers');
     setTableData(res.data);
-  }, []);
+  }, [change]);
 
   return (
     <Stack
@@ -66,6 +62,8 @@ const Numbers = () => {
           tableData={tableData}
           setTableData={setTableData}
           admin={user.userData.role === 'admin'}
+          change={change}
+          setChange={setChange}
         />
       </Box>
     </Stack>

@@ -23,7 +23,7 @@ import { CommonTableHeader } from '../../common/CommonTable/CommonTableHeader';
 import DeleteNumberModal from './DeleteNumberModal';
 import EditNumberModal from './EditNumberModal';
 
-const EmergencyContactTable = ({ tableData, setTableData, admin }) => {
+const EmergencyContactTable = ({ tableData, admin, change, setChange }) => {
   const [numberId, setNumberId] = useState(-1);
   const [rowData, setRowData] = useState({});
   const editModalDisclosure = useDisclosure();
@@ -41,14 +41,12 @@ const EmergencyContactTable = ({ tableData, setTableData, admin }) => {
       number: updatedNumber.number,
       note: updatedNumber.note,
     });
-    const res = await OCHBackend.get('/numbers');
-    setTableData(res.data);
+    setChange(!change);
   };
 
   const deleteNumber = async () => {
     await OCHBackend.delete(`/numbers/${numberId}`);
-    const res = await OCHBackend.get('/numbers');
-    setTableData(res.data);
+    setChange(!change);
   };
 
   return (
@@ -109,8 +107,9 @@ const EmergencyContactTable = ({ tableData, setTableData, admin }) => {
 EmergencyContactTable.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   tableData: PropTypes.arrayOf(PropTypes.object).isRequired,
-  setTableData: PropTypes.func.isRequired,
   admin: PropTypes.bool.isRequired,
+  change: PropTypes.bool.isRequired,
+  setChange: PropTypes.func.isRequired,
 };
 
 export default EmergencyContactTable;

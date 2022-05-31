@@ -31,6 +31,7 @@ function NewNumberModal({ addNewNumber }) {
     if (name && number) {
       addNewNumber({ name, number, note });
       setIsValid(true);
+      onClose();
     } else setIsValid(false);
   };
 
