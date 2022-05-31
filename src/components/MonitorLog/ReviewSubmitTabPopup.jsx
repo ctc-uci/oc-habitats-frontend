@@ -11,6 +11,7 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { React, useState } from 'react';
@@ -86,6 +87,19 @@ const Submitted = ({ onClose }) => {
 function ReturnPopup({ submitForm, editForm, formMethods }) {
   const [modalStep, setModalStep] = useState('submitSurvey');
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+
+  const onSubmitButton = () => {
+    if (!formMethods.getValues('segment')) {
+      toast({
+        title: 'Missing information',
+        description: 'Please select a segment before submitting.',
+        status: 'error',
+      });
+      return;
+    }
+    onOpen();
+  };
 
   // useEffect(() => {
   //   setModalStep('reminderSelect');
@@ -106,8 +120,7 @@ function ReturnPopup({ submitForm, editForm, formMethods }) {
 
   return (
     <>
-      <Button colorScheme="green" type="submit" onClick={onOpen}>
-        {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
+      <Button colorScheme="green" type="submit" onClick={onSubmitButton}>
         Submit Log <FiCheck style={{ marginLeft: '4px' }} />
       </Button>
 

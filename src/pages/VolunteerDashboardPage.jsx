@@ -180,7 +180,7 @@ const VolunteerDashboardPage = () => {
       <RecentlySubmittedLog
         // eslint-disable-next-line react/no-array-index-key
         key={idx}
-        segment={recent.segment.segmentId}
+        segment={recent.segment?.segmentId}
         date={recent.date}
         timeDescription={recent.submittedAt}
         status={recent.status}

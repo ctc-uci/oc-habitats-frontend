@@ -164,6 +164,7 @@ const MonitorLogPage = ({ mode }) => {
     });
     // eslint-disable-next-line no-console
     console.log(res.data);
+    return res.data;
   };
 
   const editForm = async () => {
@@ -174,6 +175,7 @@ const MonitorLogPage = ({ mode }) => {
     });
     // eslint-disable-next-line no-console
     console.log(res.data);
+    return res.data;
   };
 
   const approveLog = () => {
@@ -187,6 +189,36 @@ const MonitorLogPage = ({ mode }) => {
       status: 'warning',
     });
     navigate('/logs');
+  };
+
+  const onSaveChangesButton = async () => {
+    try {
+      if (!formMethods.getValues('segment')) {
+        toast({
+          title: 'Missing information',
+          description: 'Please select a segment before saving.',
+          status: 'error',
+        });
+        return;
+      }
+      if (!formMethods.getValues('_id')) {
+        formMethods.setValue('status', 'UNSUBMITTED');
+        const res = await submitForm();
+        navigate(`/create-log/${res._id}`);
+      } else {
+        editForm();
+      }
+      toast({
+        title: 'Draft saved.',
+        status: 'success',
+      });
+    } catch (e) {
+      toast({
+        title: 'Could not save.',
+        description: e?.message,
+        status: 'error',
+      });
+    }
   };
 
   const assignedSegments = useMemo(() => user?.segments || [], [user]);
@@ -393,32 +425,29 @@ const MonitorLogPage = ({ mode }) => {
                 </ButtonGroup>
               )}
               {mode === 'edit' && <EditLogFooter editForm={editForm} submissionId={submissionId} />}
-              {activeTab === totalTabs - 1 && mode === 'create' && (
-                <ReviewSubmitTabPopup
-                  submitForm={submitForm}
-                  editForm={editForm}
-                  formMethods={formMethods}
-                />
-              )}
-              {activeTab !== totalTabs - 1 && mode === 'create' && (
-                <Button
-                  colorScheme="cyan"
-                  type="submit"
-                  onClick={() => {
-                    if (!formMethods.getValues('status')) {
-                      formMethods.setValue('status', 'UNSUBMITTED');
-                    }
-                    editForm();
-                    toast({
-                      title: 'Draft saved.',
-                      status: 'success',
-                    });
-                  }}
-                >
-                  {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
-                  Save Changes
-                </Button>
-              )}
+              {activeTab === totalTabs - 1 &&
+                (submissionData?.status === undefined ||
+                  submissionData?.status === 'UNSUBMITTED' ||
+                  submissionData?.status === 'EDITS_REQUESTED') &&
+                mode === 'create' && (
+                  <ReviewSubmitTabPopup
+                    submitForm={submitForm}
+                    editForm={editForm}
+                    formMethods={formMethods}
+                  />
+                )}
+              {(activeTab !== totalTabs - 1 ||
+                !(
+                  submissionData?.status === undefined ||
+                  submissionData?.status === 'UNSUBMITTED' ||
+                  submissionData?.status === 'EDITS_REQUESTED'
+                )) &&
+                mode === 'create' && (
+                  <Button colorScheme="cyan" type="submit" onClick={onSaveChangesButton}>
+                    {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
+                    Save Changes
+                  </Button>
+                )}
             </Flex>
           </Flex>
         </FormProvider>
