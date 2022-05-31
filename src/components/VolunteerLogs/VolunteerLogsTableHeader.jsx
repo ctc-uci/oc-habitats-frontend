@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Thead, Tr, Th } from '@chakra-ui/react';
 import { FiArrowDown, FiArrowUp } from 'react-icons/fi';
+import styles from './VolunteerLogs.module.css';
 
 const ArrowIcon = ({ down }) => {
   const style = { display: 'inline', position: 'relative', left: '4px', top: '2px' };
@@ -21,7 +22,7 @@ const VolunteerLogsTableHeader = ({ headerGroups }) => {
   return (
     <Thead>
       {headerGroups.map(headerGroup => (
-        <Tr id="table-head" w="parent" {...headerGroup.getHeaderGroupProps()}>
+        <Tr className={styles['table-head']} w="parent" {...headerGroup.getHeaderGroupProps()}>
           {headerGroup.headers.map(column => (
             <Th
               color="white"
