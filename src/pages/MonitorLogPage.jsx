@@ -86,7 +86,9 @@ const MonitorLogPage = ({ mode }) => {
     if (mode === 'edit' || mode === 'review') {
       try {
         const submission = await OCHBackend.get(`submission/${userData.id}`);
-        submission.data.date = parseISO(submission.data.date);
+        if (submission.data.date) {
+          submission.data.date = parseISO(submission.data.date);
+        }
         formMethods.reset(submission.data);
         setSubmissionData(submission.data);
         if (submission.data.segment) {
@@ -115,7 +117,7 @@ const MonitorLogPage = ({ mode }) => {
       setMonitorPartners(monitorPartnersData.data);
       setPredators(
         speciesData.data
-          .filter(s => s.isPredator && (!s.isListed || s.isNeither))
+          .filter(s => s.category === 'JUST_PREDATOR' || s.category === 'NON_LISTED_PREDATOR')
           .map(s => ({
             name: s.name,
             _id: s._id,
@@ -123,7 +125,7 @@ const MonitorLogPage = ({ mode }) => {
       );
       setListedSpecies(
         speciesData.data
-          .filter(s => s.isListed && !s.isPredator)
+          .filter(s => s.category === 'LISTED')
           .map(s => ({
             name: s.name,
             code: s.code,
@@ -132,7 +134,7 @@ const MonitorLogPage = ({ mode }) => {
       );
       setAdditionalSpecies(
         speciesData.data
-          .filter(s => !s.isListed && !s.isPredator)
+          .filter(s => s.category === 'NON_LISTED')
           .map(s => ({
             name: s.name,
             code: s.code,
