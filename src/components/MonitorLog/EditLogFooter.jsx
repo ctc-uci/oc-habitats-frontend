@@ -14,8 +14,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ExitModal = (editForm, submissionId) => {
+const ExitModal = ({ submissionId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  console.log(submissionId);
   return (
     <>
       <Button
@@ -36,9 +37,7 @@ const ExitModal = (editForm, submissionId) => {
             <ButtonGroup gap="2px">
               <Button onClick={onClose}>Cancel</Button>
               <Link to={`/review-log/${submissionId}`}>
-                <Button colorScheme="red" onClick={editForm}>
-                  Yes, Exit
-                </Button>
+                <Button colorScheme="red">Yes, Exit</Button>
               </Link>
             </ButtonGroup>
           </ModalFooter>
@@ -48,12 +47,16 @@ const ExitModal = (editForm, submissionId) => {
   );
 };
 
+ExitModal.propTypes = {
+  submissionId: PropTypes.string.isRequired,
+};
+
 const EditLogFooter = ({ editForm, submissionId }) => {
   const toast = useToast();
   return (
     <>
       <ButtonGroup>
-        <ExitModal editForm={editForm} submissionId={submissionId} />
+        <ExitModal submissionId={submissionId} />
         <Button
           colorScheme="cyan"
           type="submit"
@@ -65,7 +68,6 @@ const EditLogFooter = ({ editForm, submissionId }) => {
             });
           }}
         >
-          {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
           Save Changes
         </Button>
       </ButtonGroup>
