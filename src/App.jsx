@@ -39,7 +39,6 @@ const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 function App() {
   const [accMadeChanges, setAccMadeChanges] = useState(false);
-  const isAdmin = true;
   const [onAdminPortal, setOnAdminPortal] = useState(true);
 
   return (
@@ -49,12 +48,13 @@ function App() {
           <Router>
             <Box className="page-container">
               <Box className="content-wrap">
-                <Navbar
-                  isAdmin={isAdmin}
-                  onAdminPortal={onAdminPortal}
-                  setOnAdminPortal={setOnAdminPortal}
-                  changesMade={accMadeChanges}
-                />
+                <ProtectedRoute redirectPath="/login" roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
+                  <Navbar
+                    onAdminPortal={onAdminPortal}
+                    setOnAdminPortal={setOnAdminPortal}
+                    changesMade={accMadeChanges}
+                  />
+                </ProtectedRoute>
                 <Routes>
                   {/* Add routes as needed; route names subject to change */}
                   <Route path="/register/:inviteID" element={<InviteLandingPage />} />
@@ -62,7 +62,11 @@ function App() {
                   <Route
                     exact
                     path="/"
-                    element={<HomePage isAdmin={isAdmin} onAdminPortal={onAdminPortal} />}
+                    element={
+                      <ProtectedRoute redirectPath="/login" roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
+                        <HomePage onAdminPortal={onAdminPortal} />
+                      </ProtectedRoute>
+                    }
                   />
                   <Route
                     exact

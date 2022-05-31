@@ -7,8 +7,11 @@ import ProfileDropdown from './ProfileDropdown';
 import logo from '../../assets/OCH_Logo_SVG.svg';
 import Toast from '../Toast';
 import NavbarMobile from './NavbarMobile';
+import { useUserContext } from '../../common/UserContext/UserContext';
 
-const Navbar = ({ isAdmin, onAdminPortal, setOnAdminPortal, changesMade }) => {
+const Navbar = ({ onAdminPortal, setOnAdminPortal, changesMade }) => {
+  const userData = useUserContext();
+  const isAdmin = userData.userData.role === 'admin';
   const [isMobile] = useMediaQuery('(max-width: 1024px)');
 
   const admin = [
@@ -91,7 +94,6 @@ const Navbar = ({ isAdmin, onAdminPortal, setOnAdminPortal, changesMade }) => {
 };
 
 Navbar.propTypes = {
-  isAdmin: PropTypes.bool.isRequired,
   onAdminPortal: PropTypes.bool.isRequired,
   setOnAdminPortal: PropTypes.func.isRequired,
   changesMade: PropTypes.bool.isRequired,
