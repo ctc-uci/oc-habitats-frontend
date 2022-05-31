@@ -30,8 +30,8 @@ const VolunteerLogs = () => {
         submitter: submitterQuery,
         pageIndex: fetchSettings.pageIndex,
         pageSize: fetchSettings.pageSize,
-        sort: sortBy.length === 1 ? sortBy[0].id : null,
-        sortAscending: sortBy.length === 1 ? !sortBy[0].desc : null,
+        sort: sortBy && sortBy.length === 1 ? sortBy[0].id : null,
+        sortAscending: sortBy && sortBy.length === 1 ? !sortBy[0].desc : null,
       };
       const res = await OCHBackend.get('/submissions', { params: query });
       setData(res.data);

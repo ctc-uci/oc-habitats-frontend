@@ -126,7 +126,7 @@ VolunteerLogsTable.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   checked: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  tableData: PropTypes.array.isRequired,
+  tableData: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   pageCount: PropTypes.number.isRequired,
   allChecked: PropTypes.bool.isRequired,
