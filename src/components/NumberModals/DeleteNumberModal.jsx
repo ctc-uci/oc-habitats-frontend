@@ -23,7 +23,7 @@ const DeleteNumberModal = ({ deleteNumber, disclosure }) => {
   };
 
   return (
-    <Modal size="xl" isOpen={disclosure.isOpen} onClose={disclosure}>
+    <Modal size="xl" isOpen={disclosure.isOpen} onClose={disclosure.onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader align="left" fontWeight={700} fontSize="18px" mb="1em">
