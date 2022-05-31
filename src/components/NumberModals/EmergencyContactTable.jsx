@@ -66,8 +66,7 @@ const EmergencyContactTable = ({ tableData, setTableData, admin }) => {
         <CommonTableHeader>
           <Th fontWeight="500">Contact Name</Th>
           <Th>Number</Th>
-          <Th p={isMobile && !admin ? '0px' : 'default'} />
-          <Th p={isMobile ? '0px' : 'default'} />
+          <Th />
         </CommonTableHeader>
         <Tbody>
           {tableData.map(row => (
@@ -75,17 +74,12 @@ const EmergencyContactTable = ({ tableData, setTableData, admin }) => {
               <Td fontWeight="500" w={{ md: '25%', base: '40%' }}>
                 {row.name}
               </Td>
-              <Td>
-                {!isMobile ? (
-                  row.number
-                ) : (
-                  <Flex direction="column" gap="16px">
-                    {row.number}
-                    <Text>{row.note}</Text>
-                  </Flex>
-                )}
+              <Td colSpan={admin ? 1 : 2}>
+                <Flex direction={{ md: 'row', base: 'column' }} gap="16px">
+                  <Text>{row.number}</Text>
+                  <Text>{row.note}</Text>
+                </Flex>
               </Td>
-              {!isMobile && <Td colSpan={admin ? 1 : 2}>{row.note}</Td>}
               {admin && (
                 <Td p={2}>
                   <Menu isLazy autoSelect={false}>
