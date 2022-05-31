@@ -2,16 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FiMenu } from 'react-icons/fi';
-import {
-  Button,
-  Flex,
-  Image,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Spacer,
-} from '@chakra-ui/react';
+import { Flex, Image, Menu, MenuButton, MenuList, MenuItem, Spacer } from '@chakra-ui/react';
 import NavbarLinkMobile from './NavbarLinkMobile';
 import ProfileDropdown from './ProfileDropdown';
 
@@ -66,19 +57,22 @@ const NavbarMobile = ({ isAdmin, onAdminPortal, setOnAdminPortal, isLoggedIn }) 
               <FiMenu size="32" />
             </MenuButton>
             <MenuList>
-              {!onAdminPortal && (
+              {(!isAdmin || (isAdmin && !onAdminPortal)) && (
                 <MenuItem>
                   <Spacer />
                   <Link to="/create-log">
-                    <Button
-                      size="md"
+                    <Flex
+                      justify="center"
+                      py={1}
                       bgColor="ochBlue"
                       color="ochBlack"
                       _hover={{ opacity: '0.8' }}
                       width="200px"
+                      fontWeight={600}
+                      borderRadius={5}
                     >
                       Start Session
-                    </Button>
+                    </Flex>
                   </Link>
                   <Spacer />
                 </MenuItem>

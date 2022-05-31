@@ -84,7 +84,7 @@ const AccountPage = ({ setChangesMade }) => {
   };
 
   useEffect(() => {
-    if (userData.profileImage) {
+    if (userData.profileImage && userData.profileImage.data && userData.profileImage.contentType) {
       const base64String = Buffer.from(userData.profileImage.data.data).toString('base64');
       setCloudImgSrc(`data:${userData.profileImage.contentType};base64,${base64String}`);
     }
