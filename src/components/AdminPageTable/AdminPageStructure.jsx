@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { chakra, Button } from '@chakra-ui/react';
 import { FiArrowRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { ApplyBadge, DateFormat, Check, AllCheck, VolunteerColumn } from './AdminPageRows';
+import { DateFormat, Check, AllCheck, VolunteerColumn } from './AdminPageRows';
+import { SubmissionStatusBadge } from '../../common/SubmissionStatusBadge';
 
 const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
   /* eslint-disable react/destructuring-assignment, react/prop-types */
@@ -47,7 +48,7 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       id: 'status',
       Header: 'Approval Status',
       accessor: 'status',
-      Cell: ({ value }) => <ApplyBadge approval={value} />,
+      Cell: ({ value }) => <SubmissionStatusBadge status={value} />,
     },
     {
       id: 'review',

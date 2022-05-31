@@ -31,6 +31,7 @@ import { React, useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp, FiCheck } from 'react-icons/fi';
 import { useNavigate, useParams } from 'react-router-dom';
+import { SubmissionStatusBadge } from '../common/SubmissionStatusBadge';
 import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
@@ -258,6 +259,9 @@ const MonitorLogPage = ({ mode }) => {
                 You are currently {mode}ing {submitterData?.firstName} {submitterData?.lastName}
                 &apos;s log for {segmentData?.segmentId} from {intlFormat(submissionData?.date)}.
               </AlertTitle>
+              <AlertDescription>
+                <SubmissionStatusBadge status={submissionData?.status} />
+              </AlertDescription>
             </Box>
           </Alert>
           <br />

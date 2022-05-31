@@ -18,7 +18,7 @@ const approvalStatues = {
   RESUBMITTED: 'Resubmitted',
   EDITS_REQUESTED: 'Edits Requested',
   APPROVED: 'Approved',
-  UNSUBMITTED: 'Unsubmitted',
+  UNSUBMITTED: 'Draft',
 };
 
 // set the filters when the user selects them

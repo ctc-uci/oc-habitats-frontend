@@ -16,7 +16,6 @@ import { Link } from 'react-router-dom';
 
 const ExitModal = ({ submissionId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log(submissionId);
   return (
     <>
       <Button

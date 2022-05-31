@@ -1,6 +1,6 @@
-import { React } from 'react';
+import { Button, Checkbox, Icon } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import { Button, Checkbox, Badge, Text, Icon } from '@chakra-ui/react';
+import { React } from 'react';
 import { FiEdit3 } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
@@ -47,50 +47,6 @@ const AllCheck = ({ checked, setChecked, allChecked, setAllChecked }) => {
   return <Checkbox bg="white" isChecked={allChecked} onChange={handleAllChecked} />;
 };
 
-const ApplyBadge = ({ approval }) => {
-  if (approval === 'UNDER_REVIEW') {
-    return (
-      <Badge variant="solid" colorScheme="blue">
-        UNDER REVIEW
-      </Badge>
-    );
-  }
-
-  if (approval === 'UNSUBMITTED') {
-    return (
-      <Badge variant="solid" colorScheme="gray">
-        DRAFT
-      </Badge>
-    );
-  }
-
-  if (approval === 'RESUBMITTED') {
-    return (
-      <Badge variant="solid" colorScheme="purple">
-        RESUBMITTED
-      </Badge>
-    );
-  }
-
-  if (approval === 'EDITS_REQUESTED') {
-    return (
-      <Badge variant="solid" colorScheme="red">
-        EDITS REQUESTED
-      </Badge>
-    );
-  }
-
-  if (approval === 'APPROVED') {
-    return (
-      <Badge variant="solid" colorScheme="green">
-        APPROVED
-      </Badge>
-    );
-  }
-
-  return <Text fontSize="xs">{approval}</Text>;
-};
-
 const Partners = ({ sessionPartners }) => {
   if (sessionPartners.length === 0) {
     return '';
@@ -131,10 +87,6 @@ AllCheck.propTypes = {
   setAllChecked: PropTypes.func.isRequired,
 };
 
-ApplyBadge.propTypes = {
-  approval: PropTypes.string.isRequired,
-};
-
 Partners.propTypes = {
   sessionPartners: PropTypes.arrayOf(Object).isRequired,
 };
@@ -144,4 +96,4 @@ EditButton.propTypes = {
   approval: PropTypes.string.isRequired,
 };
 
-export { DateFormat, Check, AllCheck, ApplyBadge, Partners, EditButton };
+export { DateFormat, Check, AllCheck, Partners, EditButton };
