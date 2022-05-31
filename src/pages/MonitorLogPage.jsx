@@ -5,6 +5,7 @@ import {
   AlertTitle,
   Box,
   Button,
+  ButtonGroup,
   Container,
   Flex,
   Heading,
@@ -22,7 +23,6 @@ import {
   TabPanels,
   Tabs,
   useDisclosure,
-  ButtonGroup,
   useToast,
 } from '@chakra-ui/react';
 import { intlFormat, parseISO } from 'date-fns';
@@ -30,10 +30,11 @@ import PropTypes from 'prop-types';
 import { React, useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp, FiCheck } from 'react-icons/fi';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
+import EditLogFooter from '../components/MonitorLog/EditLogFooter';
 import EditLogPopup from '../components/MonitorLog/EditLogPopup';
 import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
 import HumanActivity from '../components/MonitorLog/HumanActivityTab';
@@ -41,7 +42,6 @@ import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
 import PredatorsTab from '../components/MonitorLog/PredatorsTab';
 import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
 import ReviewSubmitTabPopup from '../components/MonitorLog/ReviewSubmitTabPopup';
-import EditLogFooter from '../components/MonitorLog/EditLogFooter';
 
 const MonitorTabButton = props => {
   // eslint-disable-next-line react/prop-types
@@ -63,7 +63,6 @@ const MonitorTabButton = props => {
 const MonitorLogPage = ({ mode }) => {
   const userContext = useUserContext();
   const { id: submissionId } = useParams();
-  console.log('submissionId', submissionId);
   const formMethods = useForm();
   const toast = useToast();
   const navigate = useNavigate();
@@ -207,7 +206,7 @@ const MonitorLogPage = ({ mode }) => {
             <AlertIcon />
             <Box>
               <AlertTitle>
-                Edits have been requested for your {segmentData.segmentId} log
+                Edits were requested for your {segmentData.segmentId} log on {intlFormat(d)}
               </AlertTitle>
               <AlertDescription>
                 Request Reason: {submissionData.requestedEdits.requests}{' '}

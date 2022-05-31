@@ -66,6 +66,7 @@ const RecentlySubmittedLog = ({ segment, date, timeDescription, status, logId })
 
 RecentlySubmittedLog.propTypes = {
   segment: PropTypes.string.isRequired,
+  logId: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,

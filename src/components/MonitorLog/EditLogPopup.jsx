@@ -1,24 +1,24 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
   Button,
-  RadioGroup,
-  Radio,
-  Textarea,
-  Text,
   ButtonGroup,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Radio,
+  RadioGroup,
+  Text,
+  Textarea,
+  useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { React, useState, useEffect } from 'react';
-import { FiEdit2 } from 'react-icons/fi';
-import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
 import { intlFormat } from 'date-fns';
+import PropTypes from 'prop-types';
+import { React, useState } from 'react';
+import { FiEdit2 } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 const EditLog = ({ setModalStep, onClose, submissionId }) => {
   const [selected, setSelected] = useState(null);
@@ -110,7 +110,6 @@ const RequestEdits = ({
               formMethods.setValue('status', 'EDITS_REQUESTED');
               editForm();
               onClose();
-              console.log(submissionData);
               toast({
                 title: <Text>Requested Edits!</Text>,
                 description: (

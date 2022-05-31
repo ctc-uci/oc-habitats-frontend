@@ -38,6 +38,7 @@ const VolunteerLogs = () => {
       setPageCount(Math.ceil(res.data.total / fetchSettings.pageSize));
       setDataLoaded(true);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
     }
   };

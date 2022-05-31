@@ -39,6 +39,7 @@ const UnsubmittedLogDraft = ({ segment, date, lastSaved, logId }) => {
 
 UnsubmittedLogDraft.propTypes = {
   segment: PropTypes.string.isRequired,
+  logId: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   lastSaved: PropTypes.string.isRequired,
 };
