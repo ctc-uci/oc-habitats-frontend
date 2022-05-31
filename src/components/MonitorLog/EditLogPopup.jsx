@@ -14,7 +14,7 @@ import {
   ButtonGroup,
   useToast,
 } from '@chakra-ui/react';
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { FiEdit2 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
@@ -67,7 +67,14 @@ const EditLog = ({ setModalStep, onClose, user }) => {
   );
 };
 
-const RequestEdits = ({ setModalStep, onClose }) => {
+const RequestEdits = ({
+  setModalStep,
+  onClose,
+  editForm,
+  formMethods,
+  submitterData,
+  segmentData,
+}) => {
   const toast = useToast();
   const [value, setValue] = useState('');
   return (
@@ -95,10 +102,19 @@ const RequestEdits = ({ setModalStep, onClose }) => {
             bg="ochBlue"
             variant="solidNoHover"
             onClick={() => {
+              const date = new Date();
+              formMethods.setValue('requestedEdits', { requests: value, requestDate: date });
+              editForm();
               onClose();
               toast({
                 title: <Text>Requested Edits!</Text>,
-                description: <Text>You&apos;ve requested edits to </Text>,
+                description: (
+                  <Text>
+                    You&apos;ve requested edits to {submitterData.firstName}{' '}
+                    {submitterData.lastName}
+                    &apos;s log for segment {segmentData.segmentId}
+                  </Text>
+                ),
                 status: 'warning',
               });
               setModalStep('editLog');
@@ -113,17 +129,22 @@ const RequestEdits = ({ setModalStep, onClose }) => {
   );
 };
 
-const EditLogPopup = ({ user }) => {
+const EditLogPopup = ({ user, editForm, formMethods, submitterData, segmentData }) => {
   const [modalStep, setModalStep] = useState('editLog');
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // useEffect(() => {
-  //   setModalStep('reminderSelect');
-  // });
-
   const modalContent = {
     editLog: <EditLog setModalStep={setModalStep} onClose={onClose} user={user} />,
-    request: <RequestEdits setModalStep={setModalStep} onClose={onClose} />,
+    request: (
+      <RequestEdits
+        setModalStep={setModalStep}
+        onClose={onClose}
+        editForm={editForm}
+        formMethods={formMethods}
+        submitterData={submitterData}
+        segmentData={segmentData}
+      />
+    ),
   };
 
   return (
@@ -150,10 +171,24 @@ EditLog.propTypes = {
 RequestEdits.propTypes = {
   setModalStep: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  editForm: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  formMethods: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  submitterData: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  segmentData: PropTypes.object.isRequired,
 };
 
 EditLogPopup.propTypes = {
   user: PropTypes.string.isRequired,
+  editForm: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  formMethods: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  submitterData: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  segmentData: PropTypes.object.isRequired,
 };
 
 export default EditLogPopup;

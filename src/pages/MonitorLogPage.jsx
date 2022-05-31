@@ -77,6 +77,7 @@ const MonitorLogPage = ({ mode }) => {
   };
 
   const [user, setUser] = useState(false);
+  const [submitterData, setSubmitterData] = useState(null);
   const [submissionData, setSubmissionData] = useState(null);
   const [segmentData, setSegmentData] = useState(null);
   const [monitorPartners, setMonitorPartners] = useState([]);
@@ -98,6 +99,8 @@ const MonitorLogPage = ({ mode }) => {
             userDataContext.userData.segments.find(s => s._id === submission.data.segment),
           );
         }
+        const submitter = await OCHBackend.get(`users/${submission.data.submitter}`);
+        setSubmitterData(submitter.data);
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error(err.message);
@@ -172,7 +175,12 @@ const MonitorLogPage = ({ mode }) => {
   const assignedSegments = useMemo(() => user?.segments || [], [user]);
 
   const request = () => {
-    if (submissionData != null && submissionData.requestedEdits && segmentData) {
+    if (
+      submissionData != null &&
+      submissionData.requestedEdits &&
+      segmentData &&
+      userDataContext.userData.role === 'volunteer'
+    ) {
       const d = new Date(submissionData.requestedEdits.requestDate);
       return (
         <>
@@ -339,7 +347,13 @@ const MonitorLogPage = ({ mode }) => {
               <Spacer />
               {mode === 'review' && (
                 <ButtonGroup>
-                  <EditLogPopup user={userData.id} />
+                  <EditLogPopup
+                    user={userData.id}
+                    editForm={editForm}
+                    formMethods={formMethods}
+                    submitterData={submitterData}
+                    segmentData={segmentData}
+                  />
                   <Button
                     type="submit"
                     onClick={() => {
