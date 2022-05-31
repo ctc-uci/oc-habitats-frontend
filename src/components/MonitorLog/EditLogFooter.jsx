@@ -29,14 +29,14 @@ const ExitModal = (editForm, submissionId) => {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent marginTop="100">
           <ModalHeader>Exit Edit Mode?</ModalHeader>
           <ModalBody>You are about to exit edit mode. Any unread changes will be lost.</ModalBody>
           <ModalFooter>
             <ButtonGroup gap="2px">
               <Button onClick={onClose}>Cancel</Button>
               <Link to={`/review-log/${submissionId}`}>
-                <Button color="white" onClick={editForm}>
+                <Button colorScheme="red" onClick={editForm}>
                   Yes, Exit
                 </Button>
               </Link>
