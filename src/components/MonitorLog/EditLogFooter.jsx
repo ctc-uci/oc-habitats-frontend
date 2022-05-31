@@ -1,9 +1,10 @@
-import { ButtonGroup, Button } from '@chakra-ui/react';
+import { ButtonGroup, Button, useToast } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const EditLogFooter = ({ editForm, formMethods, submissionId }) => {
+const EditLogFooter = ({ editForm, submissionId }) => {
+  const toast = useToast();
   return (
     <>
       <ButtonGroup>
@@ -12,6 +13,7 @@ const EditLogFooter = ({ editForm, formMethods, submissionId }) => {
             variant="outline"
             color="white"
             _hover={{ color: 'black', backgroundColor: 'gray.200' }}
+            onClick={editForm}
           >
             Exit Edit Mode
           </Button>
@@ -19,9 +21,12 @@ const EditLogFooter = ({ editForm, formMethods, submissionId }) => {
         <Button
           colorScheme="cyan"
           type="submit"
-          onClick={() => {
-            formMethods.setValue('status', 'RESUBMITTED');
-            editForm();
+          onClick={async () => {
+            await editForm();
+            toast({
+              title: 'Log saved.',
+              status: 'success',
+            });
           }}
         >
           {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
@@ -35,8 +40,6 @@ const EditLogFooter = ({ editForm, formMethods, submissionId }) => {
 EditLogFooter.propTypes = {
   submissionId: PropTypes.string.isRequired,
   editForm: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  formMethods: PropTypes.object.isRequired,
 };
 
 export default EditLogFooter;

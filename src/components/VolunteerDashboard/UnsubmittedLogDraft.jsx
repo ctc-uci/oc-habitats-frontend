@@ -28,7 +28,7 @@ const UnsubmittedLogDraft = ({ segment, date, lastSaved, logId }) => {
       <Text fontSize="16px" color="#4A5568">
         Last Saved: {formattedSaveDate} @ {formattedSaveTime}
       </Text>
-      <Link to={`/edit-log/${logId}`}>
+      <Link to={`/create-log/${logId}`}>
         <Button w="100%" bgColor="#2BC0E3" size="sm" p="2" mt={2} rightIcon={<ArrowForwardIcon />}>
           Go to Log
         </Button>

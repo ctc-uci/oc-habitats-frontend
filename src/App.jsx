@@ -120,20 +120,18 @@ function App() {
                     exact
                     path="/create-log"
                     element={
-                      <ProtectedRoute
-                        Component={MonitorLogPage}
-                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
-                      />
+                      <ProtectedRoute roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
+                        <MonitorLogPage key="new-create" />
+                      </ProtectedRoute>
                     }
                   />
                   <Route
                     exact
                     path="/create-log/:id"
                     element={
-                      <ProtectedRoute
-                        Component={MonitorLogPage}
-                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
-                      />
+                      <ProtectedRoute roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
+                        <MonitorLogPage key="continue-create" />
+                      </ProtectedRoute>
                     }
                   />
                   <Route

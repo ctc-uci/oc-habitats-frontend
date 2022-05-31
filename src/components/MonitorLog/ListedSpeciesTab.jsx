@@ -144,7 +144,7 @@ const ListedSpeciesTab = ({
     if (formData.editing !== undefined) {
       setData(update(data, { [formData.editing]: { $set: formData } }));
       toast({
-        title: `Successfully edited Map #${formData.map} on ${speciesName} Tracker`,
+        title: `Successfully edited entry #${formData.map} on ${speciesName} Tracker`,
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -153,7 +153,7 @@ const ListedSpeciesTab = ({
     } else {
       setData([...data, formData]);
       toast({
-        title: `Successfully added Map #${formData.map} to ${speciesName} Tracker`,
+        title: `Successfully added entry #${formData.map} to ${speciesName} Tracker`,
         status: 'success',
         duration: 2000,
         isClosable: true,

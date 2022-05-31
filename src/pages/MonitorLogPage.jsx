@@ -30,7 +30,7 @@ import PropTypes from 'prop-types';
 import { React, useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp, FiCheck } from 'react-icons/fi';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
@@ -63,6 +63,7 @@ const MonitorTabButton = props => {
 const MonitorLogPage = ({ mode }) => {
   const userContext = useUserContext();
   const { id: submissionId } = useParams();
+  console.log('submissionId', submissionId);
   const formMethods = useForm();
   const toast = useToast();
   const navigate = useNavigate();
@@ -191,26 +192,41 @@ const MonitorLogPage = ({ mode }) => {
 
   const assignedSegments = useMemo(() => user?.segments || [], [user]);
 
-  const request = () => {
+  const EditingAlert = () => {
     if (
+      mode === 'create' &&
       submissionData != null &&
+      submissionData.status === 'EDITS_REQUESTED' &&
       submissionData.requestedEdits &&
-      segmentData &&
-      userContext.userData.role === 'volunteer'
+      segmentData
     ) {
       const d = new Date(submissionData.requestedEdits.requestDate);
       return (
         <>
-          <Alert status="error">
+          <Alert status="error" marginTop="-20px">
             <AlertIcon />
             <Box>
               <AlertTitle>
-                Edits have been requested for your {segmentData.segmentId} log on {d.getMonth() + 1}
-                -{d.getDate()}-{d.getFullYear()}
+                Edits have been requested for your {segmentData.segmentId} log
               </AlertTitle>
               <AlertDescription>
                 Request Reason: {submissionData.requestedEdits.requests}{' '}
               </AlertDescription>
+            </Box>
+          </Alert>
+          <br />
+        </>
+      );
+    }
+    if (mode !== 'create' && segmentData !== undefined && submissionId !== undefined) {
+      return (
+        <>
+          <Alert status={mode === 'edit' ? 'info' : 'success'} marginTop="-20px" paddingLeft="35px">
+            <Box>
+              <AlertTitle>
+                You are currently {mode}ing {submitterData?.firstName} {submitterData?.lastName}
+                &apos;s log for {segmentData?.segmentId} from {intlFormat(submissionData?.date)}.
+              </AlertTitle>
             </Box>
           </Alert>
           <br />
@@ -248,7 +264,7 @@ const MonitorLogPage = ({ mode }) => {
           >
             OCH Monitor Log
           </Heading>
-          {request()}
+          <EditingAlert />
 
           <Tabs
             variant="solid-rounded"
@@ -377,23 +393,27 @@ const MonitorLogPage = ({ mode }) => {
                   </Button>
                 </ButtonGroup>
               )}
-              {mode === 'edit' && (
-                <EditLogFooter
+              {mode === 'edit' && <EditLogFooter editForm={editForm} submissionId={submissionId} />}
+              {activeTab === totalTabs - 1 && mode === 'create' && (
+                <ReviewSubmitTabPopup
+                  submitForm={submitForm}
                   editForm={editForm}
                   formMethods={formMethods}
-                  submissionId={submissionId}
                 />
-              )}
-              {activeTab === totalTabs - 1 && mode === 'create' && (
-                <ReviewSubmitTabPopup submitForm={submitForm} formMethods={formMethods} />
               )}
               {activeTab !== totalTabs - 1 && mode === 'create' && (
                 <Button
                   colorScheme="cyan"
                   type="submit"
                   onClick={() => {
-                    formMethods.setValue('status', 'UNSUBMITTED');
+                    if (!formMethods.getValues('status')) {
+                      formMethods.setValue('status', 'UNSUBMITTED');
+                    }
                     editForm();
+                    toast({
+                      title: 'Draft saved.',
+                      status: 'success',
+                    });
                   }}
                 >
                   {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}

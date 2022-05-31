@@ -54,7 +54,7 @@ const RecentlySubmittedLog = ({ segment, date, timeDescription, status, logId })
         {details[status].badge}
       </Badge>
       {details[status].goToLogButton && (
-        <Link to={`/edit-log/${logId}`}>
+        <Link to={`/create-log/${logId}`}>
           <Button w="100%" bgColor="#2BC0E3" size="sm" mt={3} rightIcon={<ArrowForwardIcon />}>
             Go to Log
           </Button>
