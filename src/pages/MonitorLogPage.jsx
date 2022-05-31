@@ -423,9 +423,11 @@ const MonitorLogPage = ({ mode }) => {
                     submissionData={submissionData}
                     segmentData={segmentData}
                   />
-                  <Button type="submit" colorScheme="green" onClick={approveLog}>
-                    Approve <FiCheck style={{ marginLeft: '4px' }} />
-                  </Button>
+                  {submissionData?.status !== 'APPROVED' && (
+                    <Button type="submit" colorScheme="green" onClick={approveLog}>
+                      Approve <FiCheck style={{ marginLeft: '4px' }} />
+                    </Button>
+                  )}
                 </ButtonGroup>
               )}
               {mode === 'edit' && <EditLogFooter editForm={editForm} submissionId={submissionId} />}
