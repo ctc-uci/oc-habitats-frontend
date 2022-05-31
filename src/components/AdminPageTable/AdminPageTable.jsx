@@ -39,7 +39,7 @@ const AdminPageTable = ({
     {
       columns,
       data: tableData.results,
-      initialState: { pageIndex: 0, pageSize: 10, sortBy: [{ id: 'submittedAt', desc: false }] },
+      initialState: { pageIndex: 0, pageSize: 10, sortBy: [{ id: 'submittedAt', desc: true }] },
       manualPagination: true,
       manualSortBy: true,
       pageCount: controlledPageCount,

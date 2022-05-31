@@ -46,7 +46,7 @@ const VolunteerLogsTable = ({
         hiddenColumns: ['statusAndEdit'],
         pageIndex: 0,
         pageSize: 10,
-        sortBy: [{ id: 'submittedAt', desc: false }],
+        sortBy: [{ id: 'submittedAt', desc: true }],
       },
       manualPagination: true,
       manualSortBy: true,
