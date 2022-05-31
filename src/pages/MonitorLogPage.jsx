@@ -22,6 +22,7 @@ import {
   TabPanels,
   Tabs,
   useDisclosure,
+  ButtonGroup,
 } from '@chakra-ui/react';
 import { parseISO } from 'date-fns';
 import PropTypes from 'prop-types';
@@ -39,6 +40,7 @@ import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
 import PredatorsTab from '../components/MonitorLog/PredatorsTab';
 import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
 import ReviewSubmitTabPopup from '../components/MonitorLog/ReviewSubmitTabPopup';
+import EditLogFooter from '../components/MonitorLog/EditLogFooter';
 
 const MonitorTabButton = props => {
   // eslint-disable-next-line react/prop-types
@@ -325,25 +327,44 @@ const MonitorLogPage = ({ mode }) => {
                 Return to Top <FiArrowUp style={{ marginLeft: '4px' }} />
               </Button>
               <Spacer />
-              {mode === 'review' && <EditLogPopup user={userData.id} />}
-              {activeTab !== totalTabs - 1 && mode !== 'review' && (
+              {mode === 'review' && (
+                <ButtonGroup>
+                  <EditLogPopup user={userData.id} />
+                  <Button
+                    type="submit"
+                    onClick={() => {
+                      formMethods.setValue({
+                        status: 'APPROVED',
+                      });
+                      submitForm();
+                    }}
+                  >
+                    Approve
+                  </Button>
+                </ButtonGroup>
+              )}
+              {mode === 'edit' && (
+                <EditLogFooter
+                  role={userDataContext.userData.role}
+                  submitForm={submitForm}
+                  formMethods={formMethods}
+                />
+              )}
+              {activeTab === totalTabs - 1 && mode === 'create' && (
+                <ReviewSubmitTabPopup submitForm={submitForm} formMethods={formMethods} />
+              )}
+              {activeTab !== totalTabs - 1 && mode === 'create' && (
                 <Button
                   colorScheme="cyan"
                   type="submit"
                   onClick={() => {
-                    console.log(formMethods.getValues());
+                    formMethods.setValue({ status: 'UNSUBMITTED' });
+                    submitForm();
                   }}
                 >
                   {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
                   Save Changes
                 </Button>
-              )}
-              {activeTab === totalTabs - 1 && mode !== 'review' && (
-                // <Button colorScheme="green" type="submit" onClick={submitForm}>
-                //   {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
-                //   Submit Log <FiCheck style={{ marginLeft: '4px' }} />
-                // </Button>
-                <ReviewSubmitTabPopup submitForm={submitForm} />
               )}
             </Flex>
           </Flex>
