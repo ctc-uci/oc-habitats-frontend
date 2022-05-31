@@ -126,6 +126,14 @@ const EmergencyContactTable = ({ tableData, admin, change, setChange }) => {
               )}
             </Tr>
           ))}
+          <Tr>
+            <Td fontWeight="500">Report a Non-Emergency</Td>
+            <Td>
+              Call the non-emergency number for the local police of the segment you are in (e.g.
+              Seal Beach, Huntington Beach, Newport Beach, San Clemente, etc)
+            </Td>
+            <Td />
+          </Tr>
         </Tbody>
       </CommonTable>
     </>
