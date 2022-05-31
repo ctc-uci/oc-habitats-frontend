@@ -62,8 +62,10 @@ const Submitted = ({ onClose }) => {
   return (
     <>
       <ModalBody>
-        <Center marginTop="10px">
-          <Text fontSize="2xl">Congratulations! You’ve submitted your monitor log for review.</Text>
+        <Center marginTop="20px">
+          <Text textAlign="center" fontWeight="bold" fontSize="2xl">
+            Congratulations! You’ve submitted your monitor log for review.
+          </Text>
         </Center>
         <br />
         <Center>
