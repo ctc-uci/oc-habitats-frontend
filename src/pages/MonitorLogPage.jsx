@@ -88,16 +88,17 @@ const MonitorLogPage = ({ mode }) => {
   useEffect(async () => {
     if (mode === 'edit' || mode === 'review') {
       try {
-        const submission = await OCHBackend.get(`submission/${userData.id}`);
+        const [submission, segments] = await Promise.all([
+          OCHBackend.get(`submission/${userData.id}`),
+          OCHBackend.get(`segments`),
+        ]);
         if (submission.data.date) {
           submission.data.date = parseISO(submission.data.date);
         }
         formMethods.reset(submission.data);
         setSubmissionData(submission.data);
         if (submission.data.segment) {
-          setSegmentData(
-            userDataContext.userData.segments.find(s => s._id === submission.data.segment),
-          );
+          setSegmentData(segments.data.find(s => s._id === submission.data.segment));
         }
         const submitter = await OCHBackend.get(`users/${submission.data.submitter}`);
         setSubmitterData(submitter.data);

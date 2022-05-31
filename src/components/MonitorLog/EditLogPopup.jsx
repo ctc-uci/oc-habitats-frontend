@@ -112,7 +112,8 @@ const RequestEdits = ({
                   <Text>
                     You&apos;ve requested edits to {submitterData.firstName}{' '}
                     {submitterData.lastName}
-                    &apos;s log for segment {segmentData.segmentId}
+                    &apos;s log for segment {segmentData.segmentId} on {date.getMonth() + 1}-
+                    {date.getDate()}-{date.getFullYear()}.
                   </Text>
                 ),
                 status: 'warning',
