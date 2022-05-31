@@ -35,9 +35,7 @@ const SubmitSurvey = ({ setModalStep, onClose, submit, formMethods }) => {
             type="submit"
             colorScheme="green"
             onClick={() => {
-              formMethods.setValue({
-                status: 'UNDER_REVIEW',
-              });
+              formMethods.setValue('status', 'UNDER_REVIEW');
               submit();
               setModalStep('submitted');
             }}

@@ -159,6 +159,16 @@ const MonitorLogPage = ({ mode }) => {
     console.log(res.data);
   };
 
+  const editForm = async () => {
+    // eslint-disable-next-line no-console
+    console.log(formMethods.getValues());
+    const res = await OCHBackend.post(`submission/${userData.id}`, formMethods.getValues(), {
+      withCredentials: true,
+    });
+    // eslint-disable-next-line no-console
+    console.log(res.data);
+  };
+
   const assignedSegments = useMemo(() => user?.segments || [], [user]);
 
   const request = () => {
@@ -333,10 +343,8 @@ const MonitorLogPage = ({ mode }) => {
                   <Button
                     type="submit"
                     onClick={() => {
-                      formMethods.setValue({
-                        status: 'APPROVED',
-                      });
-                      submitForm();
+                      formMethods.setValue('status', 'APPROVED');
+                      editForm();
                     }}
                   >
                     Approve
@@ -346,7 +354,7 @@ const MonitorLogPage = ({ mode }) => {
               {mode === 'edit' && (
                 <EditLogFooter
                   role={userDataContext.userData.role}
-                  submitForm={submitForm}
+                  editForm={editForm}
                   formMethods={formMethods}
                 />
               )}
@@ -358,8 +366,8 @@ const MonitorLogPage = ({ mode }) => {
                   colorScheme="cyan"
                   type="submit"
                   onClick={() => {
-                    formMethods.setValue({ status: 'UNSUBMITTED' });
-                    submitForm();
+                    formMethods.setValue('status', 'UNSUBMITTED');
+                    editForm();
                   }}
                 >
                   {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}

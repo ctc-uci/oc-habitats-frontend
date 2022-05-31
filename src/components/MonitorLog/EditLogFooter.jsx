@@ -2,7 +2,7 @@ import { ButtonGroup, Button } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const EditLogFooter = ({ role, submitForm, formMethods }) => {
+const EditLogFooter = ({ role, editForm, formMethods }) => {
   if (role === 'admin') {
     return (
       <>
@@ -12,8 +12,8 @@ const EditLogFooter = ({ role, submitForm, formMethods }) => {
             colorScheme="cyan"
             type="submit"
             onClick={() => {
-              formMethods.setValue({ status: 'RESUBMITTED' });
-              submitForm();
+              formMethods.setValue('status', 'RESUBMITTED');
+              editForm();
             }}
           >
             {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
@@ -30,8 +30,8 @@ const EditLogFooter = ({ role, submitForm, formMethods }) => {
         colorScheme="cyan"
         type="submit"
         onClick={() => {
-          formMethods.setValue({ status: 'RESUBMITTED' });
-          submitForm();
+          formMethods.setValue('status', 'RESUBMITTED');
+          editForm();
         }}
       >
         {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
@@ -43,7 +43,7 @@ const EditLogFooter = ({ role, submitForm, formMethods }) => {
 
 EditLogFooter.propTypes = {
   role: PropTypes.string.isRequired,
-  submitForm: PropTypes.func.isRequired,
+  editForm: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   formMethods: PropTypes.object.isRequired,
 };
