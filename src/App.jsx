@@ -26,6 +26,7 @@ import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import Numbers from './pages/EmergencyNumbers';
+import VolunteerLogs from './pages/VolunteerLogsPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
@@ -131,6 +132,17 @@ function App() {
                     exact
                     path="/edit-log-template"
                     element={<ProtectedRoute Component={MonitorLogEditPage} roles={[ADMIN_ROLE]} />}
+                  />
+                  <Route
+                    exact
+                    path="/your-logs"
+                    element={
+                      <ProtectedRoute
+                        Component={VolunteerLogs}
+                        path="/logout"
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
+                    }
                   />
                   <Route
                     exact
