@@ -85,11 +85,9 @@ function App() {
                     exact
                     path="/edit-log/:id"
                     element={
-                      <ProtectedRoute
-                        Component={() => <MonitorLogPage mode="edit" />}
-                        redirectPath="/login"
-                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
-                      />
+                      <ProtectedRoute redirectPath="/login" roles={[ADMIN_ROLE]}>
+                        <MonitorLogPage mode="edit" />
+                      </ProtectedRoute>
                     }
                   />
                   <Route
@@ -121,6 +119,16 @@ function App() {
                   <Route
                     exact
                     path="/create-log"
+                    element={
+                      <ProtectedRoute
+                        Component={MonitorLogPage}
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/create-log/:id"
                     element={
                       <ProtectedRoute
                         Component={MonitorLogPage}

@@ -2,6 +2,7 @@ import { React } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Checkbox, Badge, Text, Icon } from '@chakra-ui/react';
 import { FiEdit3 } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 const DateFormat = ({ date }) => {
   return new Date(date).toLocaleDateString();
@@ -107,9 +108,11 @@ const EditButton = ({ logId, approval }) => {
   }
 
   return (
-    <Button bgColor="transparent" minW={2} h={6} px={2}>
-      <Icon h={{ md: 5, base: 4 }} w={{ md: 5, base: 4 }} as={FiEdit3} />
-    </Button>
+    <Link to={`/create-log/${logId}`}>
+      <Button bgColor="transparent" minW={2} h={6} px={2}>
+        <Icon h={{ md: 5, base: 4 }} w={{ md: 5, base: 4 }} as={FiEdit3} />
+      </Button>
+    </Link>
   );
 };
 

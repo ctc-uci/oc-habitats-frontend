@@ -1,48 +1,39 @@
 import { ButtonGroup, Button } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const EditLogFooter = ({ role, editForm, formMethods }) => {
-  if (role === 'admin') {
-    return (
-      <>
-        <ButtonGroup>
-          <Button>Exit Edit Mode</Button>
-          <Button
-            colorScheme="cyan"
-            type="submit"
-            onClick={() => {
-              formMethods.setValue('status', 'RESUBMITTED');
-              editForm();
-            }}
-          >
-            {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
-            Save Changes
-          </Button>
-        </ButtonGroup>
-      </>
-    );
-  }
-
+const EditLogFooter = ({ editForm, formMethods, submissionId }) => {
   return (
-    <Button>
-      <Button
-        colorScheme="cyan"
-        type="submit"
-        onClick={() => {
-          formMethods.setValue('status', 'RESUBMITTED');
-          editForm();
-        }}
-      >
-        {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
-        Save Changes
-      </Button>
-    </Button>
+    <>
+      <ButtonGroup>
+        <Link to={`/review-log/${submissionId}`}>
+          <Button
+            variant="outline"
+            color="white"
+            _hover={{ color: 'black', backgroundColor: 'gray.200' }}
+          >
+            Exit Edit Mode
+          </Button>
+        </Link>
+        <Button
+          colorScheme="cyan"
+          type="submit"
+          onClick={() => {
+            formMethods.setValue('status', 'RESUBMITTED');
+            editForm();
+          }}
+        >
+          {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
+          Save Changes
+        </Button>
+      </ButtonGroup>
+    </>
   );
 };
 
 EditLogFooter.propTypes = {
-  role: PropTypes.string.isRequired,
+  submissionId: PropTypes.string.isRequired,
   editForm: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   formMethods: PropTypes.object.isRequired,
