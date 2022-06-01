@@ -10,6 +10,7 @@ import {
   GridItem,
   SimpleGrid,
   Image,
+  Avatar,
   VStack,
   Heading,
   Grid,
@@ -58,14 +59,12 @@ const PersonalInformation = ({ userData, updateUser }) => {
           <GridItem colStart={1} rowStart={1} rowSpan={{ lg: 3, sm: 1 }} colSpan={1}>
             <Flex justifyContent="center">
               <Box position="relative" mr="1em">
-                <Image
+                <Avatar
                   e="8"
                   h="8"
-                  borderRadius="full"
                   boxSize="180px"
-                  src="https://bit.ly/dan-abramov"
-                  alt="Profile picture"
-                  objectFit="cover"
+                  size="2xl"
+                  name={`${userData.firstName} ${userData.lastName}`}
                 />
               </Box>
             </Flex>
