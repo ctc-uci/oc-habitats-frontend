@@ -94,11 +94,15 @@ const EditDeleteSectionPopup = ({ section, getSections }) => {
   const toast = useToast();
   const editSection = async newSection => {
     try {
-      await OCHBackend.put(`/section/${newSection.sectionId}`, {
-        _id: newSection.sectionId,
-        name: newSection.sectionName,
-        map: newSection.sectionMapLink,
-      });
+      await OCHBackend.put(
+        `/section/${newSection.sectionId}`,
+        {
+          _id: newSection.sectionId,
+          name: newSection.sectionName,
+          map: newSection.sectionMapLink,
+        },
+        { withCredentials: true },
+      );
       toast({
         title: `Successfully updated Section ${newSection.sectionId}.`,
         status: 'success',

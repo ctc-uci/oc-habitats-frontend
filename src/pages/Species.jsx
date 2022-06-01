@@ -110,36 +110,45 @@ const Species = () => {
   }, [change]);
 
   const addNewSpecies = async newSpecies => {
-    await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
-      name: newSpecies.name,
-      code: newSpecies.code,
-      category: newSpecies.category,
-      isAssigned: false,
-      withCredentials: true,
-    });
+    await axios.post(
+      `${process.env.REACT_APP_API_URL}/species/`,
+      {
+        name: newSpecies.name,
+        code: newSpecies.code,
+        category: newSpecies.category,
+        isAssigned: false,
+      },
+      { withCredentials: true },
+    );
     setChange(!change);
   };
 
   const addNewPredator = async newSpecies => {
-    await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
-      name: newSpecies.name,
-      code: newSpecies.code,
-      category: newSpecies.category,
-      isAssigned: false,
-      withCredentials: true,
-    });
+    await axios.post(
+      `${process.env.REACT_APP_API_URL}/species/`,
+      {
+        name: newSpecies.name,
+        code: newSpecies.code,
+        category: newSpecies.category,
+        isAssigned: false,
+      },
+      { withCredentials: true },
+    );
     setChange(!change);
   };
 
   const editSpecies = async (newSpecies, oldSpecies) => {
     // eslint-disable-next-line no-underscore-dangle
-    await axios.put(`${process.env.REACT_APP_API_URL}/species/${oldSpecies._id}`, {
-      name: newSpecies.name,
-      code: newSpecies.code,
-      category: newSpecies.category,
-      isAssigned: false,
-      withCredentials: true,
-    });
+    await axios.put(
+      `${process.env.REACT_APP_API_URL}/species/${oldSpecies._id}`,
+      {
+        name: newSpecies.name,
+        code: newSpecies.code,
+        category: newSpecies.category,
+        isAssigned: false,
+      },
+      { withCredentials: true },
+    );
     setChange(c => !c);
   };
 

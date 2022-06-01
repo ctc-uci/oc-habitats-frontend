@@ -106,17 +106,20 @@ const refreshToken = async () => {
 const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
   try {
     console.log(`firebaseId param received as ${firebaseId} and passing it into POST`);
-    await OCHBackend.post('/users/', {
-      firebaseId,
-      firstName,
-      lastName,
-      email,
-      role,
-      isActive: true,
-      isTrainee: false,
-      registered: true,
-      withCredentials: true,
-    });
+    await OCHBackend.post(
+      '/users/',
+      {
+        firebaseId,
+        firstName,
+        lastName,
+        email,
+        role,
+        isActive: true,
+        isTrainee: false,
+        registered: true,
+      },
+      { withCredentials: true },
+    );
   } catch (err) {
     throw new Error(err.message);
   }
