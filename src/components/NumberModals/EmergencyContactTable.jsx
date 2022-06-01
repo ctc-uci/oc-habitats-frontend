@@ -20,11 +20,13 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 
 import { OCHBackend } from '../../common/utils';
 import CommonTable from '../../common/CommonTable/CommonTable';
+import { CommonLoadingRow } from '../../common/CommonTable/CommonTableFiller';
 import { CommonTableHeader } from '../../common/CommonTable/CommonTableHeader';
 import DeleteNumberModal from './DeleteNumberModal';
 import EditNumberModal from './EditNumberModal';
 
-const EmergencyContactTable = ({ tableData, admin, change, setChange }) => {
+const EmergencyContactTable = ({ tableData, admin, change, setChange, isLoading }) => {
+  console.log(isLoading);
   const [numberId, setNumberId] = useState(-1);
   const [rowData, setRowData] = useState({});
   const editModalDisclosure = useDisclosure();
@@ -97,39 +99,43 @@ const EmergencyContactTable = ({ tableData, admin, change, setChange }) => {
           <Th />
         </CommonTableHeader>
         <Tbody>
-          {tableData.map(row => (
-            <Tr key={row._id}>
-              <Td fontWeight="500" w={{ md: '25%', base: '40%' }}>
-                {row.name}
-              </Td>
-              <Td colSpan={admin ? 1 : 2}>
-                <Flex direction={{ md: 'row', base: 'column' }} gap="16px">
-                  <Text>{row.number}</Text>
-                  <Text as="i">{row.note}</Text>
-                </Flex>
-              </Td>
-              {admin && (
-                <Td p={2}>
-                  <Menu isLazy autoSelect={false}>
-                    <MenuButton>
-                      <IconButton icon={<BsThreeDotsVertical />} bg="transparent" />
-                    </MenuButton>
-                    <MenuList>
-                      <MenuItem onClick={() => openModalWithData(row, editModalDisclosure.onOpen)}>
-                        Edit Contact
-                      </MenuItem>
-                      <MenuItem
-                        color="red.600"
-                        onClick={() => openModalWithData(row, deleteModalDisclosure.onOpen)}
-                      >
-                        Delete Contact
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
+          {isLoading && <CommonLoadingRow colCount={3} />}
+          {!isLoading &&
+            tableData.map(row => (
+              <Tr key={row._id}>
+                <Td fontWeight="500" w={{ md: '25%', base: '40%' }}>
+                  {row.name}
                 </Td>
-              )}
-            </Tr>
-          ))}
+                <Td colSpan={admin ? 1 : 2}>
+                  <Flex direction={{ md: 'row', base: 'column' }} gap="16px">
+                    <Text>{row.number}</Text>
+                    <Text as="i">{row.note}</Text>
+                  </Flex>
+                </Td>
+                {admin && (
+                  <Td p={2}>
+                    <Menu isLazy autoSelect={false}>
+                      <MenuButton>
+                        <IconButton icon={<BsThreeDotsVertical />} bg="transparent" />
+                      </MenuButton>
+                      <MenuList>
+                        <MenuItem
+                          onClick={() => openModalWithData(row, editModalDisclosure.onOpen)}
+                        >
+                          Edit Contact
+                        </MenuItem>
+                        <MenuItem
+                          color="red.600"
+                          onClick={() => openModalWithData(row, deleteModalDisclosure.onOpen)}
+                        >
+                          Delete Contact
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </Td>
+                )}
+              </Tr>
+            ))}
           <Tr>
             <Td fontWeight="500">Report a Non-Emergency</Td>
             <Td>
@@ -150,6 +156,7 @@ EmergencyContactTable.propTypes = {
   admin: PropTypes.bool.isRequired,
   change: PropTypes.bool.isRequired,
   setChange: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default EmergencyContactTable;
