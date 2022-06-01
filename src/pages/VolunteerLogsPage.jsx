@@ -33,7 +33,11 @@ const VolunteerLogs = () => {
         sort: sortBy && sortBy.length === 1 ? sortBy[0].id : null,
         sortAscending: sortBy && sortBy.length === 1 ? !sortBy[0].desc : null,
       };
-      const res = await OCHBackend.get('/submissions', { params: query });
+      const res = await OCHBackend.get(
+        '/submissions',
+        { params: query },
+        { withCredentials: true },
+      );
       setData(res.data);
       setPageCount(Math.ceil(res.data.total / fetchSettings.pageSize));
       setDataLoaded(true);

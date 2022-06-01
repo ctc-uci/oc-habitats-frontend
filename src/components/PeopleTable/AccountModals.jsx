@@ -22,10 +22,14 @@ const DeletePendingAccountModal = ({ userData, refreshData, isOpen, onClose }) =
   const size = useBreakpointValue({ base: 'sm', md: 'md' });
 
   const deletePendingAccount = async () => {
-    await OCHBackend.delete(`/adminInvite/${userData?.email}`, {
-      profileId: userData?.userId,
-      segmentIds: [],
-    });
+    await OCHBackend.delete(
+      `/adminInvite/${userData?.email}`,
+      {
+        profileId: userData?.userId,
+        segmentIds: [],
+      },
+      { withCredentials: true },
+    );
     await refreshData();
     onClose();
   };

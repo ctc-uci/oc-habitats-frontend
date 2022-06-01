@@ -37,7 +37,7 @@ const AdminPage = () => {
         sort: sortBy.length === 1 ? sortBy[0].id : null,
         sortAscending: sortBy.length === 1 ? !sortBy[0].desc : null,
       };
-      const res = await OCHBackend.get(`submissions`, { params: query });
+      const res = await OCHBackend.get('submissions', { params: query }, { withCredentials: true });
       setData(res.data);
       setPageCount(Math.ceil(res.data.total / fetchSettings.pageSize));
       setDataLoaded(true);
@@ -50,7 +50,7 @@ const AdminPage = () => {
   // get segments from backend
   const getSegments = async () => {
     try {
-      const res = await OCHBackend.get(`segments`);
+      const res = await OCHBackend.get(`segments`, { withCredentials: true });
       setSegments(
         res.data.map(s => ({
           label: s.segmentId,
