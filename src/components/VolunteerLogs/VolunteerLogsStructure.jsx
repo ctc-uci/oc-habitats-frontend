@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Flex } from '@chakra-ui/react';
-import { ApplyBadge, DateFormat, Check, AllCheck, Partners, EditButton } from './VolunteerLogsRows';
+import { DateFormat, Check, AllCheck, Partners, EditButton } from './VolunteerLogsRows';
+import { SubmissionStatusBadge } from '../../common/SubmissionStatusBadge';
 
 const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
   /* eslint-disable react/destructuring-assignment, react/prop-types */
@@ -43,7 +44,7 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       Header: 'Approval Status',
       accessor: 'status',
       minWidth: 100,
-      Cell: ({ value }) => <ApplyBadge approval={value} />,
+      Cell: ({ value }) => <SubmissionStatusBadge status={value} />,
     },
     {
       id: 'partners',
@@ -69,7 +70,7 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       disableSortBy: true,
       Cell: props => (
         <Flex direction="row" justify="space-between" align="center">
-          <ApplyBadge approval={props.row.original.status} />
+          <SubmissionStatusBadge status={props.row.original.status} />
           <EditButton logId={props.row.original._id} approval={props.row.original.status} />
         </Flex>
       ),
