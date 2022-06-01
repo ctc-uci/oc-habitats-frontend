@@ -48,13 +48,11 @@ function App() {
           <Router>
             <Box className="page-container">
               <Box className="content-wrap">
-                <ProtectedRoute redirectPath="/login" roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
-                  <Navbar
-                    onAdminPortal={onAdminPortal}
-                    setOnAdminPortal={setOnAdminPortal}
-                    changesMade={accMadeChanges}
-                  />
-                </ProtectedRoute>
+                <Navbar
+                  onAdminPortal={onAdminPortal}
+                  setOnAdminPortal={setOnAdminPortal}
+                  changesMade={accMadeChanges}
+                />
                 <Routes>
                   {/* Add routes as needed; route names subject to change */}
                   <Route path="/register/:inviteID" element={<InviteLandingPage />} />
