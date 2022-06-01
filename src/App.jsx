@@ -25,15 +25,12 @@ import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import Numbers from './pages/EmergencyNumbers';
-
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
-
 import { UserContextProvider } from './common/UserContext/UserContext';
 import UserContextExample from './common/UserContext/UserContextExample';
 import AUTH_ROLES from './common/auth_config';
-
-import HomePage from './HomePage';
+import HomePage from './pages/HomePage';
 
 const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
@@ -62,7 +59,13 @@ function App() {
                   <Route
                     exact
                     path="/"
-                    element={<HomePage isAdmin={isAdmin} onAdminPortal={onAdminPortal} />}
+                    element={
+                      <ProtectedRoute
+                        Component={() => <HomePage onAdminPortal={onAdminPortal} />}
+                        redirectPath="/login"
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
+                    }
                   />
                   <Route
                     exact

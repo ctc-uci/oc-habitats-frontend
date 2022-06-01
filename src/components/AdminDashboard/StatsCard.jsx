@@ -46,8 +46,9 @@ function DetailsPopUp(segmentId, volunteers) {
             {pAssigned.map(data => {
               const name = `${data.firstName} ${data.lastName}`;
               return (
-                <Flex mt="16px" flexDirection="column" key={data.id} justify="space-between">
-                  <a href={data.accountInfoLink}>
+                <Flex mt="16px" flexDirection="column" key={data._id} justify="space-between">
+                  {/* <a href={data.accountInfoLink}> */}
+                  <a href=" ">
                     <Text textDecoration="underline" fontWeight="medium">
                       {name.substring(0, 25) + (name.length > 25 ? '...' : '')}
                     </Text>
@@ -66,6 +67,46 @@ function DetailsPopUp(segmentId, volunteers) {
 
 function StatsPopUp(title, numLogs, statsData) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const PopUpContainer = ({ children, segmentId }) => {
+    return (
+      <Flex key={segmentId} direction="row" align="center" justify="space-between">
+        <Text my="5px">Segment {segmentId}</Text>
+        {children}
+      </Flex>
+    );
+  };
+  PopUpContainer.propTypes = {
+    children: PropTypes.node.isRequired,
+    segmentId: PropTypes.string.isRequired,
+  };
+
+  const mapData = () => {
+    if (title !== 'Not Completed') {
+      return statsData.map(data => {
+        return (
+          <PopUpContainer key={data.segment.segmentId} segmentId={data.segment.segmentId}>
+            {title !== 'Unassigned Segments' ? (
+              DetailsPopUp(data.segment.segmentId, data.segment.volunteers)
+            ) : (
+              <></>
+            )}
+          </PopUpContainer>
+        );
+      });
+    }
+
+    return statsData.map(submissionType => {
+      return submissionType.submissions.map(data => {
+        return (
+          <PopUpContainer key={data.segment.segmentId} segmentId={data.segment.segmentId}>
+            {DetailsPopUp(data.segment.segmentId, data.segment.volunteers)}
+          </PopUpContainer>
+        );
+      });
+    });
+  };
+
   return (
     <>
       <IconButton
@@ -73,7 +114,6 @@ function StatsPopUp(title, numLogs, statsData) {
         icon={<ExternalLinkIcon boxSize="2em" variant="unstyle" />}
         onClick={onOpen}
       />
-
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -85,15 +125,7 @@ function StatsPopUp(title, numLogs, statsData) {
             <Text fontSize="36px" fontWeight="bold">
               {numLogs}
             </Text>
-            {statsData.map(data => {
-              const people = [...data.volunteers];
-              return (
-                <Flex key={data.segmentId} direction="row" align="center" justify="space-between">
-                  <Text my="5px">Segment {data.segmentId}</Text>
-                  {title !== 'Unassigned Segments' && DetailsPopUp(data.segmentId, people)}
-                </Flex>
-              );
-            })}
+            {mapData()}
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -128,14 +160,14 @@ StatsCard.propTypes = {
   description: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      segmentId: PropTypes.string.isRequired,
-      volunteers: PropTypes.arrayOf(
+      segmentId: PropTypes.string,
+      assigned: PropTypes.arrayOf(
         PropTypes.shape({
-          id: PropTypes.number.isRequired,
+          _id: PropTypes.string.isRequired,
           firstName: PropTypes.string.isRequired,
           lastName: PropTypes.string.isRequired,
           email: PropTypes.string.isRequired,
-          accountInfoLink: PropTypes.string.isRequired,
+          // accountInfoLink: PropTypes.string.isRequired,
         }),
       ),
     }),

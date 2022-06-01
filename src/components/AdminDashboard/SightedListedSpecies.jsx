@@ -11,13 +11,13 @@ const SightedListedSpecies = ({ month, year, speciesData }) => {
         {month} {year} Sighted Listed Species
       </Text>
 
-      <Flex direction={{ lg: 'row', sm: 'column' }} wrap="wrap" mb="136px" gap="24px">
+      <Flex bgColor="red" direction={{ lg: 'row', sm: 'column' }} wrap="wrap" mb="136px" gap="24px">
         {speciesData.map(sData => {
           return (
             <SightedListedSpeciesTable
-              key={sData.id}
-              name={sData.speciesName}
-              speciesData={sData.data}
+              key={sData._id}
+              name={sData._id}
+              speciesData={sData.segments}
             />
           );
         })}
@@ -31,16 +31,16 @@ SightedListedSpecies.propTypes = {
   year: PropTypes.number.isRequired,
   speciesData: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      speciesName: PropTypes.string.isRequired,
+      id: PropTypes.number,
+      speciesName: PropTypes.string,
       data: PropTypes.arrayOf(
         PropTypes.shape({
-          segment: PropTypes.string.isRequired,
-          adults: PropTypes.number.isRequired,
-          fledges: PropTypes.number.isRequired,
-          chicks: PropTypes.number.isRequired,
+          segment: PropTypes.string,
+          adults: PropTypes.number,
+          fledges: PropTypes.number,
+          chicks: PropTypes.number,
         }),
-      ).isRequired,
+      ),
     }),
   ).isRequired,
 };

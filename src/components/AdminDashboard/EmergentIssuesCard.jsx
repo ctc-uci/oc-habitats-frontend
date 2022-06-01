@@ -15,12 +15,15 @@ import {
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { PropTypes } from 'prop-types';
 
+function formatDate(date) {
+  return new Date(date).toLocaleDateString();
+}
+
 function StatsPopUp(title, numIssues, issueData) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <IconButton bg="#F7FAFC" icon={<ExternalLinkIcon boxSize="2em" />} onClick={onOpen} />
-
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -34,10 +37,10 @@ function StatsPopUp(title, numIssues, issueData) {
             </Text>
             {issueData.map(data => {
               return (
-                <Flex key={data.id} justify="space-between">
-                  <Text>{data.segment}</Text>
-                  <Text>{data.date}</Text>
-                  <a href={data.monitorLogLink}>
+                <Flex key={data.segmentId} justify="space-between">
+                  <Text>{data.segmentId}</Text>
+                  <Text>{formatDate(data.date)}</Text>
+                  <a href={`/review-log/${data.monitorLogId}`}>
                     <Text textDecoration="underline">MonitorLog</Text>
                   </a>
                 </Flex>
@@ -50,7 +53,7 @@ function StatsPopUp(title, numIssues, issueData) {
   );
 }
 
-const EmergentIssuesCard = ({ title, numIssues, issueData }) => {
+const EmergentIssuesCard = ({ title, numIssues, issueData = [] }) => {
   return (
     <Box w="100%" borderWidth="1px" bg="#F7FAFC" borderRadius="12px" borderColor="#E2E8F0" p={6}>
       <Text fontSize="20px" fontWeight="500">
@@ -62,7 +65,7 @@ const EmergentIssuesCard = ({ title, numIssues, issueData }) => {
             {numIssues}
           </Text>
         </Box>
-        <Box>{numIssues ? StatsPopUp(title, numIssues, issueData) : <></>}</Box>
+        <Box>{issueData.length ? StatsPopUp(title, numIssues, issueData) : <></>}</Box>
       </Flex>
     </Box>
   );
@@ -77,10 +80,9 @@ EmergentIssuesCard.propTypes = {
   numIssues: PropTypes.number.isRequired,
   issueData: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      segment: PropTypes.string.isRequired,
+      segmentId: PropTypes.string.isRequired,
       date: PropTypes.string.isRequired,
-      monitorLogLink: PropTypes.string.isRequired,
+      monitorLogId: PropTypes.string.isRequired,
     }),
   ),
 };
