@@ -8,7 +8,6 @@ import ProfileDropdown from './ProfileDropdown';
 import logo from '../../assets/OCH_Logo_SVG.svg';
 import Toast from '../Toast';
 import NavbarMobile from './NavbarMobile';
-import { useUserContext } from '../../common/UserContext/UserContext';
 
 const Navbar = ({ onAdminPortal, setOnAdminPortal, changesMade }) => {
   const [isMobile] = useMediaQuery('(max-width: 1024px)');
