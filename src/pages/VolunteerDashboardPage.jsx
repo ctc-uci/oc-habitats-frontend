@@ -12,6 +12,7 @@ import {
   Flex,
   Heading,
   SimpleGrid,
+  Spinner,
   Stack,
   Text,
   Tooltip,
@@ -19,6 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { React, useEffect, useState } from 'react';
 import { OCHBackend } from '../common/utils';
+import { useUserContext } from '../common/UserContext/UserContext';
 import RecentlySubmittedLog from '../components/VolunteerDashboard/RecentlySubmittedLog';
 import SegmentAssignment from '../components/VolunteerDashboard/SegmentAssignment';
 import UnsubmittedLogDraft from '../components/VolunteerDashboard/UnsubmittedLogDraft';
@@ -58,30 +60,22 @@ const Toast = props => {
 };
 
 const VolunteerDashboardPage = () => {
-  const [userData, setUserData] = useState(null);
   const [userSubmissions, setUserSubmissions] = useState([]);
   const [userNotifications, setUserNotifications] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const userData = useUserContext();
 
   // Get data from backend
   useEffect(async () => {
     try {
-      const [userRes, submissionRes] = await Promise.all([
-        OCHBackend.get('/users/me', { withCredentials: true }),
+      setIsLoading(true);
+      const [submissionRes, notificationsRes] = await Promise.all([
         OCHBackend.get('/users/userSubmissions', { withCredentials: true }),
+        OCHBackend.get('/notification', { withCredentials: true }),
       ]);
-      setUserData(userRes.data);
       setUserSubmissions(submissionRes.data);
-    } catch (err) {
-      // TODO: handle error
-      // eslint-disable-next-line no-console
-      console.log(err);
-    }
-  }, []);
-
-  useEffect(async () => {
-    try {
-      const notificationsRes = await OCHBackend.get('/notification/', { withCredentials: true });
       setUserNotifications(notificationsRes.data);
+      setIsLoading(false);
     } catch (err) {
       // TODO: handle error
       // eslint-disable-next-line no-console
@@ -90,6 +84,13 @@ const VolunteerDashboardPage = () => {
   }, []);
 
   const Notifications = () => {
+    if (userNotifications.length === 0) {
+      return (
+        <Text as="i" fontSize={{ md: '16px', sm: '14px' }}>
+          There are no new notifications.
+        </Text>
+      );
+    }
     return userNotifications.map(notification => (
       <Toast
         key={notification._id}
@@ -104,16 +105,16 @@ const VolunteerDashboardPage = () => {
   };
 
   const Segments = () => {
-    if (userData.segments.length === 0) {
+    if (userData.userData.segments.length === 0) {
       return (
-        <Text fontSize={{ md: '16px', sm: '14px' }}>
+        <Text as="i" fontSize={{ md: '16px', sm: '14px' }}>
           You have not been assigned any segments this month. If you believe this is a mistake,
           please contact ochabitats@ochabitats.org.
         </Text>
       );
     }
 
-    return userData.segments
+    return userData.userData.segments
       .sort((a, b) => a.segmentId.localeCompare(b.segmentId))
       .map(segment => (
         <SegmentAssignment
@@ -132,7 +133,7 @@ const VolunteerDashboardPage = () => {
 
     if (userDrafts.length === 0) {
       return (
-        <Text fontSize={{ md: '16px', sm: '14px' }}>
+        <Text as="i" fontSize={{ md: '16px', sm: '14px' }}>
           You do not have any unsubmitted log drafts.
         </Text>
       );
@@ -160,6 +161,14 @@ const VolunteerDashboardPage = () => {
       )
       .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
       .sort((a, b) => a.status.localeCompare(b.status));
+
+    if (notApproved.length === 0) {
+      return (
+        <Text as="i" fontSize={{ md: '16px', sm: '14px' }}>
+          You do not have any submissions.
+        </Text>
+      );
+    }
 
     const recents = notApproved.concat(
       userSubmissions
@@ -192,13 +201,13 @@ const VolunteerDashboardPage = () => {
   return (
     <Container maxW="90vw" pb={{ sm: '100px', lg: '0px' }}>
       <Heading size="xl" py="10">
-        Welcome Back, {userData?.firstName}!
+        Welcome Back, {userData.userData?.firstName}!
       </Heading>
       <Heading size="md" py="1">
         Notifications
       </Heading>
       <VStack spacing="5px" align="left">
-        {Notifications()}
+        {isLoading ? <Spinner /> : Notifications()}
       </VStack>
       <br />
       <Heading size="md">Segment Assignment(s)</Heading>
@@ -211,7 +220,7 @@ const VolunteerDashboardPage = () => {
         spacing={{ md: '50px', sm: '20px' }}
         align="flex-start"
       >
-        {userData != null && Segments()}
+        {Segments()}
       </Stack>
       <Heading size="md" pt="5" mt={4}>
         Monitor Log Drafts
@@ -220,7 +229,7 @@ const VolunteerDashboardPage = () => {
         Note: This is a list of Monitor Logs that you have yet to submit for review.
       </Text>
       <Stack direction={{ md: 'row', sm: 'column' }} spacing="20px">
-        {Unsubmitted()}
+        {isLoading ? <Spinner /> : Unsubmitted()}
       </Stack>
       <Flex direction="row" align="center" pt="50">
         <Heading size="md">Recently Submitted Logs &nbsp;&nbsp;</Heading>
@@ -239,7 +248,7 @@ const VolunteerDashboardPage = () => {
         spacing="20px"
         maxW="1300px"
       >
-        {Recents()}
+        {isLoading ? <Spinner /> : Recents()}
       </SimpleGrid>
     </Container>
   );
