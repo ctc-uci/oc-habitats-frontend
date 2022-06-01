@@ -292,6 +292,7 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
         bg="ochBlue"
         variant="solid"
         rightIcon={<AddIcon />}
+        my={4}
       >
         Create New Section or Segment
       </Button>
