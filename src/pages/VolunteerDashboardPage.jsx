@@ -144,7 +144,7 @@ const VolunteerDashboardPage = () => {
         <UnsubmittedLogDraft
           // eslint-disable-next-line react/no-array-index-key
           key={idx}
-          segment={draft.segment ? draft.segment.segmentId : ''}
+          segment={draft.segment?.segmentId}
           date={draft.date}
           lastSaved={draft.lastEditedAt}
           logId={draft._id}

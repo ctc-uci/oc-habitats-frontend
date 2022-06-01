@@ -42,7 +42,6 @@ const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 function App() {
   const [accMadeChanges, setAccMadeChanges] = useState(false);
-  const isAdmin = true;
   const [onAdminPortal, setOnAdminPortal] = useState(true);
 
   return (
@@ -53,7 +52,6 @@ function App() {
             <Box className="page-container">
               <Box className="content-wrap">
                 <Navbar
-                  isAdmin={isAdmin}
                   onAdminPortal={onAdminPortal}
                   setOnAdminPortal={setOnAdminPortal}
                   changesMade={accMadeChanges}
@@ -68,7 +66,7 @@ function App() {
                     path="/"
                     element={
                       <ProtectedRoute redirectPath="/login" roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
-                        <HomePage isAdmin={isAdmin} onAdminPortal={onAdminPortal} />
+                        <HomePage onAdminPortal={onAdminPortal} />
                       </ProtectedRoute>
                     }
                   />
