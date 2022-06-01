@@ -16,7 +16,7 @@ import {
 import { React, useEffect, useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FiExternalLink } from 'react-icons/fi';
-import NewSectionSegmentPopup from '../components/NewSectionSegmentPopup';
+import NewSectionSegmentPopup from '../components/SectionTable/NewSectionSegmentPopup';
 import SectionTable from '../components/SectionTable/SectionTable';
 import EditDeleteSectionPopup from '../components/SectionTable/EditDeleteSectionPopup';
 import { OCHBackend } from '../common/utils';

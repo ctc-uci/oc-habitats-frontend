@@ -72,9 +72,13 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
 
   const deleteSegment = async () => {
     try {
-      await OCHBackend.delete(`/segment/${data._id}`, {
-        sectionId: sectionID,
-      });
+      await OCHBackend.delete(
+        `/segment/${data._id}`,
+        {
+          sectionId: sectionID,
+        },
+        { withCredentials: true },
+      );
       toast({
         title: `Successfully deleted Segment ${segId}.`,
         status: 'success',
@@ -101,7 +105,7 @@ const UpdateSegmentPopupColumn = ({ data, allSections, updateSections, currentSe
         mapLink: segLink,
         parking: segParking,
       };
-      await OCHBackend.put(`/segment/${data._id}`, putData);
+      await OCHBackend.put(`/segment/${data._id}`, putData, { withCredentials: true });
       toast({
         title: `Successfully updated Segment ${segId}.`,
         description: `Segment ${segId} has been updated.`,
