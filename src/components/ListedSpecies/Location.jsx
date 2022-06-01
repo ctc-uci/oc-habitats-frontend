@@ -17,7 +17,7 @@ import { useFormContext } from 'react-hook-form';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 import footNotes from './FootNotes';
 
-const Location = () => {
+const Location = ({ isTemplate }) => {
   const { register, watch, setValue, getValues } = useFormContext();
 
   const totalAdults = watch('totalAdults') || 0;
@@ -54,6 +54,11 @@ const Location = () => {
                   />
                 ))}
               </HStack>
+              {isTemplate ? (
+                <Text color="#718096">Static</Text>
+              ) : (
+                <Text color="gray.500">DMS Format Example: N33 42.239 / W118 03.395</Text>
+              )}
             </FormLabel>
           </FormControl>
         </GridItem>
@@ -84,14 +89,18 @@ const Location = () => {
               </Flex>
               <Input placeholder="Cross Street Names" {...register('crossStreet')} />
             </FormLabel>
+            {isTemplate && <Text color="#718096">Static</Text>}
           </FormControl>
         </GridItem>
       </Grid>
     </CollapsibleSection>
   );
 };
-
+Location.defaultProps = {
+  isTemplate: false,
+};
 Location.propTypes = {
   totalBirds: PropTypes.number.isRequired,
+  isTemplate: PropTypes.bool,
 };
 export default Location;

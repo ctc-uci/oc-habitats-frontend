@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Heading, Flex, Text } from '@chakra-ui/react';
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
+import { Badge, Container, Flex, Heading, Text } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
 import { OCHBackend } from '../common/utils';
-import GenerateReportModal from '../components/AdminPageTable/GenerateReportModal';
-import ExportLogsModal from '../components/AdminPageTable/ExportLogsModal';
-import SetReminderModal from '../components/AdminPageTable/SetReminderModal';
-import AdminPageTable from '../components/AdminPageTable/AdminPageTable';
 import AdminPageFilters from '../components/AdminPageTable/AdminPageFilters';
+import AdminPageTable from '../components/AdminPageTable/AdminPageTable';
+import ExportLogsModal from '../components/AdminPageTable/ExportLogsModal';
+import GenerateReportModal from '../components/AdminPageTable/GenerateReportModal';
+import SetReminderModal from '../components/AdminPageTable/SetReminderModal';
 
 const AdminPage = () => {
   const [segmentFilter, setSegmentFilter] = useState('');
@@ -69,11 +69,11 @@ const AdminPage = () => {
 
   useEffect(() => {
     const m = new Map();
-    for (let i = 0; i < data.length; i += 1) {
-      m.set(data[i]._id, false);
+    for (let i = 0; i < data.results.length; i += 1) {
+      m.set(data.results[i]._id, false);
     }
     setChecked(m);
-  }, [segmentFilter, dateFilter, approvalFilter, searchFilter]);
+  }, [data.results, segmentFilter, dateFilter, approvalFilter, searchFilter]);
 
   useEffect(() => {
     getSegments();
@@ -100,24 +100,27 @@ const AdminPage = () => {
           <ExportLogsModal count={checkCount()} />
           <SetReminderModal />
         </Flex>
-        <Text font size="md" fontWeight="700px" mt="24px" mb="16px">
-          Click on a column header (e.g. <span className="bold">DATE</span>) to sort by descending{' '}
-          <ChevronDownIcon /> or ascending <ChevronUpIcon />. Sorting is alphanumeric for{' '}
-          <span className="bold">SEGMENT</span>, <span className="bold">VOLUNTEER(S)</span>, and
-          <span className="bold"> APPROVAL STATUS</span>.
+
+        <Text my="20px">
+          Click on a column header (e.g.{' '}
+          <Badge px={0} variant="solid" bg="transparent" textColor="black">
+            Date
+          </Badge>
+          ) to sort by descending <ArrowDownIcon /> or ascending <ArrowUpIcon />. Sorting is
+          alphanumeric for{' '}
+          <Badge px={0} variant="solid" bg="transparent" textColor="black">
+            segment
+          </Badge>
+          ,{' '}
+          <Badge px={0} variant="solid" bg="transparent" textColor="black">
+            segment name
+          </Badge>
+          , and{' '}
+          <Badge px={0} variant="solid" bg="transparent" textColor="black">
+            approval status
+          </Badge>
+          .
         </Text>
-        {/* <pre>
-          {JSON.stringify(
-            {
-              segmentFilter,
-              dateFilter,
-              approvalFilter,
-              searchFilter,
-            },
-            null,
-            2,
-          )}
-        </pre> */}
         <AdminPageFilters
           segments={segments}
           segmentFilter={segmentFilter}

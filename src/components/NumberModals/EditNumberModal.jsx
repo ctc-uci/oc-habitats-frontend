@@ -58,7 +58,7 @@ const EditNumberModal = ({ numberData, editNumber, disclosure }) => {
                 Contact Name
               </Text>
               <Input
-                style={{ width: '30em' }}
+                w="100%"
                 value={name}
                 onChange={event => {
                   setName(event.target.value);
@@ -70,21 +70,13 @@ const EditNumberModal = ({ numberData, editNumber, disclosure }) => {
               <Text fontWeight={500} fontSize="16px">
                 Contact Number
               </Text>
-              <Input
-                style={{ width: '30em' }}
-                value={number}
-                onChange={e => setNumber(e.target.value)}
-              />
+              <Input w="100%" value={number} onChange={e => setNumber(e.target.value)} />
             </VStack>
             <VStack align="left">
               <Text fontWeight={500} fontSize="16px">
                 Additional Note (Optional)
               </Text>
-              <Textarea
-                style={{ width: '30em', height: '8em' }}
-                value={note}
-                onChange={e => setNote(e.target.value)}
-              />
+              <Textarea w="100%" value={note} onChange={e => setNote(e.target.value)} />
             </VStack>
           </Stack>
         </ModalBody>

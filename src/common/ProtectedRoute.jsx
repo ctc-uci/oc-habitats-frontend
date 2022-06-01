@@ -68,14 +68,15 @@ const ProtectedRoute = ({ Component, children, redirectPath, roles, cookies }) =
 };
 
 ProtectedRoute.defaultProps = {
-  Component: PropTypes.elementType,
-  children: PropTypes.node,
+  Component: () => {},
+  children: [],
+  redirectPath: '/login',
 };
 
 ProtectedRoute.propTypes = {
   Component: PropTypes.elementType,
   children: PropTypes.node,
-  redirectPath: PropTypes.string.isRequired,
+  redirectPath: PropTypes.string,
   roles: PropTypes.arrayOf(PropTypes.string).isRequired,
   cookies: instanceOf(Cookies).isRequired,
 };
