@@ -36,7 +36,9 @@ const ExitModal = ({ submissionId }) => {
             <ButtonGroup gap="2px">
               <Button onClick={onClose}>Cancel</Button>
               <Link to={`/review-log/${submissionId}`}>
-                <Button colorScheme="red">Yes, Exit</Button>
+                <Button bg="#C53030" color="white" onClick={onClose}>
+                  Yes, Exit
+                </Button>
               </Link>
             </ButtonGroup>
           </ModalFooter>
