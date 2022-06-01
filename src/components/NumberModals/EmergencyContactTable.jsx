@@ -39,11 +39,15 @@ const EmergencyContactTable = ({ tableData, admin, change, setChange }) => {
 
   const editNumber = async updatedNumber => {
     try {
-      await OCHBackend.put(`/numbers/${numberId}`, {
-        name: updatedNumber.name,
-        number: updatedNumber.number,
-        note: updatedNumber.note,
-      });
+      await OCHBackend.put(
+        `/numbers/${numberId}`,
+        {
+          name: updatedNumber.name,
+          number: updatedNumber.number,
+          note: updatedNumber.note,
+        },
+        { withCredentials: true },
+      );
       setChange(!change);
       toast({
         title: `${updatedNumber.name}'s contact has been updated`,
@@ -61,7 +65,7 @@ const EmergencyContactTable = ({ tableData, admin, change, setChange }) => {
 
   const deleteNumber = async () => {
     try {
-      await OCHBackend.delete(`/numbers/${numberId}`);
+      await OCHBackend.delete(`/numbers/${numberId}`, { withCredentials: true });
       setChange(!change);
       toast({
         title: `Successfully deleted a contact`,

@@ -14,11 +14,15 @@ const Numbers = () => {
 
   const addNewNumber = async newNumber => {
     try {
-      await OCHBackend.post('/numbers', {
-        name: newNumber.name,
-        number: newNumber.number,
-        note: newNumber.note,
-      });
+      await OCHBackend.post(
+        '/numbers',
+        {
+          name: newNumber.name,
+          number: newNumber.number,
+          note: newNumber.note,
+        },
+        { withCredentials: true },
+      );
       setChange(!change);
       toast({
         title: 'New contact added',
@@ -37,7 +41,7 @@ const Numbers = () => {
   };
 
   useEffect(async () => {
-    const res = await OCHBackend.get('/numbers');
+    const res = await OCHBackend.get('/numbers', { withCredentials: true });
     setTableData(res.data);
   }, [change]);
 
