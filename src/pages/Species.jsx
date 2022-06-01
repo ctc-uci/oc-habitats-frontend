@@ -19,7 +19,7 @@ const initialData = {
   input: columns - contains id, names of columns, and species that belong to each column
   populates the page with each type of column and the species that belong to them
 */
-const createLists = (columns, searchItem, editSpecies, deleteSpecies) => {
+const createLists = (columns, searchItem, editSpecies, deleteSpecies, isLoading) => {
   // Create DroppableLists by iterating over each column in columns
   // Will pass in the species that belong to each list as well as their titles and ids
   return Object.entries(columns).map(([id, col]) => {
@@ -43,6 +43,7 @@ const createLists = (columns, searchItem, editSpecies, deleteSpecies) => {
           searchItem={searchItem}
           editSpecies={editSpecies}
           deleteSpecies={deleteSpecies}
+          loading={isLoading}
         />
       </>
     );
@@ -55,6 +56,7 @@ const Species = () => {
   const [change, setChange] = useState(true);
   // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(true);
+
   const highlightSearch = e => {
     if (e) setSearchItem(e.value);
     else setSearchItem('');
@@ -185,7 +187,7 @@ const Species = () => {
               </Box>
             </HStack>
           </VStack>
-          {createLists(columns, searchItem, editSpecies, deleteSpecies)}
+          {createLists(columns, searchItem, editSpecies, deleteSpecies, isLoading)}
         </VStack>
       </Stack>
     </Center>
