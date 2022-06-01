@@ -1,10 +1,10 @@
 import { Box, Center, Flex, Stack, Text, VStack, HStack } from '@chakra-ui/react';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import DropdownSearch from '../components/DropdownSearch';
 import SpeciesList from '../components/Species/SpeciesList';
 import NewSpeciesModal from '../components/Species/NewSpeciesModal';
 import NewPredatorModal from '../components/Species/NewPredatorModal';
+import { OCHBackend } from '../common/utils';
 
 const initialData = {
   endangered: {
@@ -62,7 +62,7 @@ const Species = () => {
   const getSpecies = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/species`, {
+      const res = await OCHBackend.get('species', {
         withCredentials: true,
       });
       const formattedData = {
@@ -110,8 +110,8 @@ const Species = () => {
   }, [change]);
 
   const addNewSpecies = async newSpecies => {
-    await axios.post(
-      `${process.env.REACT_APP_API_URL}/species/`,
+    await OCHBackend.post(
+      'species',
       {
         name: newSpecies.name,
         code: newSpecies.code,
@@ -124,8 +124,8 @@ const Species = () => {
   };
 
   const addNewPredator = async newSpecies => {
-    await axios.post(
-      `${process.env.REACT_APP_API_URL}/species/`,
+    await OCHBackend.post(
+      'species',
       {
         name: newSpecies.name,
         code: newSpecies.code,
@@ -139,8 +139,8 @@ const Species = () => {
 
   const editSpecies = async (newSpecies, oldSpecies) => {
     // eslint-disable-next-line no-underscore-dangle
-    await axios.put(
-      `${process.env.REACT_APP_API_URL}/species/${oldSpecies._id}`,
+    await OCHBackend.put(
+      `species/${oldSpecies._id}`,
       {
         name: newSpecies.name,
         code: newSpecies.code,
@@ -154,7 +154,7 @@ const Species = () => {
 
   const deleteSpecies = async deletedSpecie => {
     // eslint-disable-next-line dot-notation
-    await axios.delete(`${process.env.REACT_APP_API_URL}/species/${deletedSpecie}`, {
+    await OCHBackend.delete(`species/${deletedSpecie}`, {
       withCredentials: true,
     });
     setChange(c => !c);
