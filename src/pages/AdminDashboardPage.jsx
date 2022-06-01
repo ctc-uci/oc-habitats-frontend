@@ -1,4 +1,5 @@
-import { React, useState, useEffect, useCallback } from 'react';
+/* eslint-disable no-console */
+import { React, useState, useEffect } from 'react';
 import { Text, Box } from '@chakra-ui/react';
 import MonitorLogSubmissionStats from '../components/AdminDashboard/MonitorLogSubmissionStats';
 import SightedListedSpecies from '../components/AdminDashboard/SightedListedSpecies';
@@ -44,11 +45,22 @@ const AdminDashboardPage = () => {
         console.log(err);
       }
     };
-
     getData();
-    
     return () => {};
   }, []);
+
+  const getNotificationNum = () => {
+    let notificationNum = 0;
+    if (info.uncompletedSubmissions) {
+      const underReview = info.uncompletedSubmissions.filter(
+        submissionType => submissionType._id === 'UNDER_REVIEW',
+      );
+      notificationNum = underReview.submissions ? underReview.submissions.length : 0;
+    }
+    return notificationNum;
+  };
+
+  const numNotifications = getNotificationNum();
 
   return (
     <Box mx={{ lg: '100px', sm: '40px' }} my="40px" mb={{ lg: 0, xs: '170px' }}>
@@ -60,7 +72,7 @@ const AdminDashboardPage = () => {
         Notifications
       </Text>
 
-      {/* {numNotifications ? <LogNotification numNotifications={numNotifications} /> : <></>} */}
+      {numNotifications ? <LogNotification numNotifications={numNotifications} /> : <></>}
 
       <MonitorLogSubmissionStats
         month={month}

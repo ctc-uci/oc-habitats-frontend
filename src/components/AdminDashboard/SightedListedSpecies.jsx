@@ -11,7 +11,7 @@ const SightedListedSpecies = ({ month, year, speciesData }) => {
         {month} {year} Sighted Listed Species
       </Text>
 
-      <Flex bgColor="red" direction={{ lg: 'row', sm: 'column' }} wrap="wrap" mb="136px" gap="24px">
+      <Flex direction={{ lg: 'row', sm: 'column' }} wrap="wrap" mb="136px" gap="24px">
         {speciesData.map(sData => {
           return (
             <SightedListedSpeciesTable
