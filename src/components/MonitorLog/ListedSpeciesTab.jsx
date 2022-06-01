@@ -60,7 +60,6 @@ import NewQuestionModal from '../NewQuestionModal';
 import { OCHBackend } from '../../common/utils';
 
 const ListedSpeciesTab = ({
-  tab,
   speciesName,
   speciesCode,
   speciesId,
@@ -68,7 +67,7 @@ const ListedSpeciesTab = ({
   isDisabled,
   isTemplate,
 }) => {
-  const formPrefix = `listedSpecies[${tab}].`;
+  const formPrefix = `listedSpecies.${speciesId}.`;
 
   const { isOpen, onOpen: openPopup, onClose } = useDisclosure();
   const { setValue, getValues } = useFormContext();
@@ -105,10 +104,6 @@ const ListedSpeciesTab = ({
       bandTabs: [],
     },
   });
-
-  useEffect(() => {
-    setValue(`${formPrefix}species`, speciesId);
-  }, []);
 
   const toggleTabEdited = () => {
     setTabEdited(!tabEdited);
@@ -564,7 +559,6 @@ ListedSpeciesTab.defaultProps = {
 };
 
 ListedSpeciesTab.propTypes = {
-  tab: PropTypes.number.isRequired,
   speciesName: PropTypes.string.isRequired,
   speciesCode: PropTypes.string.isRequired,
   speciesId: PropTypes.string.isRequired,

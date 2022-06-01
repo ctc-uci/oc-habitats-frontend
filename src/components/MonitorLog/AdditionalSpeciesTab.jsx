@@ -35,7 +35,7 @@ const FORM_PREFIX = 'additionalSpecies.';
 
 const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) => {
   const { getValues, setValue } = useFormContext();
-  const [speciesEntries, setSpeciesEntries] = useState(getValues(`${FORM_PREFIX}entries`) || []);
+  const [speciesEntries, setSpeciesEntries] = useState(getValues(`${FORM_PREFIX}entries`) || {});
 
   useEffect(() => {
     setValue(`${FORM_PREFIX}entries`, speciesEntries);
@@ -49,65 +49,66 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
       })),
     [species],
   );
-
   const getSpeciesLabel = speciesId => speciesOptions.find(s => s.value === speciesId)?.label;
 
   const handleAddRow = newSpecies => {
     setSpeciesEntries(prevSpecies => {
-      const existingIndex = speciesEntries.findIndex(s => newSpecies.species === s.species);
-      if (existingIndex !== -1) {
-        const newEntries = [...speciesEntries];
-        newEntries[existingIndex].count += newSpecies.count;
+      const { species: speciesId, ...newSpeciesObj } = newSpecies;
+      const newEntries = { ...prevSpecies };
+      if (Object.prototype.hasOwnProperty.call(prevSpecies, speciesId)) {
         if (newSpecies.notes !== '') {
-          if (newEntries[existingIndex].notes !== '') {
-            newEntries[existingIndex].notes += `\n${newSpecies.notes}`;
+          if (newEntries[speciesId].notes !== '') {
+            newEntries[speciesId].notes += `\n${newSpecies.notes}`;
           } else {
-            newEntries[existingIndex].notes = newSpecies.notes;
+            newEntries[speciesId].notes = newSpecies.notes;
           }
         }
-        return newEntries;
+        newEntries[speciesId].count += newSpecies.count;
+      } else {
+        newEntries[speciesId] = newSpeciesObj;
       }
-      return [...prevSpecies, newSpecies];
+      return newEntries;
     });
   };
 
   const handleDeleteRow = speciesId => {
-    setSpeciesEntries(entries => entries.filter(s => s.species !== speciesId));
+    setSpeciesEntries(entries => {
+      const newEntries = { ...entries };
+      delete newEntries[speciesId];
+      return newEntries;
+    });
   };
 
   const handleEditRow = newSpecies => {
-    const { oldId } = newSpecies;
-    const newRow = newSpecies;
-    delete newRow.oldId;
-    const indexToModify = speciesEntries.findIndex(s => oldId === s.species);
+    const { oldId, species: speciesId, ...newRow } = newSpecies;
     setSpeciesEntries(prevSpecies => {
-      let newEntries = [...prevSpecies];
-      if (oldId !== newRow.species) {
+      let newEntries = { ...prevSpecies };
+      if (oldId !== speciesId) {
         // if we're changing the species ID, check if the new species is already in the table
-        const newSpeciesIndex = prevSpecies.findIndex(s => newRow.species === s.species);
-        if (newSpeciesIndex !== -1) {
+        if (Object.prototype.hasOwnProperty.call(prevSpecies, speciesId)) {
           // if it is, merge the two rows
-          newRow.count += prevSpecies[newSpeciesIndex].count;
-          if (prevSpecies[newSpeciesIndex].notes) {
-            newRow.notes += `\n${prevSpecies[newSpeciesIndex].notes}`;
+          newRow.count += prevSpecies[speciesId].count;
+          if (prevSpecies[speciesId].notes) {
+            newRow.notes += `\n${prevSpecies[speciesId].notes}`;
           }
           newEntries = newEntries.filter(s => s.species !== newRow.species);
         }
       }
-      newEntries[indexToModify] = newRow;
+      newEntries[newEntries] = newRow;
       return newEntries;
     });
   };
 
   const createTable = data => {
-    return data.map(row => (
-      <AccordionItem key={row.species} as={Tbody}>
+    return Object.entries(data).map(([speciesId, row]) => (
+      <AccordionItem key={speciesId} as={Tbody}>
         {({ isExpanded }) => (
           <>
             <Tr>
               <Td border="none">
                 {!isDisabled && (
                   <EditSpeciesModal
+                    speciesId={speciesId}
                     speciesRow={row}
                     editRow={handleEditRow}
                     deleteRow={handleDeleteRow}
@@ -117,7 +118,7 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
               </Td>
               <Td border="none">
                 <Text fontSize="1.05em" color="#2D3748" fontWeight={450}>
-                  {getSpeciesLabel(row.species)}
+                  {getSpeciesLabel(speciesId)}
                 </Text>
               </Td>
               <Td border="none" color="#2D3748" fontWeight={450}>
@@ -231,7 +232,7 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
                       <Th />
                     </Tr>
                   </Thead>
-                  {speciesEntries.length === 0 && (
+                  {Object.keys(speciesEntries).length === 0 && (
                     <Tbody>
                       <Tr>
                         <Td colSpan={4} textAlign="center">

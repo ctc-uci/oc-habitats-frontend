@@ -43,8 +43,6 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
     const newQuestions = await OCHBackend.get(`/forms/general`);
     const questions = await newQuestions.data;
 
-    console.log(newQuestions);
-
     setAdditionalQuestions(questions.additionalFields);
   }, [tabEdited, questionAdded]);
 
@@ -263,7 +261,8 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
             return (
               <NonStaticQuestion
                 refreshTrigger={toggleTabEdited}
-                key={question.title}
+                key={question._id}
+                formKey={`generalAdditionalFields.${question._id}`}
                 question={question}
                 formType="general"
                 isTemplate={isTemplate}
