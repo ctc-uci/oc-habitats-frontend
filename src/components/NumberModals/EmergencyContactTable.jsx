@@ -26,7 +26,6 @@ import DeleteNumberModal from './DeleteNumberModal';
 import EditNumberModal from './EditNumberModal';
 
 const EmergencyContactTable = ({ tableData, admin, change, setChange, isLoading }) => {
-  console.log(isLoading);
   const [numberId, setNumberId] = useState(-1);
   const [rowData, setRowData] = useState({});
   const editModalDisclosure = useDisclosure();

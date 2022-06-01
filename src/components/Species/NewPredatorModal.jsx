@@ -17,10 +17,11 @@ import {
   Input,
   Text,
   VStack,
+  useDisclosure,
 } from '@chakra-ui/react';
 
 function NewPredatorModal({ addNewPredator }) {
-  const [isToggled, setIsToggled] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [speciesName, setSpeciesName] = useState(null);
   const [speciesCode, setSpeciesCode] = useState(null);
   const [speciesCategory, setSpeciesCategory] = useState(null);
@@ -34,36 +35,23 @@ function NewPredatorModal({ addNewPredator }) {
         category: speciesCategory,
       });
       setIsValid(true);
-      setIsToggled(!isToggled);
+      onClose();
     } else setIsValid(false);
   };
 
   return (
     <>
-      <Button
-        bg="#F49923"
-        color="ochBlack"
-        onClick={e => {
-          e.preventDefault();
-          setIsToggled(!isToggled);
-          setIsValid(true);
-        }}
-      >
+      <Button bg="#F49923" color="ochBlack" onClick={onOpen}>
         + New Predator
       </Button>
-      <Modal isOpen={isToggled} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader align="left" fontWeight={650} fontSize="28px">
             Add a New Predator
           </ModalHeader>
 
-          <ModalCloseButton
-            onClick={e => {
-              e.preventDefault();
-              setIsToggled(false);
-            }}
-          />
+          <ModalCloseButton onClick={onClose} />
           <ModalBody>
             <VStack align="left">
               <InputGroup>
@@ -112,10 +100,7 @@ function NewPredatorModal({ addNewPredator }) {
                   bgColor="#E2E8F0"
                   variant="outline"
                   mr={3}
-                  onClick={e => {
-                    e.preventDefault();
-                    setIsToggled(false);
-                  }}
+                  onClick={onClose}
                 >
                   Cancel
                 </Button>
