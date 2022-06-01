@@ -19,6 +19,7 @@ import {
   Select,
   Button,
 } from '@chakra-ui/react';
+import VolunteerLogsTable from '../VolunteerLogs/VolunteerLogsTable';
 import { OCHBackend } from '../../common/utils';
 import AUTH_ROLES from '../../common/auth_config';
 
@@ -40,7 +41,7 @@ const PersonalInformation = ({ userData, updateUser }) => {
   }, [userData]);
 
   return (
-    <Box mb={{ lg: '100px' }}>
+    <Box mb={{ lg: '0', sm: '40px' }}>
       <VStack align="left" mx="auto">
         <Heading
           textAlign="left"
@@ -52,7 +53,7 @@ const PersonalInformation = ({ userData, updateUser }) => {
           Account Information
         </Heading>
         <Grid
-          templateRows={{ lg: 'repeat(3, 1fr)', sm: 'repeat(5, fr)' }}
+          templateRows={{ lg: 'repeat(2, 1fr)', sm: 'repeat(5, fr)' }}
           templateColumns={{ lg: 'repeat(5, 1fr)', sm: 'repeat(1, fr)' }}
           rowGap="3em"
         >
@@ -175,7 +176,14 @@ const PersonalInformation = ({ userData, updateUser }) => {
                   </FormControl>
                 </GridItem>
                 <GridItem>
-                  <Button type="submit" variant="solid" bg="ochBlue" size="md" isDisabled={!dirty}>
+                  <Button
+                    type="submit"
+                    variant="solid"
+                    bg="ochBlue"
+                    size="md"
+                    w={{ lg: '', sm: '100%' }}
+                    isDisabled={!dirty}
+                  >
                     Save Changes
                   </Button>
                 </GridItem>
@@ -193,6 +201,35 @@ const UserInformation = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [userData, setUserData] = useState({});
+  const [data, setData] = useState({ results: [], total: 0 });
+  const [pageCount, setPageCount] = useState(0);
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  const [checked, setChecked] = useState(new Map());
+  const [allChecked, setAllChecked] = useState(false);
+  const [fetchSettings, setFetchSettings] = useState({ pageIndex: 0, pageSize: 10 });
+
+  const getSubmissions = async () => {
+    try {
+      setDataLoaded(false);
+      const { sortBy } = fetchSettings;
+      const query = {
+        submitter: `${userData.firstName} ${userData.lastName}`,
+        pageIndex: fetchSettings.pageIndex,
+        pageSize: fetchSettings.pageSize,
+        sort: sortBy && sortBy.length === 1 ? sortBy[0].id : null,
+        sortAscending: sortBy && sortBy.length === 1 ? !sortBy[0].desc : null,
+      };
+      const res = await OCHBackend.get('/submissions', { params: query });
+      console.log(res);
+      setData(res.data);
+      setPageCount(Math.ceil(res.data.total / fetchSettings.pageSize));
+      setDataLoaded(true);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+  };
 
   const fetchUser = async () => {
     try {
@@ -217,9 +254,24 @@ const UserInformation = () => {
     await fetchUser();
   }, [id]);
 
+  useEffect(() => {
+    getSubmissions();
+  }, [fetchSettings, userData]);
+
   return (
     <Container maxW={{ md: 'container.xl', base: 'container.sm' }} mb={{ md: '0', base: '5em' }}>
       <PersonalInformation userData={userData} updateUser={updateUser} />
+      <VolunteerLogsTable
+        tableData={data}
+        pageCount={pageCount}
+        checked={checked}
+        setChecked={setChecked}
+        allChecked={allChecked}
+        setAllChecked={setAllChecked}
+        isLoading={!dataLoaded}
+        setFetchSettings={setFetchSettings}
+        useChecks={false}
+      />
     </Container>
   );
 };
