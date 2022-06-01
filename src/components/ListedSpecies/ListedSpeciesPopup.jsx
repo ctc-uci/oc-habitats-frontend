@@ -35,7 +35,13 @@ import GeneralListedInformation from './GeneralListedInformation';
 import Location from './Location';
 import SexSection from './SexSection';
 
-const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) => {
+const ListedSpeciesPopup = ({
+  closeModal,
+  adultName,
+  addRow,
+  prefilledData,
+  additionalQuestions,
+}) => {
   const formMethods = useForm({
     defaultValues: prefilledData || {
       totalAdults: 1,
@@ -153,7 +159,10 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
         </Stack>
         <form onSubmit={handleSubmit}>
           <VStack align="start" spacing={{ md: '4em', base: '2em' }}>
-            <GeneralListedInformation speciesName={adultName} />
+            <GeneralListedInformation
+              speciesName={adultName}
+              additionalQuestions={additionalQuestions}
+            />
             <Location />
             <SexSection />
             <BehaviorsSection behaviorOptions={options.behavior} nestingOptions={options.nesting} />
@@ -204,6 +213,8 @@ ListedSpeciesPopup.propTypes = {
   prefilledData: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
   ).isRequired,
+  additionalQuestions: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))
+    .isRequired,
 };
 
 export default ListedSpeciesPopup;

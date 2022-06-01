@@ -1,27 +1,27 @@
 /* eslint-disable react/prop-types */
-import { React, useState, useEffect } from 'react';
+import { ArrowForwardIcon, InfoIcon } from '@chakra-ui/icons';
 import {
-  Container,
-  Heading,
-  Box,
-  VStack,
-  Stack,
   Alert,
-  AlertIcon,
   AlertDescription,
+  AlertIcon,
   AlertTitle,
-  CloseButton,
+  Box,
   Button,
+  CloseButton,
+  Container,
+  Flex,
+  Heading,
+  SimpleGrid,
+  Stack,
   Text,
   Tooltip,
-  Flex,
-  SimpleGrid,
+  VStack,
 } from '@chakra-ui/react';
-import { ArrowForwardIcon, InfoIcon } from '@chakra-ui/icons';
+import { React, useEffect, useState } from 'react';
+import { OCHBackend } from '../common/utils';
+import RecentlySubmittedLog from '../components/VolunteerDashboard/RecentlySubmittedLog';
 import SegmentAssignment from '../components/VolunteerDashboard/SegmentAssignment';
 import UnsubmittedLogDraft from '../components/VolunteerDashboard/UnsubmittedLogDraft';
-import RecentlySubmittedLog from '../components/VolunteerDashboard/RecentlySubmittedLog';
-import { OCHBackend } from '../common/utils';
 
 // TODO: go to log button functionality
 
@@ -144,9 +144,10 @@ const VolunteerDashboardPage = () => {
         <UnsubmittedLogDraft
           // eslint-disable-next-line react/no-array-index-key
           key={idx}
-          segment={draft.segment ? draft.segment.segmentId : ''}
+          segment={draft.segment?.segmentId}
           date={draft.date}
           lastSaved={draft.lastEditedAt}
+          logId={draft._id}
         />
       ));
   };
@@ -179,10 +180,11 @@ const VolunteerDashboardPage = () => {
       <RecentlySubmittedLog
         // eslint-disable-next-line react/no-array-index-key
         key={idx}
-        segment={recent.segment.segmentId}
+        segment={recent.segment?.segmentId}
         date={recent.date}
         timeDescription={recent.submittedAt}
         status={recent.status}
+        logId={recent._id}
       />
     ));
   };

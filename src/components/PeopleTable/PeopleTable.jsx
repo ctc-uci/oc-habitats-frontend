@@ -103,7 +103,7 @@ const LoadingRow = () => (
   <Tr>
     <td colSpan={3}>
       <VStack justifyContent="center" alignContent="center" margin="50px">
-        <Text fontWeight="bold">Loading</Text>name
+        <Text fontWeight="bold">Loading</Text>
         <Spinner size="sm" />
       </VStack>
     </td>

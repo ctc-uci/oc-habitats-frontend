@@ -1,26 +1,25 @@
 /* eslint-disable react/no-children-prop */
-import React, { useState } from 'react';
-import { Link as ReachLink, useNavigate } from 'react-router-dom';
 import {
-  FormControl,
-  Image,
-  FormLabel,
-  InputGroup,
-  Input,
-  InputRightAddon,
   Button,
-  Flex,
-  Link,
-  Text,
   Center,
   Container,
+  Flex,
+  FormControl,
+  FormLabel,
+  Image,
+  Input,
+  InputGroup,
+  InputRightAddon,
+  Link,
+  Text,
 } from '@chakra-ui/react';
 import { instanceOf } from 'prop-types';
-import { Cookies, withCookies } from '../../common/cookie_utils';
-import { logInWithEmailAndPassword } from '../../common/auth_utils';
-import authErrors from '../../common/auth_errors';
-
+import React, { useState } from 'react';
+import { Link as ReachLink, useNavigate } from 'react-router-dom';
 import OCHLogo from '../../assets/OCH_Logo_SVG.svg';
+import authErrors from '../../common/auth_errors';
+import { logInWithEmailAndPassword } from '../../common/auth_utils';
+import { Cookies, withCookies } from '../../common/cookie_utils';
 
 const Login = ({ cookies }) => {
   const navigate = useNavigate();

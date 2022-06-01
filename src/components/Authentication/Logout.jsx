@@ -2,21 +2,19 @@ import React, { useState } from 'react';
 import { instanceOf } from 'prop-types';
 import { logout, useNavigate } from '../../common/auth_utils';
 import { Cookies, withCookies } from '../../common/cookie_utils';
-import { OCHBackend } from '../../common/utils';
+import { useUserContext } from '../../common/UserContext/UserContext';
 
 const Logout = ({ cookies }) => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState();
+  const { setUserData } = useUserContext();
   const handleSubmit = async () => {
     try {
       await logout('/', navigate, cookies);
+      setUserData({});
     } catch (err) {
       setErrorMessage(err.message);
     }
-  };
-
-  const handleSubmit2 = async () => {
-    await OCHBackend.get('/test/');
   };
 
   return (
@@ -25,9 +23,6 @@ const Logout = ({ cookies }) => {
       {errorMessage && <p>{errorMessage}</p>}
       <button type="submit" onClick={handleSubmit}>
         Logout
-      </button>
-      <button type="submit" onClick={handleSubmit2}>
-        Click me
       </button>
     </div>
   );
