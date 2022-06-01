@@ -43,6 +43,7 @@ import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
 import PredatorsTab from '../components/MonitorLog/PredatorsTab';
 import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
 import ReviewSubmitTabPopup from '../components/MonitorLog/ReviewSubmitTabPopup';
+import ApproveLogPopup from '../components/MonitorLog/ApproveLogPopup';
 
 const MonitorTabButton = props => {
   // eslint-disable-next-line react/prop-types
@@ -424,9 +425,7 @@ const MonitorLogPage = ({ mode }) => {
                     segmentData={segmentData}
                   />
                   {submissionData?.status !== 'APPROVED' && (
-                    <Button type="submit" colorScheme="green" onClick={approveLog}>
-                      Approve <FiCheck style={{ marginLeft: '4px' }} />
-                    </Button>
+                    <ApproveLogPopup approveLog={approveLog} />
                   )}
                 </ButtonGroup>
               )}
