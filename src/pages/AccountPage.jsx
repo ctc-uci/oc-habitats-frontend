@@ -7,23 +7,24 @@ import {
   FormControl,
   GridItem,
   SimpleGrid,
-  Image,
+  // Image,
   VStack,
   Heading,
   InputGroup,
   InputRightAddon,
-  IconButton,
+  // IconButton,
   Grid,
   Flex,
   Box,
   HStack,
   useToast,
+  Avatar,
 } from '@chakra-ui/react';
-import { FiEdit2 } from 'react-icons/fi';
+// import { FiEdit2 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
-import UploadModal from '../components/UploadModal';
-import defaultPic from '../assets/defaultProfile.jpg';
+// import UploadModal from '../components/UploadModal';
+// import defaultPic from '../assets/defaultProfile.jpg';
 import Toast from '../components/Toast';
 import { updateUserPassword } from '../common/auth_utils';
 import { useUserContext } from '../common/UserContext/UserContext';
@@ -52,7 +53,7 @@ const AccountPage = ({ setChangesMade }) => {
   const [rightButtonText, setRightButtonText] = useState('Show');
 
   // storing form data in state for retrieval on submission
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [cloudImgSrc, setCloudImgSrc] = useState(null);
   const [file, setFile] = useState(0);
   const [isFileSaved, setIsFileSaved] = useState(true);
@@ -90,11 +91,11 @@ const AccountPage = ({ setChangesMade }) => {
     }
   }, [userData]);
 
-  const saveUpload = upload => {
-    URL.revokeObjectURL(file.preview);
-    setFile(upload);
-    setIsFileSaved(false);
-  };
+  // const saveUpload = upload => {
+  //   URL.revokeObjectURL(file.preview);
+  //   setFile(upload);
+  //   setIsFileSaved(false);
+  // };
 
   const formatAssignedSeg = () => {
     const segments = userData.segments.map(segment => {
@@ -152,7 +153,7 @@ const AccountPage = ({ setChangesMade }) => {
     else setChangesMade(false);
   }, [isDirty, isFileSaved]);
 
-  const fileImgSrc = file ? file.preview : null;
+  // const fileImgSrc = file ? file.preview : null;
 
   return (
     <Box mb={{ lg: '100px' }}>
@@ -172,7 +173,7 @@ const AccountPage = ({ setChangesMade }) => {
           rowGap="3em"
         >
           <GridItem colStart={1} rowStart={1} rowSpan={{ lg: 3, sm: 1 }} colSpan={1}>
-            <Flex justifyContent="center">
+            {/* <Flex justifyContent="center">
               <Box position="relative" mr="1em">
                 <Image
                   e="8"
@@ -205,6 +206,15 @@ const AccountPage = ({ setChangesMade }) => {
                   isOpen={isModalOpen}
                   toggleOpen={setIsModalOpen}
                   saveUpload={saveUpload}
+                />
+              </Box>
+            </Flex> */}
+            <Flex justify="center">
+              <Box w="200px" h="200px">
+                <Avatar
+                  size="full"
+                  fontSize="140px"
+                  name={`${userData.firstName} ${userData.lastName}`}
                 />
               </Box>
             </Flex>
