@@ -33,7 +33,7 @@ import { UserContextProvider } from './common/UserContext/UserContext';
 import UserContextExample from './common/UserContext/UserContextExample';
 import AUTH_ROLES from './common/auth_config';
 
-import HomePage from './HomePage';
+import HomePage from './pages/HomePage';
 
 const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
