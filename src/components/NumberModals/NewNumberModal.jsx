@@ -17,20 +17,21 @@ import {
   VStack,
   Stack,
   Textarea,
+  useDisclosure,
 } from '@chakra-ui/react';
 
 function NewNumberModal({ addNewNumber }) {
-  const [isToggled, setIsToggled] = useState(false);
   const [name, setName] = useState(null);
   const [number, setNumber] = useState(null);
   const [note, setNote] = useState(null);
   const [isValid, setIsValid] = useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const checkInput = () => {
     if (name && number) {
       addNewNumber({ name, number, note });
       setIsValid(true);
-      setIsToggled(!isToggled);
+      onClose();
     } else setIsValid(false);
   };
 
@@ -43,49 +44,37 @@ function NewNumberModal({ addNewNumber }) {
         variant="solid"
         width="200px"
         height="40px"
-        onClick={e => {
-          e.preventDefault();
-          setIsToggled(!isToggled);
-          setIsValid(true);
-        }}
+        onClick={onOpen}
       >
         Add Contact
       </Button>
-      <Modal isOpen={isToggled} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader align="left" fontWeight={700} fontSize="18px" mb="1em">
             Add Contact
           </ModalHeader>
 
-          <ModalCloseButton
-            onClick={e => {
-              e.preventDefault();
-              setIsToggled(false);
-            }}
-          />
+          <ModalCloseButton onClick={onClose} />
           <ModalBody>
             <Stack spacing="2em" direction="column">
               <VStack align="left">
                 <Text fontWeight={500} fontSize="16px">
                   Contact Name
                 </Text>
-                <Input style={{ width: '30em' }} onChange={e => setName(e.target.value)} />
+                <Input w="100%" onChange={e => setName(e.target.value)} />
               </VStack>
               <VStack align="left">
                 <Text fontWeight={500} fontSize="16px">
                   Contact Number
                 </Text>
-                <Input style={{ width: '30em' }} onChange={e => setNumber(e.target.value)} />
+                <Input w="100%" onChange={e => setNumber(e.target.value)} />
               </VStack>
               <VStack align="left">
                 <Text fontWeight={500} fontSize="16px">
                   Additional Note (Optional)
                 </Text>
-                <Textarea
-                  style={{ width: '30em', height: '8em' }}
-                  onChange={e => setNote(e.target.value)}
-                />
+                <Textarea w="100%" onChange={e => setNote(e.target.value)} />
               </VStack>
             </Stack>
           </ModalBody>
@@ -101,15 +90,7 @@ function NewNumberModal({ addNewNumber }) {
               )}
 
               <HStack spacing={4} mt="2em">
-                <Button
-                  colorScheme="teal"
-                  variant="outline"
-                  mr={3}
-                  onClick={e => {
-                    e.preventDefault();
-                    setIsToggled(false);
-                  }}
-                >
+                <Button colorScheme="teal" variant="outline" mr={3} onClick={onClose}>
                   Cancel
                 </Button>
                 <Button background="#2BC0E3" variant="solid" onClick={checkInput}>

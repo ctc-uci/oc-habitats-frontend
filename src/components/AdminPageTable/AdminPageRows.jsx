@@ -45,31 +45,6 @@ const AllCheck = ({ checked, setChecked, allChecked, setAllChecked }) => {
   return <Checkbox bg="white" isChecked={allChecked} onChange={handleAllChecked} />;
 };
 
-const ApplyBadge = ({ approval }) => {
-  if (approval === 'UNDER_REVIEW') {
-    return (
-      <Badge variant="solid" colorScheme="blue">
-        UNDER REVIEW
-      </Badge>
-    );
-  }
-  if (approval === 'RESUBMITTED') {
-    return (
-      <Badge variant="solid" colorScheme="purple">
-        {approval}
-      </Badge>
-    );
-  }
-  if (approval === 'EDITS_REQUESTED') {
-    return (
-      <Badge variant="solid" colorScheme="red">
-        EDITS REQUESTED
-      </Badge>
-    );
-  }
-  return <Text fontSize="xs">{approval}</Text>;
-};
-
 const VolunteerColumn = ({ data }) => {
   return (
     <HStack>
@@ -103,17 +78,9 @@ AllCheck.propTypes = {
   setAllChecked: PropTypes.func.isRequired,
 };
 
-ApplyBadge.propTypes = {
-  approval: PropTypes.string.isRequired,
-};
-
-ApplyBadge.propTypes = {
-  approval: PropTypes.string.isRequired,
-};
-
 VolunteerColumn.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   data: PropTypes.object.isRequired,
 };
 
-export { DateFormat, Check, AllCheck, ApplyBadge, VolunteerColumn };
+export { DateFormat, Check, AllCheck, VolunteerColumn };

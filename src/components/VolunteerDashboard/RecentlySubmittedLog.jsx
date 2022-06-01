@@ -2,6 +2,7 @@ import React from 'react';
 import { Flex, Button, Badge, Text } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { formatDate, formatTime } from '../../common/dateUtils';
 
 const details = {
@@ -25,7 +26,7 @@ const details = {
   },
 };
 
-const RecentlySubmittedLog = ({ segment, date, timeDescription, status }) => {
+const RecentlySubmittedLog = ({ segment, date, timeDescription, status, logId }) => {
   const formattedDate = formatDate(date);
   const submissionDate = formatDate(timeDescription);
   const formattedTime = formatTime(timeDescription);
@@ -53,9 +54,11 @@ const RecentlySubmittedLog = ({ segment, date, timeDescription, status }) => {
         {details[status].badge}
       </Badge>
       {details[status].goToLogButton && (
-        <Button w="100%" bgColor="#2BC0E3" size="sm" mt={3} rightIcon={<ArrowForwardIcon />}>
-          Go to Log
-        </Button>
+        <Link to={`/create-log/${logId}`}>
+          <Button w="100%" bgColor="#2BC0E3" size="sm" mt={3} rightIcon={<ArrowForwardIcon />}>
+            Go to Log
+          </Button>
+        </Link>
       )}
     </Flex>
   );
@@ -63,6 +66,7 @@ const RecentlySubmittedLog = ({ segment, date, timeDescription, status }) => {
 
 RecentlySubmittedLog.propTypes = {
   segment: PropTypes.string.isRequired,
+  logId: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   timeDescription: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,

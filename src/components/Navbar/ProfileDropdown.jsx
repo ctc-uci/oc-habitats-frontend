@@ -14,17 +14,14 @@ import {
 import NavbarLinkMobile from './NavbarLinkMobile';
 import { logout, useNavigate } from '../../common/auth_utils';
 import { Cookies, withCookies } from '../../common/cookie_utils';
+import { useUserContext } from '../../common/UserContext/UserContext';
 
-const user = {
-  firstName: 'Dan',
-  lastName: 'Abramov',
-  profilePic: 'https://bit.ly/dan-abramov',
-};
 const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal, cookies }) => {
   const navigate = useNavigate();
   const handleOnClick = () => {
     setOnAdminPortal(!onAdminPortal);
   };
+  const { userData, setUserData } = useUserContext();
 
   return (
     <Menu>
@@ -34,35 +31,31 @@ const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal, cookies }) 
         _hover={{ bg: 'gray.400' }}
         _focus={{ boxShadow: 'outline' }}
       >
-        <Avatar m={1} name={user.firstName + user.lastName} src={user.profilePic} />
+        <Avatar m={1} name={`${userData.firstName} ${userData.lastName}`} />
       </MenuButton>
       <MenuList>
+        <MenuItem color="black" fontWeight="600" isDisabled>
+          {userData.firstName} {userData.lastName}
+        </MenuItem>
         <NavbarLinkMobile text="Account" path="/account" />
         <MenuDivider />
         {isAdmin && onAdminPortal && (
-          <MenuItem
-            color="black"
-            fontFamily="Inter"
-            fontWeight="600"
-            href="/"
-            onClick={handleOnClick}
-          >
+          <MenuItem color="black" fontWeight="600" href="/" onClick={handleOnClick}>
             Volunteer Portal
           </MenuItem>
         )}
         {isAdmin && !onAdminPortal && (
-          <MenuItem
-            color="black"
-            fontFamily="Inter"
-            fontWeight="600"
-            href="/"
-            onClick={handleOnClick}
-          >
+          <MenuItem color="black" fontWeight="600" href="/" onClick={handleOnClick}>
             Admin Portal
           </MenuItem>
         )}
         {isAdmin ? <MenuDivider /> : null}
-        <MenuItem onClick={() => logout('/login', navigate, cookies)}>
+        <MenuItem
+          onClick={() => {
+            logout('/login', navigate, cookies);
+            setUserData({});
+          }}
+        >
           <HStack color="ochRed">
             <Text fontWeight="600">Sign Out</Text>
             <FiLogOut />

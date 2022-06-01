@@ -20,20 +20,31 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { FiEdit2 } from 'react-icons/fi';
-import axios from 'axios';
 import PropTypes from 'prop-types';
+import { useForm, Controller } from 'react-hook-form';
 import UploadModal from '../components/UploadModal';
 import defaultPic from '../assets/defaultProfile.jpg';
 import Toast from '../components/Toast';
+import { updateUserPassword } from '../common/auth_utils';
+import { useUserContext } from '../common/UserContext/UserContext';
+import { OCHBackend } from '../common/utils';
 
-const AccountPage = ({
-  changesMade,
-  setChangesMade,
-  // TODO: Remove when getting ID from param/props
-  id = 'd882dffe-d560-4f24-a3ff-a3dc8eb9ef0d',
-}) => {
-  const [isLoading, setLoading] = useState(false);
-
+const AccountPage = ({ setChangesMade }) => {
+  const { userData } = useUserContext();
+  const {
+    handleSubmit,
+    control,
+    formState: { isDirty },
+    reset,
+  } = useForm({
+    defaultValues: {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      currPassword: '',
+      newPassword: '',
+    },
+  });
   // stores information on whether the passwords are hidden/shown, plus the state of the button text
   const [leftPasswordType, setLeftPasswordType] = useState('password');
   const [rightPasswordType, setRightPasswordType] = useState('password');
@@ -41,27 +52,10 @@ const AccountPage = ({
   const [rightButtonText, setRightButtonText] = useState('Show');
 
   // storing form data in state for retrieval on submission
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [isTrainee, setIsTrainee] = useState(null);
-  const [isActive, setIsActive] = useState(null);
-  const [assignedSegments, setAsignedSegments] = useState(null);
-  const [currPassword, setCurrPassword] = useState(null);
-  const [newPassword, setNewPassword] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [imageSource, setImageSource] = useState(null);
+  const [cloudImgSrc, setCloudImgSrc] = useState(null);
   const [file, setFile] = useState(0);
-
-  // Holds user info from mongo
-  const [user, setUser] = useState({
-    firstName: null,
-    lastName: null,
-    email: null,
-    isTrainee: null,
-    isActive: null,
-    assignedSegments: null,
-  });
+  const [isFileSaved, setIsFileSaved] = useState(true);
 
   // shows/hides the left ("current") password accordingly
   // and changes the button text from "show" to "hide"
@@ -89,105 +83,73 @@ const AccountPage = ({
     }
   };
 
-  const getAccountInfo = async () => {
-    let currUser = await axios.get(`${process.env.REACT_APP_API_URL}/users/${id}`);
-    currUser = currUser.data;
-
-    setFirstName(currUser.firstName);
-    setLastName(currUser.lastName);
-    setEmail(currUser.email);
-    setIsTrainee(currUser.isTrainee);
-    setIsActive(currUser.isActive);
-    setAsignedSegments(currUser.segments.toString());
-    setUser({
-      ...user,
-      firstName: currUser.firstName,
-      lastName: currUser.lastName,
-      email: currUser.email,
-      isTrainee: currUser.isTrainee,
-      isActive: currUser.isActive,
-      assignedSegments: currUser.segments.toString(),
-      // currPassword: currUser.password,
-    });
-    const base64String = Buffer.from(currUser.profileImage.data.data).toString('base64');
-    setImageSource(`data:${currUser.profileImage.contentType};base64,${base64String}`);
-  };
-
-  useEffect(async () => {
-    setLoading(true);
-    await getAccountInfo();
-    setLoading(false);
-  }, []);
-
-  const checkChanges = () => {
-    if (
-      user.email !== email ||
-      user.firstName !== firstName ||
-      user.lastName !== lastName ||
-      currPassword ||
-      newPassword
-    ) {
-      setChangesMade(true);
-    } else {
-      setChangesMade(false);
+  useEffect(() => {
+    if (userData.profileImage && userData.profileImage.data && userData.profileImage.contentType) {
+      const base64String = Buffer.from(userData.profileImage.data.data).toString('base64');
+      setCloudImgSrc(`data:${userData.profileImage.contentType};base64,${base64String}`);
     }
-  };
+  }, [userData]);
 
   const saveUpload = upload => {
     URL.revokeObjectURL(file.preview);
     setFile(upload);
-    setChangesMade(true);
+    setIsFileSaved(false);
+  };
+
+  const formatAssignedSeg = () => {
+    const segments = userData.segments.map(segment => {
+      return segment.segmentId;
+    });
+    return segments.toString();
   };
   // submits the information the user entered into the form, bypassing default form submission effect
   // replace with POST call to backend when endpoints are ready
   const toast = useToast();
-  const handleSubmit = async e => {
-    e.preventDefault();
-    // if (newPassword && currPassword !== user.currPassword) {
-    //   return Toast(toast, 'password');
-    // }
-    if (currPassword && !newPassword) {
+  const onSubmit = async data => {
+    // Check if user filled current password, but empty new password
+    if (data.currPassword && !data.newPassword) {
       return Toast(toast, 'empty');
     }
-    const forsmata = new FormData();
-    forsmata.append('firstName', firstName);
-    forsmata.append('lastName', lastName);
-    forsmata.append('email', email);
-    if (file) forsmata.append('profileImage', file);
-    if (newPassword && currPassword) forsmata.append('password', newPassword);
-    try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/users/update/${id}`, forsmata);
-      setChangesMade(false);
-      setCurrPassword('');
-      setNewPassword('');
-      // if (newPassword)
-      //   setUser({
-      //     ...user,
-      //     firstName,
-      //     lastName,
-      //     email,
-      //     currPassword: newPassword,
-      //   });
-      // else {
-      setUser({
-        ...user,
-        firstName,
-        lastName,
-        email,
-      });
-      // }
 
-      return Toast(toast, 'success');
+    // Create form data to send to backend
+    const formData = new FormData();
+    formData.append('firstName', data.firstName);
+    formData.append('lastName', data.lastName);
+    formData.append('email', data.email);
+    if (file) formData.append('profileImage', file);
+
+    // First cross check current password
+    // Set updateResult to empty str incase dont need to update password
+    let updatePassResult = '';
+    try {
+      // Only if user inputs new password and curr password update passwords
+      if (data.newPassword && data.currPassword) {
+        updatePassResult = await updateUserPassword(data.newPassword, data.currPassword);
+      }
+      // Only if updating password was successful or didn't need to update password, update mongo
+      if (updatePassResult === 'success' || updatePassResult === '') {
+        await OCHBackend.put(`/users/update/${userData.id}`, formData);
+        setIsFileSaved(true);
+        reset(data);
+      }
+      return Toast(toast, updatePassResult);
     } catch (err) {
+      // Check if updated password, but not updated on mongo
+      if (updatePassResult === 'success' && err.response.data.message.includes('not update')) {
+        setIsFileSaved(true);
+        reset(data);
+        return Toast(toast, 'success');
+      }
       return Toast(toast, 'error');
     }
   };
 
-  if (isLoading) {
-    return <div>loading...</div>;
-  }
+  useEffect(() => {
+    if (isDirty || !isFileSaved) setChangesMade(true);
+    else setChangesMade(false);
+  }, [isDirty, isFileSaved]);
 
-  const imgSrc = file ? file.preview : null;
+  const fileImgSrc = file ? file.preview : null;
 
   return (
     <Box mb={{ lg: '100px' }}>
@@ -214,7 +176,7 @@ const AccountPage = ({
                   h="8"
                   borderRadius="full"
                   boxSize="180px"
-                  src={imgSrc || imageSource}
+                  src={fileImgSrc || cloudImgSrc}
                   alt="Profile picture"
                   objectFit="cover"
                   fallbackSrc={defaultPic}
@@ -260,45 +222,32 @@ const AccountPage = ({
               <GridItem colSpan={{ lg: 1 }} rowSpan={{ sm: 1 }}>
                 <FormControl>
                   <FormLabel>First Name</FormLabel>
-                  <Input
-                    placeholder="First Name"
+                  <Controller
                     name="firstName"
-                    type="text"
-                    value={firstName || ''}
-                    onChange={e => {
-                      setFirstName(e.target.value);
-                      checkChanges();
-                    }}
+                    control={control}
+                    render={({ field }) => (
+                      <Input placeholder="First Name" type="text" {...field} />
+                    )}
                   />
                 </FormControl>
               </GridItem>
               <GridItem colSpan={{ lg: 1 }} rowSpan={{ sm: 1 }}>
                 <FormControl>
                   <FormLabel>Last Name</FormLabel>
-                  <Input
-                    placeholder="Last Name"
+                  <Controller
                     name="lastName"
-                    type="text"
-                    value={lastName || ''}
-                    onChange={e => {
-                      setLastName(e.target.value);
-                      checkChanges();
-                    }}
+                    control={control}
+                    render={({ field }) => <Input placeholder="Last Name" type="text" {...field} />}
                   />
                 </FormControl>
               </GridItem>
               <GridItem colSpan={{ lg: 1 }} rowSpan={{ sm: 1 }}>
                 <FormControl>
                   <FormLabel>Email</FormLabel>
-                  <Input
-                    placeholder="Email"
+                  <Controller
                     name="email"
-                    type="email"
-                    value={email || ''}
-                    onChange={e => {
-                      setEmail(e.target.value);
-                      checkChanges();
-                    }}
+                    control={control}
+                    render={({ field }) => <Input placeholder="Email" type="text" {...field} />}
                   />
                 </FormControl>
               </GridItem>
@@ -313,7 +262,7 @@ const AccountPage = ({
                 <FormControl>
                   <FormLabel>Admin Training Status</FormLabel>
                   <Text pl="5" pt="2" h="40px" color="#2D3748" bgColor="#EDF2F7" borderRadius="5px">
-                    {isTrainee ? 'In-Training' : 'Not In-Training'}
+                    {userData.isTrainee ? 'In-Training' : 'Not In-Training'}
                   </Text>
                 </FormControl>
               </GridItem>
@@ -321,7 +270,7 @@ const AccountPage = ({
                 <FormControl>
                   <FormLabel>Admin Active Status</FormLabel>
                   <Text pl="5" pt="2" h="40px" color="#2D3748" bgColor="#EDF2F7" borderRadius="5px">
-                    {isActive ? 'Active' : 'Not Active'}
+                    {userData.isActive ? 'Active' : 'Not Active'}
                   </Text>
                 </FormControl>
               </GridItem>
@@ -329,7 +278,7 @@ const AccountPage = ({
                 <FormControl>
                   <FormLabel>Assigned Segment(s)</FormLabel>
                   <Text pl="5" pt="2" h="40px" color="#2D3748" bgColor="#EDF2F7" borderRadius="5px">
-                    {assignedSegments}
+                    {formatAssignedSeg()}
                   </Text>
                 </FormControl>
               </GridItem>
@@ -348,44 +297,39 @@ const AccountPage = ({
               <GridItem colSpan={{ lg: 1 }} rowSpan={{ sm: 1 }}>
                 <FormControl>
                   <FormLabel>Current Password</FormLabel>
-                  <InputGroup>
-                    <Input
-                      type={leftPasswordType}
-                      placeholder="Enter Password"
-                      value={currPassword || ''}
-                      name="currPassword"
-                      onChange={e => {
-                        setCurrPassword(e.target.value);
-                        checkChanges();
-                      }}
-                    />
-                    <InputRightAddon
-                      fontWeight={600}
-                      children={leftButtonText}
-                      onClick={toggleLeftPassword}
-                    />
-                  </InputGroup>
+                  <Controller
+                    name="currPassword"
+                    control={control}
+                    render={({ field }) => (
+                      <InputGroup>
+                        <Input type={leftPasswordType} placeholder="Enter Password" {...field} />
+                        <InputRightAddon
+                          fontWeight={600}
+                          children={leftButtonText}
+                          onClick={toggleLeftPassword}
+                        />
+                      </InputGroup>
+                    )}
+                  />
                 </FormControl>
               </GridItem>
               <GridItem colSpan={{ lg: 1 }} rowSpan={{ sm: 1 }}>
                 <FormControl>
                   <FormLabel>New Password</FormLabel>
-                  <InputGroup>
-                    <Input
-                      type={rightPasswordType}
-                      placeholder="Enter Password"
-                      value={newPassword || ''}
-                      onChange={e => {
-                        setNewPassword(e.target.value);
-                        checkChanges();
-                      }}
-                    />
-                    <InputRightAddon
-                      fontWeight={600}
-                      children={rightButtonText}
-                      onClick={toggleRightPassword}
-                    />
-                  </InputGroup>
+                  <Controller
+                    name="newPassword"
+                    control={control}
+                    render={({ field }) => (
+                      <InputGroup>
+                        <Input type={rightPasswordType} placeholder="Enter Password" {...field} />
+                        <InputRightAddon
+                          fontWeight={600}
+                          children={rightButtonText}
+                          onClick={toggleRightPassword}
+                        />
+                      </InputGroup>
+                    )}
+                  />
                 </FormControl>
               </GridItem>
             </SimpleGrid>
@@ -396,11 +340,11 @@ const AccountPage = ({
                 mt={{ lg: '1.5em', sm: '7em' }}
               >
                 <Input
-                  disabled={!changesMade}
+                  disabled={!isDirty && isFileSaved}
                   color="#F7FAFC"
                   bg="#2D3748"
                   type="submit"
-                  onClick={handleSubmit}
+                  onClick={handleSubmit(onSubmit)}
                   _hover={{ cursor: 'pointer' }}
                   w={{ lg: '31%', sm: '100%' }}
                   h="3em"
@@ -416,9 +360,7 @@ const AccountPage = ({
 };
 
 AccountPage.propTypes = {
-  changesMade: PropTypes.bool.isRequired,
   setChangesMade: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
 };
 
 export default AccountPage;

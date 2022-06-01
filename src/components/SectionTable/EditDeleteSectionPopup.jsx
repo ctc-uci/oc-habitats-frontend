@@ -75,7 +75,7 @@ const ModalContentEditSection = ({ editSection, section, onClose }) => {
               <FormErrorMessage>{errors.sectionMapLink?.message}</FormErrorMessage>
             </FormControl>
           </Stack>
-          <ModalFooter>
+          <ModalFooter pr={0}>
             <Button colorScheme="gray" mr={3} onClick={onClose}>
               Close
             </Button>
@@ -99,11 +99,16 @@ const EditDeleteSectionPopup = ({ section, getSections }) => {
         name: newSection.sectionName,
         map: newSection.sectionMapLink,
       });
+      toast({
+        title: `Successfully updated Section ${newSection.sectionId}.`,
+        status: 'success',
+        isClosable: true,
+      });
       getSections();
       onClose();
     } catch (err) {
       toast({
-        title: 'An Error Occured!',
+        title: `Unable to update Section ${newSection.sectionId}.`,
         description: err?.message,
         status: 'error',
         isClosable: true,
@@ -116,11 +121,16 @@ const EditDeleteSectionPopup = ({ section, getSections }) => {
     try {
       // eslint-disable-next-line no-underscore-dangle
       await OCHBackend.delete(`/section/${section._id}`);
+      toast({
+        title: `Successfully deleted Section ${section._id}.`,
+        status: 'success',
+        isClosable: true,
+      });
       getSections();
       onClose();
     } catch (err) {
       toast({
-        title: 'An Error Occured!',
+        title: `Unable to delete Section ${section._id}.`,
         description: err?.message,
         status: 'error',
         isClosable: true,

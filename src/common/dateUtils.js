@@ -1,18 +1,21 @@
 // From the backend, dates are formatted as YYYY-MM-DDTHH:MM:SS.SSSZ
 
+import { format, intlFormat } from 'date-fns';
+
 // Returns date formatted as MM/DD/YYYY
 const formatDate = datetime => {
   const date = new Date(datetime);
-  return date.toLocaleDateString('en-US');
+  try {
+    return intlFormat(date);
+  } catch {
+    return 'Invalid Date';
+  }
 };
 
 // Returns time formatted as HH:MM (AM/PM)
 const formatTime = datetime => {
   const date = new Date(datetime);
-  const hours = date.getHours() % 12;
-  const minutes = date.getMinutes();
-  const meridiem = date.getHours() < 12 ? 'AM' : 'PM';
-  return `${hours}:${minutes} ${meridiem}`;
+  return format(date, 'hh:mm a');
 };
 
 export { formatDate, formatTime };

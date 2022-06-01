@@ -46,7 +46,7 @@ const AdminDashboardPage = () => {
     };
 
     getData();
-
+    
     return () => {};
   }, []);
 

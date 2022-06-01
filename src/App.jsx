@@ -20,11 +20,14 @@ import AdminPage from '../src/pages/AdminPage';
 import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
+import MonitorLogEditPage from './pages/MonitorLogEditPage';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import Numbers from './pages/EmergencyNumbers';
+import VolunteerLogs from './pages/VolunteerLogsPage';
+import NotFoundPage from './pages/NotFoundPage';
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
 import { UserContextProvider } from './common/UserContext/UserContext';
@@ -54,6 +57,7 @@ function App() {
                 />
                 <Routes>
                   {/* Add routes as needed; route names subject to change */}
+                  <Route path="*" element={<NotFoundPage />} />
                   <Route path="/register/:inviteID" element={<InviteLandingPage />} />
                   <Route exact path="/invite" element={<AdminInviteModal />} />
                   <Route
@@ -71,62 +75,91 @@ function App() {
                     exact
                     path="/account"
                     element={
-                      <AccountPage
-                        changesMade={accMadeChanges}
-                        setChangesMade={setAccMadeChanges}
-                      />
+                      <ProtectedRoute redirectPath="/logout" roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
+                        <AccountPage setChangesMade={setAccMadeChanges} />
+                      </ProtectedRoute>
                     }
                   />
                   <Route
                     exact
                     path="/edit-log/:id"
                     element={
-                      <ProtectedRoute
-                        Component={() => <MonitorLogPage mode="edit" />}
-                        redirectPath="/login"
-                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
-                      />
+                      <ProtectedRoute redirectPath="/login" roles={[ADMIN_ROLE]}>
+                        <MonitorLogPage mode="edit" />
+                      </ProtectedRoute>
                     }
                   />
                   <Route
                     exact
                     path="/review-log/:id"
                     element={
+                      <ProtectedRoute redirectPath="/login" roles={[ADMIN_ROLE]}>
+                        <MonitorLogPage mode="review" />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/sections"
+                    element={
                       <ProtectedRoute
-                        Component={() => <MonitorLogPage mode="review" />}
-                        redirectPath="/login"
+                        Component={SectionPage}
                         roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
                       />
                     }
                   />
-                  <Route exact path="/sections" element={<SectionPage />} />
-                  <Route exact path="/species" element={<Species />} />
+                  <Route
+                    exact
+                    path="/species"
+                    element={<ProtectedRoute Component={Species} roles={[ADMIN_ROLE]} />}
+                  />
                   {/* Admin only routes (TO DO, make admin only) */}
                   <Route exact path="/people" element={<PeoplePage />} />
                   <Route
                     exact
                     path="/create-log"
                     element={
+                      <ProtectedRoute roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
+                        <MonitorLogPage key="new-create" />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/create-log/:id"
+                    element={
+                      <ProtectedRoute roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
+                        <MonitorLogPage key="continue-create" />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/edit-log-template"
+                    element={<ProtectedRoute Component={MonitorLogEditPage} roles={[ADMIN_ROLE]} />}
+                  />
+                  <Route
+                    exact
+                    path="/your-logs"
+                    element={
                       <ProtectedRoute
-                        Component={MonitorLogPage}
-                        redirectPath="/login"
+                        Component={VolunteerLogs}
+                        path="/logout"
                         roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
                       />
                     }
                   />
-                  <Route exact path="/numbers" element={<Numbers />} />
-                  <Route exact path="/map" />
-                  <Route exact path="/logs" element={<AdminPage />} />
-                  <Route exact path="/common-table-example" element={<CommonTableExample />} />
                   <Route
-                    path="/user-context-example"
+                    exact
+                    path="/numbers"
                     element={
-                      <ProtectedRoute
-                        Component={UserContextExample}
-                        redirectPath="/logout"
-                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
-                      />
+                      <ProtectedRoute Component={Numbers} roles={[ADMIN_ROLE, VOLUNTEER_ROLE]} />
                     }
+                  />
+                  <Route
+                    exact
+                    path="/logs"
+                    element={<ProtectedRoute Component={AdminPage} roles={[ADMIN_ROLE]} />}
                   />
                   {/* NEW AUTH ROUTES */}
                   <Route path="/login" element={<Login />} />
@@ -142,14 +175,25 @@ function App() {
                       />
                     }
                   />
-                  {/* <Route path="/new-user" element={<NewUser />} /> */}
-                  <Route exact path="/map" />
-                  <Route exact path="/logs" element={<AdminPage />} />
+                  {/* TEST ROUTES TO REMOVE */}
+                  <Route exact path="/common-table-example" element={<CommonTableExample />} />
+                  <Route
+                    path="/user-context-example"
+                    element={
+                      <ProtectedRoute
+                        Component={UserContextExample}
+                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
+                      />
+                    }
+                  />
                   <Route exact path="/common-table-example" element={<CommonTableExample />} />
                 </Routes>
               </Box>
               <Routes>
-                <Route exact path="/create-log" />
+                <Route path="/create-log" />
+                <Route path="/create-log/:id" />
+                <Route path="/edit-log/:id" />
+                <Route path="/review-log/:id" />
                 <Route path="/*" element={<Footer />} />
               </Routes>
             </Box>

@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@chakra-ui/react';
-import { ApplyBadge, DateFormat, Check, AllCheck, VolunteerColumn } from './AdminPageRows';
+import { chakra, Button } from '@chakra-ui/react';
+import { FiArrowRight } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { DateFormat, Check, AllCheck, VolunteerColumn } from './AdminPageRows';
+import { SubmissionStatusBadge } from '../../common/SubmissionStatusBadge';
 
 const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
   /* eslint-disable react/destructuring-assignment, react/prop-types */
@@ -45,14 +48,23 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       id: 'status',
       Header: 'Approval Status',
       accessor: 'status',
-      Cell: ({ value }) => <ApplyBadge approval={value} />,
+      Cell: ({ value }) => <SubmissionStatusBadge status={value} />,
     },
     {
       id: 'review',
       Header: '',
       accessor: '_id',
       disableSortBy: true,
-      Cell: ({ value }) => <Button approval={value}>Review</Button>,
+      Cell: ({ value }) => (
+        <Link to={`/review-log/${value}`}>
+          <Button bg="transparent" approval={value}>
+            Review{' '}
+            <chakra.span ml="2">
+              <FiArrowRight />
+            </chakra.span>
+          </Button>
+        </Link>
+      ),
     },
   ];
   return cellStructure;
