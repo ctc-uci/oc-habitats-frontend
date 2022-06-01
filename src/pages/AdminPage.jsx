@@ -73,7 +73,7 @@ const AdminPage = () => {
       m.set(data.results[i]._id, false);
     }
     setChecked(m);
-  }, [segmentFilter, dateFilter, approvalFilter, searchFilter]);
+  }, [data.results, segmentFilter, dateFilter, approvalFilter, searchFilter]);
 
   useEffect(() => {
     getSegments();
