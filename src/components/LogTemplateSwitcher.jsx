@@ -12,7 +12,7 @@ const LogTemplateSwitcher = ({ type }) => {
     const res = await OCHBackend.get('species', { withCredentials: true });
     setPredators(
       res.data
-        .filter(s => s.isPredator && (!s.isListed || s.isNeither))
+        .filter(s => s.category === 'JUST_PREDATOR' || s.category === 'NON_LISTED_PREDATOR')
         .map(s => ({
           name: s.name,
           _id: s._id,

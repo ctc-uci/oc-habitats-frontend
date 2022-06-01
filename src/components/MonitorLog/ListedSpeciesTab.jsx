@@ -135,7 +135,7 @@ const ListedSpeciesTab = ({
     // querying listed species from backend and wrangling with the data
     const species = await OCHBackend.get('/species/');
     const speciesData = species.data;
-    const filteredSpeciesData = speciesData.filter(el => el.isListed && !el.isPredator);
+    const filteredSpeciesData = speciesData.filter(el => el.category === 'LISTED');
     const mappedSpecies = filteredSpeciesData.map(el => `${el.name} (${el.code})`);
     setListedSpeciesList(mappedSpecies);
   }, [questionAdded, tabEdited]);
