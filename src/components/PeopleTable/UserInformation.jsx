@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Container,
-  Text,
   FormLabel,
   Input,
   FormControl,
   GridItem,
   SimpleGrid,
-  Image,
   Avatar,
   VStack,
   Heading,
@@ -221,7 +219,6 @@ const UserInformation = () => {
         sortAscending: sortBy && sortBy.length === 1 ? !sortBy[0].desc : null,
       };
       const res = await OCHBackend.get('/submissions', { params: query });
-      console.log(res);
       setData(res.data);
       setPageCount(Math.ceil(res.data.total / fetchSettings.pageSize));
       setDataLoaded(true);
@@ -241,10 +238,6 @@ const UserInformation = () => {
   };
 
   const updateUser = async ({ isTrainee, isActive }) => {
-    console.log({
-      isTrainee,
-      isActive,
-    });
     await OCHBackend.put(`/users/update/${id}`, { isTrainee, isActive });
     await fetchUser();
   };
