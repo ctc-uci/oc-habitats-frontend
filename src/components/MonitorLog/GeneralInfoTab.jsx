@@ -40,7 +40,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
   };
 
   useEffect(async () => {
-    const newQuestions = await OCHBackend.get(`/forms/general`);
+    const newQuestions = await OCHBackend.get(`/forms/general`, { withCredentials: true });
     const questions = await newQuestions.data;
 
     console.log(newQuestions);

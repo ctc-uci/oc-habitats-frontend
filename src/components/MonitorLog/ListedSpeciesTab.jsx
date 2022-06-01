@@ -128,7 +128,7 @@ const ListedSpeciesTab = ({
   }, [data]);
 
   useEffect(async () => {
-    const newQuestions = await OCHBackend.get(`/forms/listed-species`);
+    const newQuestions = await OCHBackend.get(`/forms/listed-species`, { withCredentials: true });
     const questions = await newQuestions.data;
     setAdditionalQuestions(questions.additionalFields);
 

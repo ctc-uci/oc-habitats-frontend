@@ -118,7 +118,7 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
   };
 
   useEffect(async () => {
-    const newQuestions = await OCHBackend.get(`/forms/human-activity`);
+    const newQuestions = await OCHBackend.get(`/forms/human-activity`, { withCredentials: true });
     const questions = await newQuestions.data;
 
     setAdditionalQuestions(questions.additionalFields);

@@ -31,16 +31,20 @@ const NewQuestionModal = ({ currentTemplate, refreshTrigger }) => {
   const addQuestionModal = useDisclosure();
 
   const addQuestion = async () => {
-    await OCHBackend.post('/forms/create/field', {
-      formType: currentTemplate,
-      fieldBody: {
-        title,
-        subtitle: 'temporary subtitle',
-        fieldType: type,
-        static: false,
-        tooltip,
+    await OCHBackend.post(
+      '/forms/create/field',
+      {
+        formType: currentTemplate,
+        fieldBody: {
+          title,
+          subtitle: 'temporary subtitle',
+          fieldType: type,
+          static: false,
+          tooltip,
+        },
       },
-    });
+      { withCredentials: true },
+    );
     refreshTrigger(true);
     addQuestionModal.onClose();
   };
