@@ -202,7 +202,7 @@ const registerWithEmailAndPassword = async (
   } catch (err) {
     throw new Error(err.message);
   }
-  await OCHBackend.delete(`/adminInvite/${email}`);
+  await OCHBackend.delete(`/adminInvite/${email}`, { withCredentials: true });
   navigate(redirectPath);
 };
 
@@ -350,16 +350,20 @@ const sendInviteEmail = (email, emailTemplate) => {
 const initiateInviteProcess = (email, role) => {
   try {
     const id = uuidv4();
-    const url = `localhost:3000/register/${id}`;
+    const url = `localhost:3000/register/${id}`; // TODO: change domain name
     console.log('URL passed into register is');
     console.log(url);
     const expireDate = moment().add(1, 'days');
-    OCHBackend.post('/adminInvite/', {
-      id,
-      email,
-      role,
-      expireDate,
-    });
+    OCHBackend.post(
+      '/adminInvite/',
+      {
+        id,
+        email,
+        role,
+        expireDate,
+      },
+      { withCredentials: true },
+    );
 
     sendInviteEmail(email, <AdminInviteEmail role={role} url={url} />);
   } catch (err) {
