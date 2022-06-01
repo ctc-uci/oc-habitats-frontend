@@ -78,7 +78,7 @@ const badgeContent = data => {
 
 const NameColumn = ({ data, isMobile }) => {
   return (
-    <HStack w="100%" justifyContent="space-between">
+    <HStack justifyContent="space-between">
       <Flex h="72px" gap="12px" alignItems="center">
         <Avatar size="md" name={data.registered ? data.name : data.email} src="something" />
         <VStack alignItems="flex-start">
@@ -113,7 +113,7 @@ const StyledBadge = ({ bgColor, textColor, text }) => (
 
 const SegmentAndButtonColumn = ({ data }) => {
   return (
-    <HStack w="100%" justifyContent="space-between">
+    <HStack justifyContent="space-between">
       <VStack align="normal">
         {data?.segments?.map((segment, i) => (
           // eslint-disable-next-line react/no-array-index-key

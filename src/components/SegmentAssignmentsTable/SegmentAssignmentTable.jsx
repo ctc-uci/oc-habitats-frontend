@@ -50,9 +50,6 @@ const tableContent = (segmentData, isLoading) => {
         <SegmentNameCol segment={segment} />
       </Td>
       <Td>
-        <Text as="i">XX-XX-20XX</Text>
-      </Td>
-      <Td>
         <VolunteerCol volunteers={segment.volunteerData} />
       </Td>
     </Tr>
@@ -65,9 +62,6 @@ const SegmentAssignmentsTable = ({ segmentData, isLoading }) => {
       <CommonTableHeader loading={isLoading}>
         <Th fontSize="12px" maxW="420px" minW="420px">
           Segment Name {isLoading}
-        </Th>
-        <Th fontSize="12px" maxW="135px" minW="135px">
-          Last Updated
         </Th>
         <Th fontSize="12px" maxW="475px" minW="475px">
           Assigned Volunteer(s)
