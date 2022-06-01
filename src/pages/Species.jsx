@@ -62,7 +62,9 @@ const Species = () => {
   const getSpecies = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/species`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/species`, {
+        withCredentials: true,
+      });
       const formattedData = {
         listed: {
           id: 'listed',
@@ -113,6 +115,7 @@ const Species = () => {
       code: newSpecies.code,
       category: newSpecies.category,
       isAssigned: false,
+      withCredentials: true,
     });
     setChange(!change);
   };
@@ -123,6 +126,7 @@ const Species = () => {
       code: newSpecies.code,
       category: newSpecies.category,
       isAssigned: false,
+      withCredentials: true,
     });
     setChange(!change);
   };
@@ -134,13 +138,16 @@ const Species = () => {
       code: newSpecies.code,
       category: newSpecies.category,
       isAssigned: false,
+      withCredentials: true,
     });
     setChange(c => !c);
   };
 
   const deleteSpecies = async deletedSpecie => {
     // eslint-disable-next-line dot-notation
-    await axios.delete(`${process.env.REACT_APP_API_URL}/species/${deletedSpecie}`);
+    await axios.delete(`${process.env.REACT_APP_API_URL}/species/${deletedSpecie}`, {
+      withCredentials: true,
+    });
     setChange(c => !c);
   };
   const isAdmin = true;

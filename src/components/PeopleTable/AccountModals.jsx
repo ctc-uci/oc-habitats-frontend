@@ -71,6 +71,7 @@ const ClearSegmentModal = ({ userData, refreshData, isOpen, onClose }) => {
     await OCHBackend.put('/users/setSegmentAssignments', {
       profileId: userData?.userId,
       segmentIds: [],
+      withCredentials: true,
     });
     await refreshData();
     onClose();
@@ -124,6 +125,7 @@ const ConvertAccountTypeModal = ({ userData, refreshData, isOpen, onClose }) => 
     const newRole = userData?.role === VOLUNTEER_ROLE ? ADMIN_ROLE : VOLUNTEER_ROLE;
     await OCHBackend.put(`/users/update/${userData?.userId}`, {
       role: newRole,
+      withCredentials: true,
     });
     await refreshData();
     onClose();

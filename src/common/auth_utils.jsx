@@ -115,6 +115,7 @@ const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
       isActive: true,
       isTrainee: false,
       registered: true,
+      withCredentials: true,
     });
   } catch (err) {
     throw new Error(err.message);

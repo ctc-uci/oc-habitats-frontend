@@ -93,8 +93,8 @@ const MonitorLogPage = ({ mode }) => {
     if (submissionId) {
       try {
         const [submission, segments] = await Promise.all([
-          OCHBackend.get(`submission/${submissionId}`),
-          OCHBackend.get(`segments`),
+          OCHBackend.get(`submission/${submissionId}`, { withCredentials: true }),
+          OCHBackend.get(`segments`, { withCredentials: true }),
         ]);
         if (submission.data.date) {
           submission.data.date = parseISO(submission.data.date);
@@ -104,7 +104,9 @@ const MonitorLogPage = ({ mode }) => {
         if (submission.data.segment) {
           setSegmentData(segments.data.find(s => s._id === submission.data.segment));
         }
-        const submitter = await OCHBackend.get(`users/${submission.data.submitter}`);
+        const submitter = await OCHBackend.get(`users/${submission.data.submitter}`, {
+          withCredentials: true,
+        });
         setSubmitterData(submitter.data);
       } catch (err) {
         // eslint-disable-next-line no-console

@@ -27,9 +27,9 @@ const PeoplePage = () => {
 
   const fetchTableData = async () => {
     const [users, pendingUsers, segmentsData] = await Promise.all([
-      OCHBackend.get('users/'),
-      OCHBackend.get('adminInvite/'),
-      OCHBackend.get('segments/'),
+      OCHBackend.get('users/', { withCredentials: true }),
+      OCHBackend.get('adminInvite/', { withCredentials: true }),
+      OCHBackend.get('segments/', { withCredentials: true }),
     ]).catch(err => {
       // eslint-disable-next-line no-console
       console.error(err.message);
