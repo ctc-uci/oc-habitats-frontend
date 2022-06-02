@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { React, useState, useEffect } from 'react';
-import { Text, Box } from '@chakra-ui/react';
+import { Text, Box, Progress } from '@chakra-ui/react';
 import MonitorLogSubmissionStats from '../components/AdminDashboard/MonitorLogSubmissionStats';
 import SightedListedSpecies from '../components/AdminDashboard/SightedListedSpecies';
 import EmergentIssues from '../components/AdminDashboard/EmergentIssues';
@@ -43,6 +43,7 @@ const AdminDashboardPage = () => {
         setIsLoading(true);
         const response = await OCHBackend.get('/dashboard');
         setInfo(response.data);
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -76,11 +77,13 @@ const AdminDashboardPage = () => {
         Notifications
       </Text>
 
-      {numNotifications ? (
-        <LogNotification numNotifications={numNotifications} />
-      ) : (
-        <Text as="i">There are no monitor logs to ready to review at this time.</Text>
-      )}
+      {isLoading && <Progress colorScheme="green" isIndeterminate />}
+      {!isLoading &&
+        (numNotifications ? (
+          <LogNotification numNotifications={numNotifications} />
+        ) : (
+          <Text as="i">There are no monitor logs to ready to review at this time.</Text>
+        ))}
 
       <MonitorLogSubmissionStats
         month={month}

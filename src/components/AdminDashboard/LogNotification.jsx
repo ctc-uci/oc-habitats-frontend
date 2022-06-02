@@ -31,9 +31,9 @@ const LogNotification = ({ numNotifications }) => {
               <ArrowForwardIcon />
             </Button>
           </Link>
-          <Button colorScheme="#C6F6D5" p={0} variant="ghost">
+          {/* <Button colorScheme="#C6F6D5" p={0} variant="ghost">
             <CloseIcon fontSize="13px" />
-          </Button>
+          </Button> */}
         </Flex>
       </Flex>
     </Box>

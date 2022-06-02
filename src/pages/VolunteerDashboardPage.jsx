@@ -106,7 +106,7 @@ const VolunteerDashboardPage = () => {
   const Segments = () => {
     if (userData.segments.length === 0) {
       return (
-        <Text fontSize={{ md: '16px', sm: '14px' }}>
+        <Text as="i" fontSize={{ md: '16px', sm: '14px' }}>
           You have not been assigned any segments this month. If you believe this is a mistake,
           please contact ochabitats@ochabitats.org.
         </Text>
@@ -132,7 +132,7 @@ const VolunteerDashboardPage = () => {
 
     if (userDrafts.length === 0) {
       return (
-        <Text fontSize={{ md: '16px', sm: '14px' }}>
+        <Text as="i" fontSize={{ md: '16px', sm: '14px' }}>
           You do not have any unsubmitted log drafts.
         </Text>
       );
@@ -153,14 +153,17 @@ const VolunteerDashboardPage = () => {
   };
 
   const Recents = () => {
+    // get at most 6 submissions that have not been approved, sorted by date then status
     const notApproved = userSubmissions
       .filter(
         submission =>
           submission.status === 'EDITS_REQUESTED' || submission.status === 'UNDER_REVIEW',
       )
       .sort((a, b) => b.lastEditedAt.localeCompare(a.lastEditedAt))
-      .sort((a, b) => a.status.localeCompare(b.status));
+      .sort((a, b) => a.status.localeCompare(b.status))
+      .slice(0, 6);
 
+    // if # not approved is not 6, fill the rest of the array with recently approved logs
     const recents = notApproved.concat(
       userSubmissions
         .sort((a, b) => b?.submittedAt?.localeCompare(a?.submittedAt))
@@ -170,7 +173,7 @@ const VolunteerDashboardPage = () => {
 
     if (recents.length === 0) {
       return (
-        <Text fontSize={{ md: '16px', sm: '14px' }}>
+        <Text as="i" fontSize={{ md: '16px', sm: '14px' }}>
           You do not have any recently submitted logs.
         </Text>
       );
@@ -198,7 +201,13 @@ const VolunteerDashboardPage = () => {
         Notifications
       </Heading>
       <VStack spacing="5px" align="left">
-        {Notifications()}
+        {userNotifications.length ? (
+          Notifications()
+        ) : (
+          <Text as="i" fontSize={{ md: '16px', sm: '14px' }}>
+            There are no new notifications.
+          </Text>
+        )}
       </VStack>
       <br />
       <Heading size="md">Segment Assignment(s)</Heading>
