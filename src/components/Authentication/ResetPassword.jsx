@@ -4,6 +4,7 @@ import {
   Heading,
   Spacer,
   Text,
+  Link,
   Box,
   InputGroup,
   Input,
@@ -19,7 +20,7 @@ const ResetPassword = ({ code }) => {
   const [email, setEmail] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [confirmationMessage, setConfirmationMessage] = useState();
+  const [confirmationMessage, setConfirmationMessage] = useState('');
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 
@@ -39,7 +40,9 @@ const ResetPassword = ({ code }) => {
       if (password === checkPassword) {
         if (password.length > 5) {
           await confirmNewPassword(code, password);
-          setConfirmationMessage('yay');
+          setConfirmationMessage(
+            'Your password has been successfully reset. Return to the login screen to sign in using your new password.',
+          );
         } else {
           console.log('to short');
           setErrorMessage('Password must be 6 characters or longer');
@@ -116,10 +119,12 @@ const ResetPassword = ({ code }) => {
           </form>
         )}
         {confirmationMessage && (
-          <div>
-            <p>{confirmationMessage}</p>
-            <a href="/">Back to Login</a>
-          </div>
+          <Flex direction="column" bg="rgba(43, 192, 227, .10)" gap={3} p={12} borderRadius={6}>
+            <Text>{confirmationMessage}</Text>
+            <Button bgColor="ochBlue" w={{ md: '200px', base: '100%' }} alignSelf="flex-end">
+              <Link to="/login">Back to Login</Link>
+            </Button>
+          </Flex>
         )}
       </Flex>
     </Container>
