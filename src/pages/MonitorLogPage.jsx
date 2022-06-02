@@ -202,6 +202,14 @@ const MonitorLogPage = ({ mode }) => {
         });
         return;
       }
+      if (!formMethods.getValues('date')) {
+        toast({
+          title: 'Missing information',
+          description: 'Please input a date before saving.',
+          status: 'error',
+        });
+        return;
+      }
       if (!formMethods.getValues('_id')) {
         formMethods.setValue('status', 'UNSUBMITTED');
         const res = await submitForm();
