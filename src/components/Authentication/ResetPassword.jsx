@@ -9,19 +9,28 @@ import {
   Input,
   InputRightElement,
   Button,
-  Center,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { confirmNewPassword } from '../../common/auth_utils';
+import { confirmNewPassword, verifyPasswordReset } from '../../common/auth_utils';
 
 const ResetPassword = ({ code }) => {
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [confirmationMessage, setConfirmationMessage] = useState();
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+
+  useEffect(async () => {
+    try {
+      const verifiedEmail = await verifyPasswordReset(code);
+      setEmail(verifiedEmail);
+    } catch (err) {
+      console.log(err);
+    }
+  });
 
   const handleResetPassword = async e => {
     e.preventDefault();
@@ -51,7 +60,10 @@ const ResetPassword = ({ code }) => {
         {!confirmationMessage && (
           <form onSubmit={handleResetPassword}>
             <Flex direction="column" bg="rgba(43, 192, 227, .10)" gap={3} p={12} borderRadius={6}>
-              <Text> Enter a new password below to reset the password for *ask about this* </Text>
+              <Text>
+                {' '}
+                Enter a new password below to reset the password for <b>{email}</b>{' '}
+              </Text>
               <Text fontWeight="500">New Password</Text>
               <Box>
                 <InputGroup size="md">
