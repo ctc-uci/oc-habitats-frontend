@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { React, useState, useEffect } from 'react';
-import { Text, Box } from '@chakra-ui/react';
+import { Text, Box, Progress } from '@chakra-ui/react';
 import MonitorLogSubmissionStats from '../components/AdminDashboard/MonitorLogSubmissionStats';
 import SightedListedSpecies from '../components/AdminDashboard/SightedListedSpecies';
 import EmergentIssues from '../components/AdminDashboard/EmergentIssues';
@@ -26,6 +26,7 @@ const month = monthNames[new Date().getMonth()];
 const year = new Date().getUTCFullYear();
 
 const AdminDashboardPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const { userData } = useUserContext();
   const [info, setInfo] = useState({
     listedSpeciesInfo: [],
@@ -39,8 +40,10 @@ const AdminDashboardPage = () => {
   useEffect(() => {
     const getData = async () => {
       try {
+        setIsLoading(true);
         const response = await OCHBackend.get('/dashboard');
         setInfo(response.data);
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -55,7 +58,9 @@ const AdminDashboardPage = () => {
       const underReview = info.uncompletedSubmissions.filter(
         submissionType => submissionType._id === 'UNDER_REVIEW',
       );
-      notificationNum = underReview.submissions ? underReview.submissions.length : 0;
+      if (underReview && underReview.length !== 0) {
+        notificationNum = underReview[0].submissions.length;
+      }
     }
     return notificationNum;
   };
@@ -72,7 +77,13 @@ const AdminDashboardPage = () => {
         Notifications
       </Text>
 
-      {numNotifications ? <LogNotification numNotifications={numNotifications} /> : <></>}
+      {isLoading && <Progress colorScheme="green" isIndeterminate />}
+      {!isLoading &&
+        (numNotifications ? (
+          <LogNotification numNotifications={numNotifications} />
+        ) : (
+          <Text as="i">There are no monitor logs to ready to review at this time.</Text>
+        ))}
 
       <MonitorLogSubmissionStats
         month={month}

@@ -5,6 +5,7 @@ import DropdownSearch from '../components/DropdownSearch';
 import SpeciesList from '../components/Species/SpeciesList';
 import NewSpeciesModal from '../components/Species/NewSpeciesModal';
 import NewPredatorModal from '../components/Species/NewPredatorModal';
+import { useUserContext } from '../common/UserContext/UserContext';
 
 const initialData = {
   endangered: {
@@ -55,6 +56,9 @@ const Species = () => {
   const [change, setChange] = useState(true);
   // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(true);
+  const user = useUserContext();
+  const isAdmin = user.userData.role === 'admin';
+
   const highlightSearch = e => {
     if (e) setSearchItem(e.value);
     else setSearchItem('');
@@ -143,7 +147,7 @@ const Species = () => {
     await axios.delete(`${process.env.REACT_APP_API_URL}/species/${deletedSpecie}`);
     setChange(c => !c);
   };
-  const isAdmin = true;
+
   return (
     <Center>
       <Stack w="container.xl" justify-content="center" mb="4em" mx="1.5em">

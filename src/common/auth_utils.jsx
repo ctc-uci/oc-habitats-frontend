@@ -342,30 +342,29 @@ addAuthInterceptor(OCHBackend);
 
 // -------- ADMIN INVITE ROUTES START HERE ------------------------------------------
 
-const sendInviteEmail = (email, emailTemplate) => {
-  OCHBackend.post('/nodemailer/send', {
+const sendInviteEmail = async (email, emailTemplate) => {
+  await OCHBackend.post('/nodemailer/send', {
     email,
     messageHtml: renderEmail(emailTemplate),
   });
 };
 
-const initiateInviteProcess = (email, role) => {
+const initiateInviteProcess = async (email, role) => {
   try {
     const id = uuidv4();
     const url = `localhost:3000/register/${id}`;
     console.log('URL passed into register is');
     console.log(url);
     const expireDate = moment().add(1, 'days');
-    OCHBackend.post('/adminInvite/', {
+    await OCHBackend.post('adminInvite', {
       id,
       email,
       role,
       expireDate,
     });
-
-    sendInviteEmail(email, <AdminInviteEmail role={role} url={url} />);
+    await sendInviteEmail(email, <AdminInviteEmail role={role} url={url} />);
   } catch (err) {
-    throw new Error(err.message);
+    throw new Error(err.response.data);
   }
 };
 

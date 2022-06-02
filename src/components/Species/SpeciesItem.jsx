@@ -4,10 +4,11 @@ import { Text, Menu, MenuButton, MenuList, Button } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import EditSpeciesModal from './EditSpeciesModal';
 import DeleteSpeciesModal from './DeleteSpeciesModal';
+import { useUserContext } from '../../common/UserContext/UserContext';
 
 const SpeciesItem = ({ specie, index, searchItem, col, editSpecies, deleteSpecies }) => {
-  // this is hardcoded to be false change with context
-  const isAdmin = true;
+  const user = useUserContext();
+  const isAdmin = user.userData.role === 'admin';
   return (
     <div draggableId={specie} index={index}>
       <Menu>

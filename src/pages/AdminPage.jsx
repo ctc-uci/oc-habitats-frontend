@@ -6,7 +6,7 @@ import AdminPageFilters from '../components/AdminPageTable/AdminPageFilters';
 import AdminPageTable from '../components/AdminPageTable/AdminPageTable';
 import ExportLogsModal from '../components/AdminPageTable/ExportLogsModal';
 import GenerateReportModal from '../components/AdminPageTable/GenerateReportModal';
-import SetReminderModal from '../components/AdminPageTable/SetReminderModal';
+// import SetReminderModal from '../components/AdminPageTable/SetReminderModal';
 
 const AdminPage = () => {
   const [segmentFilter, setSegmentFilter] = useState('');
@@ -98,7 +98,7 @@ const AdminPage = () => {
         <Flex gap="24px">
           <GenerateReportModal />
           <ExportLogsModal count={checkCount()} />
-          <SetReminderModal />
+          {/* <SetReminderModal /> */}
         </Flex>
 
         <Text my="20px">
