@@ -77,10 +77,16 @@ const badgeContent = data => {
 };
 
 const NameColumn = ({ data, isMobile }) => {
+  const profileImage =
+    data.profileImage && data.profileImage.data && data.profileImage.contentType
+      ? `data:${data.profileImage.contentType};base64,${Buffer.from(
+          data.profileImage.data.data,
+        ).toString('base64')}`
+      : '';
   return (
     <HStack justifyContent="space-between">
       <Flex h="72px" gap="12px" alignItems="center">
-        <Avatar size="md" name={data.registered ? data.name : data.email} src="something" />
+        <Avatar size="md" name={data.registered ? data.name : data.email} src={profileImage} />
         <VStack alignItems="flex-start">
           <Text>{data.registered ? data.name : null}</Text>
           <Text color="gray.500">{data.email}</Text>
