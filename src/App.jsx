@@ -26,6 +26,9 @@ import PeoplePage from './pages/PeoplePage';
 import Species from './pages/Species';
 import Numbers from './pages/EmergencyNumbers';
 
+// remove this when done
+import ResetPassword from './components/Authentication/ResetPassword';
+
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
 
@@ -152,6 +155,8 @@ function App() {
                   <Route exact path="/map" />
                   <Route exact path="/logs" element={<AdminPage />} />
                   <Route exact path="/common-table-example" element={<CommonTableExample />} />
+                  {/* remove this when done */}
+                  <Route exact path="/reset-test" element={<ResetPassword />} />
                 </Routes>
               </Box>
               <Routes>
