@@ -39,25 +39,25 @@ const SightedListedSpeciesTable = ({ name, speciesData }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {speciesData.length === 0 && (
+            {Object.keys(speciesData).length === 0 && (
               <Tr>
                 <Td>{'  '}</Td>
               </Tr>
             )}
-            {speciesData.map(data => {
+            {Object.entries(speciesData).map(([segment, data]) => {
               return (
-                <Tr key={data.segment}>
+                <Tr key={segment}>
                   <Td>
-                    <Text>{data.segment}</Text>
+                    <Text>{segment}</Text>
                   </Td>
                   <Td>
-                    <Text align="center">{data.adults}</Text>
+                    <Text align="center">{data.totalAdults}</Text>
                   </Td>
                   <Td>
-                    <Text align="center">{data.fledges}</Text>
+                    <Text align="center">{data.totalFledges}</Text>
                   </Td>
                   <Td>
-                    <Text align="center">{data.chicks}</Text>
+                    <Text align="center">{data.totalChicks}</Text>
                   </Td>
                 </Tr>
               );
@@ -70,17 +70,26 @@ const SightedListedSpeciesTable = ({ name, speciesData }) => {
               </Th>
               <Th fontSize="16px" color="white">
                 <Text align="center">
-                  {speciesData.reduce((totVal, currVal) => totVal + currVal.adults, 0)}
+                  {Object.values(speciesData).reduce(
+                    (totVal, currVal) => totVal + currVal.totalAdults,
+                    0,
+                  )}
                 </Text>
               </Th>
               <Th fontSize="16px" color="white">
                 <Text align="center">
-                  {speciesData.reduce((totVal, currVal) => totVal + currVal.fledges, 0)}
+                  {Object.values(speciesData).reduce(
+                    (totVal, currVal) => totVal + currVal.totalFledges,
+                    0,
+                  )}
                 </Text>
               </Th>
               <Th fontSize="16px" color="white">
                 <Text align="center">
-                  {speciesData.reduce((totVal, currVal) => totVal + currVal.chicks, 0)}
+                  {Object.values(speciesData).reduce(
+                    (totVal, currVal) => totVal + currVal.totalChicks,
+                    0,
+                  )}
                 </Text>
               </Th>
             </Tr>
@@ -93,14 +102,11 @@ const SightedListedSpeciesTable = ({ name, speciesData }) => {
 
 SightedListedSpeciesTable.propTypes = {
   name: PropTypes.string.isRequired,
-  speciesData: PropTypes.arrayOf(
-    PropTypes.shape({
-      segment: PropTypes.string.isRequired,
-      adults: PropTypes.number.isRequired,
-      fledges: PropTypes.number.isRequired,
-      chicks: PropTypes.number.isRequired,
-    }),
-  ).isRequired,
+  speciesData: PropTypes.shape({
+    totalAdults: PropTypes.number,
+    totalFledges: PropTypes.number,
+    totalChicks: PropTypes.number,
+  }).isRequired,
 };
 
 export default SightedListedSpeciesTable;
