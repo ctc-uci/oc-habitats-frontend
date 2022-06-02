@@ -24,7 +24,6 @@ const rowsPerPageSelect = [6, 10, 20, 30];
 const sortOptions = {
   nameDesc: [{ id: 'name', desc: true }],
   nameAsc: [{ id: 'name', desc: false }],
-  lastUpdated: [{ id: 'lastUpdated', desc: false }],
 };
 
 // Custom filter functions
@@ -44,7 +43,7 @@ nameFilterFn.autoRemove = val => !val;
 const segmentFilterFn = (rows, id, filterValue) => {
   return rows.filter(row => {
     const { segments } = row.values[id];
-    return segments !== null ? segments.some(segment => segment.id === filterValue) : false;
+    return segments !== null ? segments?.some(segment => segment.id === filterValue) : false;
   });
 };
 segmentFilterFn.autoRemove = val => !val;
@@ -74,12 +73,6 @@ const cellStructure = [
     filter: 'nameFilter',
     sortType: nameSortFn,
     Cell: ({ value, isMobile }) => <NameColumn data={value} isMobile={isMobile} />,
-  },
-  {
-    id: 'lastUpdated',
-    Header: 'Last Updated',
-    accessor: 'temp-date',
-    Cell: <p>XX-XX-20XX</p>,
   },
   {
     id: 'assignedSegments',
@@ -196,7 +189,7 @@ const PeopleTable = ({ variant, userData, segments, loading, refreshData }) => {
 
   // Hide columns on mobile
   useEffect(() => {
-    setHiddenColumns(isMobile ? ['lastUpdated', 'assignedSegments'] : []);
+    setHiddenColumns(isMobile ? ['assignedSegments'] : []);
   }, [isMobile]);
 
   return (

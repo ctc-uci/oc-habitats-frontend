@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Heading, Button, Flex } from '@chakra-ui/react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
 import { OCHBackend } from '../common/utils';
 import { PeopleTable, AddAccountPopup } from '../components/PeopleTable';
 import AUTH_ROLES from '../common/auth_config';
@@ -24,6 +25,8 @@ const PeoplePage = () => {
   const [volunteerData, setVolunteerData] = useState([]);
   const [adminData, setAdminData] = useState([]);
   const [segments, setSegments] = useState([]);
+
+  const navigate = useNavigate();
 
   const fetchTableData = async () => {
     const [users, pendingUsers, segmentsData] = await Promise.all([
@@ -66,6 +69,7 @@ const PeoplePage = () => {
           color="ochBlack"
           variant="solidNoHover"
           w={{ md: 'auto', base: '100%' }}
+          onClick={() => navigate('/people/segment-assignments')}
         >
           View Segment Assignments
         </Button>

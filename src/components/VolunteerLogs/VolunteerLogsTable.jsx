@@ -18,6 +18,7 @@ const VolunteerLogsTable = ({
   allChecked,
   setAllChecked,
   setFetchSettings,
+  useChecks,
 }) => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
 
@@ -43,7 +44,7 @@ const VolunteerLogsTable = ({
       columns,
       data: tableData.results,
       initialState: {
-        hiddenColumns: ['statusAndEdit'],
+        hiddenColumns: ['statusAndEdit', ''],
         pageIndex: 0,
         pageSize: 10,
         sortBy: [{ id: 'date', desc: true }],
@@ -68,6 +69,9 @@ const VolunteerLogsTable = ({
     } else {
       // hide combined column?
       hiddenColumns.push('statusAndEdit');
+    }
+    if (!useChecks) {
+      hiddenColumns.push('checkbox');
     }
     setHiddenColumns(hiddenColumns);
   }, [isMobile, checked, allChecked]);
@@ -122,6 +126,10 @@ const VolunteerLogsTable = ({
   );
 };
 
+VolunteerLogsTable.defaultProps = {
+  useChecks: true,
+};
+
 VolunteerLogsTable.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   checked: PropTypes.object.isRequired,
@@ -133,6 +141,7 @@ VolunteerLogsTable.propTypes = {
   setChecked: PropTypes.func.isRequired,
   setAllChecked: PropTypes.func.isRequired,
   setFetchSettings: PropTypes.func.isRequired,
+  useChecks: PropTypes.bool,
 };
 
 export default VolunteerLogsTable;

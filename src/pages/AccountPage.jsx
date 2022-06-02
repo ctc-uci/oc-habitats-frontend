@@ -30,7 +30,7 @@ import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 
 const AccountPage = ({ setChangesMade }) => {
-  const { userData } = useUserContext();
+  const { userData, setUserData } = useUserContext();
   const {
     handleSubmit,
     control,
@@ -128,10 +128,13 @@ const AccountPage = ({ setChangesMade }) => {
       }
       // Only if updating password was successful or didn't need to update password, update mongo
       if (updatePassResult === 'success' || updatePassResult === '') {
-        await OCHBackend.put(`/users/update/${userData.id}`, formData);
+        const results = await OCHBackend.put(`/users/update/${userData.id}`, formData);
+        updatePassResult = 'success';
+        setUserData(results.data);
         setIsFileSaved(true);
         reset(data);
       }
+
       return Toast(toast, updatePassResult);
     } catch (err) {
       // Check if updated password, but not updated on mongo
