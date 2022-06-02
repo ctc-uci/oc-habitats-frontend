@@ -6,8 +6,10 @@ import {
   AccordionItem,
   Box,
   Button,
+  Center,
   Collapse,
   FormControl,
+  HStack,
   Icon,
   IconButton,
   Menu,
@@ -25,11 +27,13 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Spacer,
   Stack,
   Table,
   Tbody,
   Td,
   Text,
+  Textarea,
   Tfoot,
   Th,
   Thead,
@@ -41,12 +45,30 @@ import {
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { FiEdit3 } from 'react-icons/fi';
+import { useFormContext, useForm, FormProvider } from 'react-hook-form';
+import { FiEdit3, FiExternalLink } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import ListedSpeciesPopup from '../ListedSpecies/ListedSpeciesPopup';
+import GeneralListedInformation from '../ListedSpecies/GeneralListedInformation';
+import Location from '../ListedSpecies/Location';
+import SexSection from '../ListedSpecies/SexSection';
+import BandingSection from '../ListedSpecies/BandingSection';
+import BehaviorsSection from '../ListedSpecies/BehaviorsSection';
+import options from '../ListedSpecies/DropdownOptions';
+import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
+import NewQuestionModal from '../NewQuestionModal';
+import { OCHBackend } from '../../common/utils';
 
-const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader, isDisabled }) => {
-  const formPrefix = `listedSpecies[${tab}].`;
+const ListedSpeciesTab = ({
+  speciesName,
+  speciesCode,
+  speciesId,
+  showHeader,
+  isDisabled,
+  isTemplate,
+}) => {
+  const formPrefix = `listedSpecies.${speciesId}.`;
+
   const { isOpen, onOpen: openPopup, onClose } = useDisclosure();
   const { setValue, getValues } = useFormContext();
   const confirmDeleteModal = useDisclosure();
@@ -54,11 +76,42 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
   const [rowToEdit, setRowToEdit] = useState(undefined);
   const [rowToDelete, setRowToDelete] = useState(undefined);
   const [totals, setTotals] = useState([0, 0, 0]);
+  const [listedSpeciesList, setListedSpeciesList] = useState([]);
+  const [additionalQuestions, setAdditionalQuestions] = useState([]);
+  const [questionAdded, setQuestionAdded] = useState(false);
+  const [tabEdited, setTabEdited] = useState(false);
+
   const toast = useToast();
 
-  useEffect(() => {
-    setValue(`${formPrefix}species`, speciesId);
-  }, []);
+  const nestedForm = useForm({
+    defaultValues: {
+      totalAdults: 1,
+      totalFledges: 0,
+      totalChicks: 0,
+      time: '07:00',
+      meridiem: 'AM',
+      map: '1',
+      habitat: '',
+      sex: [0, 0, 0, 0, 0, 0],
+      nesting: [],
+      behaviors: [],
+      gps: [
+        { longitude: '', latitude: '' },
+        { longitude: '', latitude: '' },
+        { longitude: '', latitude: '' },
+        { longitude: '', latitude: '' },
+      ],
+      bandTabs: [],
+    },
+  });
+
+  const toggleTabEdited = () => {
+    setTabEdited(!tabEdited);
+  };
+
+  const toggleQuestionAdded = () => {
+    setQuestionAdded(!questionAdded);
+  };
 
   useEffect(() => {
     setTotals(
@@ -69,11 +122,24 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
     setValue(`${formPrefix}entries`, data);
   }, [data]);
 
+  useEffect(async () => {
+    const newQuestions = await OCHBackend.get(`/forms/listed-species`);
+    const questions = await newQuestions.data;
+    setAdditionalQuestions(questions.additionalFields);
+
+    // querying listed species from backend and wrangling with the data
+    const species = await OCHBackend.get('/species/');
+    const speciesData = species.data;
+    const filteredSpeciesData = speciesData.filter(el => el.category === 'LISTED');
+    const mappedSpecies = filteredSpeciesData.map(el => `${el.name} (${el.code})`);
+    setListedSpeciesList(mappedSpecies);
+  }, [questionAdded, tabEdited]);
+
   const addRow = formData => {
     if (formData.editing !== undefined) {
       setData(update(data, { [formData.editing]: { $set: formData } }));
       toast({
-        title: `Successfully edited Map #${formData.map} on ${speciesName} Tracker`,
+        title: `Successfully edited entry #${formData.map} on ${speciesName} Tracker`,
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -82,7 +148,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
     } else {
       setData([...data, formData]);
       toast({
-        title: `Successfully added Map #${formData.map} to ${speciesName} Tracker`,
+        title: `Successfully added entry #${formData.map} to ${speciesName} Tracker`,
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -134,8 +200,9 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
           <div># of Male Chicks</div>
         </div>,
         <div>
-          {row.sex.slice(0, 3).map(sex => (
-            <div>{sex}</div>
+          {row.sex.slice(0, 3).map((sex, idx) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={idx}>{sex}</div>
           ))}
         </div>,
       ],
@@ -168,12 +235,85 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
   };
 
   return (
-    <VStack align="left" spacing="29px">
-      {showHeader && (
-        <Text fontWeight="600" fontSize="2xl">
-          {speciesName}s
-        </Text>
+    <>
+      {isTemplate ? (
+        <HStack>
+          <Text fontWeight="600" fontSize="2xl" mt="30px" mb="5px">
+            Listed Species
+          </Text>
+          <Spacer />
+          <NewQuestionModal currentTemplate="listed-species" refreshTrigger={toggleQuestionAdded} />
+        </HStack>
+      ) : (
+        showHeader && (
+          <Text fontWeight="600" fontSize="2xl">
+            {speciesName}s
+          </Text>
+        )
       )}
+      {isTemplate && (
+        <>
+          {/* TODO: UPDATE SPECIES CATALOG LINK BEFORE HANDING OFF THE PROJECT */}
+          <Text mt="30px" color="ochPurple" fontWeight="500">
+            The following listed species are tracked in their own section of the monitor log.
+          </Text>
+          <HStack>
+            <Text color="ochPurple" fontWeight="500">
+              To view or edit the current catalogue of Listed Species,
+            </Text>
+            <Link to="/species">
+              <Text color="#2B6CB0" fontWeight="500" maxW="100vw">
+                Open Species Catalog
+              </Text>
+            </Link>
+            <Link to="/species">
+              <Text color="#2B6CB0" fontWeight="500" maxW="100vw">
+                <FiExternalLink />
+              </Text>
+            </Link>
+          </HStack>
+          <HStack
+            overflowX="scroll"
+            mt="10px"
+            bgColor="ochLightGrey"
+            borderRadius="6px"
+            pl="20px"
+            w="100%"
+            h="70px"
+          >
+            {listedSpeciesList.map(e => {
+              return (
+                <Center
+                  w="375px"
+                  h="40px"
+                  bgColor="white"
+                  mr="10px"
+                  my="auto"
+                  border="1px solid #CBD5E0"
+                  borderRadius="6px"
+                >
+                  <Text>{e}</Text>
+                </Center>
+              );
+            })}
+          </HStack>
+          <Text mt="35px" color="ochPurple" fontWeight="500">
+            In the &quot;General Information&quot; portion, &quot;Non-Static&quot; questions can be
+            added, edited, and/or deleted.
+          </Text>
+          <Text mb="25px" color="ochPurple" fontWeight="500">
+            &quot;Static&quot; questions can&apos;t be deleted or edited. You can only Add, Edit, or
+            Remove Tooltips for &quot;Static&quot; questions.
+          </Text>
+          <Text fontWeight="600" fontSize="2xl" mt="30px" mb="5px">
+            Aggregated [Listed Species] Data
+          </Text>
+          <Text fontWeight="600" fontSize="xl" mt="30px">
+            [Listed Species] Tracker
+          </Text>
+        </>
+      )}
+
       <Stack
         mt="20px"
         minH="200px"
@@ -326,8 +466,14 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
           </Box>
           {!isDisabled && (
             <>
-              <Button onClick={openPopup} width="100%" marginTop="10px" colorScheme="cyan">
-                Add Sighted {speciesCode} +
+              <Button
+                disabled={isTemplate}
+                onClick={openPopup}
+                width="100%"
+                marginTop="10px"
+                colorScheme="cyan"
+              >
+                {isTemplate ? 'Add New Row +' : `Add Sighted ${speciesCode} +`}
               </Button>
               <Modal size="full" isOpen={isOpen} closeOnEsc={false}>
                 <ModalOverlay />
@@ -337,6 +483,7 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
                     adultName={speciesName}
                     addRow={addRow}
                     prefilledData={rowToEdit}
+                    additionalQuestions={additionalQuestions}
                   />
                 </ModalContent>
               </Modal>
@@ -344,45 +491,80 @@ const ListedSpeciesTab = ({ tab, speciesName, speciesCode, speciesId, showHeader
           )}
         </VStack>
         <VStack alignItems="start" maxW="768px">
-          <Text fontWeight="600" fontSize="xl">
-            Injured {speciesName}s
-          </Text>
-          {showHeader && (
+          <VStack alignItems="start">
+            {isTemplate ? (
+              <Text fontWeight="600" fontSize="xl">
+                Injured [Listed Species]
+              </Text>
+            ) : (
+              <Text fontWeight="600" fontSize="xl">
+                Injured {speciesName}s
+              </Text>
+            )}
+
             <Text>To report a sick or injured bird, contact the WWCC at 714.374.5587</Text>
-          )}
-          <FormControl>
-            <NumberInput
-              mb="50px"
-              isDisabled={isDisabled}
-              min={0}
-              onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}
-              defaultValue={getValues(`${formPrefix}injuredCount`) || 0}
-            >
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </FormControl>
+            <FormControl>
+              <NumberInput
+                isDisabled={isDisabled}
+                min={0}
+                onChange={val => setValue(`${formPrefix}injuredCount`, parseInt(val, 10))}
+                defaultValue={getValues(`${formPrefix}injuredCount`) || 0}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </FormControl>
+          </VStack>
         </VStack>
       </Stack>
-    </VStack>
+      {isTemplate && (
+        <>
+          <Text mt="120px" mb="30px" fontWeight="500">
+            The questions below are shown when a new row is added to the monitor log species
+            tracker.
+          </Text>
+          <FormProvider {...nestedForm}>
+            <VStack align="start" spacing="4em">
+              <GeneralListedInformation
+                refreshTrigger={toggleTabEdited}
+                additionalQuestions={additionalQuestions}
+                isTemplate
+              />
+              <Location isTemplate />
+              <SexSection isTemplate />
+              <BehaviorsSection
+                behaviorOptions={options.behavior}
+                nestingOptions={options.nesting}
+                isTemplate
+              />
+              <BandingSection />
+              <CollapsibleSection title="Additional Notes (Optional)">
+                <Textarea h="10em" placeholder="Type Here..." />
+              </CollapsibleSection>
+            </VStack>
+          </FormProvider>
+        </>
+      )}
+    </>
   );
 };
 
 ListedSpeciesTab.defaultProps = {
   showHeader: true,
   isDisabled: false,
+  isTemplate: false,
 };
 
 ListedSpeciesTab.propTypes = {
-  tab: PropTypes.number.isRequired,
   speciesName: PropTypes.string.isRequired,
   speciesCode: PropTypes.string.isRequired,
   speciesId: PropTypes.string.isRequired,
   showHeader: PropTypes.bool,
   isDisabled: PropTypes.bool,
+  isTemplate: PropTypes.bool,
 };
 
 export default ListedSpeciesTab;

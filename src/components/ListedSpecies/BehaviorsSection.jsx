@@ -1,10 +1,10 @@
-import { FormControl, FormLabel, Grid, GridItem } from '@chakra-ui/react';
+import { FormControl, FormLabel, Grid, GridItem, Text } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import ReactHookFormSelect from '../../common/ReactHookFormSelect';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 
-const BehaviorsSection = ({ behaviorOptions, nestingOptions }) => {
+const BehaviorsSection = ({ behaviorOptions, nestingOptions, isTemplate }) => {
   const behaviorDropdown = behaviorOptions.map(behavior => ({
     label: behavior,
     value: behavior,
@@ -30,6 +30,7 @@ const BehaviorsSection = ({ behaviorOptions, nestingOptions }) => {
                 closeMenuOnSelect={false}
               />
             </FormLabel>
+            {isTemplate && <Text color="#718096">Static</Text>}
           </FormControl>
         </GridItem>
         <GridItem>
@@ -44,6 +45,7 @@ const BehaviorsSection = ({ behaviorOptions, nestingOptions }) => {
                 closeMenuOnSelect={false}
               />
             </FormLabel>
+            {isTemplate && <Text color="#718096">Static</Text>}
           </FormControl>
         </GridItem>
       </Grid>
@@ -51,9 +53,13 @@ const BehaviorsSection = ({ behaviorOptions, nestingOptions }) => {
   );
 };
 
+BehaviorsSection.defaultProps = {
+  isTemplate: false,
+};
 BehaviorsSection.propTypes = {
   behaviorOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
   nestingOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isTemplate: PropTypes.bool,
 };
 
 export default BehaviorsSection;

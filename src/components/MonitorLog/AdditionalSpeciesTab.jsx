@@ -7,6 +7,7 @@ import {
   Box,
   Flex,
   FormControl,
+  HStack,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -25,14 +26,16 @@ import {
 import PropTypes from 'prop-types';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { FiExternalLink } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import AddSpeciesModal from './AddSpeciesModal';
 import EditSpeciesModal from './EditSpeciesModal';
 
 const FORM_PREFIX = 'additionalSpecies.';
 
-const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
+const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) => {
   const { getValues, setValue } = useFormContext();
-  const [speciesEntries, setSpeciesEntries] = useState(getValues(`${FORM_PREFIX}entries`) || []);
+  const [speciesEntries, setSpeciesEntries] = useState(getValues(`${FORM_PREFIX}entries`) || {});
 
   useEffect(() => {
     setValue(`${FORM_PREFIX}entries`, speciesEntries);
@@ -46,65 +49,66 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
       })),
     [species],
   );
-
   const getSpeciesLabel = speciesId => speciesOptions.find(s => s.value === speciesId)?.label;
 
   const handleAddRow = newSpecies => {
     setSpeciesEntries(prevSpecies => {
-      const existingIndex = speciesEntries.findIndex(s => newSpecies.species === s.species);
-      if (existingIndex !== -1) {
-        const newEntries = [...speciesEntries];
-        newEntries[existingIndex].count += newSpecies.count;
+      const { species: speciesId, ...newSpeciesObj } = newSpecies;
+      const newEntries = { ...prevSpecies };
+      if (Object.prototype.hasOwnProperty.call(prevSpecies, speciesId)) {
         if (newSpecies.notes !== '') {
-          if (newEntries[existingIndex].notes !== '') {
-            newEntries[existingIndex].notes += `\n${newSpecies.notes}`;
+          if (newEntries[speciesId].notes !== '') {
+            newEntries[speciesId].notes += `\n${newSpecies.notes}`;
           } else {
-            newEntries[existingIndex].notes = newSpecies.notes;
+            newEntries[speciesId].notes = newSpecies.notes;
           }
         }
-        return newEntries;
+        newEntries[speciesId].count += newSpecies.count;
+      } else {
+        newEntries[speciesId] = newSpeciesObj;
       }
-      return [...prevSpecies, newSpecies];
+      return newEntries;
     });
   };
 
   const handleDeleteRow = speciesId => {
-    setSpeciesEntries(entries => entries.filter(s => s.species !== speciesId));
+    setSpeciesEntries(entries => {
+      const newEntries = { ...entries };
+      delete newEntries[speciesId];
+      return newEntries;
+    });
   };
 
   const handleEditRow = newSpecies => {
-    const { oldId } = newSpecies;
-    const newRow = newSpecies;
-    delete newRow.oldId;
-    const indexToModify = speciesEntries.findIndex(s => oldId === s.species);
+    const { oldId, species: speciesId, ...newRow } = newSpecies;
     setSpeciesEntries(prevSpecies => {
-      let newEntries = [...prevSpecies];
-      if (oldId !== newRow.species) {
+      let newEntries = { ...prevSpecies };
+      if (oldId !== speciesId) {
         // if we're changing the species ID, check if the new species is already in the table
-        const newSpeciesIndex = prevSpecies.findIndex(s => newRow.species === s.species);
-        if (newSpeciesIndex !== -1) {
+        if (Object.prototype.hasOwnProperty.call(prevSpecies, speciesId)) {
           // if it is, merge the two rows
-          newRow.count += prevSpecies[newSpeciesIndex].count;
-          if (prevSpecies[newSpeciesIndex].notes) {
-            newRow.notes += `\n${prevSpecies[newSpeciesIndex].notes}`;
+          newRow.count += prevSpecies[speciesId].count;
+          if (prevSpecies[speciesId].notes) {
+            newRow.notes += `\n${prevSpecies[speciesId].notes}`;
           }
           newEntries = newEntries.filter(s => s.species !== newRow.species);
         }
       }
-      newEntries[indexToModify] = newRow;
+      newEntries[newEntries] = newRow;
       return newEntries;
     });
   };
 
   const createTable = data => {
-    return data.map(row => (
-      <AccordionItem key={row.species} as={Tbody}>
+    return Object.entries(data).map(([speciesId, row]) => (
+      <AccordionItem key={speciesId} as={Tbody}>
         {({ isExpanded }) => (
           <>
             <Tr>
               <Td border="none">
                 {!isDisabled && (
                   <EditSpeciesModal
+                    speciesId={speciesId}
                     speciesRow={row}
                     editRow={handleEditRow}
                     deleteRow={handleDeleteRow}
@@ -114,7 +118,7 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
               </Td>
               <Td border="none">
                 <Text fontSize="1.05em" color="#2D3748" fontWeight={450}>
-                  {getSpeciesLabel(row.species)}
+                  {getSpeciesLabel(speciesId)}
                 </Text>
               </Td>
               <Td border="none" color="#2D3748" fontWeight={450}>
@@ -153,135 +157,161 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, species }) => {
       </AccordionItem>
     ));
   };
-
+  // TODO: UPDATE SPECIES CATALOG LINK BEFORE HANDING OFF THE PROJECT
   return (
-    <VStack align="left" spacing="29px">
-      {showHeader && (
-        <Text fontWeight="600" fontSize="2xl">
-          Additional Species
-        </Text>
-      )}
-      <Stack
-        mt="20px"
-        minH="200px"
-        direction={{ lg: 'row', base: 'column' }}
-        spacing={{ lg: '100px', base: '30px' }}
-      >
-        <VStack w={{ lg: '650px', base: '100%' }} align="start">
-          <Box
-            w="100%"
-            border="1px solid darkgray"
-            rounded="md"
-            overflow="scroll"
-            css={{
-              '&::-webkit-scrollbar': {
-                display: 'none',
-              },
-            }}
-          >
-            <Accordion as={Table} width="100%" allowToggle reduceMotion>
-              <Thead w="100%" bg="#4E4E4E" borderColor="gray.200">
-                <Tr>
-                  <Th w="8%" bgColor="none" />
-                  <Th
-                    w="65%"
-                    fontWeight={600}
-                    color="#FFFFFF"
-                    textTransform="capitalize"
-                    fontSize=".8em"
-                  >
-                    Species
-                  </Th>
-                  <Th
-                    bgColor="none"
-                    fontWeight={600}
-                    color="#FFFFFF"
-                    textTransform="capitalize"
-                    fontSize=".8em"
-                  >
-                    Total
-                  </Th>
-                  <Th />
-                </Tr>
-              </Thead>
-              {speciesEntries.length === 0 && (
-                <Tbody>
-                  <Tr>
-                    <Td colSpan={4} textAlign="center">
-                      No species added
-                    </Td>
-                  </Tr>
-                </Tbody>
-              )}
-              {createTable(speciesEntries)}
-            </Accordion>
-          </Box>
-          {!isDisabled && (
-            <AddSpeciesModal addNewRow={handleAddRow} speciesOptions={speciesOptions} />
-          )}
-        </VStack>
-        <VStack alignItems="start" maxW="768px">
-          <Text fontWeight="600" fontSize="xl">
-            Injured Terrestrial Wildlife
+    <>
+      {isTemplate && (
+        <>
+          <Text mt="30px" color="ochPurple" fontWeight="500">
+            The Non-Listed Species section of the Monitor Log Template cannot be edited.
           </Text>
-          {showHeader && (
-            <Text>
-              To report sick or injured terrestrial wildlife, contact the WWCC at 714.374.5587
+          <HStack mb="30px">
+            <Text color="ochPurple" fontWeight="500">
+              To view or edit the current catalogue of Non-Listed Species,
             </Text>
-          )}
-          <FormControl>
-            <NumberInput
-              min={0}
-              isDisabled={isDisabled}
-              onChange={val => setValue(`${FORM_PREFIX}injuredCount`, parseInt(val, 10))}
-              defaultValue={getValues(`${FORM_PREFIX}injuredCount`) || 0}
-            >
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </FormControl>
-
-          <Text fontWeight="600" fontSize="xl">
-            Beach Cast
+            <Link to="/species">
+              <Text color="#2B6CB0" fontWeight="500" maxW="100vw">
+                Open Species Catalog
+              </Text>
+            </Link>
+            <Link to="/species">
+              <Text color="#2B6CB0" fontWeight="500" maxW="100vw">
+                <FiExternalLink />
+              </Text>
+            </Link>
+          </HStack>
+        </>
+      )}
+      <VStack align="left" spacing="29px">
+        {showHeader && (
+          <Text fontWeight="600" fontSize="2xl">
+            Non-Listed Species
           </Text>
-          <FormControl>
-            <NumberInput
-              mb="50px"
-              min={0}
-              isDisabled={isDisabled}
-              onChange={val => setValue(`${FORM_PREFIX}beachCast`, parseInt(val, 10))}
-              defaultValue={getValues(`${FORM_PREFIX}beachCast`) || 0}
-            >
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </FormControl>
-        </VStack>
-      </Stack>
-    </VStack>
+        )}
+        <FormControl>
+          <Stack
+            mt="20px"
+            minH="200px"
+            direction={{ lg: 'row', base: 'column' }}
+            spacing={{ lg: '100px', base: '30px' }}
+          >
+            <VStack w={{ lg: '650px', base: '100%' }} align="start">
+              <Box
+                w="100%"
+                border="1px solid darkgray"
+                rounded="md"
+                overflow="scroll"
+                css={{
+                  '&::-webkit-scrollbar': {
+                    display: 'none',
+                  },
+                }}
+              >
+                <Accordion as={Table} width="100%" allowToggle reduceMotion>
+                  <Thead w="100%" bg="#4E4E4E" borderColor="gray.200">
+                    <Tr>
+                      <Th w="8%" bgColor="none" />
+                      <Th
+                        w="65%"
+                        fontWeight={600}
+                        color="#FFFFFF"
+                        textTransform="capitalize"
+                        fontSize=".8em"
+                      >
+                        Species
+                      </Th>
+                      <Th
+                        bgColor="none"
+                        fontWeight={600}
+                        color="#FFFFFF"
+                        textTransform="capitalize"
+                        fontSize=".8em"
+                      >
+                        Total
+                      </Th>
+                      <Th />
+                    </Tr>
+                  </Thead>
+                  {Object.keys(speciesEntries).length === 0 && (
+                    <Tbody>
+                      <Tr>
+                        <Td colSpan={4} textAlign="center">
+                          No species added
+                        </Td>
+                      </Tr>
+                    </Tbody>
+                  )}
+                  {createTable(speciesEntries)}
+                </Accordion>
+              </Box>
+              {!isDisabled && (
+                <AddSpeciesModal addNewRow={handleAddRow} speciesOptions={speciesOptions} />
+              )}
+            </VStack>
+            <VStack alignItems="start" maxW="768px">
+              <Text fontWeight="600" fontSize="xl">
+                Injured Terrestrial Wildlife
+              </Text>
+              <Text>
+                To report sick or injured terrestrial wildlife, contact the WWCC at 714.374.5587
+              </Text>
+              <FormControl>
+                <NumberInput
+                  min={0}
+                  isDisabled={isDisabled}
+                  onChange={val => setValue(`${FORM_PREFIX}injuredCount`, parseInt(val, 10))}
+                  defaultValue={getValues(`${FORM_PREFIX}injuredCount`) || 0}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+
+              <Text fontWeight="600" fontSize="xl">
+                Beach Cast
+              </Text>
+              <FormControl>
+                <NumberInput
+                  min={0}
+                  isDisabled={isDisabled}
+                  onChange={val => setValue(`${FORM_PREFIX}beachCast`, parseInt(val, 10))}
+                  defaultValue={getValues(`${FORM_PREFIX}beachCast`) || 0}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+            </VStack>
+          </Stack>
+        </FormControl>
+      </VStack>
+    </>
   );
 };
 
 AdditionalSpeciesTab.defaultProps = {
   isDisabled: false,
   showHeader: true,
+  isTemplate: false,
+  species: [],
 };
 
 AdditionalSpeciesTab.propTypes = {
   isDisabled: PropTypes.bool,
   showHeader: PropTypes.bool,
+  isTemplate: PropTypes.bool,
   species: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
       _id: PropTypes.string,
     }),
-  ).isRequired,
+  ),
 };
 
 export default AdditionalSpeciesTab;

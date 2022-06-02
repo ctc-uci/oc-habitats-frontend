@@ -2,14 +2,14 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination, useSortBy } from 'react-table';
-import { Table, Tr, Td, Tbody, Spinner } from '@chakra-ui/react';
-import AdminPageHeader from './AdminPageHeader';
+import { Table, Tr, Td, Tbody, Spinner, useMediaQuery } from '@chakra-ui/react';
+import VolunteerLogsTableHeader from './VolunteerLogsTableHeader';
 import Pagination from '../../common/TablePagination';
-import CellStructure from './AdminPageStructure';
+import CellStructure from './VolunteerLogsStructure';
 
 /* eslint-enable react/destructuring-assignment, react/prop-types */
 
-const AdminPageTable = ({
+const VolunteerLogsTable = ({
   tableData,
   pageCount: controlledPageCount,
   checked,
@@ -19,6 +19,8 @@ const AdminPageTable = ({
   setAllChecked,
   setFetchSettings,
 }) => {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
   const columns = useMemo(
     () => CellStructure(checked, setChecked, allChecked, setAllChecked),
     [checked, setChecked, allChecked, setAllChecked],
@@ -34,12 +36,18 @@ const AdminPageTable = ({
     nextPage,
     previousPage,
     setPageSize,
+    setHiddenColumns,
     state: { pageIndex, pageSize, sortBy },
   } = useTable(
     {
       columns,
       data: tableData.results,
-      initialState: { pageIndex: 0, pageSize: 10, sortBy: [{ id: 'date', desc: true }] },
+      initialState: {
+        hiddenColumns: ['statusAndEdit'],
+        pageIndex: 0,
+        pageSize: 10,
+        sortBy: [{ id: 'date', desc: true }],
+      },
       manualPagination: true,
       manualSortBy: true,
       pageCount: controlledPageCount,
@@ -52,21 +60,33 @@ const AdminPageTable = ({
     setFetchSettings({ pageIndex, pageSize, sortBy });
   }, [pageIndex, pageSize, sortBy]);
 
+  // set hidden table columns, depending on user role and mobile
+  useEffect(() => {
+    const hiddenColumns = [];
+    if (isMobile) {
+      hiddenColumns.push('segmentName', 'submittedAt', 'status', 'partners', 'edit');
+    } else {
+      // hide combined column?
+      hiddenColumns.push('statusAndEdit');
+    }
+    setHiddenColumns(hiddenColumns);
+  }, [isMobile, checked, allChecked]);
+
   return (
     <>
       <Table variant="striped" {...getTableProps()}>
-        <AdminPageHeader headerGroups={headerGroups} />
+        <VolunteerLogsTableHeader headerGroups={headerGroups} />
         <Tbody {...getTableBodyProps()}>
           {isLoading && (
             <Tr>
-              <Td colSpan="6" textAlign="center" py="10">
+              <Td colSpan="100%" textAlign="center" py="10">
                 <Spinner />
               </Td>
             </Tr>
           )}
           {!isLoading && page.length === 0 && (
             <Tr>
-              <Td colSpan="6" textAlign="center" py="10">
+              <Td colSpan="100%" textAlign="center" py="10">
                 No results
               </Td>
             </Tr>
@@ -102,11 +122,11 @@ const AdminPageTable = ({
   );
 };
 
-AdminPageTable.propTypes = {
+VolunteerLogsTable.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   checked: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  tableData: PropTypes.array.isRequired,
+  tableData: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   pageCount: PropTypes.number.isRequired,
   allChecked: PropTypes.bool.isRequired,
@@ -115,4 +135,4 @@ AdminPageTable.propTypes = {
   setFetchSettings: PropTypes.func.isRequired,
 };
 
-export default AdminPageTable;
+export default VolunteerLogsTable;

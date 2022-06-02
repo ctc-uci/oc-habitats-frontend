@@ -39,12 +39,13 @@ const Pagination = ({
       </pre> */}
       <Flex
         bg="#4E4E4E"
-        alignItems="center"
+        alignItems={{ md: 'center', base: 'flex-end' }}
         pl="24px"
         pt="8px"
         pb="8px"
         pr="24px"
         borderBottomRadius={10}
+        direction={{ md: 'row', base: 'column' }}
       >
         <Flex alignItems="center">
           <Flex pr="8px">

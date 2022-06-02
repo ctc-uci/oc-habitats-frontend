@@ -12,7 +12,7 @@ import {
   useToast,
   useDisclosure,
 } from '@chakra-ui/react';
-import { BiExport } from 'react-icons/bi';
+import { CgSoftwareUpload } from 'react-icons/cg';
 
 // modal for the export selected logs button
 const ExportLogsModal = ({ count }) => {
@@ -22,13 +22,13 @@ const ExportLogsModal = ({ count }) => {
   const exportLogs = () => {
     onExportClose();
 
-    // Make backend call
+    // TO DO: Make backend call
     // eslint-disable-next-line no-console
     console.log(`Exporting ${count} logs`);
 
     toast({
       title: 'Export Successful!',
-      description: `You've exported ${count} logs.`,
+      description: `You've exported ${count} log(s).`,
       status: 'success',
       duration: 5000,
       isClosable: true,
@@ -37,7 +37,12 @@ const ExportLogsModal = ({ count }) => {
 
   return (
     <>
-      <Button onClick={onExportOpen} variant="solidNoHover" bg="ochBlue" rightIcon={<BiExport />}>
+      <Button
+        onClick={onExportOpen}
+        variant="solidNoHover"
+        bg="ochBlue"
+        rightIcon={<CgSoftwareUpload />}
+      >
         Export Selected Logs
       </Button>
 
@@ -46,7 +51,11 @@ const ExportLogsModal = ({ count }) => {
         <ModalContent>
           <ModalHeader>Export Selected Logs</ModalHeader>
           <ModalBody>
-            <Text>You are about to export {count} log(s) as csv files.</Text>
+            {count === 0 ? (
+              <Text>You have not selected any logs to export.</Text>
+            ) : (
+              <Text>You are about to export {count} log(s) as csv files.</Text>
+            )}
           </ModalBody>
 
           <ModalFooter>
@@ -58,6 +67,8 @@ const ExportLogsModal = ({ count }) => {
               color="white"
               variant="solidNoHover"
               onClick={() => exportLogs()}
+              isDisabled={count === 0}
+              _hover={{ _disabled: { opacity: 0.4 } }}
             >
               Yes, Export
             </Button>

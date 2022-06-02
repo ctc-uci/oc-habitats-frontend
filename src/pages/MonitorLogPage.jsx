@@ -1,6 +1,11 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Box,
   Button,
+  ButtonGroup,
   Container,
   Flex,
   Heading,
@@ -18,25 +23,26 @@ import {
   TabPanels,
   Tabs,
   useDisclosure,
-  Alert,
-  AlertTitle,
-  AlertIcon,
-  AlertDescription,
+  useToast,
 } from '@chakra-ui/react';
+import { intlFormat, parseISO } from 'date-fns';
+import PropTypes from 'prop-types';
 import { React, useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiArrowUp, FiCheck } from 'react-icons/fi';
-import { useParams } from 'react-router-dom';
-import { parseISO } from 'date-fns';
-import PropTypes from 'prop-types';
+import { useNavigate, useParams } from 'react-router-dom';
+import { SubmissionStatusBadge } from '../common/SubmissionStatusBadge';
 import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
+import EditLogFooter from '../components/MonitorLog/EditLogFooter';
+import EditLogPopup from '../components/MonitorLog/EditLogPopup';
 import GeneralInfoTab from '../components/MonitorLog/GeneralInfoTab';
 import HumanActivity from '../components/MonitorLog/HumanActivityTab';
 import ListedSpeciesTab from '../components/MonitorLog/ListedSpeciesTab';
 import PredatorsTab from '../components/MonitorLog/PredatorsTab';
 import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
+import ReviewSubmitTabPopup from '../components/MonitorLog/ReviewSubmitTabPopup';
 
 const MonitorTabButton = props => {
   // eslint-disable-next-line react/prop-types
@@ -56,9 +62,11 @@ const MonitorTabButton = props => {
 };
 
 const MonitorLogPage = ({ mode }) => {
-  const userDataContext = useUserContext();
-  const userData = useParams();
+  const userContext = useUserContext();
+  const { id: submissionId } = useParams();
   const formMethods = useForm();
+  const toast = useToast();
+  const navigate = useNavigate();
 
   const checkInModal = useDisclosure();
 
@@ -73,6 +81,7 @@ const MonitorLogPage = ({ mode }) => {
   };
 
   const [user, setUser] = useState(false);
+  const [submitterData, setSubmitterData] = useState(null);
   const [submissionData, setSubmissionData] = useState(null);
   const [segmentData, setSegmentData] = useState(null);
   const [monitorPartners, setMonitorPartners] = useState([]);
@@ -81,17 +90,22 @@ const MonitorLogPage = ({ mode }) => {
   const [additionalSpecies, setAdditionalSpecies] = useState([]);
 
   useEffect(async () => {
-    if (mode === 'edit' || mode === 'review') {
+    if (submissionId) {
       try {
-        const submission = await OCHBackend.get(`submission/${userData.id}`);
-        submission.data.date = parseISO(submission.data.date);
+        const [submission, segments] = await Promise.all([
+          OCHBackend.get(`submission/${submissionId}`),
+          OCHBackend.get(`segments`),
+        ]);
+        if (submission.data.date) {
+          submission.data.date = parseISO(submission.data.date);
+        }
         formMethods.reset(submission.data);
         setSubmissionData(submission.data);
         if (submission.data.segment) {
-          setSegmentData(
-            userDataContext.userData.segments.find(s => s._id === submission.data.segment),
-          );
+          setSegmentData(segments.data.find(s => s._id === submission.data.segment));
         }
+        const submitter = await OCHBackend.get(`users/${submission.data.submitter}`);
+        setSubmitterData(submitter.data);
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error(err.message);
@@ -100,7 +114,9 @@ const MonitorLogPage = ({ mode }) => {
   }, []);
 
   useEffect(async () => {
-    checkInModal.onOpen();
+    if (!submissionId) {
+      checkInModal.onOpen();
+    }
     try {
       const [userD, monitorPartnersData, speciesData] = await Promise.all([
         OCHBackend.get('users/me', { withCredentials: true }),
@@ -111,7 +127,7 @@ const MonitorLogPage = ({ mode }) => {
       setMonitorPartners(monitorPartnersData.data);
       setPredators(
         speciesData.data
-          .filter(s => s.isPredator && (!s.isListed || s.isNeither))
+          .filter(s => s.category === 'JUST_PREDATOR' || s.category === 'NON_LISTED_PREDATOR')
           .map(s => ({
             name: s.name,
             _id: s._id,
@@ -119,7 +135,7 @@ const MonitorLogPage = ({ mode }) => {
       );
       setListedSpecies(
         speciesData.data
-          .filter(s => s.isListed && !s.isPredator)
+          .filter(s => s.category === 'LISTED')
           .map(s => ({
             name: s.name,
             code: s.code,
@@ -128,7 +144,7 @@ const MonitorLogPage = ({ mode }) => {
       );
       setAdditionalSpecies(
         speciesData.data
-          .filter(s => !s.isListed && !s.isPredator)
+          .filter(s => s.category === 'NON_LISTED')
           .map(s => ({
             name: s.name,
             code: s.code,
@@ -149,24 +165,110 @@ const MonitorLogPage = ({ mode }) => {
     });
     // eslint-disable-next-line no-console
     console.log(res.data);
+    return res.data;
+  };
+
+  const editForm = async () => {
+    // eslint-disable-next-line no-console
+    console.log(formMethods.getValues());
+    const res = await OCHBackend.post(`submission/${submissionId}`, formMethods.getValues(), {
+      withCredentials: true,
+    });
+    // eslint-disable-next-line no-console
+    console.log(res.data);
+    return res.data;
+  };
+
+  const approveLog = () => {
+    formMethods.setValue('status', 'APPROVED');
+    editForm();
+    toast({
+      title: 'Log Approved!',
+      description: `Sucessfully approved ${submitterData.firstName} ${
+        submitterData.lastName
+      }'s log for segment ${segmentData.segmentId} from ${intlFormat(submissionData.date)}.`,
+      status: 'warning',
+    });
+    navigate('/logs');
+  };
+
+  const onSaveChangesButton = async () => {
+    try {
+      if (!formMethods.getValues('segment')) {
+        toast({
+          title: 'Missing information',
+          description: 'Please select a segment before saving.',
+          status: 'error',
+        });
+        return;
+      }
+      if (!formMethods.getValues('date')) {
+        toast({
+          title: 'Missing information',
+          description: 'Please input a date before saving.',
+          status: 'error',
+        });
+        return;
+      }
+      if (!formMethods.getValues('_id')) {
+        formMethods.setValue('status', 'UNSUBMITTED');
+        const res = await submitForm();
+        navigate(`/create-log/${res._id}`);
+      } else {
+        await editForm();
+      }
+      toast({
+        title: 'Draft saved.',
+        status: 'success',
+      });
+    } catch (e) {
+      toast({
+        title: 'Could not save.',
+        description: e?.message,
+        status: 'error',
+      });
+    }
   };
 
   const assignedSegments = useMemo(() => user?.segments || [], [user]);
 
-  const request = () => {
-    if (submissionData != null && submissionData.requestedEdits && segmentData) {
+  const EditingAlert = () => {
+    if (
+      mode === 'create' &&
+      submissionData != null &&
+      submissionData.status === 'EDITS_REQUESTED' &&
+      submissionData.requestedEdits &&
+      segmentData
+    ) {
       const d = new Date(submissionData.requestedEdits.requestDate);
       return (
         <>
-          <Alert status="error">
+          <Alert status="error" marginTop="-20px">
             <AlertIcon />
             <Box>
               <AlertTitle>
-                Edits have been requested for your {segmentData.segmentId} log on {d.getMonth() + 1}
-                -{d.getDate()}-{d.getFullYear()}
+                Edits were requested for your {segmentData.segmentId} log on {intlFormat(d)}
               </AlertTitle>
               <AlertDescription>
                 Request Reason: {submissionData.requestedEdits.requests}{' '}
+              </AlertDescription>
+            </Box>
+          </Alert>
+          <br />
+        </>
+      );
+    }
+    if (mode !== 'create' && segmentData !== undefined && submissionId !== undefined) {
+      return (
+        <>
+          <Alert status={mode === 'edit' ? 'info' : 'success'} marginTop="-20px" paddingLeft="35px">
+            <Box>
+              <AlertTitle>
+                You are currently {mode}ing {submitterData?.firstName} {submitterData?.lastName}
+                &apos;s log for {segmentData?.segmentId} from {intlFormat(submissionData?.date)}.
+              </AlertTitle>
+              <AlertDescription>
+                <SubmissionStatusBadge status={submissionData?.status} />
               </AlertDescription>
             </Box>
           </Alert>
@@ -205,7 +307,7 @@ const MonitorLogPage = ({ mode }) => {
           >
             OCH Monitor Log
           </Heading>
-          {request()}
+          <EditingAlert />
 
           <Tabs
             variant="solid-rounded"
@@ -244,19 +346,18 @@ const MonitorLogPage = ({ mode }) => {
                   <GeneralInfoTab
                     assignedSegments={assignedSegments}
                     monitorPartners={monitorPartners}
-                    isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
+                    isDisabled={mode === 'review' && userContext.userData.role === 'admin'}
                   />
                 </Container>
               </TabPanel>
-              {listedSpecies.map((s, idx) => (
+              {listedSpecies.map(s => (
                 <TabPanel key={s._id} px={{ base: 0, lg: 4 }}>
                   <Container maxW="100vw">
                     <ListedSpeciesTab
-                      tab={idx}
                       speciesName={s.name}
                       speciesCode={s.code}
                       speciesId={s._id}
-                      isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
+                      isDisabled={mode === 'review' && userContext.userData.role === 'admin'}
                     />
                   </Container>
                 </TabPanel>
@@ -265,7 +366,7 @@ const MonitorLogPage = ({ mode }) => {
                 <Container maxW="100vw">
                   <AdditionalSpeciesTab
                     species={additionalSpecies}
-                    isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
+                    isDisabled={mode === 'review' && userContext.userData.role === 'admin'}
                   />
                 </Container>
               </TabPanel>
@@ -273,14 +374,14 @@ const MonitorLogPage = ({ mode }) => {
                 <Container maxW="100vw">
                   <PredatorsTab
                     predators={predators}
-                    isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
+                    isDisabled={mode === 'review' && userContext.userData.role === 'admin'}
                   />
                 </Container>
               </TabPanel>
               <TabPanel>
                 <Container maxW="100vw">
                   <HumanActivity
-                    isDisabled={mode === 'review' && userDataContext.userData.role === 'admin'}
+                    isDisabled={mode === 'review' && userContext.userData.role === 'admin'}
                   />
                 </Container>
               </TabPanel>
@@ -309,7 +410,7 @@ const MonitorLogPage = ({ mode }) => {
             h="16"
             zIndex="banner"
           >
-            <Flex width="100%" maxWidth="1500px" p="32px">
+            <Flex width="100%" p="32px">
               <Button
                 onClick={returnToTop}
                 variant="outline"
@@ -319,22 +420,47 @@ const MonitorLogPage = ({ mode }) => {
                 Return to Top <FiArrowUp style={{ marginLeft: '4px' }} />
               </Button>
               <Spacer />
-              {activeTab !== totalTabs - 1 && (
-                <Button
-                  colorScheme="cyan"
-                  type="submit"
-                  //  onClick={handleSubmit}
-                >
-                  {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
-                  Save Changes
-                </Button>
+              {mode === 'review' && (
+                <ButtonGroup>
+                  <EditLogPopup
+                    submissionId={submissionId}
+                    editForm={editForm}
+                    formMethods={formMethods}
+                    submitterData={submitterData}
+                    submissionData={submissionData}
+                    segmentData={segmentData}
+                  />
+                  {submissionData?.status !== 'APPROVED' && (
+                    <Button type="submit" colorScheme="green" onClick={approveLog}>
+                      Approve <FiCheck style={{ marginLeft: '4px' }} />
+                    </Button>
+                  )}
+                </ButtonGroup>
               )}
-              {activeTab === totalTabs - 1 && (
-                <Button colorScheme="green" type="submit" onClick={submitForm}>
-                  {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
-                  Submit Log <FiCheck style={{ marginLeft: '4px' }} />
-                </Button>
-              )}
+              {mode === 'edit' && <EditLogFooter editForm={editForm} submissionId={submissionId} />}
+              {activeTab === totalTabs - 1 &&
+                (submissionData?.status === undefined ||
+                  submissionData?.status === 'UNSUBMITTED' ||
+                  submissionData?.status === 'EDITS_REQUESTED') &&
+                mode === 'create' && (
+                  <ReviewSubmitTabPopup
+                    submitForm={submitForm}
+                    editForm={editForm}
+                    formMethods={formMethods}
+                  />
+                )}
+              {(activeTab !== totalTabs - 1 ||
+                !(
+                  submissionData?.status === undefined ||
+                  submissionData?.status === 'UNSUBMITTED' ||
+                  submissionData?.status === 'EDITS_REQUESTED'
+                )) &&
+                mode === 'create' && (
+                  <Button colorScheme="cyan" type="submit" onClick={onSaveChangesButton}>
+                    {/* {prefilledData !== undefined ? 'Save' : 'Add'} to Tracker */}
+                    Save Changes
+                  </Button>
+                )}
             </Flex>
           </Flex>
         </FormProvider>

@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import { ArrowBackIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
   Breadcrumb,
@@ -35,7 +36,13 @@ import GeneralListedInformation from './GeneralListedInformation';
 import Location from './Location';
 import SexSection from './SexSection';
 
-const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) => {
+const ListedSpeciesPopup = ({
+  closeModal,
+  adultName,
+  addRow,
+  prefilledData,
+  additionalQuestions,
+}) => {
   const formMethods = useForm({
     defaultValues: prefilledData || {
       totalAdults: 1,
@@ -153,7 +160,10 @@ const ListedSpeciesPopup = ({ closeModal, adultName, addRow, prefilledData }) =>
         </Stack>
         <form onSubmit={handleSubmit}>
           <VStack align="start" spacing={{ md: '4em', base: '2em' }}>
-            <GeneralListedInformation speciesName={adultName} />
+            <GeneralListedInformation
+              speciesName={adultName}
+              additionalQuestions={additionalQuestions}
+            />
             <Location />
             <SexSection />
             <BehaviorsSection behaviorOptions={options.behavior} nestingOptions={options.nesting} />
@@ -201,9 +211,8 @@ ListedSpeciesPopup.propTypes = {
   adultName: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
   addRow: PropTypes.func.isRequired,
-  prefilledData: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
-  ).isRequired,
+  prefilledData: PropTypes.object.isRequired,
+  additionalQuestions: PropTypes.object.isRequired,
 };
 
 export default ListedSpeciesPopup;

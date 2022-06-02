@@ -1,6 +1,8 @@
-import { React } from 'react';
+import { Button, Checkbox, Icon } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import { Checkbox, Badge, Text, HStack } from '@chakra-ui/react';
+import { React } from 'react';
+import { FiEdit3 } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 const DateFormat = ({ date }) => {
   return new Date(date).toLocaleDateString();
@@ -45,22 +47,29 @@ const AllCheck = ({ checked, setChecked, allChecked, setAllChecked }) => {
   return <Checkbox bg="white" isChecked={allChecked} onChange={handleAllChecked} />;
 };
 
-const VolunteerColumn = ({ data }) => {
-  return (
-    <HStack>
-      <Text>
-        {data.submitter?.firstName} {data.submitter?.lastName}
-      </Text>
-      {data.isSubmittedByTrainee && (
-        <Badge variant="solid" colorScheme="orange">
-          IN TRAINING
-        </Badge>
-      )}
-    </HStack>
+const Partners = ({ sessionPartners }) => {
+  if (sessionPartners.length === 0) {
+    return '';
+  }
+  const names = sessionPartners.map(
+    partner => `${partner.firstName.charAt(0)}. ${partner.lastName}`,
   );
+  return <p>{names.join(', ')}</p>;
 };
-DateFormat.propTypes = {
-  date: PropTypes.string.isRequired,
+
+const EditButton = ({ logId, approval }) => {
+  // console.log(logId);
+  if (approval === 'APPROVED') {
+    return '';
+  }
+
+  return (
+    <Link to={`/create-log/${logId}`}>
+      <Button bgColor="transparent" minW={2} h={6} px={2}>
+        <Icon h={{ md: 5, base: 4 }} w={{ md: 5, base: 4 }} as={FiEdit3} />
+      </Button>
+    </Link>
+  );
 };
 
 Check.propTypes = {
@@ -78,9 +87,13 @@ AllCheck.propTypes = {
   setAllChecked: PropTypes.func.isRequired,
 };
 
-VolunteerColumn.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  data: PropTypes.object.isRequired,
+Partners.propTypes = {
+  sessionPartners: PropTypes.arrayOf(Object).isRequired,
 };
 
-export { DateFormat, Check, AllCheck, VolunteerColumn };
+EditButton.propTypes = {
+  logId: PropTypes.string.isRequired,
+  approval: PropTypes.string.isRequired,
+};
+
+export { DateFormat, Check, AllCheck, Partners, EditButton };
