@@ -139,6 +139,7 @@ const GeneralListedInformation = ({ refreshTrigger, additionalQuestions, isTempl
             return (
               <NonStaticQuestion
                 formType="listed-species"
+                formKey={`additionalQuestions.${question._id}`}
                 key={question.title}
                 question={question}
                 isTemplate={isTemplate}

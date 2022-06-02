@@ -202,12 +202,20 @@ const MonitorLogPage = ({ mode }) => {
         });
         return;
       }
+      if (!formMethods.getValues('date')) {
+        toast({
+          title: 'Missing information',
+          description: 'Please input a date before saving.',
+          status: 'error',
+        });
+        return;
+      }
       if (!formMethods.getValues('_id')) {
         formMethods.setValue('status', 'UNSUBMITTED');
         const res = await submitForm();
         navigate(`/create-log/${res._id}`);
       } else {
-        editForm();
+        await editForm();
       }
       toast({
         title: 'Draft saved.',
@@ -342,11 +350,10 @@ const MonitorLogPage = ({ mode }) => {
                   />
                 </Container>
               </TabPanel>
-              {listedSpecies.map((s, idx) => (
+              {listedSpecies.map(s => (
                 <TabPanel key={s._id} px={{ base: 0, lg: 4 }}>
                   <Container maxW="100vw">
                     <ListedSpeciesTab
-                      tab={idx}
                       speciesName={s.name}
                       speciesCode={s.code}
                       speciesId={s._id}

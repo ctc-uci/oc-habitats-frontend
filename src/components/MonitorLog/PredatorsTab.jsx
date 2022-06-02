@@ -22,13 +22,9 @@ import { Link } from 'react-router-dom';
 
 const FORM_PREFIX = 'predators';
 
-const PredatorField = ({ predatorName, predatorId, isDisabled, predatorIndex }) => {
+const PredatorField = ({ predatorName, predatorId, isDisabled }) => {
   const { setValue, getValues } = useFormContext();
-  const formKey = `${FORM_PREFIX}[${predatorIndex}]`;
-
-  React.useEffect(() => {
-    setValue(formKey, { species: predatorId, count: getValues(formKey)?.count || 0 });
-  }, []);
+  const formKey = `${FORM_PREFIX}.${predatorId}`;
 
   return (
     <GridItem colSpan={1} rowSpan={1} width={{ md: '90%', base: '80%' }}>
@@ -39,8 +35,8 @@ const PredatorField = ({ predatorName, predatorId, isDisabled, predatorIndex }) 
         <NumberInput
           min={0}
           isDisabled={isDisabled}
-          onChange={(_, val) => setValue(formKey, { species: predatorId, count: val })}
-          defaultValue={getValues(formKey)?.count || 0}
+          onChange={(_, val) => setValue(formKey, val)}
+          defaultValue={getValues(formKey) || 0}
         >
           <NumberInputField />
           <NumberInputStepper>
@@ -56,7 +52,6 @@ const PredatorField = ({ predatorName, predatorId, isDisabled, predatorIndex }) 
 PredatorField.propTypes = {
   predatorName: PropTypes.string.isRequired,
   predatorId: PropTypes.string.isRequired,
-  predatorIndex: PropTypes.number.isRequired,
   isDisabled: PropTypes.bool.isRequired,
 };
 
@@ -97,10 +92,9 @@ const PredatorsTab = ({ showHeader, isDisabled, predators, isTemplate }) => {
           spacingX="64px"
           spacingY={{ md: '68px', base: '30px' }}
         >
-          {predators.map(({ name: predatorName, _id }, num) => (
+          {predators.map(({ name: predatorName, _id }) => (
             <PredatorField
               key={_id}
-              predatorIndex={num}
               predatorName={predatorName}
               predatorId={_id}
               isDisabled={isDisabled}
