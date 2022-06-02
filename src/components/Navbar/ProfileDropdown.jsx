@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes, { instanceOf } from 'prop-types';
 import { FiLogOut } from 'react-icons/fi';
 import {
