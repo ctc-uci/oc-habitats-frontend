@@ -29,9 +29,6 @@ import Numbers from './pages/EmergencyNumbers';
 import VolunteerLogs from './pages/VolunteerLogsPage';
 import NotFoundPage from './pages/NotFoundPage';
 
-// remove this when done
-import ResetPassword from './components/Authentication/ResetPassword';
-
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
 
@@ -189,8 +186,6 @@ function App() {
                     }
                   />
                   <Route exact path="/common-table-example" element={<CommonTableExample />} />
-                  {/* remove this when done */}
-                  <Route exact path="/reset-test" element={<ResetPassword />} />
                 </Routes>
               </Box>
               <Routes>
