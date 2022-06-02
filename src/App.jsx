@@ -64,11 +64,9 @@ function App() {
                     exact
                     path="/"
                     element={
-                      <ProtectedRoute
-                        Component={() => <HomePage onAdminPortal={onAdminPortal} />}
-                        redirectPath="/login"
-                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
-                      />
+                      <ProtectedRoute redirectPath="/login" roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
+                        <HomePage onAdminPortal={onAdminPortal} />
+                      </ProtectedRoute>
                     }
                   />
                   <Route

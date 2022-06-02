@@ -47,8 +47,7 @@ function DetailsPopUp(segmentId, volunteers) {
               const name = `${data.firstName} ${data.lastName}`;
               return (
                 <Flex mt="16px" flexDirection="column" key={data._id} justify="space-between">
-                  {/* <a href={data.accountInfoLink}> */}
-                  <a href=" ">
+                  <a href={`/people/user-info/${data._id}`}>
                     <Text textDecoration="underline" fontWeight="medium">
                       {name.substring(0, 25) + (name.length > 25 ? '...' : '')}
                     </Text>
@@ -84,10 +83,11 @@ function StatsPopUp(title, numLogs, statsData) {
   const mapData = () => {
     if (title !== 'Not Completed') {
       return statsData.map(data => {
+        const id = data.segment ? data.segment.segmentId : data.segmentId;
         return (
-          <PopUpContainer key={data.segment.segmentId} segmentId={data.segment.segmentId}>
+          <PopUpContainer key={id} segmentId={id}>
             {title !== 'Unassigned Segments' ? (
-              DetailsPopUp(data.segment.segmentId, data.segment.volunteers)
+              DetailsPopUp(data.segmentId, data.segment.volunteers)
             ) : (
               <></>
             )}
