@@ -20,7 +20,7 @@ const PeopleTableFooter = ({
     <Box backgroundColor="ochGrey" color="white" p="8px 1em" w="100%" borderRadius="0 0 10px 10px">
       <Flex justifyContent="space-between" alignItems="center">
         <Flex alignItems="center">
-          <Text flexShrink="0">Show rows per page</Text>
+          <Text flexShrink="0">Rows per page</Text>
           <Select
             backgroundColor="white"
             color="ochGrey"

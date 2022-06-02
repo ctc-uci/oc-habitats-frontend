@@ -59,9 +59,6 @@ const AddAccountPopup = () => {
   }, [isOpen]);
 
   const onSubmit = async data => {
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(data, null, 2));
-
     try {
       await initiateInviteProcess(data.email, data.role);
       toast({
