@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { React, useState, useEffect } from 'react';
 import { Text, Box } from '@chakra-ui/react';
 import MonitorLogSubmissionStats from '../components/AdminDashboard/MonitorLogSubmissionStats';
@@ -5,11 +6,7 @@ import SightedListedSpecies from '../components/AdminDashboard/SightedListedSpec
 import EmergentIssues from '../components/AdminDashboard/EmergentIssues';
 import LogNotification from '../components/AdminDashboard/LogNotification';
 import { OCHBackend } from '../common/utils';
-
-// Data to be received from Database
-const name = 'Peter';
-
-const numNotifications = 2;
+import { useUserContext } from '../common/UserContext/UserContext';
 
 const monthNames = [
   'January',
@@ -27,355 +24,48 @@ const monthNames = [
 ];
 const month = monthNames[new Date().getMonth()];
 const year = new Date().getUTCFullYear();
-const numLogsCompleted = 5;
-const numLogsNotCompleted = 5;
-
-const emergentIssuesData = [
-  {
-    id: 1,
-    title: 'Injured California Least Terns',
-    numIssues: 0,
-    issuesData: [],
-  },
-  {
-    id: 2,
-    title: 'Injured Western Snowy Plovers',
-    numIssues: 0,
-    issuesData: [],
-  },
-  {
-    id: 3,
-    title: 'Injured Terrestrial Wildlife',
-    numIssues: 2,
-    data: [
-      {
-        id: 1,
-        segment: 'OCXX',
-        date: 'MM-DD-YYYY',
-        monitorLogLink: '/logs',
-      },
-      {
-        id: 1,
-        segment: 'OCXX',
-        date: 'MM-DD-YYYY',
-        monitorLogLink: '/logs',
-      },
-    ],
-  },
-  {
-    id: 4,
-    title: 'Speeding Vehicles',
-    numIssues: 2,
-    data: [
-      {
-        id: 1,
-        segment: 'OCXX',
-        date: 'MM-DD-YYYY',
-        monitorLogLink: '/logs',
-      },
-      {
-        id: 1,
-        segment: 'OCXX',
-        date: 'MM-DD-YYYY',
-        monitorLogLink: '/logs',
-      },
-    ],
-  },
-];
-
-const speciesData = [
-  {
-    id: 1,
-    speciesName: 'California Least Terns',
-    data: [
-      {
-        segment: 'OC01',
-        adults: 6,
-        fledges: 3,
-        chicks: 1,
-      },
-      {
-        segment: 'OC09a',
-        adults: 4,
-        fledges: 2,
-        chicks: 0,
-      },
-      {
-        segment: 'OC09b',
-        adults: 2,
-        fledges: 1,
-        chicks: 0,
-      },
-    ],
-  },
-  {
-    id: 2,
-    speciesName: 'Western Snowy Plovers',
-    data: [
-      {
-        segment: 'OC01',
-        adults: 6,
-        fledges: 3,
-        chicks: 1,
-      },
-      {
-        segment: 'OC09a',
-        adults: 4,
-        fledges: 2,
-        chicks: 0,
-      },
-      {
-        segment: 'OC09b',
-        adults: 2,
-        fledges: 1,
-        chicks: 0,
-      },
-    ],
-  },
-  {
-    id: 4,
-    speciesName: 'California Least Terns',
-    data: [
-      {
-        segment: 'OC01',
-        adults: 6,
-        fledges: 3,
-        chicks: 1,
-      },
-      {
-        segment: 'OC09a',
-        adults: 4,
-        fledges: 2,
-        chicks: 0,
-      },
-      {
-        segment: 'OC09b',
-        adults: 2,
-        fledges: 1,
-        chicks: 0,
-      },
-    ],
-  },
-  {
-    id: 3,
-    speciesName: 'New Listed',
-    data: [],
-  },
-];
-
-const statsDataCompleted = [
-  {
-    segmentId: 'XX',
-    volunteers: [
-      {
-        id: 1,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'firstName',
-        lastName: 'lastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-  {
-    segmentId: 'XX',
-    volunteers: [
-      {
-        id: 1,
-        firstName: 'NamesLongerThan25Characters',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-  {
-    segmentId: 'XX',
-    volunteers: [
-      {
-        id: 1,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-  {
-    segmentId: 'XX',
-    volunteers: [
-      {
-        id: 1,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-  {
-    segmentId: 'XX',
-    volunteers: [
-      {
-        id: 1,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-];
-
-const statsDataNotCompleted = [
-  {
-    segmentId: 'XX',
-    volunteers: [
-      {
-        id: 1,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-  {
-    segmentId: 'XX',
-    volunteers: [
-      {
-        id: 1,
-        firstName: 'NamesLongerThan25Characters',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-  {
-    segmentId: 'XX',
-    volunteers: [
-      {
-        id: 1,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-  {
-    segmentId: 'XX',
-    volunteers: [
-      {
-        id: 1,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-  {
-    segmentId: 'XX',
-    volunteers: [
-      {
-        id: 1,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-      {
-        id: 2,
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        email: 'finitial.lastname@ochabitats.org',
-        accountInfoLink: '/account',
-      },
-    ],
-  },
-];
 
 const AdminDashboardPage = () => {
-  const [unassignedSegments, setUnassignedSegments] = useState([]);
+  const { userData } = useUserContext();
+  const [info, setInfo] = useState({
+    listedSpeciesInfo: [],
+    completedSubmissions: { submissions: [] },
+    uncompletedSubmissions: [],
+    emergentIssuesData: {},
+    unassignedSegments: [],
+    notCompletedCount: 0,
+  });
 
-  useEffect(async () => {
-    try {
-      const unassigned = await OCHBackend.get('/segments/unassigned');
-      setUnassignedSegments(unassigned.data);
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log(err);
-    }
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await OCHBackend.get('/dashboard');
+        setInfo(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+    return () => {};
   }, []);
+
+  const getNotificationNum = () => {
+    let notificationNum = 0;
+    if (info.uncompletedSubmissions) {
+      const underReview = info.uncompletedSubmissions.filter(
+        submissionType => submissionType._id === 'UNDER_REVIEW',
+      );
+      notificationNum = underReview.submissions ? underReview.submissions.length : 0;
+    }
+    return notificationNum;
+  };
+
+  const numNotifications = getNotificationNum();
 
   return (
     <Box mx={{ lg: '100px', sm: '40px' }} my="40px" mb={{ lg: 0, xs: '170px' }}>
       <Text fontSize={{ md: '4xl', sm: '2xl' }} fontWeight="600">
-        Welcome back, {name}!
+        Welcome back, {userData.firstName}!
       </Text>
 
       <Text fontSize="24px" fontWeight="600" mt="50px">
@@ -387,15 +77,22 @@ const AdminDashboardPage = () => {
       <MonitorLogSubmissionStats
         month={month}
         year={year}
-        numLogsCompleted={numLogsCompleted}
-        numLogsNotCompleted={numLogsNotCompleted}
-        numSegsUnassigned={unassignedSegments.length}
-        statsDataCompleted={statsDataCompleted}
-        statsDataNotCompleted={statsDataNotCompleted}
-        statsDataUnassigned={unassignedSegments}
+        numLogsCompleted={info.completedSubmissions.submissions.length}
+        numLogsNotCompleted={info.notCompletedCount}
+        numSegsUnassigned={info.unassignedSegments.length}
+        statsDataCompleted={info.completedSubmissions.submissions}
+        statsDataNotCompleted={info.uncompletedSubmissions}
+        statsDataUnassigned={info.unassignedSegments}
       />
-      <EmergentIssues month={month} year={year} emergentIssuesData={emergentIssuesData} />
-      <SightedListedSpecies month={month} year={year} speciesData={speciesData} />
+      <EmergentIssues
+        month={month}
+        year={year}
+        emergentIssuesData={{
+          listedSpeciesInfo: info.listedSpeciesInfo,
+          emergents: info.emergentIssueData,
+        }}
+      />
+      <SightedListedSpecies month={month} year={year} speciesData={info.listedSpeciesInfo} />
     </Box>
   );
 };

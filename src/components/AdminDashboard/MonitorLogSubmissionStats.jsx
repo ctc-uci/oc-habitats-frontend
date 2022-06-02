@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import { React } from 'react';
 import { Text, Stack, Box } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
@@ -54,28 +55,28 @@ MonitorLogSubmissionStats.propTypes = {
   numSegsUnassigned: PropTypes.number.isRequired,
   statsDataCompleted: PropTypes.arrayOf(
     PropTypes.shape({
-      segmentId: PropTypes.string.isRequired,
-      volunteers: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          firstName: PropTypes.string.isRequired,
-          lastName: PropTypes.string.isRequired,
-          email: PropTypes.string.isRequired,
-          accountInfoLink: PropTypes.string.isRequired,
-        }),
-      ),
+      segmentId: PropTypes.string,
+      date: PropTypes.string.isRequired,
+      segment: PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        segmentId: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+      }),
     }),
   ).isRequired,
   statsDataNotCompleted: PropTypes.arrayOf(
     PropTypes.shape({
-      segmentId: PropTypes.string.isRequired,
-      volunteers: PropTypes.arrayOf(
+      assigned: PropTypes.arrayOf(
         PropTypes.shape({
-          id: PropTypes.number.isRequired,
+          _id: PropTypes.string.isRequired,
           firstName: PropTypes.string.isRequired,
           lastName: PropTypes.string.isRequired,
           email: PropTypes.string.isRequired,
-          accountInfoLink: PropTypes.string.isRequired,
+          isActive: PropTypes.bool.isRequired,
+          isTrainee: PropTypes.bool.isRequired,
+          registered: PropTypes.bool.isRequired,
+          profileImage: PropTypes.any,
+          // accountInfoLink: PropTypes.string.isRequired,
         }),
       ),
     }),
@@ -85,11 +86,11 @@ MonitorLogSubmissionStats.propTypes = {
       segmentId: PropTypes.string.isRequired,
       volunteers: PropTypes.arrayOf(
         PropTypes.shape({
-          id: PropTypes.number.isRequired,
+          _id: PropTypes.string.isRequired,
           firstName: PropTypes.string.isRequired,
           lastName: PropTypes.string.isRequired,
           email: PropTypes.string.isRequired,
-          accountInfoLink: PropTypes.string.isRequired,
+          // accountInfoLink: PropTypes.string.isRequired,
         }),
       ),
     }),
