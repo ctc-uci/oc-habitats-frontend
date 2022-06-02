@@ -72,7 +72,6 @@ const AddAccountPopup = () => {
         isClosable: true,
       });
     } catch (err) {
-      console.log('awelfuhaewlf', err);
       toast({
         title: 'Sign Up Invite Failed!',
         description: `
