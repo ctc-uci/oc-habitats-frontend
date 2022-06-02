@@ -64,7 +64,6 @@ const ReviewSubmitTab = ({
           rightElement={createJumpButton(idx + 1)}
         >
           <ListedSpeciesTab
-            tab={idx}
             speciesName={species.name}
             speciesCode={species.code}
             speciesId={species._id}

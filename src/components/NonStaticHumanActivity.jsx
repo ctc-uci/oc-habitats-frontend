@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable react/forbid-prop-types */
-/* eslint-disable no-underscore-dangle */
 import {
   Box,
   Button,
@@ -28,11 +27,12 @@ import {
 import PropTypes from 'prop-types';
 import { React, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useFormContext } from 'react-hook-form';
 import { FiArrowLeft } from 'react-icons/fi';
 // import { InfoIcon } from '@chakra-ui/icons';
 import { OCHBackend } from '../common/utils';
 
-function NonStaticHumanActivity({ refreshTrigger, isTemplate, question }) {
+function NonStaticHumanActivity({ formKey, refreshTrigger, isTemplate, question }) {
   const [newCategory, setNewCategory] = useState();
   const [newCategoryLength, setNewCategoryLength] = useState(0);
   const [newExamples, setNewExamples] = useState();
@@ -40,6 +40,7 @@ function NonStaticHumanActivity({ refreshTrigger, isTemplate, question }) {
   const [idOfFieldBeingEdited, setIdOfFieldBeingEdited] = useState();
   const editHumanActivityModal = useDisclosure();
   const deleteHumanActivityModal = useDisclosure();
+  const { setValue, getValues } = useFormContext();
 
   const updateHumanActivity = async () => {
     console.log(`updateHumanActivity called with fieldId: ${idOfFieldBeingEdited}`);
@@ -96,7 +97,14 @@ function NonStaticHumanActivity({ refreshTrigger, isTemplate, question }) {
             <Text fontWeight="400" fontSize="md">
               {question.subtitle}
             </Text>
-            <NumberInput w="350px" mt="8px" h="40px" allowMouseWheel>
+            <NumberInput
+              w="350px"
+              mt="8px"
+              h="40px"
+              allowMouseWheel
+              onChange={val => setValue(formKey, parseInt(val, 10))}
+              defaultValue={getValues(formKey) || 0}
+            >
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -244,9 +252,14 @@ function NonStaticHumanActivity({ refreshTrigger, isTemplate, question }) {
   );
 }
 
+NonStaticHumanActivity.defaultProps = {
+  formKey: '',
+};
+
 NonStaticHumanActivity.propTypes = {
   refreshTrigger: PropTypes.func.isRequired,
   question: PropTypes.object.isRequired,
+  formKey: PropTypes.string,
   isTemplate: PropTypes.bool.isRequired,
 };
 

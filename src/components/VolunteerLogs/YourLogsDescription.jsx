@@ -50,7 +50,7 @@ const YourLogsDescriptions = ({ copyright }) => {
         <Text>
           Click on a column header (e.g.{' '}
           <Badge px={0} variant="solid" bg="transparent" textColor="black">
-            Date
+            Log Date
           </Badge>
           ) to sort by descending <ArrowDownIcon /> or ascending <ArrowUpIcon />. Sorting is
           alphanumeric for{' '}

@@ -34,9 +34,9 @@ const CellStructure = (checked, setChecked, allChecked, setAllChecked) => {
       Cell: props => <p>{props.value}</p>,
     },
     {
-      id: 'submittedAt',
-      Header: 'Date',
-      accessor: 'submittedAt',
+      id: 'date',
+      Header: 'Log Date',
+      accessor: 'date',
       Cell: ({ value }) => <DateFormat date={value} />,
     },
     {
