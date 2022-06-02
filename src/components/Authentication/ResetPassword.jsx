@@ -21,15 +21,17 @@ const ResetPassword = ({ code }) => {
   const [checkPassword, setCheckPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [confirmationMessage, setConfirmationMessage] = useState('');
-  const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCheckedPassword, setShowCheckedPassword] = useState(false);
+  const [verified, setVerified] = useState(false);
 
   useEffect(async () => {
     try {
       const verifiedEmail = await verifyPasswordReset(code);
       setEmail(verifiedEmail);
+      setVerified(true);
     } catch (err) {
-      console.log(err);
+      setVerified(false);
     }
   });
 
@@ -44,11 +46,9 @@ const ResetPassword = ({ code }) => {
             'Your password has been successfully reset. Return to the login screen to sign in using your new password.',
           );
         } else {
-          console.log('to short');
           setErrorMessage('Password must be 6 characters or longer');
         }
       } else {
-        console.log('no match');
         setErrorMessage("Passwords don't match");
       }
     } catch (error) {
@@ -60,7 +60,7 @@ const ResetPassword = ({ code }) => {
     <Container maxW="container.xl" mt="10vw" centerContent>
       <Flex maxW="700px" align="center" direction="column" gap={5}>
         <Heading>Reset Password</Heading>
-        {!confirmationMessage && (
+        {verified && !confirmationMessage && (
           <form onSubmit={handleResetPassword}>
             <Flex direction="column" bg="rgba(43, 192, 227, .10)" gap={3} p={12} borderRadius={6}>
               <Text>
@@ -73,13 +73,13 @@ const ResetPassword = ({ code }) => {
                   <Input
                     bgColor="white"
                     pr="4.5rem"
-                    type={show ? 'text' : 'password'}
+                    type={showPassword ? 'text' : 'password'}
                     placeholder=""
                     onChange={({ target }) => setPassword(target.value)}
                   />
                   <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handleClick}>
-                      {show ? 'Hide' : 'Show'}
+                    <Button h="1.75rem" size="sm" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? 'Hide' : 'Show'}
                     </Button>
                   </InputRightElement>
                 </InputGroup>
@@ -91,13 +91,17 @@ const ResetPassword = ({ code }) => {
                   <Input
                     bgColor="white"
                     pr="4.5rem"
-                    type={show ? 'text' : 'password'}
+                    type={showCheckedPassword ? 'text' : 'password'}
                     placeholder=""
                     onChange={({ target }) => setCheckPassword(target.value)}
                   />
                   <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handleClick}>
-                      {show ? 'Hide' : 'Show'}
+                    <Button
+                      h="1.75rem"
+                      size="sm"
+                      onClick={() => setShowCheckedPassword(!showCheckedPassword)}
+                    >
+                      {showCheckedPassword ? 'Hide' : 'Show'}
                     </Button>
                   </InputRightElement>
                 </InputGroup>
@@ -118,9 +122,17 @@ const ResetPassword = ({ code }) => {
             </Flex>
           </form>
         )}
-        {confirmationMessage && (
+        {verified && confirmationMessage && (
           <Flex direction="column" bg="rgba(43, 192, 227, .10)" gap={3} p={12} borderRadius={6}>
             <Text>{confirmationMessage}</Text>
+            <Button bgColor="ochBlue" w={{ md: '200px', base: '100%' }} alignSelf="flex-end">
+              <Link to="/login">Back to Login</Link>
+            </Button>
+          </Flex>
+        )}
+        {!verified && (
+          <Flex direction="column" bg="rgba(43, 192, 227, .10)" gap={3} p={12} borderRadius={6}>
+            Sorry! The reset link that was used is invalid.
             <Button bgColor="ochBlue" w={{ md: '200px', base: '100%' }} alignSelf="flex-end">
               <Link to="/login">Back to Login</Link>
             </Button>
