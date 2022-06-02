@@ -16,6 +16,7 @@ import {
   reauthenticateWithCredential,
   EmailAuthProvider,
   updatePassword,
+  verifyPasswordResetCode,
 } from 'firebase/auth';
 
 import { useNavigate } from 'react-router-dom';
@@ -237,6 +238,11 @@ const confirmVerifyEmail = async code => {
   await applyActionCode(auth, code);
 };
 
+const verifyPasswordReset = async code => {
+  const email = await verifyPasswordResetCode(auth, code);
+  return email;
+};
+
 /**
  * Logs a user out
  * @param {string} redirectPath The path to redirect the user to after logging out
@@ -377,4 +383,5 @@ export {
   confirmVerifyEmail,
   initiateInviteProcess,
   updateUserPassword,
+  verifyPasswordReset,
 };

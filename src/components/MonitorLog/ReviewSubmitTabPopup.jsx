@@ -42,6 +42,7 @@ const SubmitSurvey = ({ setModalStep, onClose, submit, editForm, formMethods }) 
               } else {
                 formMethods.setValue('status', 'RESUBMITTED');
               }
+              formMethods.setValue('submittedAt', new Date());
               if (formMethods.getValues('_id')) {
                 editForm();
               } else {
@@ -94,6 +95,14 @@ function ReturnPopup({ submitForm, editForm, formMethods }) {
       toast({
         title: 'Missing information',
         description: 'Please select a segment before submitting.',
+        status: 'error',
+      });
+      return;
+    }
+    if (!formMethods.getValues('date')) {
+      toast({
+        title: 'Missing information',
+        description: 'Please input a date before submitting.',
         status: 'error',
       });
       return;

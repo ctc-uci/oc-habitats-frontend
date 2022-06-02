@@ -37,9 +37,17 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './GeneralInfoTab.css';
 import { FiArrowLeft } from 'react-icons/fi';
 import { InfoIcon } from '@chakra-ui/icons';
+import { useFormContext } from 'react-hook-form';
 import { OCHBackend } from '../../common/utils';
 
-function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question, isDisabled }) {
+function NonStaticQuestion({
+  refreshTrigger,
+  isTemplate,
+  formType,
+  question,
+  isDisabled,
+  formKey,
+}) {
   const [newTitle, setNewTitle] = useState();
   const [newTitleLength, setNewTitleLength] = useState(0);
   const [newFieldType, setNewFieldType] = useState();
@@ -47,6 +55,7 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question, isD
   const [idOfFieldBeingEdited, setIdOfFieldBeingEdited] = useState();
   const editQuestionModal = useDisclosure();
   const deleteQuestionModal = useDisclosure();
+  const { register, setValue, getValues } = useFormContext();
 
   const updateQuestion = async () => {
     console.log(`updateQuestion called with fieldId: ${idOfFieldBeingEdited}`);
@@ -115,9 +124,14 @@ function NonStaticQuestion({ refreshTrigger, isTemplate, formType, question, isD
               </Flex>
             )}
             {question.fieldType === 'TEXT' ? (
-              <Input type="text" isDisabled={isDisabled} />
+              <Input type="text" isDisabled={isDisabled} {...register(formKey)} />
             ) : (
-              <NumberInput allowMouseWheel isDisabled={isDisabled}>
+              <NumberInput
+                allowMouseWheel
+                isDisabled={isDisabled}
+                onChange={val => setValue(formKey, parseInt(val, 10))}
+                defaultValue={getValues(formKey) || 0}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -282,10 +296,12 @@ NonStaticQuestion.defaultProps = {
   formType: null,
   isTemplate: false,
   isDisabled: false,
+  formKey: '',
 };
 NonStaticQuestion.propTypes = {
   refreshTrigger: PropTypes.func.isRequired,
   question: PropTypes.object.isRequired,
+  formKey: PropTypes.string,
   formType: PropTypes.string,
   isTemplate: PropTypes.bool,
   isDisabled: PropTypes.bool,

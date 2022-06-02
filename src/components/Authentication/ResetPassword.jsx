@@ -1,54 +1,144 @@
-import React, { useState } from 'react';
+import {
+  Container,
+  Flex,
+  Heading,
+  Spacer,
+  Text,
+  Link,
+  Box,
+  InputGroup,
+  Input,
+  InputRightElement,
+  Button,
+} from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { confirmNewPassword } from '../../common/auth_utils';
+import { confirmNewPassword, verifyPasswordReset } from '../../common/auth_utils';
 
 const ResetPassword = ({ code }) => {
-  const [password, setPassword] = useState();
-  const [checkPassword, setCheckPassword] = useState();
-  const [errorMessage, setErrorMessage] = useState();
-  const [confirmationMessage, setConfirmationMessage] = useState();
-  const handleResetPassword = async e => {
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [checkPassword, setCheckPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [confirmationMessage, setConfirmationMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCheckedPassword, setShowCheckedPassword] = useState(false);
+  const [verified, setVerified] = useState(false);
+
+  useEffect(async () => {
     try {
-      e.preventDefault();
-      if (password !== checkPassword) {
-        throw new Error("Passwords don't match");
-      }
-      await confirmNewPassword(code, password);
-      setConfirmationMessage('Password changed. You can now sign in with your new password.');
-      setErrorMessage('');
-      setPassword('');
+      const verifiedEmail = await verifyPasswordReset(code);
+      setEmail(verifiedEmail);
+      setVerified(true);
     } catch (err) {
-      setErrorMessage(err.message);
+      setVerified(false);
+    }
+  });
+
+  const handleResetPassword = async e => {
+    e.preventDefault();
+    try {
+      if (password === checkPassword) {
+        if (password.length > 5) {
+          await confirmNewPassword(code, password);
+          setConfirmationMessage(
+            'Your password has been successfully reset. Return to the login screen to sign in using your new password.',
+          );
+        } else {
+          setErrorMessage('Password must be 6 characters or longer');
+        }
+      } else {
+        setErrorMessage("Passwords don't match");
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
     }
   };
+
   return (
-    <div>
-      <h2>Reset Password</h2>
-      {errorMessage && <p>{errorMessage}</p>}
-      {!confirmationMessage && (
-        <form onSubmit={handleResetPassword}>
-          <input
-            type="password"
-            onChange={({ target }) => setPassword(target.value)}
-            placeholder="New Password"
-          />
-          <br />
-          <input
-            type="password"
-            onChange={({ target }) => setCheckPassword(target.value)}
-            placeholder="Re-enter Password"
-          />
-          <br />
-          <button type="submit">Reset Password</button>
-        </form>
-      )}
-      {confirmationMessage && (
-        <div>
-          <p>{confirmationMessage}</p>
-          <a href="/">Back to Login</a>
-        </div>
-      )}
-    </div>
+    <Container maxW="container.xl" mt="10vw" centerContent>
+      <Flex maxW="700px" align="center" direction="column" gap={5}>
+        <Heading>Reset Password</Heading>
+        {verified && !confirmationMessage && (
+          <form onSubmit={handleResetPassword}>
+            <Flex direction="column" bg="rgba(43, 192, 227, .10)" gap={3} p={12} borderRadius={6}>
+              <Text>
+                {' '}
+                Enter a new password below to reset the password for <b>{email}</b>{' '}
+              </Text>
+              <Text fontWeight="500">New Password</Text>
+              <Box>
+                <InputGroup size="md">
+                  <Input
+                    bgColor="white"
+                    pr="4.5rem"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder=""
+                    onChange={({ target }) => setPassword(target.value)}
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? 'Hide' : 'Show'}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                <Text color="#718096">Password must contain at least 6 characters.</Text>
+              </Box>
+              <Box>
+                <Text fontWeight="500">Confirm New Password</Text>
+                <InputGroup size="md">
+                  <Input
+                    bgColor="white"
+                    pr="4.5rem"
+                    type={showCheckedPassword ? 'text' : 'password'}
+                    placeholder=""
+                    onChange={({ target }) => setCheckPassword(target.value)}
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button
+                      h="1.75rem"
+                      size="sm"
+                      onClick={() => setShowCheckedPassword(!showCheckedPassword)}
+                    >
+                      {showCheckedPassword ? 'Hide' : 'Show'}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                {errorMessage && <Text color="#E53E3E">{errorMessage}</Text>}
+              </Box>
+              <Spacer />
+              <Flex justify="flex-end" w="100%">
+                <Button
+                  type="submit"
+                  color="white"
+                  bgColor="ochBlue"
+                  w={{ md: '200px', base: '100%' }}
+                  alignSelf="flex-end"
+                >
+                  Reset Password
+                </Button>
+              </Flex>
+            </Flex>
+          </form>
+        )}
+        {verified && confirmationMessage && (
+          <Flex direction="column" bg="rgba(43, 192, 227, .10)" gap={3} p={12} borderRadius={6}>
+            <Text>{confirmationMessage}</Text>
+            <Button bgColor="ochBlue" w={{ md: '200px', base: '100%' }} alignSelf="flex-end">
+              <Link to="/login">Back to Login</Link>
+            </Button>
+          </Flex>
+        )}
+        {!verified && (
+          <Flex direction="column" bg="rgba(43, 192, 227, .10)" gap={3} p={12} borderRadius={6}>
+            Sorry! The reset link that was used is invalid.
+            <Button bgColor="ochBlue" w={{ md: '200px', base: '100%' }} alignSelf="flex-end">
+              <Link to="/login">Back to Login</Link>
+            </Button>
+          </Flex>
+        )}
+      </Flex>
+    </Container>
   );
 };
 

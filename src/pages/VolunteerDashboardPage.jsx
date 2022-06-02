@@ -144,7 +144,7 @@ const VolunteerDashboardPage = () => {
         <UnsubmittedLogDraft
           // eslint-disable-next-line react/no-array-index-key
           key={idx}
-          segment={draft.segment ? draft.segment.segmentId : ''}
+          segment={draft.segment?.segmentId}
           date={draft.date}
           lastSaved={draft.lastEditedAt}
           logId={draft._id}
@@ -158,12 +158,12 @@ const VolunteerDashboardPage = () => {
         submission =>
           submission.status === 'EDITS_REQUESTED' || submission.status === 'UNDER_REVIEW',
       )
-      .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
+      .sort((a, b) => b.lastEditedAt.localeCompare(a.lastEditedAt))
       .sort((a, b) => a.status.localeCompare(b.status));
 
     const recents = notApproved.concat(
       userSubmissions
-        .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
+        .sort((a, b) => b?.submittedAt?.localeCompare(a?.submittedAt))
         .filter(submission => submission.status === 'APPROVED')
         .slice(0, 6 - notApproved.length),
     );

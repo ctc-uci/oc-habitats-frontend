@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import { useUserContext } from '../common/UserContext/UserContext';
 import AdminDashboardPage from './AdminDashboardPage';
 import VolunteerDashboardPage from './VolunteerDashboardPage';
+import { useUserContext } from '../common/UserContext/UserContext';
 
 const HomePage = ({ onAdminPortal }) => {
-  const { userData } = useUserContext();
+  const userData = useUserContext();
+  const isAdmin = userData.userData.role === 'admin';
+
   return (
     <>
-      {userData.isAdmin && onAdminPortal && <AdminDashboardPage />}
-      {!userData.isAdmin && <VolunteerDashboardPage />}
-      {userData.isAdmin && !onAdminPortal && <VolunteerDashboardPage />}
+      {isAdmin && onAdminPortal && <AdminDashboardPage />}
+      {!isAdmin && <VolunteerDashboardPage />}
+      {isAdmin && !onAdminPortal && <VolunteerDashboardPage />}
     </>
   );
 };
