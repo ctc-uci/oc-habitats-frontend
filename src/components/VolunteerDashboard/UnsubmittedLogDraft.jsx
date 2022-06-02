@@ -21,6 +21,7 @@ const UnsubmittedLogDraft = ({ segment, date, lastSaved, logId }) => {
       h={{ base: 'fit-content' }}
       px={5}
       py={4}
+      minW="420px"
     >
       <Text fontSize="16px">
         {segment} — {formattedDate}

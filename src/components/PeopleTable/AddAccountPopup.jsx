@@ -75,7 +75,7 @@ const AddAccountPopup = () => {
       toast({
         title: 'Sign Up Invite Failed!',
         description: `
-          The following error occurred when inviting a user:${err.message}
+          The following error occurred when inviting a user: ${err.message}
         `,
         status: 'error',
         duration: 5000,

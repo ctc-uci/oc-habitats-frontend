@@ -228,7 +228,7 @@ const VolunteerDashboardPage = () => {
       <Text py="3" fontSize={{ md: '16px', sm: '14px' }} color="#4A5568">
         Note: This is a list of Monitor Logs that you have yet to submit for review.
       </Text>
-      <Stack direction={{ md: 'row', sm: 'column' }} spacing="20px">
+      <Stack direction={{ md: 'row', sm: 'column' }} overflowX="auto" spacing="20px">
         {Unsubmitted()}
       </Stack>
       <Flex direction="row" align="center" pt="50">
