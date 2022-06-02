@@ -162,7 +162,8 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
           {additionalQuestions.map(question => {
             return (
               <NonStaticHumanActivity
-                key={question.title.length}
+                formKey={`humanActivity.${question._id}`}
+                key={question.title}
                 refreshTrigger={toggleTabEdited}
                 question={question}
                 isTemplate={isTemplate}
