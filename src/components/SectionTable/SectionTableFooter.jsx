@@ -17,14 +17,19 @@ const SectionTableFooter = ({ rowCount, pageIndex, rowsPerPageSelect, pageSize, 
       color="white"
       style={{ margin: 0 }}
     >
-      <Flex justifyContent="space-between" m={4} alignItems="center">
+      <Flex
+        direction={{ md: 'row', base: 'column' }}
+        justifyContent="space-between"
+        m={4}
+        alignItems={{ md: 'center', base: 'flex-end' }}
+      >
         <Flex alignItems="center">
           <Text flexShrink="0">Show rows per page: </Text>{' '}
           <Select
             backgroundColor="white"
             color="ochGrey"
             ml={2}
-            w={32}
+            w={{ base: 24 }}
             value={pageSize}
             onChange={e => {
               pageControl.setPageSize(Number(e.target.value));

@@ -1,4 +1,7 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/forbid-prop-types */
 import React, { useState, useEffect } from 'react';
+import { Container, Spinner } from '@chakra-ui/react';
 import { Navigate } from 'react-router-dom';
 import { PropTypes, instanceOf } from 'prop-types';
 import { withCookies, Cookies, clearCookies } from './cookie_utils';
@@ -36,7 +39,7 @@ const userIsAuthenticated = async (roles, cookies) => {
  * @param {Cookies} cookies The user's current cookies
  * @returns The relevant path to redirect the user to depending on authentication state.
  */
-const ProtectedRoute = ({ Component, redirectPath, roles, cookies }) => {
+const ProtectedRoute = ({ Component, children, redirectPath, roles, cookies }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { setUserData } = useUserContext();
@@ -50,17 +53,30 @@ const ProtectedRoute = ({ Component, redirectPath, roles, cookies }) => {
   }, []);
 
   if (isLoading) {
-    return <h1>LOADING...</h1>;
+    return (
+      <Container centerContent mt="50px">
+        <Spinner />
+        <h1>Loading...</h1>
+      </Container>
+    );
   }
   if (isAuthenticated) {
-    return <Component />;
+    const childCount = React.Children.count(children);
+    return childCount ? children : <Component />;
   }
   return <Navigate to={redirectPath} />;
 };
 
+ProtectedRoute.defaultProps = {
+  Component: () => {},
+  children: [],
+  redirectPath: '/login',
+};
+
 ProtectedRoute.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  redirectPath: PropTypes.string.isRequired,
+  Component: PropTypes.elementType,
+  children: PropTypes.node,
+  redirectPath: PropTypes.string,
   roles: PropTypes.arrayOf(PropTypes.string).isRequired,
   cookies: instanceOf(Cookies).isRequired,
 };

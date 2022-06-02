@@ -13,6 +13,10 @@ import {
   sendPasswordResetEmail,
   confirmPasswordReset,
   applyActionCode,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  updatePassword,
+  verifyPasswordResetCode,
 } from 'firebase/auth';
 
 import { useNavigate } from 'react-router-dom';
@@ -234,6 +238,11 @@ const confirmVerifyEmail = async code => {
   await applyActionCode(auth, code);
 };
 
+const verifyPasswordReset = async code => {
+  const email = await verifyPasswordResetCode(auth, code);
+  return email;
+};
+
 /**
  * Logs a user out
  * @param {string} redirectPath The path to redirect the user to after logging out
@@ -299,6 +308,36 @@ const addAuthInterceptor = axiosInstance => {
   );
 };
 
+/**
+ * Cross checks old password by reauthenticating with firebase and applying changes afterwards
+ * @param {string} newPassword Password that the user wants to change to
+ * @param {string} oldPassword Previous password used to check with firebase
+ */
+const updateUserPassword = async (newPassword, oldPassword) => {
+  const user = auth.currentUser;
+
+  const cred = EmailAuthProvider.credential(user.email, oldPassword);
+
+  try {
+    await reauthenticateWithCredential(user, cred);
+    // User entered correct credentials
+    // Update password
+    await updatePassword(auth.currentUser, newPassword);
+    console.log('password updated succesfully');
+    return 'success';
+  } catch (e) {
+    console.log(e.code, e.message);
+    // Could be incorrect credentials
+    if (e.code === 'auth/wrong-password') {
+      return 'password';
+    }
+    if (e.code === 'auth/weak-password') {
+      return 'weak';
+    }
+    return 'error';
+  }
+};
+
 addAuthInterceptor(OCHBackend);
 
 // -------- ADMIN INVITE ROUTES START HERE ------------------------------------------
@@ -343,4 +382,6 @@ export {
   confirmNewPassword,
   confirmVerifyEmail,
   initiateInviteProcess,
+  updateUserPassword,
+  verifyPasswordReset,
 };

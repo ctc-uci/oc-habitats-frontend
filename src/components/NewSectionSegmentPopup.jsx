@@ -14,7 +14,6 @@ import {
   Stack,
   Input,
   Textarea,
-  Text,
   FormControl,
   FormLabel,
   FormErrorMessage,
@@ -45,20 +44,40 @@ const addSegmentSchema = yup.object({
   newSegParking: yup.string().required('Segment Parking is required'),
 });
 
-const ModalContentStepOne = ({ step, setStep }) => (
-  <>
-    <ModalHeader>Create New:</ModalHeader>
-    <ModalBody>
-      <Text>User Type</Text>
-      <RadioGroup onChange={setStep} value={step}>
-        <Stack column="vertical">
-          <Radio value="1">Section</Radio>
-          <Radio value="2">Segment</Radio>
-        </Stack>
-      </RadioGroup>
-    </ModalBody>
-  </>
-);
+const ModalContentStepOne = ({ step, setStep, onClose }) => {
+  const [current, setCurrent] = useState(step);
+  const handleClick = () => {
+    setStep(current);
+  };
+
+  return (
+    <>
+      <ModalHeader>Create New:</ModalHeader>
+      <ModalBody>
+        <RadioGroup onChange={val => setCurrent(val)} value={current} mb={4}>
+          <Stack direction="column">
+            <Radio value="1">Section</Radio>
+            <Radio value="2">Segment</Radio>
+          </Stack>
+        </RadioGroup>
+        <ModalFooter pr={0}>
+          <Button colorScheme="gray" mr={3} onClick={onClose}>
+            Close
+          </Button>
+          <Button
+            colorScheme="blue"
+            bg="ochBlue"
+            color="ochBlack"
+            variant="solid"
+            onClick={handleClick}
+          >
+            Next
+          </Button>
+        </ModalFooter>
+      </ModalBody>
+    </>
+  );
+};
 
 const ModalContentAddSection = ({ addNewSection, onClose }) => {
   const {
@@ -94,12 +113,12 @@ const ModalContentAddSection = ({ addNewSection, onClose }) => {
               <FormErrorMessage>{errors.sectionMapLink?.message}</FormErrorMessage>
             </FormControl>
           </Stack>
-          <ModalFooter>
+          <ModalFooter pr={0}>
             <Button colorScheme="gray" mr={3} onClick={onClose}>
               Close
             </Button>
             <Button colorScheme="blue" bg="ochBlue" color="ochBlack" variant="solid" type="submit">
-              Create New Section
+              Create Section
             </Button>
           </ModalFooter>
         </form>
@@ -168,12 +187,12 @@ const ModalContentAddSegment = ({ sectionOptions, addNewSegment, onClose }) => {
               <FormErrorMessage>{errors.newSegParking?.message}</FormErrorMessage>
             </FormControl>
           </Stack>
-          <ModalFooter>
+          <ModalFooter pr={0}>
             <Button colorScheme="gray" mr={3} onClick={onClose}>
               Close
             </Button>
             <Button colorScheme="blue" bg="ochBlue" color="ochBlack" variant="solid" type="submit">
-              Create New Segment
+              Create Segment
             </Button>
           </ModalFooter>
         </form>
@@ -199,11 +218,16 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
         name: newSection.sectionName,
         map: newSection.sectionMapLink,
       });
+      toast({
+        title: `Successfully created Section ${newSection.sectionId}.`,
+        status: 'success',
+        isClosable: true,
+      });
       getSections();
       onClose();
     } catch (err) {
       toast({
-        title: 'An Error Occured!',
+        title: 'Unable to create new section',
         description: err?.message,
         status: 'error',
         isClosable: true,
@@ -221,11 +245,17 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
         mapLink: newSegment.newSegLink,
         parking: newSegment.newSegParking,
       });
+      toast({
+        title: 'Successfully created a new segment.',
+        description: `Segment ${newSegment.newSegId} is now in Section ${newSegment.newSection.value}.`,
+        status: 'success',
+        isClosable: true,
+      });
       getSections();
       onClose();
     } catch (err) {
       toast({
-        title: 'An Error Occured!',
+        title: 'Unable to create new segment',
         description: err?.message,
         status: 'error',
         isClosable: true,
@@ -234,7 +264,7 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
   };
 
   const modalSteps = {
-    0: <ModalContentStepOne step={step} setStep={setStep} />,
+    0: <ModalContentStepOne step={step} setStep={setStep} onClose={onClose} />,
     1: <ModalContentAddSection addNewSection={addNewSection} onClose={onClose} />,
     2: (
       <ModalContentAddSegment
@@ -248,8 +278,9 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
   return (
     <>
       <Button
+        w={{ md: 'fit-content', base: '100%' }}
+        fontSize={{ md: '16px', base: '14px' }}
         onClick={handButtonClick}
-        size="md"
         bg="ochBlue"
         variant="solid"
         rightIcon={<AddIcon />}
@@ -278,6 +309,7 @@ NewSectionSegmentPopup.propTypes = {
 ModalContentStepOne.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 ModalContentAddSection.propTypes = {
