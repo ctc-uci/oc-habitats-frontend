@@ -59,9 +59,6 @@ const AddAccountPopup = () => {
   }, [isOpen]);
 
   const onSubmit = async data => {
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(data, null, 2));
-
     try {
       await initiateInviteProcess(data.email, data.role);
       toast({
@@ -75,10 +72,11 @@ const AddAccountPopup = () => {
         isClosable: true,
       });
     } catch (err) {
+      console.log('awelfuhaewlf', err);
       toast({
         title: 'Sign Up Invite Failed!',
         description: `
-          The following error occurred when inviting a user: ${err}
+          The following error occurred when inviting a user:${err.message}
         `,
         status: 'error',
         duration: 5000,
