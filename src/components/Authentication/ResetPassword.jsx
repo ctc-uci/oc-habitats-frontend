@@ -37,7 +37,6 @@ const ResetPassword = ({ code }) => {
 
   const handleResetPassword = async e => {
     e.preventDefault();
-    // console.log(`handleSubmit called with ${firstName}, ${lastName}, ${email}, ${password}`);
     try {
       if (password === checkPassword) {
         if (password.length > 5) {
