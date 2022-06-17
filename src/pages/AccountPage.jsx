@@ -54,9 +54,9 @@ const AccountPage = ({ setChangesMade }) => {
 
   // storing form data in state for retrieval on submission
   // const [isModalOpen, setIsModalOpen] = useState(false);
-  const [cloudImgSrc, setCloudImgSrc] = useState(null);
-  const [file, setFile] = useState(0);
-  const [isFileSaved, setIsFileSaved] = useState(true);
+  // const [cloudImgSrc, setCloudImgSrc] = useState(null);
+  // const [file, setFile] = useState(0);
+  // const [isFileSaved, setIsFileSaved] = useState(true);
 
   // shows/hides the left ("current") password accordingly
   // and changes the button text from "show" to "hide"
@@ -84,12 +84,12 @@ const AccountPage = ({ setChangesMade }) => {
     }
   };
 
-  useEffect(() => {
-    if (userData.profileImage && userData.profileImage.data && userData.profileImage.contentType) {
-      const base64String = Buffer.from(userData.profileImage.data.data).toString('base64');
-      setCloudImgSrc(`data:${userData.profileImage.contentType};base64,${base64String}`);
-    }
-  }, [userData]);
+  // useEffect(() => {
+  //   if (userData.profileImage && userData.profileImage.data && userData.profileImage.contentType) {
+  //     const base64String = Buffer.from(userData.profileImage.data.data).toString('base64');
+  //     setCloudImgSrc(`data:${userData.profileImage.contentType};base64,${base64String}`);
+  //   }
+  // }, [userData]);
 
   // const saveUpload = upload => {
   //   URL.revokeObjectURL(file.preview);
@@ -117,7 +117,7 @@ const AccountPage = ({ setChangesMade }) => {
     formData.append('firstName', data.firstName);
     formData.append('lastName', data.lastName);
     formData.append('email', data.email);
-    if (file) formData.append('profileImage', file);
+    // if (file) formData.append('profileImage', file);
 
     // First cross check current password
     // Set updateResult to empty str incase dont need to update password
@@ -132,7 +132,7 @@ const AccountPage = ({ setChangesMade }) => {
         const results = await OCHBackend.put(`/users/update/${userData.id}`, formData);
         updatePassResult = 'success';
         setUserData(results.data);
-        setIsFileSaved(true);
+        // setIsFileSaved(true);
         reset(data);
       }
 
@@ -140,7 +140,7 @@ const AccountPage = ({ setChangesMade }) => {
     } catch (err) {
       // Check if updated password, but not updated on mongo
       if (updatePassResult === 'success' && err.response.data.message.includes('not update')) {
-        setIsFileSaved(true);
+        // setIsFileSaved(true);
         reset(data);
         return Toast(toast, 'success');
       }
@@ -149,9 +149,9 @@ const AccountPage = ({ setChangesMade }) => {
   };
 
   useEffect(() => {
-    if (isDirty || !isFileSaved) setChangesMade(true);
+    if (isDirty) setChangesMade(true);
     else setChangesMade(false);
-  }, [isDirty, isFileSaved]);
+  }, [isDirty]);
 
   // const fileImgSrc = file ? file.preview : null;
 
@@ -353,7 +353,7 @@ const AccountPage = ({ setChangesMade }) => {
                 mt={{ lg: '1.5em', sm: '7em' }}
               >
                 <Input
-                  disabled={!isDirty && isFileSaved}
+                  disabled={!isDirty}
                   color="#F7FAFC"
                   bg="#2D3748"
                   type="submit"
