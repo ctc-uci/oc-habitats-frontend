@@ -60,7 +60,7 @@ const HumanActivityField = ({ activityName, activityDesc, activityId, isDisabled
               <br />
               <chakra.span color="#156071" style={{ marginTop: 0 }}>
                 {/* ^ color should be ochBluePress */}
-                Report to ENTITY at XXX-XXX-XXXX
+                Report to local non-emergency municipalities
               </chakra.span>
             </>
           )}
