@@ -108,21 +108,18 @@ function NonStaticQuestion({
       >
         <GridItem py="10px" px="5px" key={question.title} colSpan={1} rowSpan={1}>
           <VStack spacing="8px" align="left">
-            {isTemplate ? (
+            <Flex align="center">
               <Text fontWeight="500" fontSize="md">
                 {question.title}
               </Text>
-            ) : (
-              <Flex align="center">
-                <Text fontWeight="500" fontSize="md">
-                  {question.title}
-                </Text>
-                <Spacer />
+              <Spacer />
+              {question.tooltip !== '' && (
                 <Tooltip label={question.tooltip} placement="top">
                   <InfoIcon />
                 </Tooltip>
-              </Flex>
-            )}
+              )}
+            </Flex>
+
             {question.fieldType === 'TEXT' ? (
               <Input type="text" isDisabled={isDisabled} {...register(formKey)} />
             ) : (
