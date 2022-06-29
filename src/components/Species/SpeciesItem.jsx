@@ -19,7 +19,7 @@ const SpeciesItem = ({ specie, index, searchItem, col, editSpecies, deleteSpecie
           borderRadius="6px"
           pl=".75em"
           w="100%"
-          bgColor={searchItem === specie.pre ? 'skyblue' : 'white'}
+          bgColor={searchItem === specie.name ? 'skyblue' : 'white'}
         >
           <Text fontSize="1em" fontWeight={450} color="#2D3748" p=".5em">
             {specie.name}
