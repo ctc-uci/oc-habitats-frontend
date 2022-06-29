@@ -7,23 +7,24 @@ import {
   FormControl,
   GridItem,
   SimpleGrid,
-  Image,
+  // Image,
   VStack,
   Heading,
   InputGroup,
   InputRightAddon,
-  IconButton,
+  // IconButton,
   Grid,
   Flex,
   Box,
   HStack,
   useToast,
+  Avatar,
 } from '@chakra-ui/react';
-import { FiEdit2 } from 'react-icons/fi';
+// import { FiEdit2 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
-import UploadModal from '../components/UploadModal';
-import defaultPic from '../assets/defaultProfile.jpg';
+// import UploadModal from '../components/UploadModal';
+// import defaultPic from '../assets/defaultProfile.jpg';
 import Toast from '../components/Toast';
 import { updateUserPassword } from '../common/auth_utils';
 import { useUserContext } from '../common/UserContext/UserContext';
@@ -52,10 +53,10 @@ const AccountPage = ({ setChangesMade }) => {
   const [rightButtonText, setRightButtonText] = useState('Show');
 
   // storing form data in state for retrieval on submission
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [cloudImgSrc, setCloudImgSrc] = useState(null);
-  const [file, setFile] = useState(0);
-  const [isFileSaved, setIsFileSaved] = useState(true);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [cloudImgSrc, setCloudImgSrc] = useState(null);
+  // const [file, setFile] = useState(0);
+  // const [isFileSaved, setIsFileSaved] = useState(true);
 
   // shows/hides the left ("current") password accordingly
   // and changes the button text from "show" to "hide"
@@ -83,18 +84,18 @@ const AccountPage = ({ setChangesMade }) => {
     }
   };
 
-  useEffect(() => {
-    if (userData.profileImage && userData.profileImage.data && userData.profileImage.contentType) {
-      const base64String = Buffer.from(userData.profileImage.data.data).toString('base64');
-      setCloudImgSrc(`data:${userData.profileImage.contentType};base64,${base64String}`);
-    }
-  }, [userData]);
+  // useEffect(() => {
+  //   if (userData.profileImage && userData.profileImage.data && userData.profileImage.contentType) {
+  //     const base64String = Buffer.from(userData.profileImage.data.data).toString('base64');
+  //     setCloudImgSrc(`data:${userData.profileImage.contentType};base64,${base64String}`);
+  //   }
+  // }, [userData]);
 
-  const saveUpload = upload => {
-    URL.revokeObjectURL(file.preview);
-    setFile(upload);
-    setIsFileSaved(false);
-  };
+  // const saveUpload = upload => {
+  //   URL.revokeObjectURL(file.preview);
+  //   setFile(upload);
+  //   setIsFileSaved(false);
+  // };
 
   const formatAssignedSeg = () => {
     const segments = userData.segments.map(segment => {
@@ -116,7 +117,7 @@ const AccountPage = ({ setChangesMade }) => {
     formData.append('firstName', data.firstName);
     formData.append('lastName', data.lastName);
     formData.append('email', data.email);
-    if (file) formData.append('profileImage', file);
+    // if (file) formData.append('profileImage', file);
 
     // First cross check current password
     // Set updateResult to empty str incase dont need to update password
@@ -131,7 +132,7 @@ const AccountPage = ({ setChangesMade }) => {
         const results = await OCHBackend.put(`/users/update/${userData.id}`, formData);
         updatePassResult = 'success';
         setUserData(results.data);
-        setIsFileSaved(true);
+        // setIsFileSaved(true);
         reset(data);
       }
 
@@ -139,7 +140,7 @@ const AccountPage = ({ setChangesMade }) => {
     } catch (err) {
       // Check if updated password, but not updated on mongo
       if (updatePassResult === 'success' && err.response.data.message.includes('not update')) {
-        setIsFileSaved(true);
+        // setIsFileSaved(true);
         reset(data);
         return Toast(toast, 'success');
       }
@@ -148,11 +149,11 @@ const AccountPage = ({ setChangesMade }) => {
   };
 
   useEffect(() => {
-    if (isDirty || !isFileSaved) setChangesMade(true);
+    if (isDirty) setChangesMade(true);
     else setChangesMade(false);
-  }, [isDirty, isFileSaved]);
+  }, [isDirty]);
 
-  const fileImgSrc = file ? file.preview : null;
+  // const fileImgSrc = file ? file.preview : null;
 
   return (
     <Box mb={{ lg: '100px' }}>
@@ -172,7 +173,7 @@ const AccountPage = ({ setChangesMade }) => {
           rowGap="3em"
         >
           <GridItem colStart={1} rowStart={1} rowSpan={{ lg: 3, sm: 1 }} colSpan={1}>
-            <Flex justifyContent="center">
+            {/* <Flex justifyContent="center">
               <Box position="relative" mr="1em">
                 <Image
                   e="8"
@@ -205,6 +206,15 @@ const AccountPage = ({ setChangesMade }) => {
                   isOpen={isModalOpen}
                   toggleOpen={setIsModalOpen}
                   saveUpload={saveUpload}
+                />
+              </Box>
+            </Flex> */}
+            <Flex justify="center">
+              <Box w="200px" h="200px">
+                <Avatar
+                  size="full"
+                  fontSize="140px"
+                  name={`${userData.firstName} ${userData.lastName}`}
                 />
               </Box>
             </Flex>
@@ -343,7 +353,7 @@ const AccountPage = ({ setChangesMade }) => {
                 mt={{ lg: '1.5em', sm: '7em' }}
               >
                 <Input
-                  disabled={!isDirty && isFileSaved}
+                  disabled={!isDirty}
                   color="#F7FAFC"
                   bg="#2D3748"
                   type="submit"

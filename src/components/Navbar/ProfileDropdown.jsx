@@ -23,13 +23,6 @@ const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal, cookies }) 
   };
   const { userData, setUserData } = useUserContext();
 
-  const profileImage =
-    userData.profileImage && userData.profileImage.data && userData.profileImage.contentType
-      ? `data:${userData.profileImage.contentType};base64,${Buffer.from(
-          userData.profileImage.data.data,
-        ).toString('base64')}`
-      : '';
-
   return (
     <Menu>
       <MenuButton
@@ -38,7 +31,7 @@ const ProfileDropdown = ({ isAdmin, onAdminPortal, setOnAdminPortal, cookies }) 
         _hover={{ bg: 'gray.400' }}
         _focus={{ boxShadow: 'outline' }}
       >
-        <Avatar m={1} src={profileImage} name={`${userData.firstName} ${userData.lastName}`} />
+        <Avatar m={1} name={`${userData.firstName} ${userData.lastName}`} />
       </MenuButton>
       <MenuList>
         <MenuItem color="black" fontWeight="600" isDisabled>
