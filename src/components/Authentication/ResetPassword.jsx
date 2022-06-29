@@ -121,19 +121,19 @@ const ResetPassword = ({ code }) => {
             </Flex>
           </form>
         )}
-        {verified && confirmationMessage && (
+        {confirmationMessage && (
           <Flex direction="column" bg="rgba(43, 192, 227, .10)" gap={3} p={12} borderRadius={6}>
             <Text>{confirmationMessage}</Text>
             <Button bgColor="ochBlue" w={{ md: '200px', base: '100%' }} alignSelf="flex-end">
-              <Link to="/login">Back to Login</Link>
+              <Link href="/login">Back to Login</Link>
             </Button>
           </Flex>
         )}
-        {!verified && (
+        {!verified && !confirmationMessage && (
           <Flex direction="column" bg="rgba(43, 192, 227, .10)" gap={3} p={12} borderRadius={6}>
             Sorry! The reset link that was used is invalid.
             <Button bgColor="ochBlue" w={{ md: '200px', base: '100%' }} alignSelf="flex-end">
-              <Link to="/login">Back to Login</Link>
+              <Link href="/login">Back to Login</Link>
             </Button>
           </Flex>
         )}
