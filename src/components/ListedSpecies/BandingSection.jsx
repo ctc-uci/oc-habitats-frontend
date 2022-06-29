@@ -52,12 +52,12 @@ const BandingSection = () => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const addBirdBandTab = () => {
-    const newTab = {};
+    const newTab = { manualCode: '' };
     BAND_POSITIONS.forEach(({ value }) => {
       newTab[value] = {
         colors: [],
         flag: false,
-        verticalPosition: null,
+        verticalPosition: '',
         alphanumeric: '',
       };
     });
@@ -196,6 +196,11 @@ const BandingSection = () => {
                   <Code w="250px" fontSize="lg" p={1}>
                     {currentBandTabCode}
                   </Code>
+                </GridItem>
+                <GridItem>
+                  <FormLabel fontSize="16px">Manual Banding Code Override</FormLabel>
+
+                  <Input bgColor="white" {...register(`bandTabs.${tabIndex}.manualCode`)} />
                 </GridItem>
               </Grid>
             </TabPanel>

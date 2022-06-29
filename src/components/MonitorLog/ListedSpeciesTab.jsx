@@ -218,7 +218,10 @@ const ListedSpeciesTab = ({
           ))}
         </div>,
       ],
-      ['Bands Observed', row.bandTabs.map(bandTab => bandTab.code).join(', ') || 'None'],
+      [
+        'Bands Observed',
+        row.bandTabs.map(bandTab => bandTab.manualCode || bandTab.code).join(', ') || 'None',
+      ],
       [('Nest & Eggs', row.nesting.map(nest => nest.value).join(', ') || 'None')],
       ['Behaviors Observed', row.behaviors.map(nest => nest.value).join(', ') || 'None'],
     ];
