@@ -34,7 +34,6 @@ const VolunteerDashboardPage = () => {
       ]);
       setUserData(userRes.data);
       setUserSubmissions(submissionRes.data);
-      console.log(submissionRes.data);
       setUserNotifications(notificationsRes.data);
     } catch (err) {
       // TODO: handle error
@@ -71,18 +70,14 @@ const VolunteerDashboardPage = () => {
 
     return (
       <>
-        <Notification
-          title={submissionTitle}
-          description={submissionDescription}
-          type="SUBMISSION_STATUS"
-        />
+        <Notification title={submissionTitle} description={submissionDescription} type="status" />
         {userNotifications.map(notification => (
           <Notification
             key={notification._id}
             id={notification._id}
             title={notification.message}
             description="Thank you for your hard work, and keep it up!"
-            type="MONITOR_LOG_APPROVED"
+            type="approved"
             closeable
           />
         ))}
@@ -93,7 +88,7 @@ const VolunteerDashboardPage = () => {
               requested.segment.segmentId
             } log on ${formatDate(requested.requestedEdits.requestDate)}`}
             description={`Request Reason: ${requested.requestedEdits.requests}`}
-            type="CHANGES_REQUESTED"
+            type="changes"
             logId={requested._id}
           />
         ))}

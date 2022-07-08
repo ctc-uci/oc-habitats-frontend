@@ -15,22 +15,20 @@ import { FiArrowRight } from 'react-icons/fi';
 import { OCHBackend } from '../../common/utils';
 
 const status = {
-  MONITOR_LOG_APPROVED: 'success',
-  CHANGES_REQUESTED: 'error',
-  SUBMISSION_STATUS: 'info',
+  approved: 'success',
+  changes: 'error',
+  status: 'info',
 };
 
 const Notification = ({ id, title, description, type, closeable, logId }) => {
   const [closed, setClosed] = useState(false);
-  console.log(logId);
 
   const onClose = async () => {
     try {
       await OCHBackend.delete(`/notification/${id}`, { withCredentials: true });
       setClosed(true);
-      console.log('delete success');
     } catch (err) {
-      // TODO: handle error
+      // eslint-disable-next-line no-console
       console.log(err.message);
     }
   };
@@ -40,15 +38,22 @@ const Notification = ({ id, title, description, type, closeable, logId }) => {
   ) : (
     <Alert borderRadius="md" status={status[type]} variant="left-accent">
       <AlertIcon />
-      <Flex w="100%" direction={{ md: 'row', base: 'column' }} justify="space-between">
-        <Box>
-          <AlertTitle>{title}</AlertTitle>
-          <AlertDescription>{description}</AlertDescription>
-        </Box>
-        {closeable && <CloseButton position="relative" right={-1} top={-1} onClick={onClose} />}
-        {type === 'CHANGES_REQUESTED' && (
-          <Link href={`/create-log/${logId}`}>
-            <Button float="right" colorScheme="red" size="sm" rightIcon={<FiArrowRight />}>
+      <Flex w="100%" direction={{ md: 'row', base: 'column' }}>
+        <Flex w="100%" direction="row" justify="space-between">
+          <Box>
+            <AlertTitle>{title}</AlertTitle>
+            <AlertDescription>{description}</AlertDescription>
+          </Box>
+          {closeable && <CloseButton position="relative" right={-1} top={-1} onClick={onClose} />}
+        </Flex>
+        {type === 'changes' && (
+          <Link alignSelf="flex-end" href={`/create-log/${logId}`}>
+            <Button
+              mt={{ md: '0', base: '8px' }}
+              colorScheme="red"
+              size="sm"
+              rightIcon={<FiArrowRight />}
+            >
               Go to log
             </Button>
           </Link>
