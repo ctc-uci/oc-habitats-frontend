@@ -57,7 +57,7 @@ const VolunteerDashboardPage = () => {
       return submissionDate.getMonth();
     };
 
-    const segments = userData.segments.map(segment => segment.segmentId);
+    const segments = userData.userData.segments.map(segment => segment.segmentId);
     const monthlySubmissions = userSubmissions
       .filter(submission => submissionMonth(submission.submittedAt) === currentDate.getMonth())
       .map(submission => submission.segment.segmentId);
