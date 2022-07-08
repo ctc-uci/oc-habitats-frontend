@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { React, useEffect, useState } from 'react';
 import { OCHBackend } from '../common/utils';
+import { formatDate } from '../common/dateUtils';
 import RecentlySubmittedLog from '../components/VolunteerDashboard/RecentlySubmittedLog';
 import SegmentAssignment from '../components/VolunteerDashboard/SegmentAssignment';
 import UnsubmittedLogDraft from '../components/VolunteerDashboard/UnsubmittedLogDraft';
@@ -32,6 +33,7 @@ const VolunteerDashboardPage = () => {
       ]);
       setUserData(userRes.data);
       setUserSubmissions(submissionRes.data);
+      console.log(submissionRes.data);
       setUserNotifications(notificationsRes.data);
     } catch (err) {
       // TODO: handle error
@@ -41,16 +43,35 @@ const VolunteerDashboardPage = () => {
   }, []);
 
   const Notifications = () => {
-    return userNotifications.map(notification => (
-      <Notification
-        key={notification._id}
-        id={notification._id}
-        title={notification.title}
-        description={notification.message}
-        type={notification.type}
-        closeable
-      />
-    ));
+    const editsRequested = userSubmissions.filter(
+      submission => submission.status === 'EDITS_REQUESTED',
+    );
+
+    return (
+      <>
+        {userNotifications.map(notification => (
+          <Notification
+            key={notification._id}
+            id={notification._id}
+            title={notification.title}
+            description={notification.message}
+            type={notification.type}
+            closeable
+          />
+        ))}
+        {editsRequested.map(requested => (
+          <Notification
+            key={editsRequested._id}
+            title={`Edits have been requested for your ${
+              requested.segment.segmentId
+            } log on ${formatDate(requested.requestedEdits.requestDate)}`}
+            description={`Request Reason: ${requested.requestedEdits.requests}`}
+            type="CHANGES_REQUESTED"
+            logId={requested._id}
+          />
+        ))}
+      </>
+    );
   };
 
   const Segments = () => {
