@@ -116,7 +116,7 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
       columns,
       data,
       initialState: {
-        pageSize: rowsPerPageSelect[0],
+        pageSize: 20,
       },
     },
     usePagination,
