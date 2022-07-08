@@ -34,6 +34,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { SubmissionStatusBadge } from '../common/SubmissionStatusBadge';
 import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
+import { formatDate } from '../common/dateUtils';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
 import EditLogFooter from '../components/MonitorLog/EditLogFooter';
 import EditLogPopup from '../components/MonitorLog/EditLogPopup';
@@ -179,9 +180,22 @@ const MonitorLogPage = ({ mode }) => {
     return res.data;
   };
 
-  const approveLog = () => {
+  const createNotification = async () => {
+    OCHBackend.post(
+      `notification`,
+      {
+        firebaseId: submitterData._id,
+        message: `You monitor log for ${segmentData.segmentId} on ${formatDate(
+          submissionData.submittedAt,
+        )} has been approved!`,
+      },
+      { withCredentials: true },
+    );
+  };
+
+  const approveLog = async () => {
     formMethods.setValue('status', 'APPROVED');
-    editForm();
+    await Promise.all([editForm(), createNotification()]);
     toast({
       title: 'Log Approved!',
       description: `Sucessfully approved ${submitterData.firstName} ${

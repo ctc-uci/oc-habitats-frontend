@@ -80,9 +80,9 @@ const VolunteerDashboardPage = () => {
           <Notification
             key={notification._id}
             id={notification._id}
-            title={notification.title}
-            description={notification.message}
-            type={notification.type}
+            title={notification.message}
+            description="Thank you for your hard work, and keep it up!"
+            type="MONITOR_LOG_APPROVED"
             closeable
           />
         ))}
