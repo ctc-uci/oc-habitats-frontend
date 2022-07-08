@@ -83,7 +83,7 @@ const VolunteerDashboardPage = () => {
         ))}
         {editsRequested.map(requested => (
           <Notification
-            key={editsRequested._id}
+            key={requested._id}
             title={`Edits have been requested for your ${
               requested.segment.segmentId
             } log on ${formatDate(requested.requestedEdits.requestDate)}`}
