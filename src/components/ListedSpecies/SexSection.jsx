@@ -27,7 +27,6 @@ const SexSection = ({ isTemplate }) => {
   };
 
   const unknownAdults = totalAdults - watch('sex[0]') - watch('sex[1]');
-  console.log(unknownAdults);
   setValue('sex[2]', unknownAdults);
 
   return (

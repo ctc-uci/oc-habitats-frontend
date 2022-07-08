@@ -28,6 +28,7 @@ const BehaviorsSection = ({ behaviorOptions, nestingOptions, isTemplate }) => {
                 optionKey="value"
                 isMulti
                 closeMenuOnSelect={false}
+                menuPosition="fixed"
               />
             </FormLabel>
             {isTemplate && <Text color="#718096">Static</Text>}
@@ -43,6 +44,7 @@ const BehaviorsSection = ({ behaviorOptions, nestingOptions, isTemplate }) => {
                 optionKey="value"
                 isMulti
                 closeMenuOnSelect={false}
+                menuPosition="fixed"
               />
             </FormLabel>
             {isTemplate && <Text color="#718096">Static</Text>}
