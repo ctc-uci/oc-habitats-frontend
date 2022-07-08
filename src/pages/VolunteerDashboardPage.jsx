@@ -22,6 +22,7 @@ const VolunteerDashboardPage = () => {
   const [userData, setUserData] = useState(null);
   const [userSubmissions, setUserSubmissions] = useState([]);
   const [userNotifications, setUserNotifications] = useState([]);
+  const currentDate = new Date();
 
   // Get data from backend
   useEffect(async () => {
@@ -43,12 +44,38 @@ const VolunteerDashboardPage = () => {
   }, []);
 
   const Notifications = () => {
+    // There are 3 kinds of notifications:
+    // segment submission status, approval notification, and edits requested reminder
     const editsRequested = userSubmissions.filter(
       submission => submission.status === 'EDITS_REQUESTED',
     );
 
+    const submissionMonth = datetime => {
+      const submissionDate = new Date(datetime);
+      return submissionDate.getMonth();
+    };
+
+    const segments = userData.segments.map(segment => segment.segmentId);
+    const monthlySubmissions = userSubmissions
+      .filter(submission => submissionMonth(submission.submittedAt) === currentDate.getMonth())
+      .map(submission => submission.segment.segmentId);
+
+    const submitted = segments.filter(segment => monthlySubmissions.includes(segment));
+    const unsubmitted = segments.filter(segment => !monthlySubmissions.includes(segment));
+    const submissionDescription = unsubmitted.length
+      ? `You have not submitted a log for: ${unsubmitted.toString()}`
+      : 'You have submitted logs for all of your assigned sections!';
+    const submissionTitle = submitted.length
+      ? `You have submitted a log for: ${submitted.toString()}`
+      : 'You have not submitted any logs this month.';
+
     return (
       <>
+        <Notification
+          title={submissionTitle}
+          description={submissionDescription}
+          type="SUBMISSION_STATUS"
+        />
         {userNotifications.map(notification => (
           <Notification
             key={notification._id}
