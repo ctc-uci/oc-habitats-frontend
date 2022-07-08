@@ -15,25 +15,20 @@ import { useFormContext } from 'react-hook-form';
 import { PropTypes } from 'prop-types';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
 
-const TOTAL_FIELDS = ['totalAdults', 'totalFledges', 'totalChicks'];
-
-const inputs = [
-  '# of Male Adults',
-  '# of Male Fledges',
-  '# of Male Chicks',
-  '# of Female Adults',
-  '# of Female Fledges',
-  '# of Female Chicks',
-];
+const inputs = ['# of Male Adults', '# of Female Adults'];
 
 const SexSection = ({ isTemplate }) => {
   const { watch, setValue, getValues } = useFormContext();
 
+  const totalAdults = watch('totalAdults');
+
   const getMax = idx => {
-    const otherCount = watch(`sex[${(idx + 3) % 6}]`);
-    const totalCount = watch(TOTAL_FIELDS[idx % 3]);
-    return totalCount - otherCount;
+    return totalAdults - getValues(`sex[${1 - idx}]`);
   };
+
+  const unknownAdults = totalAdults - watch('sex[0]') - watch('sex[1]');
+  console.log(unknownAdults);
+  setValue('sex[2]', unknownAdults);
 
   return (
     <CollapsibleSection title="Sex">
@@ -48,6 +43,7 @@ const SexSection = ({ isTemplate }) => {
                   onChange={(_, val) => setValue(`sex[${idx}]`, val, { shouldDirty: true })}
                   defaultValue={getValues(`sex[${idx}]`)}
                   max={getMax(idx)}
+                  isDisabled={idx === 2}
                 >
                   <NumberInputField />
                   <NumberInputStepper>
@@ -60,6 +56,21 @@ const SexSection = ({ isTemplate }) => {
             </FormControl>
           </GridItem>
         ))}
+        <GridItem>
+          <FormControl>
+            <FormLabel>
+              # of Unknown Adults
+              <NumberInput min={0} value={getValues(`sex[2]`)} isDisabled>
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </FormLabel>
+            {isTemplate && <Text color="#718096">Static</Text>}
+          </FormControl>
+        </GridItem>
       </Grid>
     </CollapsibleSection>
   );

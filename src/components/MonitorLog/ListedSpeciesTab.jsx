@@ -92,7 +92,7 @@ const ListedSpeciesTab = ({
       meridiem: 'AM',
       map: '1',
       habitat: '',
-      sex: [0, 0, 0, 0, 0, 0],
+      sex: [0, 0, 0],
       nesting: [],
       behaviors: [],
       gps: [
@@ -196,25 +196,13 @@ const ListedSpeciesTab = ({
       [
         <div>
           <div># of Male Adults</div>
-          <div># of Male Fledges</div>
-          <div># of Male Chicks</div>
+          <div># of Female Adults</div>
+          <div># of Unknown Adults</div>
         </div>,
         <div>
           {row.sex.slice(0, 3).map((sex, idx) => (
             // eslint-disable-next-line react/no-array-index-key
             <div key={idx}>{sex}</div>
-          ))}
-        </div>,
-      ],
-      [
-        <div>
-          <div># of Female Adults</div>
-          <div># of Female Fledges</div>
-          <div># of Female Chicks</div>
-        </div>,
-        <div>
-          {row.sex.slice(3, 6).map(sex => (
-            <div>{sex}</div>
           ))}
         </div>,
       ],
