@@ -16,7 +16,7 @@ import { formatDate } from '../common/dateUtils';
 import RecentlySubmittedLog from '../components/VolunteerDashboard/RecentlySubmittedLog';
 import SegmentAssignment from '../components/VolunteerDashboard/SegmentAssignment';
 import UnsubmittedLogDraft from '../components/VolunteerDashboard/UnsubmittedLogDraft';
-import Notification from '../components/VolunteerDashboard/Notifcation';
+import Notification from '../components/VolunteerDashboard/Notification';
 
 const VolunteerDashboardPage = () => {
   const [userData, setUserData] = useState(null);
