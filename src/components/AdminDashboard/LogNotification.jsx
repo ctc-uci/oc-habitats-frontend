@@ -1,6 +1,6 @@
 import { React } from 'react';
 import { Text, Box, Button, Flex } from '@chakra-ui/react';
-import { CheckCircleIcon, ArrowForwardIcon, CloseIcon } from '@chakra-ui/icons';
+import { CheckCircleIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 
@@ -31,9 +31,6 @@ const LogNotification = ({ numNotifications }) => {
               <ArrowForwardIcon />
             </Button>
           </Link>
-          <Button colorScheme="#C6F6D5" p={0} variant="ghost">
-            <CloseIcon fontSize="13px" />
-          </Button>
         </Flex>
       </Flex>
     </Box>

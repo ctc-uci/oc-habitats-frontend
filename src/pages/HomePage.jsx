@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { useUserContext } from '../common/UserContext/UserContext';
 import AdminDashboardPage from './AdminDashboardPage';
 import VolunteerDashboardPage from './VolunteerDashboardPage';
 
-const HomePage = ({ isAdmin, onAdminPortal }) => {
+const HomePage = ({ onAdminPortal }) => {
+  const userData = useUserContext();
+  const isAdmin = userData.userData.role === 'admin';
+
   return (
     <>
       {isAdmin && onAdminPortal && <AdminDashboardPage />}
@@ -15,7 +18,6 @@ const HomePage = ({ isAdmin, onAdminPortal }) => {
 };
 
 HomePage.propTypes = {
-  isAdmin: PropTypes.bool.isRequired,
   onAdminPortal: PropTypes.bool.isRequired,
 };
 

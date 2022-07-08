@@ -18,7 +18,6 @@ const userIsAuthenticated = async (roles, cookies) => {
       OCHBackend.get(`/auth/verifyToken/${accessToken}`),
       OCHBackend.get(`/users/${currentUserId}`),
     ]);
-
     // User role matches, and token is verified
     return {
       authenticated: roles.includes(currentUser.data?.role) && loggedIn.status === 200,

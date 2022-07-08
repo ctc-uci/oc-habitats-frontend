@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import { ArrowBackIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
   Breadcrumb,
@@ -50,7 +51,7 @@ const ListedSpeciesPopup = ({
       time: '07:00',
       map: '1',
       habitat: '',
-      sex: [0, 0, 0, 0, 0, 0],
+      sex: [0, 0, 0],
       nesting: [],
       behaviors: [],
       gps: [
@@ -210,11 +211,8 @@ ListedSpeciesPopup.propTypes = {
   adultName: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
   addRow: PropTypes.func.isRequired,
-  prefilledData: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
-  ).isRequired,
-  additionalQuestions: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))
-    .isRequired,
+  prefilledData: PropTypes.object.isRequired,
+  additionalQuestions: PropTypes.object.isRequired,
 };
 
 export default ListedSpeciesPopup;

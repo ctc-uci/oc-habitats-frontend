@@ -43,20 +43,9 @@ const HUMAN_ACTIVITIES = [
   ['[On Leash] Domestic Animals', 'Dogs, Cats, Other', 'onLeashAnimals'],
 ];
 
-const HumanActivityField = ({
-  activityName,
-  activityDesc,
-  activityNum,
-  activityId,
-  isDisabled,
-  isTemplate,
-}) => {
+const HumanActivityField = ({ activityName, activityDesc, activityId, isDisabled, isTemplate }) => {
   const { setValue, getValues } = useFormContext();
-  const formKey = `${FORM_PREFIX}[${activityNum}]`;
-
-  useEffect(() => {
-    setValue(formKey, { activity: activityId, count: getValues(formKey)?.count || 0 });
-  }, []);
+  const formKey = `${FORM_PREFIX}.${activityId}`;
 
   return (
     <GridItem colSpan={1}>
@@ -71,7 +60,7 @@ const HumanActivityField = ({
               <br />
               <chakra.span color="#156071" style={{ marginTop: 0 }}>
                 {/* ^ color should be ochBluePress */}
-                Report to ENTITY at XXX-XXX-XXXX
+                Report to local non-emergency municipalities
               </chakra.span>
             </>
           )}
@@ -79,8 +68,8 @@ const HumanActivityField = ({
         <NumberInput
           isDisabled={isDisabled}
           min={0}
-          onChange={(_, val) => setValue(formKey, { activity: activityId, count: val })}
-          defaultValue={getValues(formKey)?.count || 0}
+          onChange={(_, val) => setValue(formKey, val)}
+          defaultValue={getValues(formKey) || 0}
         >
           <NumberInputField />
           <NumberInputStepper>
@@ -97,7 +86,6 @@ const HumanActivityField = ({
 HumanActivityField.propTypes = {
   activityName: PropTypes.string.isRequired,
   activityDesc: PropTypes.string.isRequired,
-  activityNum: PropTypes.number.isRequired,
   activityId: PropTypes.string.isRequired,
   isDisabled: PropTypes.bool.isRequired,
   isTemplate: PropTypes.bool.isRequired,
@@ -155,11 +143,10 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
           spacingX="64px"
           spacingY={{ md: '68px', base: '30px' }}
         >
-          {HUMAN_ACTIVITIES.map(([name, desc, value], idx) => (
+          {HUMAN_ACTIVITIES.map(([name, desc, value]) => (
             <HumanActivityField
               key={value}
               activityName={name}
-              activityNum={idx}
               activityDesc={desc}
               activityId={value}
               isDisabled={isDisabled}
@@ -175,7 +162,8 @@ const HumanActivityTab = ({ showHeader, isDisabled, isTemplate }) => {
           {additionalQuestions.map(question => {
             return (
               <NonStaticHumanActivity
-                key={question.title.length}
+                formKey={`humanActivity.${question._id}`}
+                key={question.title}
                 refreshTrigger={toggleTabEdited}
                 question={question}
                 isTemplate={isTemplate}

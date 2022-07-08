@@ -16,6 +16,7 @@ import {
   reauthenticateWithCredential,
   EmailAuthProvider,
   updatePassword,
+  verifyPasswordResetCode,
 } from 'firebase/auth';
 
 import { useNavigate } from 'react-router-dom';
@@ -241,6 +242,11 @@ const confirmVerifyEmail = async code => {
   await applyActionCode(auth, code);
 };
 
+const verifyPasswordReset = async code => {
+  const email = await verifyPasswordResetCode(auth, code);
+  return email;
+};
+
 /**
  * Logs a user out
  * @param {string} redirectPath The path to redirect the user to after logging out
@@ -340,14 +346,14 @@ addAuthInterceptor(OCHBackend);
 
 // -------- ADMIN INVITE ROUTES START HERE ------------------------------------------
 
-const sendInviteEmail = (email, emailTemplate) => {
-  OCHBackend.post('/nodemailer/send', {
+const sendInviteEmail = async (email, emailTemplate) => {
+  await OCHBackend.post('/nodemailer/send', {
     email,
     messageHtml: renderEmail(emailTemplate),
   });
 };
 
-const initiateInviteProcess = (email, role) => {
+const initiateInviteProcess = async (email, role) => {
   try {
     const id = uuidv4();
     const url = `localhost:3000/register/${id}`; // TODO: change domain name
@@ -367,7 +373,7 @@ const initiateInviteProcess = (email, role) => {
 
     sendInviteEmail(email, <AdminInviteEmail role={role} url={url} />);
   } catch (err) {
-    throw new Error(err.message);
+    throw new Error(err.response.data);
   }
 };
 
@@ -385,4 +391,5 @@ export {
   confirmVerifyEmail,
   initiateInviteProcess,
   updateUserPassword,
+  verifyPasswordReset,
 };

@@ -6,7 +6,7 @@ import AdminPageFilters from '../components/AdminPageTable/AdminPageFilters';
 import AdminPageTable from '../components/AdminPageTable/AdminPageTable';
 import ExportLogsModal from '../components/AdminPageTable/ExportLogsModal';
 import GenerateReportModal from '../components/AdminPageTable/GenerateReportModal';
-import SetReminderModal from '../components/AdminPageTable/SetReminderModal';
+// import SetReminderModal from '../components/AdminPageTable/SetReminderModal';
 
 const AdminPage = () => {
   const [segmentFilter, setSegmentFilter] = useState('');
@@ -98,13 +98,13 @@ const AdminPage = () => {
         <Flex gap="24px">
           <GenerateReportModal />
           <ExportLogsModal count={checkCount()} />
-          <SetReminderModal />
+          {/* <SetReminderModal /> */}
         </Flex>
 
         <Text my="20px">
           Click on a column header (e.g.{' '}
           <Badge px={0} variant="solid" bg="transparent" textColor="black">
-            Date
+            Log Date
           </Badge>
           ) to sort by descending <ArrowDownIcon /> or ascending <ArrowUpIcon />. Sorting is
           alphanumeric for{' '}

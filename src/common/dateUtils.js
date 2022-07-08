@@ -14,8 +14,12 @@ const formatDate = datetime => {
 
 // Returns time formatted as HH:MM (AM/PM)
 const formatTime = datetime => {
-  const date = new Date(datetime);
-  return format(date, 'hh:mm a');
+  try {
+    const date = new Date(datetime);
+    return format(date, 'hh:mm a');
+  } catch {
+    return 'Invalid Time';
+  }
 };
 
 export { formatDate, formatTime };

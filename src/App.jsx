@@ -24,25 +24,23 @@ import MonitorLogEditPage from './pages/MonitorLogEditPage';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
+import SegmentAssignments from './pages/SegmentAssignments';
+import { UserInformation } from './components/PeopleTable';
 import Species from './pages/Species';
 import Numbers from './pages/EmergencyNumbers';
 import VolunteerLogs from './pages/VolunteerLogsPage';
 import NotFoundPage from './pages/NotFoundPage';
-
 import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import theme from './theme/theme';
-
 import { UserContextProvider } from './common/UserContext/UserContext';
 import UserContextExample from './common/UserContext/UserContextExample';
 import AUTH_ROLES from './common/auth_config';
-
 import HomePage from './pages/HomePage';
 
 const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
 function App() {
   const [accMadeChanges, setAccMadeChanges] = useState(false);
-  const isAdmin = true;
   const [onAdminPortal, setOnAdminPortal] = useState(true);
 
   return (
@@ -53,7 +51,6 @@ function App() {
             <Box className="page-container">
               <Box className="content-wrap">
                 <Navbar
-                  isAdmin={isAdmin}
                   onAdminPortal={onAdminPortal}
                   setOnAdminPortal={setOnAdminPortal}
                   changesMade={accMadeChanges}
@@ -68,7 +65,7 @@ function App() {
                     path="/"
                     element={
                       <ProtectedRoute redirectPath="/login" roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}>
-                        <HomePage isAdmin={isAdmin} onAdminPortal={onAdminPortal} />
+                        <HomePage onAdminPortal={onAdminPortal} />
                       </ProtectedRoute>
                     }
                   />
@@ -116,6 +113,12 @@ function App() {
                   />
                   {/* Admin only routes (TO DO, make admin only) */}
                   <Route exact path="/people" element={<PeoplePage />} />
+                  <Route
+                    exact
+                    path="/people/segment-assignments"
+                    element={<SegmentAssignments />}
+                  />
+                  <Route exact path="/people/user-info/:id" element={<UserInformation />} />
                   <Route
                     exact
                     path="/create-log"

@@ -4,6 +4,7 @@ import DropdownSearch from '../components/DropdownSearch';
 import SpeciesList from '../components/Species/SpeciesList';
 import NewSpeciesModal from '../components/Species/NewSpeciesModal';
 import NewPredatorModal from '../components/Species/NewPredatorModal';
+import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
 
 const initialData = {
@@ -56,6 +57,8 @@ const Species = () => {
   const [change, setChange] = useState(true);
   // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(true);
+  const user = useUserContext();
+  const isAdmin = user.userData.role === 'admin';
 
   const highlightSearch = e => {
     if (e) setSearchItem(e.value);
@@ -161,7 +164,7 @@ const Species = () => {
     });
     setChange(c => !c);
   };
-  const isAdmin = true;
+
   return (
     <Center>
       <Stack w="container.xl" justify-content="center" mb="4em" mx="1.5em">

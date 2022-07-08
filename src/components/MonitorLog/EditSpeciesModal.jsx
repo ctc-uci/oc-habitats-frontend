@@ -31,18 +31,18 @@ import PropTypes from 'prop-types';
 import DropdownSearch from '../DropdownSearch';
 import DeleteSpeciesModal from './DeleteSpeciesModal';
 
-const EditSpeciesModal = ({ speciesRow, editRow, deleteRow, speciesOptions }) => {
-  const getSpeciesObj = speciesId => speciesOptions.find(s => s.value === speciesId);
+const EditSpeciesModal = ({ speciesId, speciesRow, editRow, deleteRow, speciesOptions }) => {
+  const getSpeciesObj = id => speciesOptions.find(s => s.value === id);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDelete, setIsDelete] = useState(false);
-  const [selectedSpecies, setSelectedSpecies] = useState(getSpeciesObj(speciesRow.species));
+  const [selectedSpecies, setSelectedSpecies] = useState(getSpeciesObj(speciesId));
   const [totalSighted, setTotalSighted] = useState(speciesRow.count);
   const [notes, setNotes] = useState(speciesRow.notes);
 
   const updateSpecies = () => {
     editRow({
-      oldId: speciesRow.species,
+      oldId: speciesId,
       species: selectedSpecies.value,
       count: parseInt(totalSighted, 10),
       notes,
@@ -51,7 +51,7 @@ const EditSpeciesModal = ({ speciesRow, editRow, deleteRow, speciesOptions }) =>
   };
 
   const deleteSpecie = () => {
-    deleteRow(speciesRow.species);
+    deleteRow(speciesId);
     onClose();
   };
 
@@ -63,7 +63,7 @@ const EditSpeciesModal = ({ speciesRow, editRow, deleteRow, speciesOptions }) =>
         {isDelete ? (
           <DeleteSpeciesModal
             setIsShowing={setIsDelete}
-            speciesName={getSpeciesObj(speciesRow.species)?.label}
+            speciesName={getSpeciesObj(speciesId)?.label}
             deleteSpecie={deleteSpecie}
           />
         ) : (
@@ -180,6 +180,7 @@ EditSpeciesModal.propTypes = {
     count: PropTypes.number,
     notes: PropTypes.string,
   }).isRequired,
+  speciesId: PropTypes.string.isRequired,
   editRow: PropTypes.func.isRequired,
   deleteRow: PropTypes.func.isRequired,
   speciesOptions: PropTypes.arrayOf(
