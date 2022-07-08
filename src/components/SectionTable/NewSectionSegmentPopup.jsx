@@ -24,7 +24,7 @@ import { AddIcon } from '@chakra-ui/icons';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { OCHBackend } from '../common/utils';
+import { OCHBackend } from '../../common/utils';
 
 const addSectionSchema = yup.object({
   sectionId: yup.string().required('Section Id is required'),
@@ -213,11 +213,15 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
 
   const addNewSection = async newSection => {
     try {
-      await OCHBackend.post('/section/', {
-        _id: newSection.sectionId,
-        name: newSection.sectionName,
-        map: newSection.sectionMapLink,
-      });
+      await OCHBackend.post(
+        '/section/',
+        {
+          _id: newSection.sectionId,
+          name: newSection.sectionName,
+          map: newSection.sectionMapLink,
+        },
+        { withCredentials: true },
+      );
       toast({
         title: `Successfully created Section ${newSection.sectionId}.`,
         status: 'success',
@@ -237,14 +241,18 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
 
   const addNewSegment = async newSegment => {
     try {
-      await OCHBackend.post('/segment/', {
-        section: newSegment.newSection.value,
-        segmentId: newSegment.newSegId,
-        name: newSegment.newSegName,
-        streets: newSegment.newSegLocation,
-        mapLink: newSegment.newSegLink,
-        parking: newSegment.newSegParking,
-      });
+      await OCHBackend.post(
+        '/segment/',
+        {
+          section: newSegment.newSection.value,
+          segmentId: newSegment.newSegId,
+          name: newSegment.newSegName,
+          streets: newSegment.newSegLocation,
+          mapLink: newSegment.newSegLink,
+          parking: newSegment.newSegParking,
+        },
+        { withCredentials: true },
+      );
       toast({
         title: 'Successfully created a new segment.',
         description: `Segment ${newSegment.newSegId} is now in Section ${newSegment.newSection.value}.`,
@@ -284,6 +292,7 @@ const NewSectionSegmentPopup = ({ sectionOptions, getSections }) => {
         bg="ochBlue"
         variant="solid"
         rightIcon={<AddIcon />}
+        my={4}
       >
         Create New Section or Segment
       </Button>

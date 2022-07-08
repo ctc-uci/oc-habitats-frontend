@@ -45,26 +45,34 @@ function NonStaticHumanActivity({ formKey, refreshTrigger, isTemplate, question 
   const updateHumanActivity = async () => {
     console.log(`updateHumanActivity called with fieldId: ${idOfFieldBeingEdited}`);
     console.log(`fieldBody: ${newCategory}, ${newExamples}`);
-    await OCHBackend.put('/forms/update/field', {
-      type: 'human-activity',
-      fieldId: idOfFieldBeingEdited,
-      fieldBody: {
-        title: newCategory,
-        subtitle: newExamples,
+    await OCHBackend.put(
+      '/forms/update/field',
+      {
+        type: 'human-activity',
+        fieldId: idOfFieldBeingEdited,
+        fieldBody: {
+          title: newCategory,
+          subtitle: newExamples,
+        },
       },
-    });
+      { withCredentials: true },
+    );
     refreshTrigger();
     editHumanActivityModal.onClose();
   };
 
   const deleteHumanActivity = async () => {
     console.log(`deleteHumanActivity called with fieldId ${idOfFieldBeingEdited}`);
-    await OCHBackend.delete('/forms/delete/field', {
-      data: {
-        formType: 'human-activity',
-        fieldId: idOfFieldBeingEdited,
+    await OCHBackend.delete(
+      '/forms/delete/field',
+      {
+        data: {
+          formType: 'human-activity',
+          fieldId: idOfFieldBeingEdited,
+        },
       },
-    });
+      { withCredentials: true },
+    );
     refreshTrigger();
     deleteHumanActivityModal.onClose();
   };

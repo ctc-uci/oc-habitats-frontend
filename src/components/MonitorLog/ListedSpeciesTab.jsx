@@ -123,12 +123,12 @@ const ListedSpeciesTab = ({
   }, [data]);
 
   useEffect(async () => {
-    const newQuestions = await OCHBackend.get(`/forms/listed-species`);
+    const newQuestions = await OCHBackend.get(`/forms/listed-species`, { withCredentials: true });
     const questions = await newQuestions.data;
     setAdditionalQuestions(questions.additionalFields);
 
     // querying listed species from backend and wrangling with the data
-    const species = await OCHBackend.get('/species/');
+    const species = await OCHBackend.get('/species/', { withCredentials: true });
     const speciesData = species.data;
     const filteredSpeciesData = speciesData.filter(el => el.category === 'LISTED');
     const mappedSpecies = filteredSpeciesData.map(el => `${el.name} (${el.code})`);

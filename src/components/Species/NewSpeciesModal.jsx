@@ -17,10 +17,11 @@ import {
   Input,
   Text,
   VStack,
+  useDisclosure,
 } from '@chakra-ui/react';
 
 function NewSpeciesModal({ addNewSpecies }) {
-  const [isToggled, setIsToggled] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [speciesName, setSpeciesName] = useState(null);
   const [speciesCode, setSpeciesCode] = useState(null);
   const [speciesCategory, setSpeciesCategory] = useState(null);
@@ -35,7 +36,7 @@ function NewSpeciesModal({ addNewSpecies }) {
         category: speciesCategory,
       });
       setIsValid(true);
-      setIsToggled(!isToggled);
+      onClose();
       setSpeciesName(null);
       setSpeciesCode(null);
       setSpeciesCategory(null);
@@ -44,30 +45,17 @@ function NewSpeciesModal({ addNewSpecies }) {
 
   return (
     <>
-      <Button
-        bg="#6B46C1"
-        color="white"
-        onClick={e => {
-          e.preventDefault();
-          setIsToggled(!isToggled);
-          setIsValid(true);
-        }}
-      >
+      <Button bg="#6B46C1" color="white" onClick={onOpen}>
         + New Species
       </Button>
-      <Modal isOpen={isToggled} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader align="left" fontWeight={650} fontSize="28px">
             Add a New Species
           </ModalHeader>
 
-          <ModalCloseButton
-            onClick={e => {
-              e.preventDefault();
-              setIsToggled(false);
-            }}
-          />
+          <ModalCloseButton onClick={onClose} />
           <ModalBody>
             <VStack align="left">
               <InputGroup>
@@ -137,10 +125,7 @@ function NewSpeciesModal({ addNewSpecies }) {
                   bgColor="#E2E8F0"
                   variant="outline"
                   mr={3}
-                  onClick={e => {
-                    e.preventDefault();
-                    setIsToggled(false);
-                  }}
+                  onClick={onClose}
                 >
                   Cancel
                 </Button>

@@ -58,7 +58,7 @@ const EditSpeciesModal = ({ speciesId, speciesRow, editRow, deleteRow, speciesOp
   return (
     <div>
       <IconButton size="md" icon={<Icon as={FiEdit3} w="1.5em" h="1.5em" />} onClick={onOpen} />
-      <Modal isOpen={isOpen} isCentered size="md">
+      <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
         <ModalOverlay />
         {isDelete ? (
           <DeleteSpeciesModal
@@ -157,10 +157,7 @@ const EditSpeciesModal = ({ speciesId, speciesRow, editRow, deleteRow, speciesOp
                     colorScheme="red"
                     variant="outline"
                     rightIcon={<DeleteIcon />}
-                    onClick={e => {
-                      e.preventDefault();
-                      setIsDelete(true);
-                    }}
+                    onClick={onClose}
                   >
                     Delete
                   </Button>

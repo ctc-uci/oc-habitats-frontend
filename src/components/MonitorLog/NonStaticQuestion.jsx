@@ -60,28 +60,36 @@ function NonStaticQuestion({
   const updateQuestion = async () => {
     console.log(`updateQuestion called with fieldId: ${idOfFieldBeingEdited}`);
     console.log(`fieldBody: ${newTitle}, ${newFieldType}, ${newTooltip}`);
-    await OCHBackend.put('/forms/update/field', {
-      type: formType,
-      fieldId: idOfFieldBeingEdited,
-      fieldBody: {
-        title: newTitle,
-        subtitle: 'asdfghjkl',
-        fieldType: newFieldType,
-        tooltip: newTooltip,
+    await OCHBackend.put(
+      '/forms/update/field',
+      {
+        type: formType,
+        fieldId: idOfFieldBeingEdited,
+        fieldBody: {
+          title: newTitle,
+          subtitle: 'asdfghjkl',
+          fieldType: newFieldType,
+          tooltip: newTooltip,
+        },
       },
-    });
+      { withCredentials: true },
+    );
     refreshTrigger();
     editQuestionModal.onClose();
   };
 
   const deleteQuestion = async () => {
     console.log(`deleteQuestion called with fieldId ${idOfFieldBeingEdited}`);
-    await OCHBackend.delete('/forms/delete/field', {
-      data: {
-        formType,
-        fieldId: idOfFieldBeingEdited,
+    await OCHBackend.delete(
+      '/forms/delete/field',
+      {
+        data: {
+          formType,
+          fieldId: idOfFieldBeingEdited,
+        },
       },
-    });
+      { withCredentials: true },
+    );
     refreshTrigger();
     deleteQuestionModal.onClose();
   };

@@ -129,7 +129,9 @@ const AccountPage = ({ setChangesMade }) => {
       }
       // Only if updating password was successful or didn't need to update password, update mongo
       if (updatePassResult === 'success' || updatePassResult === '') {
-        const results = await OCHBackend.put(`/users/update/${userData.id}`, formData);
+        const results = await OCHBackend.put(`/users/update/${userData.id}`, formData, {
+          withCredentials: true,
+        });
         updatePassResult = 'success';
         setUserData(results.data);
         // setIsFileSaved(true);

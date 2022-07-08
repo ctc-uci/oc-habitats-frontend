@@ -22,10 +22,14 @@ const DeletePendingAccountModal = ({ userData, refreshData, isOpen, onClose }) =
   const size = useBreakpointValue({ base: 'sm', md: 'md' });
 
   const deletePendingAccount = async () => {
-    await OCHBackend.delete(`/adminInvite/${userData?.email}`, {
-      profileId: userData?.userId,
-      segmentIds: [],
-    });
+    await OCHBackend.delete(
+      `/adminInvite/${userData?.email}`,
+      {
+        profileId: userData?.userId,
+        segmentIds: [],
+      },
+      { withCredentials: true },
+    );
     await refreshData();
     onClose();
   };
@@ -68,10 +72,14 @@ const ClearSegmentModal = ({ userData, refreshData, isOpen, onClose }) => {
   const size = useBreakpointValue({ base: 'sm', md: 'md' });
 
   const clearSegmentAssignments = async () => {
-    await OCHBackend.put('/users/setSegmentAssignments', {
-      profileId: userData?.userId,
-      segmentIds: [],
-    });
+    await OCHBackend.put(
+      '/users/setSegmentAssignments',
+      {
+        profileId: userData?.userId,
+        segmentIds: [],
+      },
+      { withCredentials: true },
+    );
     await refreshData();
     onClose();
   };
@@ -122,9 +130,13 @@ const ConvertAccountTypeModal = ({ userData, refreshData, isOpen, onClose }) => 
 
   const convertAccount = async () => {
     const newRole = userData?.role === VOLUNTEER_ROLE ? ADMIN_ROLE : VOLUNTEER_ROLE;
-    await OCHBackend.put(`/users/update/${userData?.userId}`, {
-      role: newRole,
-    });
+    await OCHBackend.put(
+      `/users/update/${userData?.userId}`,
+      {
+        role: newRole,
+      },
+      { withCredentials: true },
+    );
     await refreshData();
     onClose();
   };

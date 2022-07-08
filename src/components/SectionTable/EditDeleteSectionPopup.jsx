@@ -94,11 +94,15 @@ const EditDeleteSectionPopup = ({ section, getSections }) => {
   const toast = useToast();
   const editSection = async newSection => {
     try {
-      await OCHBackend.put(`/section/${newSection.sectionId}`, {
-        _id: newSection.sectionId,
-        name: newSection.sectionName,
-        map: newSection.sectionMapLink,
-      });
+      await OCHBackend.put(
+        `/section/${newSection.sectionId}`,
+        {
+          _id: newSection.sectionId,
+          name: newSection.sectionName,
+          map: newSection.sectionMapLink,
+        },
+        { withCredentials: true },
+      );
       toast({
         title: `Successfully updated Section ${newSection.sectionId}.`,
         status: 'success',
@@ -121,11 +125,14 @@ const EditDeleteSectionPopup = ({ section, getSections }) => {
     try {
       // eslint-disable-next-line no-underscore-dangle
       await OCHBackend.delete(`/section/${section._id}`);
-      toast({
-        title: `Successfully deleted Section ${section._id}.`,
-        status: 'success',
-        isClosable: true,
-      });
+      toast(
+        {
+          title: `Successfully deleted Section ${section._id}.`,
+          status: 'success',
+          isClosable: true,
+        },
+        { withCredentials: true },
+      );
       getSections();
       onClose();
     } catch (err) {

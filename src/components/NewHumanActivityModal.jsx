@@ -28,14 +28,18 @@ const NewHumanActivityModal = ({ refreshTrigger }) => {
   const addHumanActivityModal = useDisclosure();
 
   const addHumanActivity = async () => {
-    await OCHBackend.post('/forms/create/field', {
-      formType: 'human-activity',
-      fieldBody: {
-        title: category,
-        subtitle: examples,
-        static: false,
+    await OCHBackend.post(
+      '/forms/create/field',
+      {
+        formType: 'human-activity',
+        fieldBody: {
+          title: category,
+          subtitle: examples,
+          static: false,
+        },
       },
-    });
+      { withCredentials: true },
+    );
     refreshTrigger();
     addHumanActivityModal.onClose();
   };

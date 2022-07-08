@@ -8,17 +8,22 @@ import { useUserContext } from '../common/UserContext/UserContext';
 const Numbers = () => {
   const [change, setChange] = useState(true);
   const [tableData, setTableData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const user = useUserContext();
   const toast = useToast();
 
   const addNewNumber = async newNumber => {
     try {
-      await OCHBackend.post('/numbers', {
-        name: newNumber.name,
-        number: newNumber.number,
-        note: newNumber.note,
-      });
+      await OCHBackend.post(
+        '/numbers',
+        {
+          name: newNumber.name,
+          number: newNumber.number,
+          note: newNumber.note,
+        },
+        { withCredentials: true },
+      );
       setChange(!change);
       toast({
         title: 'New contact added',
@@ -37,8 +42,14 @@ const Numbers = () => {
   };
 
   useEffect(async () => {
-    const res = await OCHBackend.get('/numbers');
-    setTableData(res.data);
+    try {
+      setIsLoading(true);
+      const res = await OCHBackend.get('/numbers', { withCredentials: true });
+      setTableData(res.data);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
   }, [change]);
 
   return (
@@ -76,6 +87,7 @@ const Numbers = () => {
           admin={user.userData.role === 'admin'}
           change={change}
           setChange={setChange}
+          isLoading={isLoading}
         />
       </Box>
     </Stack>
