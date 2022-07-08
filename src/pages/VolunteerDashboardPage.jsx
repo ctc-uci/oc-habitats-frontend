@@ -1,13 +1,6 @@
 /* eslint-disable react/prop-types */
-import { ArrowForwardIcon, InfoIcon } from '@chakra-ui/icons';
+import { InfoIcon } from '@chakra-ui/icons';
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  Box,
-  Button,
-  CloseButton,
   Container,
   Flex,
   Heading,
@@ -22,40 +15,7 @@ import { OCHBackend } from '../common/utils';
 import RecentlySubmittedLog from '../components/VolunteerDashboard/RecentlySubmittedLog';
 import SegmentAssignment from '../components/VolunteerDashboard/SegmentAssignment';
 import UnsubmittedLogDraft from '../components/VolunteerDashboard/UnsubmittedLogDraft';
-
-// TODO: go to log button functionality
-
-// temporary (?) notification component until notification system is written
-// TODO: replace notification
-const Toast = props => {
-  const [closed, setClosed] = useState();
-  const { id, title, description, status, variant, closeButton, goToLogButton } = props;
-
-  const close = () => {
-    setClosed(true);
-    OCHBackend.delete(`/notification/${id}`, { withCredentials: true });
-  };
-
-  return closed ? (
-    ''
-  ) : (
-    <Alert borderRadius="md" status={status} variant={variant}>
-      <AlertIcon />
-      <Box flex="1">
-        <AlertTitle>{title}</AlertTitle>
-        <AlertDescription display="block">{description}</AlertDescription>
-        {closeButton && (
-          <CloseButton position="absolute" right="8px" top="8px" onClick={() => close()} />
-        )}
-        {goToLogButton && (
-          <Button float="right" colorScheme="red" size="sm" rightIcon={<ArrowForwardIcon />}>
-            Go to Log
-          </Button>
-        )}
-      </Box>
-    </Alert>
-  );
-};
+import Notification from '../components/VolunteerDashboard/Notifcation';
 
 const VolunteerDashboardPage = () => {
   const [userData, setUserData] = useState(null);
@@ -65,22 +25,13 @@ const VolunteerDashboardPage = () => {
   // Get data from backend
   useEffect(async () => {
     try {
-      const [userRes, submissionRes] = await Promise.all([
+      const [userRes, submissionRes, notificationsRes] = await Promise.all([
         OCHBackend.get('/users/me', { withCredentials: true }),
         OCHBackend.get('/users/userSubmissions', { withCredentials: true }),
+        OCHBackend.get('/notification/', { withCredentials: true }),
       ]);
       setUserData(userRes.data);
       setUserSubmissions(submissionRes.data);
-    } catch (err) {
-      // TODO: handle error
-      // eslint-disable-next-line no-console
-      console.log(err);
-    }
-  }, []);
-
-  useEffect(async () => {
-    try {
-      const notificationsRes = await OCHBackend.get('/notification/', { withCredentials: true });
       setUserNotifications(notificationsRes.data);
     } catch (err) {
       // TODO: handle error
@@ -91,14 +42,13 @@ const VolunteerDashboardPage = () => {
 
   const Notifications = () => {
     return userNotifications.map(notification => (
-      <Toast
+      <Notification
         key={notification._id}
         id={notification._id}
         title={notification.title}
         description={notification.message}
-        status={notification.type === 'MONITOR_LOG_APPROVED' ? 'success' : 'error'}
-        variant="left-accent"
-        closeButton={notification.type === 'MONITOR_LOG_APPROVED' ? 'true' : 'false'}
+        type={notification.type}
+        closeable
       />
     ));
   };
