@@ -191,7 +191,7 @@ const VolunteerDashboardPage = () => {
   return (
     <Container maxW="90vw" pb={{ sm: '100px', lg: '0px' }}>
       <Heading size="xl" py="10">
-        Welcome Back, {userData.userData?.firstName}!
+        Welcome back, {userData.userData?.firstName}!
       </Heading>
       <Heading size="md" py="1">
         Notifications
