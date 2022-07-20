@@ -108,12 +108,12 @@ const AdminPageTable = ({
         borderBottomEndRadius={10}
       >
         <Flex align="center" justify="center" direction="row">
-          {pageSize < 100 && (
+          {pageSize < tableData.total && (
             <Button m={2} size="sm" leftIcon={<FiChevronDown />} onClick={handleShowMore}>
               Show More
             </Button>
           )}
-          {pageSize > 0 && (
+          {pageSize > 10 && (
             <Button m={2} size="sm" rightIcon={<FiChevronUp />} onClick={handleShowLess}>
               Show Less
             </Button>
