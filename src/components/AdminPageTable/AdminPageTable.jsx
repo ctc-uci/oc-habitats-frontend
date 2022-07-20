@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-key */
 import React, { useEffect, useMemo } from 'react';
+import { Button, Table, Tr, Td, Tbody, Spinner, Box, Flex, Text } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination, useSortBy } from 'react-table';
-import { Table, Tr, Td, Tbody, Spinner } from '@chakra-ui/react';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import AdminPageHeader from './AdminPageHeader';
 import Pagination from '../../common/TablePagination';
 import CellStructure from './AdminPageStructure';
@@ -29,10 +30,6 @@ const AdminPageTable = ({
     headerGroups,
     page,
     prepareRow,
-    canPreviousPage,
-    canNextPage,
-    nextPage,
-    previousPage,
     setPageSize,
     state: { pageIndex, pageSize, sortBy },
   } = useTable(
@@ -42,11 +39,22 @@ const AdminPageTable = ({
       initialState: { pageIndex: 0, pageSize: 10, sortBy: [{ id: 'date', desc: true }] },
       manualPagination: true,
       manualSortBy: true,
+      showPagination: false,
       pageCount: controlledPageCount,
     },
     useSortBy,
     usePagination,
   );
+
+  const handleShowMore = () => {
+    setPageSize(pageSize + 10);
+  };
+
+  const handleShowLess = () => {
+    if (pageSize > 10) {
+      setPageSize(pageSize - 10);
+    }
+  };
 
   useEffect(() => {
     setFetchSettings({ pageIndex, pageSize, sortBy });
@@ -88,7 +96,36 @@ const AdminPageTable = ({
             })}
         </Tbody>
       </Table>
-      <Pagination
+      <Flex
+        bgColor="ochGrey"
+        w="100%"
+        align="center"
+        justify="space-between"
+        direction="row"
+        px={4}
+        h="50px"
+        borderBottomStartRadius={10}
+        borderBottomEndRadius={10}
+      >
+        <Flex align="center" justify="center" direction="row">
+          {pageSize < 100 && (
+            <Button m={2} size="sm" leftIcon={<FiChevronDown />} onClick={handleShowMore}>
+              Show More
+            </Button>
+          )}
+          {pageSize > 0 && (
+            <Button m={2} size="sm" rightIcon={<FiChevronUp />} onClick={handleShowLess}>
+              Show Less
+            </Button>
+          )}
+        </Flex>
+        <Text color="white">
+          Showing {pageSize > tableData.total ? tableData.total : pageSize} of {tableData.total}{' '}
+          rows
+        </Text>
+      </Flex>
+
+      {/* <Pagination
         canPreviousPage={canPreviousPage}
         canNextPage={canNextPage}
         pageIndex={pageIndex}
@@ -97,7 +134,7 @@ const AdminPageTable = ({
         previousPage={previousPage}
         nextPage={nextPage}
         totalData={tableData.total}
-      />
+      /> */}
     </>
   );
 };
@@ -106,7 +143,7 @@ AdminPageTable.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   checked: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  tableData: PropTypes.array.isRequired,
+  tableData: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   pageCount: PropTypes.number.isRequired,
   allChecked: PropTypes.bool.isRequired,
