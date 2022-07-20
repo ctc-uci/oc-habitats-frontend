@@ -28,7 +28,7 @@ function DetailsPopUp(segmentId, volunteers) {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent padding={5}>
           <IconButton
             mr="352px"
             mt="15px"
