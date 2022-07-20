@@ -51,9 +51,7 @@ const AdminPageTable = ({
   };
 
   const handleShowLess = () => {
-    if (pageSize > 10) {
-      setPageSize(pageSize - 10);
-    }
+    setPageSize(pageSize - 10);
   };
 
   useEffect(() => {
