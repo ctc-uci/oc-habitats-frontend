@@ -13,26 +13,39 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { CgSoftwareUpload } from 'react-icons/cg';
+import { saveAs } from 'file-saver';
+import { OCHBackend } from '../../common/utils';
 
 // modal for the export selected logs button
-const ExportLogsModal = ({ count }) => {
+const ExportLogsModal = ({ logs }) => {
   const { isOpen: isExportOpen, onOpen: onExportOpen, onClose: onExportClose } = useDisclosure();
   const toast = useToast();
+  const count = logs.length;
 
-  const exportLogs = () => {
+  const exportLogs = async () => {
     onExportClose();
+    try {
+      console.log(`Exporting ${count} logs`);
 
-    // TO DO: Make backend call
-    // eslint-disable-next-line no-console
-    console.log(`Exporting ${count} logs`);
+      const res = await OCHBackend.post('/report', { logIds: logs }, { responseType: 'blob' });
+      saveAs(res.data, 'report.xlsx');
 
-    toast({
-      title: 'Export Successful!',
-      description: `You've exported ${count} log(s).`,
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
-    });
+      toast({
+        title: 'Export Successful!',
+        description: `You've exported ${count} log(s).`,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: 'Export Failed',
+        description: err?.message || 'Could not export logs.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -80,7 +93,7 @@ const ExportLogsModal = ({ count }) => {
 };
 
 ExportLogsModal.propTypes = {
-  count: PropTypes.number.isRequired,
+  logs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default ExportLogsModal;

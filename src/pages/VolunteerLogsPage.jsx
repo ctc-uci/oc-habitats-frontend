@@ -55,14 +55,14 @@ const VolunteerLogs = () => {
     setChecked(m);
   }, [data]);
 
-  const checkCount = () => {
-    let count = 0;
-    checked.forEach(val => {
-      if (val) {
-        count += 1;
+  const getCheckedIds = () => {
+    const res = [];
+    checked.forEach((v, k) => {
+      if (v) {
+        res.push(k);
       }
     });
-    return count;
+    return res;
   };
 
   return (
@@ -73,7 +73,7 @@ const VolunteerLogs = () => {
       <YourLogsDescriptions />
 
       <Box my="20px">
-        <ExportLogsModal count={checkCount()} />
+        <ExportLogsModal logs={getCheckedIds()} />
       </Box>
 
       <VolunteerLogsTable

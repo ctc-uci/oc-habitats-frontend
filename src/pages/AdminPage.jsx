@@ -89,6 +89,16 @@ const AdminPage = () => {
     return count;
   };
 
+  const getCheckedIds = () => {
+    const res = [];
+    checked.forEach((v, k) => {
+      if (v) {
+        res.push(k);
+      }
+    });
+    return res;
+  };
+
   return (
     <Container maxW="container.xl">
       <div>
@@ -97,7 +107,7 @@ const AdminPage = () => {
         </Heading>
         <Flex gap="24px">
           <GenerateReportModal />
-          <ExportLogsModal count={checkCount()} />
+          <ExportLogsModal logs={getCheckedIds()} />
           {/* <SetReminderModal /> */}
         </Flex>
 
