@@ -48,10 +48,12 @@ const AdminPageTable = ({
 
   const handleShowMore = () => {
     setPageSize(pageSize + 10);
+    setAllChecked(false);
   };
 
   const handleShowLess = () => {
     setPageSize(pageSize - 10);
+    setAllChecked(false);
   };
 
   useEffect(() => {

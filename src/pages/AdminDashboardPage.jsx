@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { React, useState, useEffect } from 'react';
-import { Text, Box, Progress } from '@chakra-ui/react';
+import { Text, Box, Progress, Heading } from '@chakra-ui/react';
 import MonitorLogSubmissionStats from '../components/AdminDashboard/MonitorLogSubmissionStats';
 import SightedListedSpecies from '../components/AdminDashboard/SightedListedSpecies';
 import EmergentIssues from '../components/AdminDashboard/EmergentIssues';
@@ -41,7 +41,7 @@ const AdminDashboardPage = () => {
     const getData = async () => {
       try {
         setIsLoading(true);
-        const response = await OCHBackend.get('/dashboard');
+        const response = await OCHBackend.get('/dashboard', { withCredentials: true });
         setInfo(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -68,10 +68,10 @@ const AdminDashboardPage = () => {
   const numNotifications = getNotificationNum();
 
   return (
-    <Box mx={{ lg: '100px', sm: '40px' }} my="40px" mb={{ lg: 0, xs: '170px' }}>
-      <Text fontSize={{ md: '4xl', sm: '2xl' }} fontWeight="600">
+    <Box mx={{ lg: '100px', sm: '40px' }} mb={{ lg: 0, xs: '170px' }}>
+      <Heading size="xl" pt="10">
         Welcome back, {userData.firstName}!
-      </Text>
+      </Heading>
 
       <Text fontSize="24px" fontWeight="600" mt="50px">
         Notifications

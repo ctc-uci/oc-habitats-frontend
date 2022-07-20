@@ -170,7 +170,7 @@ const Species = () => {
       <Stack w="container.xl" justify-content="center" mb="4em" mx="1.5em">
         <VStack align="left" spacing="1.5em" w="100%">
           <Text fontWeight="600" fontSize="36px" mt="40px">
-            Species List
+            Species Catalog
           </Text>
           <VStack spacing={2} align="stretch">
             <strong>Search for a Species:</strong>

@@ -26,7 +26,7 @@ function StatsPopUp(title, numIssues, issueData) {
       <IconButton bg="#F7FAFC" icon={<ExternalLinkIcon boxSize="2em" />} onClick={onOpen} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent paddingY={5}>
           <ModalHeader fontSize="20px" fontWeight="medium">
             {title}
           </ModalHeader>
@@ -41,7 +41,13 @@ function StatsPopUp(title, numIssues, issueData) {
                   <Text>{data.segmentId}</Text>
                   <Text>{formatDate(data.date)}</Text>
                   <a href={`/review-log/${data.monitorLogId}`}>
-                    <Text textDecoration="underline">MonitorLog</Text>
+                    <Text
+                      textDecoration="underline"
+                      textUnderlineOffset={1}
+                      _hover={{ opacity: '0.6' }}
+                    >
+                      Monitor Log
+                    </Text>
                   </a>
                 </Flex>
               );

@@ -17,11 +17,11 @@ const UnsubmittedLogDraft = ({ segment, date, lastSaved, logId }) => {
       border="2px"
       borderRadius="md"
       borderColor="lightgray"
-      w={{ lg: '420px', sm: '100%' }}
+      w={{ lg: '420px', base: '100%' }}
       h={{ base: 'fit-content' }}
       px={5}
       py={4}
-      minW="420px"
+      minW={{ lg: '420px' }}
     >
       <Text fontSize="16px">
         {segment} — {formattedDate}
