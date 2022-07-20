@@ -41,7 +41,7 @@ const AdminDashboardPage = () => {
     const getData = async () => {
       try {
         setIsLoading(true);
-        const response = await OCHBackend.get('/dashboard');
+        const response = await OCHBackend.get('/dashboard', { withCredentials: true });
         setInfo(response.data);
         setIsLoading(false);
       } catch (err) {

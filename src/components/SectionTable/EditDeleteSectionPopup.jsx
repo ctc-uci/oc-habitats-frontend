@@ -124,7 +124,7 @@ const EditDeleteSectionPopup = ({ section, getSections }) => {
   const deleteSection = async () => {
     try {
       // eslint-disable-next-line no-underscore-dangle
-      await OCHBackend.delete(`/section/${section._id}`);
+      await OCHBackend.delete(`/section/${section._id}`, { withCredentials: true });
       toast(
         {
           title: `Successfully deleted Section ${section._id}.`,

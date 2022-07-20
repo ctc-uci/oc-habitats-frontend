@@ -218,7 +218,11 @@ const UserInformation = () => {
         sort: sortBy && sortBy.length === 1 ? sortBy[0].id : null,
         sortAscending: sortBy && sortBy.length === 1 ? !sortBy[0].desc : null,
       };
-      const res = await OCHBackend.get('/submissions', { params: query });
+      const res = await OCHBackend.get(
+        '/submissions',
+        { params: query },
+        { withCredentials: true },
+      );
       setData(res.data);
       setPageCount(Math.ceil(res.data.total / fetchSettings.pageSize));
       setDataLoaded(true);
@@ -230,7 +234,7 @@ const UserInformation = () => {
 
   const fetchUser = async () => {
     try {
-      const res = await OCHBackend.get(`/users/${id}`);
+      const res = await OCHBackend.get(`/users/${id}`, { withCredentials: true });
       setUserData(res.data);
     } catch {
       navigate('/people');
@@ -238,7 +242,7 @@ const UserInformation = () => {
   };
 
   const updateUser = async ({ isTrainee, isActive }) => {
-    await OCHBackend.put(`/users/update/${id}`, { isTrainee, isActive });
+    await OCHBackend.put(`/users/update/${id}`, { isTrainee, isActive }, { withCredentials: true });
     await fetchUser();
   };
 
