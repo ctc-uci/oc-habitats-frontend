@@ -19,7 +19,9 @@ import {
   HStack,
   useToast,
   Avatar,
+  Tooltip,
 } from '@chakra-ui/react';
+import { InfoIcon } from '@chakra-ui/icons';
 // import { FiEdit2 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
@@ -270,7 +272,13 @@ const AccountPage = ({ setChangesMade }) => {
           </GridItem>
           <GridItem align="left" colStart={{ lg: 2, sm: 1 }} colSpan={{ lg: 4, sm: 1 }}>
             <Heading gridRowStart={2} fontSize="xl" mb=".8em" fontWeight={550}>
-              Volunteer Activity Information
+              Volunteer Activity Information{' '}
+              <Tooltip
+                label="This information can only be changed by administrators."
+                placement="right"
+              >
+                <InfoIcon />
+              </Tooltip>
             </Heading>
             <SimpleGrid columns={{ lg: 3, sm: 1 }} rows={{ lg: 2, sm: 3 }} spacing={10}>
               <GridItem colSpan={{ lg: 1 }} rowSpan={{ sm: 1 }}>
