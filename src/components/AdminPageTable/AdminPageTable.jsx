@@ -1,6 +1,17 @@
 /* eslint-disable react/jsx-key */
 import React, { useEffect, useMemo } from 'react';
-import { Button, Table, Tr, Td, Tbody, Spinner, Box, Flex, Text } from '@chakra-ui/react';
+import {
+  Button,
+  Table,
+  Tr,
+  Td,
+  Tbody,
+  Spinner,
+  Box,
+  Flex,
+  Text,
+  useMediaQuery,
+} from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination, useSortBy } from 'react-table';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
@@ -20,6 +31,8 @@ const AdminPageTable = ({
   setAllChecked,
   setFetchSettings,
 }) => {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
   const columns = useMemo(
     () => CellStructure(checked, setChecked, allChecked, setAllChecked),
     [checked, setChecked, allChecked, setAllChecked],
@@ -31,6 +44,7 @@ const AdminPageTable = ({
     page,
     prepareRow,
     setPageSize,
+    setHiddenColumns,
     state: { pageIndex, pageSize, sortBy },
   } = useTable(
     {
@@ -59,6 +73,15 @@ const AdminPageTable = ({
   useEffect(() => {
     setFetchSettings({ pageIndex, pageSize, sortBy });
   }, [pageIndex, pageSize, sortBy]);
+
+  // set hidden table columns, depending mobile (show only segment and submission status)
+  useEffect(() => {
+    const hiddenColumns = [];
+    if (isMobile) {
+      hiddenColumns.push('date', 'submitter', 'review', 'partners', 'edit');
+    }
+    setHiddenColumns(hiddenColumns);
+  }, [isMobile, checked, allChecked]);
 
   return (
     <>
@@ -107,7 +130,7 @@ const AdminPageTable = ({
         borderBottomStartRadius={10}
         borderBottomEndRadius={10}
       >
-        <Flex align="center" justify="center" direction="row">
+        <Flex align="center" justify="center" direction="row" mb="36px">
           {pageSize < tableData.total && (
             <Button m={2} size="sm" leftIcon={<FiChevronDown />} onClick={handleShowMore}>
               Show More

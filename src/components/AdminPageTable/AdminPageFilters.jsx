@@ -10,6 +10,7 @@ import {
   Input,
   InputRightElement,
   Button,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 
@@ -35,12 +36,24 @@ const AdminPageFilters = ({
   checked,
 }) => {
   const [searchTerm, setSearchTerm] = useState(searchFilter);
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   return (
-    <Flex bg="#4E4E4E" pt="14px" pr="28px" pl="28px" borderTopRadius={10}>
-      <Flex alignItems="center">
-        <Text color="white">{checked} Selected</Text>
-      </Flex>
+    <Flex
+      bg={{ md: '#4E4E4E', base: 'transparent' }}
+      pt="14px"
+      px={{ md: '28px', base: '0' }}
+      borderTopRadius={10}
+      direction={{ base: 'column', md: 'row' }}
+      w="100%"
+      gap="8px"
+      // h={{ base: '240px', md: 'auto' }}
+    >
+      {!isMobile && (
+        <Flex alignItems="center">
+          <Text color="white">{checked} Selected</Text>
+        </Flex>
+      )}
       <Spacer />
       <Box>
         <Select
@@ -91,7 +104,7 @@ const AdminPageFilters = ({
         </Select>
       </Box>
       <Spacer />
-      <Box>
+      <Box pb={{ base: '14px', md: '0' }}>
         <InputGroup>
           <Input
             value={searchTerm}
@@ -113,6 +126,18 @@ const AdminPageFilters = ({
           </InputRightElement>
         </InputGroup>
       </Box>
+      {isMobile && (
+        <Flex
+          alignItems="center"
+          w="100%"
+          bgColor="#4E4E4E"
+          borderTopRadius={10}
+          pl="10px"
+          pt="10px"
+        >
+          <Text color="white">{checked} Selected</Text>
+        </Flex>
+      )}
     </Flex>
   );
 };
