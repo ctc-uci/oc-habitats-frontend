@@ -72,7 +72,7 @@ const VolunteerLogsTable = ({
   useEffect(() => {
     const hiddenColumns = [];
     if (isMobile) {
-      hiddenColumns.push('segmentName', 'submittedAt', 'status', 'partners', 'edit');
+      hiddenColumns.push('segmentName', 'submittedAt', 'status', 'partners', 'edit', 'date');
     } else {
       // hide combined column?
       hiddenColumns.push('statusAndEdit');

@@ -16,6 +16,7 @@ const Navbar = ({ onAdminPortal, setOnAdminPortal, changesMade }) => {
   const isAdmin = userData?.role === 'admin';
 
   const admin = [
+    { text: 'Home', path: '/' },
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'People', path: '/people' },
     { text: 'Species Catalog', path: '/species' },
@@ -24,6 +25,7 @@ const Navbar = ({ onAdminPortal, setOnAdminPortal, changesMade }) => {
   ];
 
   const volunteer = [
+    { text: 'Home', path: '/' },
     { text: 'Monitor Logs', path: '/your-logs' },
     { text: 'Species Catalog', path: '/species' },
     { text: 'Sections & Segments', path: '/sections' },

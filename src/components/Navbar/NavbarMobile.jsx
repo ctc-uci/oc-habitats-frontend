@@ -10,6 +10,7 @@ import logo from '../../assets/OCH_Logo_SVG.svg';
 
 const NavbarMobile = ({ isAdmin, onAdminPortal, setOnAdminPortal, isLoggedIn }) => {
   const admin = [
+    { text: 'Home', path: '/' },
     { text: 'Monitor Logs', path: '/logs' },
     { text: 'People', path: '/people' },
     { text: 'Species Catalog', path: '/species' },
@@ -18,6 +19,7 @@ const NavbarMobile = ({ isAdmin, onAdminPortal, setOnAdminPortal, isLoggedIn }) 
   ];
 
   const volunteer = [
+    { text: 'Home', path: '/' },
     { text: 'Monitor Logs', path: '/your-logs' },
     { text: 'Species Catalog', path: '/species' },
     { text: 'Sections & Segments', path: '/sections' },
