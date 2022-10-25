@@ -34,6 +34,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { SubmissionStatusBadge } from '../common/SubmissionStatusBadge';
 import { useUserContext } from '../common/UserContext/UserContext';
 import { OCHBackend } from '../common/utils';
+import { formatDate } from '../common/dateUtils';
 import AdditionalSpeciesTab from '../components/MonitorLog/AdditionalSpeciesTab';
 import EditLogFooter from '../components/MonitorLog/EditLogFooter';
 import EditLogPopup from '../components/MonitorLog/EditLogPopup';
@@ -93,8 +94,8 @@ const MonitorLogPage = ({ mode }) => {
     if (submissionId) {
       try {
         const [submission, segments] = await Promise.all([
-          OCHBackend.get(`submission/${submissionId}`),
-          OCHBackend.get(`segments`),
+          OCHBackend.get(`submission/${submissionId}`, { withCredentials: true }),
+          OCHBackend.get(`segments`, { withCredentials: true }),
         ]);
         if (submission.data.date) {
           submission.data.date = parseISO(submission.data.date);
@@ -104,7 +105,9 @@ const MonitorLogPage = ({ mode }) => {
         if (submission.data.segment) {
           setSegmentData(segments.data.find(s => s._id === submission.data.segment));
         }
-        const submitter = await OCHBackend.get(`users/${submission.data.submitter}`);
+        const submitter = await OCHBackend.get(`users/${submission.data.submitter}`, {
+          withCredentials: true,
+        });
         setSubmitterData(submitter.data);
       } catch (err) {
         // eslint-disable-next-line no-console
@@ -179,9 +182,22 @@ const MonitorLogPage = ({ mode }) => {
     return res.data;
   };
 
-  const approveLog = () => {
+  const createNotification = async () => {
+    OCHBackend.post(
+      `notification`,
+      {
+        firebaseId: submitterData._id,
+        message: `You monitor log for ${segmentData.segmentId} on ${formatDate(
+          submissionData.submittedAt,
+        )} has been approved!`,
+      },
+      { withCredentials: true },
+    );
+  };
+
+  const approveLog = async () => {
     formMethods.setValue('status', 'APPROVED');
-    editForm();
+    await Promise.all([editForm(), createNotification()]);
     toast({
       title: 'Log Approved!',
       description: `Sucessfully approved ${submitterData.firstName} ${

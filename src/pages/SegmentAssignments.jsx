@@ -23,7 +23,7 @@ const SegmentAssignments = () => {
 
   useEffect(async () => {
     try {
-      const res = await OCHBackend.get('populatedSections/');
+      const res = await OCHBackend.get('populatedSections/', { withCredentials: true });
       const sortedSections = sortSections(res?.data);
       setSectionData(sortedSections);
       setSegmentData(sortedSections[selectedSectionIndex].segments);

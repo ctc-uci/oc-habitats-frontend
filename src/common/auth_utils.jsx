@@ -107,16 +107,20 @@ const refreshToken = async () => {
 const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
   try {
     console.log(`firebaseId param received as ${firebaseId} and passing it into POST`);
-    await OCHBackend.post('/users/', {
-      firebaseId,
-      firstName,
-      lastName,
-      email,
-      role,
-      isActive: true,
-      isTrainee: false,
-      registered: true,
-    });
+    await OCHBackend.post(
+      '/users/',
+      {
+        firebaseId,
+        firstName,
+        lastName,
+        email,
+        role,
+        isActive: true,
+        isTrainee: false,
+        registered: true,
+      },
+      { withCredentials: true },
+    );
   } catch (err) {
     throw new Error(err.message);
   }
@@ -199,7 +203,7 @@ const registerWithEmailAndPassword = async (
   } catch (err) {
     throw new Error(err.message);
   }
-  await OCHBackend.delete(`/adminInvite/${email}`);
+  await OCHBackend.delete(`/adminInvite/${email}`, { withCredentials: true });
   navigate(redirectPath);
 };
 
@@ -352,17 +356,29 @@ const sendInviteEmail = async (email, emailTemplate) => {
 const initiateInviteProcess = async (email, role) => {
   try {
     const id = uuidv4();
-    const url = `localhost:3000/register/${id}`;
+    let url = '';
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+      // dev code
+      url = `${process.env.REACT_APP_API_URL}/register/${id}`;
+    } else {
+      // production code
+      url = `${process.env.REACT_APP_PROD_API_URL}/register/${id}`;
+    }
     console.log('URL passed into register is');
     console.log(url);
     const expireDate = moment().add(1, 'days');
-    await OCHBackend.post('adminInvite', {
-      id,
-      email,
-      role,
-      expireDate,
-    });
-    await sendInviteEmail(email, <AdminInviteEmail role={role} url={url} />);
+    OCHBackend.post(
+      '/adminInvite/',
+      {
+        id,
+        email,
+        role,
+        expireDate,
+      },
+      { withCredentials: true },
+    );
+
+    sendInviteEmail(email, <AdminInviteEmail role={role} url={url} />);
   } catch (err) {
     throw new Error(err.response.data);
   }

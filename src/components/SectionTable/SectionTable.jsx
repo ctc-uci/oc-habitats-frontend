@@ -2,9 +2,18 @@
 
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Thead, Tbody, Tr, Text, Spinner, VStack, useMediaQuery } from '@chakra-ui/react';
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Text,
+  Spinner,
+  VStack,
+  useMediaQuery,
+  Flex,
+} from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
-import SectionTableFooter from './SectionTableFooter';
 import SectionTableHeader from './SectionTableHeader';
 import {
   SectionTableRow,
@@ -13,8 +22,6 @@ import {
   UpdateSegmentPopupColumn,
   MapLinkColumn,
 } from './SectionTableRow';
-
-const rowsPerPageSelect = [6, 10, 20, 30];
 
 /* eslint-disable react/destructuring-assignment, react/prop-types */
 const LoadingRow = () => (
@@ -98,25 +105,12 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
   );
   const data = useMemo(() => segments, [segments, loading]);
 
-  const {
-    getTableProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    page,
-    setPageSize,
-    nextPage,
-    previousPage,
-    canNextPage,
-    canPreviousPage,
-    setHiddenColumns,
-    state: { pageIndex, pageSize },
-  } = useTable(
+  const { getTableProps, headerGroups, prepareRow, page, setHiddenColumns } = useTable(
     {
       columns,
       data,
       initialState: {
-        pageSize: rowsPerPageSelect[0],
+        pageSize: segments.length,
       },
     },
     usePagination,
@@ -142,15 +136,19 @@ const SectionTable = ({ loading, segments, allSections, updateSections, sectionI
         </Thead>
         <Tbody>{tableContent(loading, page, prepareRow)}</Tbody>
       </Table>
-      <div>
-        <SectionTableFooter
-          rowCount={rows.length}
-          pageIndex={pageIndex}
-          rowsPerPageSelect={rowsPerPageSelect}
-          pageSize={pageSize}
-          pageControl={{ setPageSize, nextPage, previousPage, canNextPage, canPreviousPage }}
-        />
-      </div>
+      <Flex
+        w="100%"
+        bgColor="ochGrey"
+        h="40px"
+        borderBottomEndRadius={10}
+        borderBottomStartRadius={10}
+        paddingX={6}
+        align="center"
+      >
+        <Text fontWeight="600" color="white">
+          Total: {segments.length} segments
+        </Text>
+      </Flex>
     </>
   );
 };

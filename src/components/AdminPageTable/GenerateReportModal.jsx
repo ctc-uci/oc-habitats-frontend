@@ -12,7 +12,9 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
+import { saveAs } from 'file-saver';
 import { FiPieChart } from 'react-icons/fi';
+import { OCHBackend } from '../../common/utils';
 
 // modal for the generate report button
 const GenerateReportModal = () => {
@@ -21,23 +23,35 @@ const GenerateReportModal = () => {
   const { isOpen: isReportOpen, onOpen: onReportOpen, onClose: onReportClose } = useDisclosure();
   const toast = useToast();
 
-  const generateReport = () => {
+  const generateReport = async () => {
     onReportClose();
 
     // Make backend call
     // eslint-disable-next-line no-console
     console.log(`Generating report for ${reportDate}`);
 
-    setReportDate(new Date());
-    toast({
-      title: 'Successfully Generated Report',
-      description: `You've generated a report for ${reportDate.toLocaleString('default', {
-        month: 'long',
-      })} ${reportDate.getFullYear()}`,
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
-    });
+    try {
+      const res = await OCHBackend.post('/report', { date: reportDate }, { responseType: 'blob' });
+      saveAs(res.data, 'report.xlsx');
+
+      toast({
+        title: 'Successfully Generated Report',
+        description: `You've generated a report for ${reportDate.toLocaleString('default', {
+          month: 'long',
+        })} ${reportDate.getFullYear()}`,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: 'Export Failed',
+        description: err?.message || 'Could not export logs.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (

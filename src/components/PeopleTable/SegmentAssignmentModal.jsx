@@ -236,10 +236,14 @@ const SegmentAssignmentModal = ({ userData, segmentData, refreshData, isOpen, on
   };
 
   const handleSubmit = async () => {
-    await OCHBackend.put('/users/setSegmentAssignments', {
-      profileId: userData?.userId,
-      segmentIds: selectedSegments.map(segment => segment.id),
-    });
+    await OCHBackend.put(
+      '/users/setSegmentAssignments',
+      {
+        profileId: userData?.userId,
+        segmentIds: selectedSegments.map(segment => segment.id),
+      },
+      { withCredentials: true },
+    );
     await refreshData();
     closeWrapper();
   };

@@ -92,7 +92,7 @@ const ListedSpeciesTab = ({
       meridiem: 'AM',
       map: '1',
       habitat: '',
-      sex: [0, 0, 0, 0, 0, 0],
+      sex: [0, 0, 0],
       nesting: [],
       behaviors: [],
       gps: [
@@ -123,12 +123,12 @@ const ListedSpeciesTab = ({
   }, [data]);
 
   useEffect(async () => {
-    const newQuestions = await OCHBackend.get(`/forms/listed-species`);
+    const newQuestions = await OCHBackend.get(`/forms/listed-species`, { withCredentials: true });
     const questions = await newQuestions.data;
     setAdditionalQuestions(questions.additionalFields);
 
     // querying listed species from backend and wrangling with the data
-    const species = await OCHBackend.get('/species/');
+    const species = await OCHBackend.get('/species/', { withCredentials: true });
     const speciesData = species.data;
     const filteredSpeciesData = speciesData.filter(el => el.category === 'LISTED');
     const mappedSpecies = filteredSpeciesData.map(el => `${el.name} (${el.code})`);
@@ -196,8 +196,8 @@ const ListedSpeciesTab = ({
       [
         <div>
           <div># of Male Adults</div>
-          <div># of Male Fledges</div>
-          <div># of Male Chicks</div>
+          <div># of Female Adults</div>
+          <div># of Unknown Adults</div>
         </div>,
         <div>
           {row.sex.slice(0, 3).map((sex, idx) => (
@@ -207,18 +207,9 @@ const ListedSpeciesTab = ({
         </div>,
       ],
       [
-        <div>
-          <div># of Female Adults</div>
-          <div># of Female Fledges</div>
-          <div># of Female Chicks</div>
-        </div>,
-        <div>
-          {row.sex.slice(3, 6).map(sex => (
-            <div>{sex}</div>
-          ))}
-        </div>,
+        'Bands Observed',
+        row.bandTabs.map(bandTab => bandTab.manualCode || bandTab.code).join(', ') || 'None',
       ],
-      ['Bands Observed', row.bandTabs.map(bandTab => bandTab.code).join(', ') || 'None'],
       [('Nest & Eggs', row.nesting.map(nest => nest.value).join(', ') || 'None')],
       ['Behaviors Observed', row.behaviors.map(nest => nest.value).join(', ') || 'None'],
     ];

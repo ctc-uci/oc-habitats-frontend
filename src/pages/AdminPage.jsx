@@ -1,5 +1,5 @@
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
-import { Badge, Container, Flex, Heading, Text } from '@chakra-ui/react';
+import { Badge, Container, Flex, Heading, Text, useMediaQuery } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { OCHBackend } from '../common/utils';
 import AdminPageFilters from '../components/AdminPageTable/AdminPageFilters';
@@ -22,6 +22,8 @@ const AdminPage = () => {
   const [allChecked, setAllChecked] = useState(false);
   const [fetchSettings, setFetchSettings] = useState({ pageIndex: 0, pageSize: 10 });
 
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
   // get data from backend
   const getSubmissions = async () => {
     try {
@@ -37,7 +39,7 @@ const AdminPage = () => {
         sort: sortBy.length === 1 ? sortBy[0].id : null,
         sortAscending: sortBy.length === 1 ? !sortBy[0].desc : null,
       };
-      const res = await OCHBackend.get(`submissions`, { params: query });
+      const res = await OCHBackend.get('submissions', { params: query, withCredentials: true });
       setData(res.data);
       setPageCount(Math.ceil(res.data.total / fetchSettings.pageSize));
       setDataLoaded(true);
@@ -50,7 +52,7 @@ const AdminPage = () => {
   // get segments from backend
   const getSegments = async () => {
     try {
-      const res = await OCHBackend.get(`segments`);
+      const res = await OCHBackend.get(`segments`, { withCredentials: true });
       setSegments(
         res.data.map(s => ({
           label: s.segmentId,
@@ -89,38 +91,50 @@ const AdminPage = () => {
     return count;
   };
 
+  const getCheckedIds = () => {
+    const res = [];
+    checked.forEach((v, k) => {
+      if (v) {
+        res.push(k);
+      }
+    });
+    return res;
+  };
+
   return (
-    <Container maxW="container.xl">
+    <Container maxW="container.xl" h="fit-content">
       <div>
-        <Heading mt="40px" mb="50px">
+        <Heading mt={{ md: '40px', base: '24px' }} mb={{ md: '50px', base: '24px' }}>
           Monitor Log Submissions
         </Heading>
-        <Flex gap="24px">
+        <Flex gap={{ md: '24px', base: '12px' }} direction={{ md: 'row', base: 'column' }}>
           <GenerateReportModal />
-          <ExportLogsModal count={checkCount()} />
+          <ExportLogsModal logs={getCheckedIds()} />
           {/* <SetReminderModal /> */}
         </Flex>
 
-        <Text my="20px">
-          Click on a column header (e.g.{' '}
-          <Badge px={0} variant="solid" bg="transparent" textColor="black">
-            Log Date
-          </Badge>
-          ) to sort by descending <ArrowDownIcon /> or ascending <ArrowUpIcon />. Sorting is
-          alphanumeric for{' '}
-          <Badge px={0} variant="solid" bg="transparent" textColor="black">
-            segment
-          </Badge>
-          ,{' '}
-          <Badge px={0} variant="solid" bg="transparent" textColor="black">
-            segment name
-          </Badge>
-          , and{' '}
-          <Badge px={0} variant="solid" bg="transparent" textColor="black">
-            approval status
-          </Badge>
-          .
-        </Text>
+        {!isMobile && (
+          <Text my="20px">
+            Click on a column header (e.g.{' '}
+            <Badge px={0} variant="solid" bg="transparent" textColor="black">
+              Log Date
+            </Badge>
+            ) to sort by descending <ArrowDownIcon /> or ascending <ArrowUpIcon />. Sorting is
+            alphanumeric for{' '}
+            <Badge px={0} variant="solid" bg="transparent" textColor="black">
+              segment
+            </Badge>
+            ,{' '}
+            <Badge px={0} variant="solid" bg="transparent" textColor="black">
+              segment name
+            </Badge>
+            , and{' '}
+            <Badge px={0} variant="solid" bg="transparent" textColor="black">
+              approval status
+            </Badge>
+            .
+          </Text>
+        )}
         <AdminPageFilters
           segments={segments}
           segmentFilter={segmentFilter}

@@ -51,7 +51,7 @@ const ListedSpeciesPopup = ({
       time: '07:00',
       map: '1',
       habitat: '',
-      sex: [0, 0, 0, 0, 0, 0],
+      sex: [0, 0, 0],
       nesting: [],
       behaviors: [],
       gps: [

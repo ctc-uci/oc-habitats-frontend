@@ -1,11 +1,11 @@
 import { Box, Center, Flex, Stack, Text, VStack, HStack } from '@chakra-ui/react';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import DropdownSearch from '../components/DropdownSearch';
 import SpeciesList from '../components/Species/SpeciesList';
 import NewSpeciesModal from '../components/Species/NewSpeciesModal';
 import NewPredatorModal from '../components/Species/NewPredatorModal';
 import { useUserContext } from '../common/UserContext/UserContext';
+import { OCHBackend } from '../common/utils';
 
 const initialData = {
   endangered: {
@@ -20,7 +20,7 @@ const initialData = {
   input: columns - contains id, names of columns, and species that belong to each column
   populates the page with each type of column and the species that belong to them
 */
-const createLists = (columns, searchItem, editSpecies, deleteSpecies) => {
+const createLists = (columns, searchItem, editSpecies, deleteSpecies, isLoading) => {
   // Create DroppableLists by iterating over each column in columns
   // Will pass in the species that belong to each list as well as their titles and ids
   return Object.entries(columns).map(([id, col]) => {
@@ -44,6 +44,7 @@ const createLists = (columns, searchItem, editSpecies, deleteSpecies) => {
           searchItem={searchItem}
           editSpecies={editSpecies}
           deleteSpecies={deleteSpecies}
+          loading={isLoading}
         />
       </>
     );
@@ -66,7 +67,9 @@ const Species = () => {
   const getSpecies = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/species`);
+      const res = await OCHBackend.get('species', {
+        withCredentials: true,
+      });
       const formattedData = {
         listed: {
           id: 'listed',
@@ -112,39 +115,53 @@ const Species = () => {
   }, [change]);
 
   const addNewSpecies = async newSpecies => {
-    await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
-      name: newSpecies.name,
-      code: newSpecies.code,
-      category: newSpecies.category,
-      isAssigned: false,
-    });
+    await OCHBackend.post(
+      'species',
+      {
+        name: newSpecies.name,
+        code: newSpecies.code,
+        category: newSpecies.category,
+        isAssigned: false,
+      },
+      { withCredentials: true },
+    );
     setChange(!change);
   };
 
   const addNewPredator = async newSpecies => {
-    await axios.post(`${process.env.REACT_APP_API_URL}/species/`, {
-      name: newSpecies.name,
-      code: newSpecies.code,
-      category: newSpecies.category,
-      isAssigned: false,
-    });
+    await OCHBackend.post(
+      'species',
+      {
+        name: newSpecies.name,
+        code: newSpecies.code,
+        category: newSpecies.category,
+        isAssigned: false,
+      },
+      { withCredentials: true },
+    );
     setChange(!change);
   };
 
   const editSpecies = async (newSpecies, oldSpecies) => {
     // eslint-disable-next-line no-underscore-dangle
-    await axios.put(`${process.env.REACT_APP_API_URL}/species/${oldSpecies._id}`, {
-      name: newSpecies.name,
-      code: newSpecies.code,
-      category: newSpecies.category,
-      isAssigned: false,
-    });
+    await OCHBackend.put(
+      `species/${oldSpecies._id}`,
+      {
+        name: newSpecies.name,
+        code: newSpecies.code,
+        category: newSpecies.category,
+        isAssigned: false,
+      },
+      { withCredentials: true },
+    );
     setChange(c => !c);
   };
 
   const deleteSpecies = async deletedSpecie => {
     // eslint-disable-next-line dot-notation
-    await axios.delete(`${process.env.REACT_APP_API_URL}/species/${deletedSpecie}`);
+    await OCHBackend.delete(`species/${deletedSpecie}`, {
+      withCredentials: true,
+    });
     setChange(c => !c);
   };
 
@@ -153,7 +170,7 @@ const Species = () => {
       <Stack w="container.xl" justify-content="center" mb="4em" mx="1.5em">
         <VStack align="left" spacing="1.5em" w="100%">
           <Text fontWeight="600" fontSize="36px" mt="40px">
-            Species List
+            Species Catalog
           </Text>
           <VStack spacing={2} align="stretch">
             <strong>Search for a Species:</strong>
@@ -173,7 +190,7 @@ const Species = () => {
               </Box>
             </HStack>
           </VStack>
-          {createLists(columns, searchItem, editSpecies, deleteSpecies)}
+          {createLists(columns, searchItem, editSpecies, deleteSpecies, isLoading)}
         </VStack>
       </Stack>
     </Center>

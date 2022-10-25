@@ -60,28 +60,36 @@ function NonStaticQuestion({
   const updateQuestion = async () => {
     console.log(`updateQuestion called with fieldId: ${idOfFieldBeingEdited}`);
     console.log(`fieldBody: ${newTitle}, ${newFieldType}, ${newTooltip}`);
-    await OCHBackend.put('/forms/update/field', {
-      type: formType,
-      fieldId: idOfFieldBeingEdited,
-      fieldBody: {
-        title: newTitle,
-        subtitle: 'asdfghjkl',
-        fieldType: newFieldType,
-        tooltip: newTooltip,
+    await OCHBackend.put(
+      '/forms/update/field',
+      {
+        type: formType,
+        fieldId: idOfFieldBeingEdited,
+        fieldBody: {
+          title: newTitle,
+          subtitle: 'asdfghjkl',
+          fieldType: newFieldType,
+          tooltip: newTooltip,
+        },
       },
-    });
+      { withCredentials: true },
+    );
     refreshTrigger();
     editQuestionModal.onClose();
   };
 
   const deleteQuestion = async () => {
     console.log(`deleteQuestion called with fieldId ${idOfFieldBeingEdited}`);
-    await OCHBackend.delete('/forms/delete/field', {
-      data: {
-        formType,
-        fieldId: idOfFieldBeingEdited,
+    await OCHBackend.delete(
+      '/forms/delete/field',
+      {
+        data: {
+          formType,
+          fieldId: idOfFieldBeingEdited,
+        },
       },
-    });
+      { withCredentials: true },
+    );
     refreshTrigger();
     deleteQuestionModal.onClose();
   };
@@ -108,21 +116,18 @@ function NonStaticQuestion({
       >
         <GridItem py="10px" px="5px" key={question.title} colSpan={1} rowSpan={1}>
           <VStack spacing="8px" align="left">
-            {isTemplate ? (
+            <Flex align="center">
               <Text fontWeight="500" fontSize="md">
                 {question.title}
               </Text>
-            ) : (
-              <Flex align="center">
-                <Text fontWeight="500" fontSize="md">
-                  {question.title}
-                </Text>
-                <Spacer />
+              <Spacer />
+              {question.tooltip !== '' && (
                 <Tooltip label={question.tooltip} placement="top">
                   <InfoIcon />
                 </Tooltip>
-              </Flex>
-            )}
+              )}
+            </Flex>
+
             {question.fieldType === 'TEXT' ? (
               <Input type="text" isDisabled={isDisabled} {...register(formKey)} />
             ) : (

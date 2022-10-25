@@ -2,7 +2,8 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, usePagination, useSortBy } from 'react-table';
-import { Table, Tr, Td, Tbody, Spinner, useMediaQuery } from '@chakra-ui/react';
+import { Button, Flex, Table, Text, Tr, Td, Tbody, Spinner, useMediaQuery } from '@chakra-ui/react';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import VolunteerLogsTableHeader from './VolunteerLogsTableHeader';
 import Pagination from '../../common/TablePagination';
 import CellStructure from './VolunteerLogsStructure';
@@ -32,10 +33,6 @@ const VolunteerLogsTable = ({
     headerGroups,
     page,
     prepareRow,
-    canPreviousPage,
-    canNextPage,
-    nextPage,
-    previousPage,
     setPageSize,
     setHiddenColumns,
     state: { pageIndex, pageSize, sortBy },
@@ -57,6 +54,16 @@ const VolunteerLogsTable = ({
     usePagination,
   );
 
+  const handleShowMore = () => {
+    setPageSize(pageSize + 10);
+    setAllChecked(false);
+  };
+
+  const handleShowLess = () => {
+    setPageSize(pageSize - 10);
+    setAllChecked(false);
+  };
+
   useEffect(() => {
     setFetchSettings({ pageIndex, pageSize, sortBy });
   }, [pageIndex, pageSize, sortBy]);
@@ -65,7 +72,7 @@ const VolunteerLogsTable = ({
   useEffect(() => {
     const hiddenColumns = [];
     if (isMobile) {
-      hiddenColumns.push('segmentName', 'submittedAt', 'status', 'partners', 'edit');
+      hiddenColumns.push('segmentName', 'submittedAt', 'status', 'partners', 'edit', 'date');
     } else {
       // hide combined column?
       hiddenColumns.push('statusAndEdit');
@@ -112,7 +119,35 @@ const VolunteerLogsTable = ({
             })}
         </Tbody>
       </Table>
-      <Pagination
+      <Flex
+        bgColor="ochGrey"
+        w="100%"
+        align="center"
+        justify="space-between"
+        direction="row"
+        px={4}
+        h="50px"
+        borderBottomStartRadius={10}
+        borderBottomEndRadius={10}
+      >
+        <Flex align="center" justify="center" direction="row">
+          {pageSize < tableData.total && (
+            <Button m={2} size="sm" leftIcon={<FiChevronDown />} onClick={handleShowMore}>
+              Show More
+            </Button>
+          )}
+          {pageSize > 10 && (
+            <Button m={2} size="sm" rightIcon={<FiChevronUp />} onClick={handleShowLess}>
+              Show Less
+            </Button>
+          )}
+        </Flex>
+        <Text color="white">
+          Showing {pageSize > tableData.total ? tableData.total : pageSize} of {tableData.total}{' '}
+          rows
+        </Text>
+      </Flex>
+      {/* <Pagination
         canPreviousPage={canPreviousPage}
         canNextPage={canNextPage}
         pageIndex={pageIndex}
@@ -121,7 +156,7 @@ const VolunteerLogsTable = ({
         previousPage={previousPage}
         nextPage={nextPage}
         totalData={tableData.total}
-      />
+      /> */}
     </>
   );
 };
