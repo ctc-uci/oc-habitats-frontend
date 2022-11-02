@@ -362,7 +362,7 @@ const initiateInviteProcess = async (email, role) => {
       url = `${process.env.REACT_APP_API_URL}/register/${id}`;
     } else {
       // production code
-      url = `${process.env.REACT_APP_PROD_API_URL}/register/${id}`;
+      url = `${process.env.REACT_APP_PROD_URL}/register/${id}`;
     }
     console.log('URL passed into register is');
     console.log(url);
