@@ -106,7 +106,7 @@ const refreshToken = async () => {
  */
 const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
   try {
-    console.log(`firebaseId param received as ${firebaseId} and passing it into POST`);
+    // console.log(`firebaseId param received as ${firebaseId} and passing it into POST`);
     await OCHBackend.post(
       '/users/',
       {
@@ -143,8 +143,8 @@ const logInWithEmailAndPassword = async (email, password, navigate, cookies) => 
   }
   cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
   const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`);
-  console.log('Current user: ');
-  console.table(user.data);
+  // console.log('Current user: ');
+  // console.table(user.data);
   return user.data;
 };
 
@@ -327,7 +327,7 @@ const updateUserPassword = async (newPassword, oldPassword) => {
     // User entered correct credentials
     // Update password
     await updatePassword(auth.currentUser, newPassword);
-    console.log('password updated succesfully');
+    // console.log('password updated succesfully');
     return 'success';
   } catch (e) {
     console.log(e.code, e.message);
@@ -364,8 +364,8 @@ const initiateInviteProcess = async (email, role) => {
       // production code
       url = `${process.env.REACT_APP_PROD_URL}/register/${id}`;
     }
-    console.log('URL passed into register is');
-    console.log(url);
+    // console.log('URL passed into register is');
+    // console.log(url);
     const expireDate = moment().add(1, 'days');
     OCHBackend.post(
       '/adminInvite/',

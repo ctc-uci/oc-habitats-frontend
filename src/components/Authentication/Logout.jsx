@@ -10,7 +10,7 @@ const Logout = ({ cookies }) => {
   const { setUserData } = useUserContext();
   const handleSubmit = async () => {
     try {
-      await logout('/', navigate, cookies);
+      await logout('/login', navigate, cookies);
       setUserData({});
     } catch (err) {
       setErrorMessage(err.message);

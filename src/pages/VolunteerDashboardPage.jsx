@@ -100,7 +100,7 @@ const VolunteerDashboardPage = () => {
   };
 
   const Segments = () => {
-    if (userData.userData.segments.length === 0) {
+    if (userData.userData.segments?.length === 0) {
       return (
         <Text as="i" fontSize={{ md: '16px', sm: '14px' }}>
           You have not been assigned any segments this month. If you believe this is a mistake,
@@ -110,7 +110,7 @@ const VolunteerDashboardPage = () => {
     }
 
     return userData.userData.segments
-      .sort((a, b) => a.segmentId.localeCompare(b.segmentId))
+      ?.sort((a, b) => a.segmentId.localeCompare(b.segmentId))
       .map(segment => (
         <SegmentAssignment
           key={segment.segmentId}
