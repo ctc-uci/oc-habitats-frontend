@@ -38,7 +38,7 @@ const PeoplePage = () => {
       console.error(err.message);
     });
 
-    setSegments(segmentsData.data);
+    setSegments(segmentsData.data?.sort((a, b) => a.segmentId.localeCompare(b.segmentId)));
 
     // Split admins and volunteers
     setVolunteerData([

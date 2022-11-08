@@ -8,8 +8,8 @@ import { SectionSelector, SegmentAssignmentTable } from '../components/SegmentAs
 
 const sortSections = sectionsArray => {
   const compare = (a, b) => {
-    if (a._id < b._id) return -1;
-    if (a._id > b._id) return 1;
+    if (a.segmentId < b.segmentId) return -1;
+    if (a.segmentId > b.segmentId) return 1;
     return 0;
   };
   return sectionsArray.sort(compare);
