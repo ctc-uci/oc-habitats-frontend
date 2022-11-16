@@ -203,6 +203,7 @@ const registerWithEmailAndPassword = async (
   } catch (err) {
     throw new Error(err.message);
   }
+  await signInWithEmailAndPassword(auth, email, password);
   await OCHBackend.delete(`/adminInvite/${email}`, { withCredentials: true });
   navigate(redirectPath);
 };

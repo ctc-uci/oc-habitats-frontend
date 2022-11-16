@@ -111,14 +111,21 @@ function App() {
                     path="/species"
                     element={<ProtectedRoute Component={Species} roles={[ADMIN_ROLE]} />}
                   />
-                  {/* Admin only routes (TO DO, make admin only) */}
-                  <Route exact path="/people" element={<PeoplePage />} />
+                  <Route
+                    exact
+                    path="/people"
+                    element={<ProtectedRoute Component={PeoplePage} roles={[ADMIN_ROLE]} />}
+                  />
                   <Route
                     exact
                     path="/people/segment-assignments"
-                    element={<SegmentAssignments />}
+                    element={<ProtectedRoute Component={SegmentAssignments} roles={[ADMIN_ROLE]} />}
                   />
-                  <Route exact path="/people/user-info/:id" element={<UserInformation />} />
+                  <Route
+                    exact
+                    path="/people/user-info/:id"
+                    element={<ProtectedRoute Component={UserInformation} roles={[ADMIN_ROLE]} />}
+                  />
                   <Route
                     exact
                     path="/create-log"
@@ -179,18 +186,6 @@ function App() {
                       />
                     }
                   />
-                  {/* TEST ROUTES TO REMOVE */}
-                  <Route exact path="/common-table-example" element={<CommonTableExample />} />
-                  <Route
-                    path="/user-context-example"
-                    element={
-                      <ProtectedRoute
-                        Component={UserContextExample}
-                        roles={[ADMIN_ROLE, VOLUNTEER_ROLE]}
-                      />
-                    }
-                  />
-                  <Route exact path="/common-table-example" element={<CommonTableExample />} />
                 </Routes>
               </Box>
               <Routes>

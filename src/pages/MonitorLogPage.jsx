@@ -81,10 +81,11 @@ const MonitorLogPage = ({ mode }) => {
     topRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const [user, setUser] = useState(false);
+  // const [user, setUser] = useState(false);
   const [submitterData, setSubmitterData] = useState(null);
   const [submissionData, setSubmissionData] = useState(null);
   const [segmentData, setSegmentData] = useState(null);
+  const [allSegments, setAllSegments] = useState([]);
   const [monitorPartners, setMonitorPartners] = useState([]);
   const [predators, setPredators] = useState([]);
   const [listedSpecies, setListedSpecies] = useState([]);
@@ -121,12 +122,13 @@ const MonitorLogPage = ({ mode }) => {
       checkInModal.onOpen();
     }
     try {
-      const [userD, monitorPartnersData, speciesData] = await Promise.all([
+      const [userD, monitorPartnersData, speciesData, allSegmentData] = await Promise.all([
         OCHBackend.get('users/me', { withCredentials: true }),
         OCHBackend.get('users/monitorPartners', { withCredentials: true }),
         OCHBackend.get('species', { withCredentials: true }),
+        OCHBackend.get(`segments`, { withCredentials: true }),
       ]);
-      setUser(userD.data);
+      // setUser(userD.data);
       setMonitorPartners(monitorPartnersData.data);
       setPredators(
         speciesData.data
@@ -154,6 +156,13 @@ const MonitorLogPage = ({ mode }) => {
             _id: s._id,
           })),
       );
+      const assigned = userD.data.segments?.map(s => s.segmentId);
+      const sortedSegments = allSegmentData.data
+        .sort((a, b) => a.segmentId.localeCompare(b.segmentId))
+        .map(a =>
+          assigned.includes(a.segmentId) ? { ...a, segmentId: `[Assigned] ${a.segmentId}` } : a,
+        );
+      setAllSegments(sortedSegments);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err.message);
@@ -246,7 +255,7 @@ const MonitorLogPage = ({ mode }) => {
     }
   };
 
-  const assignedSegments = useMemo(() => user?.segments || [], [user]);
+  const assignedSegments = useMemo(() => allSegments || [], [allSegments]);
 
   const EditingAlert = () => {
     if (

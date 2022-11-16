@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Register from './Register';
 import { OCHBackend } from '../../common/utils';
 
@@ -9,16 +9,22 @@ const InviteLandingPage = () => {
   const [validInvite, setValidInvite] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const { inviteID } = useParams();
+  const navigate = useNavigate();
 
   const checkInviteValidity = async id => {
-    const foundInvite = await OCHBackend.get(`/adminInvite/${id}`);
-    setInvite(foundInvite.data);
-    if (!inviteID || !foundInvite || !foundInvite.data) {
-      setError('nonexistent invite');
-      setValidInvite(false);
-    } else if (JSON.stringify(foundInvite.expireDate) < JSON.stringify(Date())) {
-      setError('expired invite');
-      setValidInvite(false);
+    try {
+      const foundInvite = await OCHBackend.get(`/adminInvite/${id}`);
+      setInvite(foundInvite.data);
+      if (!inviteID || !foundInvite || !foundInvite.data) {
+        setError('nonexistent invite');
+        setValidInvite(false);
+      } else if (JSON.stringify(foundInvite.expireDate) < JSON.stringify(Date())) {
+        setError('expired invite');
+        setValidInvite(false);
+      }
+    } catch (err) {
+      setError(err.message);
+      navigate('/');
     }
     setIsLoading(false);
   };

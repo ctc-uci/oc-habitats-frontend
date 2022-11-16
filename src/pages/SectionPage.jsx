@@ -39,7 +39,6 @@ const SectionPage = () => {
       setIsLoading(true);
       const res = await OCHBackend.get('/sections', { withCredentials: true });
       // sort sections by id
-      console.log(res.data);
       setSections(res.data.sort((a, b) => a._id.localeCompare(b._id)));
 
       setIsLoading(false);

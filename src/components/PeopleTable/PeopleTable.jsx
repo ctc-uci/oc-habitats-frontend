@@ -78,7 +78,7 @@ const cellStructure = [
     id: 'assignedSegments',
     Header: 'Assigned Segment(s)',
     accessor: d => ({
-      segments: d.segments,
+      segments: d.segments?.sort((a, b) => a.segmentId.localeCompare(b.segmentId)),
       userId: d.id,
       name: `${d.firstName} ${d.lastName}`,
       email: d.email,
