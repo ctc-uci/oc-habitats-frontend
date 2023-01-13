@@ -31,7 +31,7 @@ const ExitModal = ({ submissionId }) => {
         <ModalOverlay />
         <ModalContent marginTop="100">
           <ModalHeader>Exit Edit Mode?</ModalHeader>
-          <ModalBody>You are about to exit edit mode. Any unread changes will be lost.</ModalBody>
+          <ModalBody>You are about to exit edit mode. Any unsaved changes will be lost.</ModalBody>
           <ModalFooter>
             <ButtonGroup gap="2px">
               <Button onClick={onClose}>Cancel</Button>
