@@ -106,7 +106,7 @@ const refreshToken = async () => {
  */
 const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
   try {
-    // console.log(`firebaseId param received as ${firebaseId} and passing it into POST`);
+    console.log(`firebaseId param received as ${firebaseId} and passing it into POST`);
     await OCHBackend.post(
       '/users/',
       {
@@ -363,10 +363,10 @@ const initiateInviteProcess = async (email, role) => {
       url = `${process.env.REACT_APP_API_URL}/register/${id}`;
     } else {
       // production code
-      url = `${process.env.REACT_APP_PROD_URL}/register/${id}`;
+      url = `${process.env.REACT_APP_PROD_API_URL}/register/${id}`;
     }
-    // console.log('URL passed into register is');
-    // console.log(url);
+    console.log('URL passed into register is');
+    console.log(url);
     const expireDate = moment().add(1, 'days');
     OCHBackend.post(
       '/adminInvite/',
