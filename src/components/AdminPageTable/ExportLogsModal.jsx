@@ -11,6 +11,7 @@ import {
   ModalFooter,
   useToast,
   useDisclosure,
+  Badge,
 } from '@chakra-ui/react';
 import { CgSoftwareUpload } from 'react-icons/cg';
 import { saveAs } from 'file-saver';
@@ -67,7 +68,16 @@ const ExportLogsModal = ({ logs }) => {
             {count === 0 ? (
               <Text>You have not selected any logs to export.</Text>
             ) : (
-              <Text>You are about to export {count} log(s) as csv files.</Text>
+              <>
+                <Text>You are about to export {count} log(s) as csv files.</Text>
+                <Text>
+                  Note that you may only export{' '}
+                  <Badge variant="solid" colorScheme="green">
+                    approved
+                  </Badge>{' '}
+                  logs.
+                </Text>
+              </>
             )}
           </ModalBody>
 

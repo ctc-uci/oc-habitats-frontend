@@ -1,5 +1,15 @@
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
-import { Badge, Container, Flex, Heading, Text, useMediaQuery } from '@chakra-ui/react';
+import {
+  Badge,
+  Container,
+  Flex,
+  Heading,
+  ListItem,
+  Text,
+  UnorderedList,
+  useMediaQuery,
+  Box,
+} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { OCHBackend } from '../common/utils';
 import AdminPageFilters from '../components/AdminPageTable/AdminPageFilters';
@@ -114,26 +124,42 @@ const AdminPage = () => {
         </Flex>
 
         {!isMobile && (
-          <Text my="20px">
-            Click on a column header (e.g.{' '}
-            <Badge px={0} variant="solid" bg="transparent" textColor="black">
-              Log Date
-            </Badge>
-            ) to sort by descending <ArrowDownIcon /> or ascending <ArrowUpIcon />. Sorting is
-            alphanumeric for{' '}
-            <Badge px={0} variant="solid" bg="transparent" textColor="black">
-              segment
-            </Badge>
-            ,{' '}
-            <Badge px={0} variant="solid" bg="transparent" textColor="black">
-              segment name
-            </Badge>
-            , and{' '}
-            <Badge px={0} variant="solid" bg="transparent" textColor="black">
-              approval status
-            </Badge>
-            .
-          </Text>
+          <Box my={4}>
+            <Text as="b">Notes</Text>
+            <UnorderedList>
+              <ListItem>
+                Click on a column header (e.g.{' '}
+                <Badge px={0} variant="solid" bg="transparent" textColor="black">
+                  Log Date
+                </Badge>
+                ) to sort by descending <ArrowDownIcon /> or ascending <ArrowUpIcon />. Sorting is
+                alphanumeric for{' '}
+                <Badge px={0} variant="solid" bg="transparent" textColor="black">
+                  segment
+                </Badge>
+                ,{' '}
+                <Badge px={0} variant="solid" bg="transparent" textColor="black">
+                  segment name
+                </Badge>
+                , and{' '}
+                <Badge px={0} variant="solid" bg="transparent" textColor="black">
+                  approval status
+                </Badge>
+                .
+              </ListItem>
+              <ListItem>
+                Only approved logs can be exported. Generate report will fail if there are no{' '}
+                <Badge variant="solid" colorScheme="green">
+                  approved
+                </Badge>{' '}
+                logs for the month.
+              </ListItem>
+              <ListItem>
+                Additionally, when exporting selected logs, only those that have been approved will
+                be exported and reflected in the Excel file.
+              </ListItem>
+            </UnorderedList>
+          </Box>
         )}
         <AdminPageFilters
           segments={segments}
