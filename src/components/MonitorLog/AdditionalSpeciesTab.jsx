@@ -38,6 +38,7 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
   const [speciesEntries, setSpeciesEntries] = useState(getValues(`${FORM_PREFIX}entries`) || {});
 
   useEffect(() => {
+    console.log(speciesEntries);
     setValue(`${FORM_PREFIX}entries`, speciesEntries);
   }, [speciesEntries]);
 
@@ -79,8 +80,28 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
     });
   };
 
-  const handleEditRow = newSpecies => {
-    const { oldId, species: speciesId, ...newRow } = newSpecies;
+  // const handleEditRow = newSpecies => {
+  //   const { oldId, species: speciesId, ...newRow } = newSpecies;
+  //   setSpeciesEntries(prevSpecies => {
+  //     let newEntries = { ...prevSpecies };
+  //     if (oldId !== speciesId) {
+  //       // if we're changing the species ID, check if the new species is already in the table
+  //       if (Object.prototype.hasOwnProperty.call(prevSpecies, speciesId)) {
+  //         // if it is, merge the two rows
+  //         newRow.count += prevSpecies[speciesId].count;
+  //         if (prevSpecies[speciesId].notes) {
+  //           newRow.notes += `\n${prevSpecies[speciesId].notes}`;
+  //         }
+  //         newEntries = newEntries.filter(s => s.species !== newRow.species);
+  //       }
+  //     }
+  //     newEntries[newEntries] = newRow;
+  //     return newEntries;
+  //   });
+  // };
+
+  const handleEditRow = editedSpecies => {
+    const { oldId, species: speciesId, ...newRow } = editedSpecies;
     setSpeciesEntries(prevSpecies => {
       let newEntries = { ...prevSpecies };
       if (oldId !== speciesId) {
@@ -93,8 +114,9 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
           }
           newEntries = newEntries.filter(s => s.species !== newRow.species);
         }
+        delete newEntries[oldId];
       }
-      newEntries[newEntries] = newRow;
+      newEntries[speciesId] = newRow;
       return newEntries;
     });
   };

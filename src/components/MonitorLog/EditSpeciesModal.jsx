@@ -157,7 +157,7 @@ const EditSpeciesModal = ({ speciesId, speciesRow, editRow, deleteRow, speciesOp
                     colorScheme="red"
                     variant="outline"
                     rightIcon={<DeleteIcon />}
-                    onClick={onClose}
+                    onClick={deleteSpecie}
                   >
                     Delete
                   </Button>
