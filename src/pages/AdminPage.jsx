@@ -113,8 +113,8 @@ const AdminPage = () => {
     getSegments();
   }, []);
 
-  const checkCount = () => [...checked].filter((id, c) => c === true)?.length;
-  const getCheckedIds = () => [...checked].filter((id, c) => c === true);
+  const checkCount = () => [...checked].filter(c => c[1])?.length;
+  const getCheckedIds = () => [...checked].filter(c => c[1] === true).map(c => c[0]);
 
   return (
     <Container maxW="container.xl" h="fit-content">
@@ -125,7 +125,7 @@ const AdminPage = () => {
         <Flex gap={{ md: '24px', base: '12px' }} direction={{ md: 'row', base: 'column' }}>
           <GenerateReportModal />
           <ExportLogsModal logs={getCheckedIds()} all={false} />
-          <ExportLogsModal logs={allLogs} all />
+          <ExportLogsModal logs={allLogs.map(l => l._id)} all />
           {/* <SetReminderModal /> */}
         </Flex>
 

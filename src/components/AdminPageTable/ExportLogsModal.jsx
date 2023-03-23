@@ -75,7 +75,11 @@ const ExportLogsModal = ({ logs, all }) => {
                   <Badge variant="solid" colorScheme="green">
                     approved
                   </Badge>{' '}
-                  logs.
+                  logs. If logs are not{' '}
+                  <Badge variant="solid" colorScheme="green">
+                    approved
+                  </Badge>{' '}
+                  , they will not appear in the csv.
                 </Text>
               </>
             )}
