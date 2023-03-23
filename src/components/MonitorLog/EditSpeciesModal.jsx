@@ -31,7 +31,7 @@ import PropTypes from 'prop-types';
 import DropdownSearch from '../DropdownSearch';
 import DeleteSpeciesModal from './DeleteSpeciesModal';
 
-const EditSpeciesModal = ({ speciesId, speciesRow, editRow, deleteRow, speciesOptions }) => {
+const EditSpeciesModal = ({ speciesId, speciesRow, editRow, deleteRow, speciesOptions, index }) => {
   const getSpeciesObj = id => speciesOptions.find(s => s.value === id);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -46,12 +46,13 @@ const EditSpeciesModal = ({ speciesId, speciesRow, editRow, deleteRow, speciesOp
       species: selectedSpecies.value,
       count: parseInt(totalSighted, 10),
       notes,
+      index,
     });
     onClose();
   };
 
   const deleteSpecie = () => {
-    deleteRow(speciesId);
+    deleteRow(speciesId, index);
     onClose();
   };
 
@@ -173,6 +174,10 @@ const EditSpeciesModal = ({ speciesId, speciesRow, editRow, deleteRow, speciesOp
   );
 };
 
+EditSpeciesModal.defaultProps = {
+  index: 0,
+};
+
 EditSpeciesModal.propTypes = {
   speciesRow: PropTypes.shape({
     species: PropTypes.string,
@@ -188,6 +193,7 @@ EditSpeciesModal.propTypes = {
       label: PropTypes.string,
     }),
   ).isRequired,
+  index: PropTypes.number,
 };
 
 export default EditSpeciesModal;

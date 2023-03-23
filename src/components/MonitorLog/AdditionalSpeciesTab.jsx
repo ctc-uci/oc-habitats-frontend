@@ -51,12 +51,19 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
     [species],
   );
   const getSpeciesLabel = speciesId => speciesOptions.find(s => s.value === speciesId)?.label;
+  const getOtherSpecies = () => speciesOptions.find(s => s.label === 'Other (Other)');
 
   const handleAddRow = newSpecies => {
     setSpeciesEntries(prevSpecies => {
       const { species: speciesId, ...newSpeciesObj } = newSpecies;
       const newEntries = { ...prevSpecies };
-      if (Object.prototype.hasOwnProperty.call(prevSpecies, speciesId)) {
+      if (speciesId === getOtherSpecies().value) {
+        if (Object.prototype.hasOwnProperty.call(prevSpecies, speciesId)) {
+          newEntries[speciesId] = [...newEntries[speciesId], { ...newSpeciesObj }];
+        } else {
+          newEntries[speciesId] = [{ ...newSpeciesObj }];
+        }
+      } else if (Object.prototype.hasOwnProperty.call(prevSpecies, speciesId)) {
         if (newSpecies.notes !== '') {
           if (newEntries[speciesId].notes !== '') {
             newEntries[speciesId].notes += `\n${newSpecies.notes}`;
@@ -72,10 +79,14 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
     });
   };
 
-  const handleDeleteRow = speciesId => {
+  const handleDeleteRow = (speciesId, index = 0) => {
     setSpeciesEntries(entries => {
       const newEntries = { ...entries };
-      delete newEntries[speciesId];
+      if (speciesId === getOtherSpecies().value) {
+        newEntries[speciesId].splice(index, 1);
+      } else {
+        delete newEntries[speciesId];
+      }
       return newEntries;
     });
   };
@@ -101,83 +112,157 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
   // };
 
   const handleEditRow = editedSpecies => {
-    const { oldId, species: speciesId, ...newRow } = editedSpecies;
+    const { oldId, species: speciesId, index, ...newRow } = editedSpecies;
     setSpeciesEntries(prevSpecies => {
       let newEntries = { ...prevSpecies };
-      if (oldId !== speciesId) {
-        // if we're changing the species ID, check if the new species is already in the table
-        if (Object.prototype.hasOwnProperty.call(prevSpecies, speciesId)) {
-          // if it is, merge the two rows
-          newRow.count += prevSpecies[speciesId].count;
-          if (prevSpecies[speciesId].notes) {
-            newRow.notes += `\n${prevSpecies[speciesId].notes}`;
+      if (speciesId === getOtherSpecies().value) {
+        if (oldId !== speciesId) {
+          if (Object.prototype.hasOwnProperty.call(prevSpecies, speciesId)) {
+            newEntries[speciesId] = [...newEntries[speciesId], ...newRow];
+          } else {
+            newEntries[speciesId] = [...newEntries[speciesId], ...newRow];
           }
-          newEntries = newEntries.filter(s => s.species !== newRow.species);
+          delete newEntries[oldId];
+        } else {
+          newEntries[speciesId][index] = newRow;
         }
-        delete newEntries[oldId];
+      } else {
+        if (oldId !== speciesId) {
+          // if we're changing the species ID, check if the new species is already in the table
+          if (Object.prototype.hasOwnProperty.call(prevSpecies, speciesId)) {
+            // if it is, merge the two rows
+            newRow.count += prevSpecies[speciesId].count;
+            if (prevSpecies[speciesId].notes) {
+              newRow.notes += `\n${prevSpecies[speciesId].notes}`;
+            }
+            newEntries = newEntries.filter(s => s.species !== newRow.species);
+          }
+          delete newEntries[oldId];
+        }
+        newEntries[speciesId] = newRow;
       }
-      newEntries[speciesId] = newRow;
       return newEntries;
     });
   };
 
   const createTable = data => {
-    return Object.entries(data).map(([speciesId, row]) => (
-      <AccordionItem key={speciesId} as={Tbody}>
-        {({ isExpanded }) => (
-          <>
-            <Tr>
-              <Td border="none">
-                {!isDisabled && (
-                  <EditSpeciesModal
-                    speciesId={speciesId}
-                    speciesRow={row}
-                    editRow={handleEditRow}
-                    deleteRow={handleDeleteRow}
-                    speciesOptions={speciesOptions}
-                  />
+    return Object.entries(data).map(([speciesId, row]) => {
+      return speciesId !== getOtherSpecies().value ? (
+        <AccordionItem key={speciesId} as={Tbody}>
+          {({ isExpanded }) => (
+            <>
+              <Tr>
+                <Td border="none">
+                  {!isDisabled && (
+                    <EditSpeciesModal
+                      speciesId={speciesId}
+                      speciesRow={row}
+                      editRow={handleEditRow}
+                      deleteRow={handleDeleteRow}
+                      speciesOptions={speciesOptions}
+                    />
+                  )}
+                </Td>
+                <Td border="none">
+                  <Text fontSize="1.05em" color="#2D3748" fontWeight={450}>
+                    {getSpeciesLabel(speciesId)}
+                  </Text>
+                </Td>
+                <Td border="none" color="#2D3748" fontWeight={450}>
+                  {row.count}
+                </Td>
+                <Td border="none">
+                  <Flex justifyContent="flex-end">
+                    <AccordionButton w="2em" h="2em">
+                      <AccordionIcon w="inherit" h="inherit" />
+                    </AccordionButton>
+                  </Flex>
+                </Td>
+              </Tr>
+              <Tr w="100%">
+                {isExpanded && (
+                  <>
+                    <Td colSpan={4}>
+                      <AccordionPanel>
+                        <VStack w="97.5%" spacing="1.5em" mb=".5em">
+                          <Flex justifyContent="space-between" w="100%">
+                            <Text fontSize=".95em" color="#2D3748" fontWeight={500}>
+                              Notes (Optional)
+                            </Text>
+                            <Text color="#2D3748" fontSize=".95em" ml={5} mr={1}>
+                              {row.notes ?? '--'}
+                            </Text>
+                          </Flex>
+                        </VStack>
+                      </AccordionPanel>
+                    </Td>
+                  </>
                 )}
-              </Td>
-              <Td border="none">
-                <Text fontSize="1.05em" color="#2D3748" fontWeight={450}>
-                  {getSpeciesLabel(speciesId)}
-                </Text>
-              </Td>
-              <Td border="none" color="#2D3748" fontWeight={450}>
-                {row.count}
-              </Td>
-              <Td border="none">
-                <Flex justifyContent="flex-end">
-                  <AccordionButton w="2em" h="2em">
-                    <AccordionIcon w="inherit" h="inherit" />
-                  </AccordionButton>
-                </Flex>
-              </Td>
-            </Tr>
-            <Tr w="100%">
-              {isExpanded && (
-                <>
-                  <Td colSpan={4}>
-                    <AccordionPanel>
-                      <VStack w="97.5%" spacing="1.5em" mb=".5em">
-                        <Flex justifyContent="space-between" w="100%">
-                          <Text fontSize=".95em" color="#2D3748" fontWeight={500}>
-                            Notes (Optional)
-                          </Text>
-                          <Text color="#2D3748" fontSize=".95em">
-                            {row.notes ? row.notes : '--'}
-                          </Text>
-                        </Flex>
-                      </VStack>
-                    </AccordionPanel>
+              </Tr>
+            </>
+          )}
+        </AccordionItem>
+      ) : (
+        row.map((item, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <AccordionItem key={`${speciesId} ${index}`} as={Tbody}>
+            {({ isExpanded }) => (
+              <>
+                <Tr>
+                  <Td border="none">
+                    {!isDisabled && (
+                      <EditSpeciesModal
+                        speciesId={speciesId}
+                        speciesRow={{ ...item }}
+                        editRow={handleEditRow}
+                        deleteRow={handleDeleteRow}
+                        speciesOptions={speciesOptions}
+                        index={index}
+                      />
+                    )}
                   </Td>
-                </>
-              )}
-            </Tr>
-          </>
-        )}
-      </AccordionItem>
-    ));
+                  <Td border="none">
+                    <Text fontSize="1.05em" color="#2D3748" fontWeight={450}>
+                      {getSpeciesLabel(speciesId)}
+                    </Text>
+                  </Td>
+                  <Td border="none" color="#2D3748" fontWeight={450}>
+                    {item.count.toLocaleString()}
+                  </Td>
+                  <Td border="none">
+                    <Flex justifyContent="flex-end">
+                      <AccordionButton w="2em" h="2em">
+                        <AccordionIcon w="inherit" h="inherit" />
+                      </AccordionButton>
+                    </Flex>
+                  </Td>
+                </Tr>
+                <Tr w="100%">
+                  {isExpanded && (
+                    <>
+                      <Td colSpan={4}>
+                        <AccordionPanel>
+                          <VStack w="97.5%" spacing="1.5em" mb=".5em">
+                            <Flex justifyContent="space-between" w="100%">
+                              <Text fontSize=".95em" color="#2D3748" fontWeight={500}>
+                                Notes (Optional)
+                              </Text>
+                              <Text color="#2D3748" fontSize=".95em" ml={5} mr={1}>
+                                {item.notes ?? '--'}
+                              </Text>
+                            </Flex>
+                          </VStack>
+                        </AccordionPanel>
+                      </Td>
+                    </>
+                  )}
+                </Tr>
+              </>
+            )}
+          </AccordionItem>
+        ))
+      );
+    });
   };
   // TODO: UPDATE SPECIES CATALOG LINK BEFORE HANDING OFF THE PROJECT
   return (

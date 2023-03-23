@@ -187,7 +187,7 @@ const MonitorLogPage = ({ mode }) => {
       withCredentials: true,
     });
     // eslint-disable-next-line no-console
-    console.log(res.data);
+    // console.log(res.data);
     return res.data;
   };
 

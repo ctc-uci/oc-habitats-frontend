@@ -305,7 +305,7 @@ NonStaticQuestion.defaultProps = {
 };
 NonStaticQuestion.propTypes = {
   refreshTrigger: PropTypes.func.isRequired,
-  question: PropTypes.object.isRequired,
+  question: PropTypes.string.isRequired,
   formKey: PropTypes.string,
   formType: PropTypes.string,
   isTemplate: PropTypes.bool,

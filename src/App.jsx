@@ -185,13 +185,7 @@ const App = () => {
                   />
                 </Routes>
               </Box>
-              <Routes>
-                <Route path="/create-log" />
-                <Route path="/create-log/:id" />
-                <Route path="/edit-log/:id" />
-                <Route path="/review-log/:id" />
-                <Route path="/*" element={<Footer />} />
-              </Routes>
+              <Footer />
             </Box>
           </Router>
         </UserContextProvider>

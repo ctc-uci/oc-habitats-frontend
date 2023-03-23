@@ -46,8 +46,8 @@ const AdminPage = () => {
         submitter: searchFilter,
         pageIndex: fetchSettings.pageIndex,
         pageSize: fetchSettings.pageSize,
-        sort: sortBy.length === 1 ? sortBy[0].id : null,
-        sortAscending: sortBy.length === 1 ? !sortBy[0].desc : null,
+        sort: sortBy?.length === 1 ? sortBy[0].id : null,
+        sortAscending: sortBy?.length === 1 ? !sortBy[0].desc : null,
       };
       const res = await OCHBackend.get('submissions', { params: query, withCredentials: true });
       setData(res.data);

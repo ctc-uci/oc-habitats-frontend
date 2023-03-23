@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import React, { useState } from 'react';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
@@ -38,7 +39,7 @@ DropdownSearch.propTypes = {
     }),
   ).isRequired,
   handleSelectedValue: PropTypes.func.isRequired,
-  value: PropTypes.string,
+  value: PropTypes.object,
 };
 
 export default DropdownSearch;
