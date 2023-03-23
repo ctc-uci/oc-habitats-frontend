@@ -18,7 +18,7 @@ import { saveAs } from 'file-saver';
 import { OCHBackend } from '../../common/utils';
 
 // modal for the export selected logs button
-const ExportLogsModal = ({ logs }) => {
+const ExportLogsModal = ({ logs, all }) => {
   const { isOpen: isExportOpen, onOpen: onExportOpen, onClose: onExportClose } = useDisclosure();
   const toast = useToast();
   const count = logs.length;
@@ -57,13 +57,13 @@ const ExportLogsModal = ({ logs }) => {
         bg="ochBlue"
         rightIcon={<CgSoftwareUpload />}
       >
-        Export Selected Logs
+        {all ? 'Export All with Current Filters' : 'Export Selected Logs'}
       </Button>
 
       <Modal closeOnOverlayClick={false} isOpen={isExportOpen} onClose={onExportClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Export Selected Logs</ModalHeader>
+          <ModalHeader>{all ? 'Export All' : 'Export Selected Logs'}</ModalHeader>
           <ModalBody>
             {count === 0 ? (
               <Text>You have not selected any logs to export.</Text>
@@ -104,6 +104,7 @@ const ExportLogsModal = ({ logs }) => {
 
 ExportLogsModal.propTypes = {
   logs: PropTypes.arrayOf(PropTypes.string).isRequired,
+  all: PropTypes.bool.isRequired,
 };
 
 export default ExportLogsModal;

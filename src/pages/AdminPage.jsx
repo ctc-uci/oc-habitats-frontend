@@ -24,6 +24,7 @@ const AdminPage = () => {
   const [approvalFilter, setApprovalFilter] = useState('');
   const [searchFilter, setSearchFilter] = useState('');
   const [data, setData] = useState({ results: [], total: 0 });
+  const [allLogs, setAllLogs] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [segments, setSegments] = useState([]);
@@ -59,6 +60,26 @@ const AdminPage = () => {
     }
   };
 
+  const getAllLogs = async () => {
+    try {
+      const { sortBy } = fetchSettings;
+      const query = {
+        segment: segmentFilter,
+        date: dateFilter,
+        status: approvalFilter,
+        submitter: searchFilter,
+        sort: sortBy?.length === 1 ? sortBy[0].id : null,
+        sortAscending: sortBy?.length === 1 ? !sortBy[0].desc : null,
+      };
+      const res = await OCHBackend.get('submissions', { params: query, withCredentials: true });
+      setAllLogs(res.data.results);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+    return [];
+  };
+
   // get segments from backend
   const getSegments = async () => {
     try {
@@ -77,6 +98,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     getSubmissions();
+    getAllLogs();
   }, [fetchSettings, segmentFilter, dateFilter, approvalFilter, searchFilter]);
 
   useEffect(() => {
@@ -91,25 +113,8 @@ const AdminPage = () => {
     getSegments();
   }, []);
 
-  const checkCount = () => {
-    let count = 0;
-    checked.forEach(val => {
-      if (val) {
-        count += 1;
-      }
-    });
-    return count;
-  };
-
-  const getCheckedIds = () => {
-    const res = [];
-    checked.forEach((v, k) => {
-      if (v) {
-        res.push(k);
-      }
-    });
-    return res;
-  };
+  const checkCount = () => [...checked].filter((id, c) => c === true)?.length;
+  const getCheckedIds = () => [...checked].filter((id, c) => c === true);
 
   return (
     <Container maxW="container.xl" h="fit-content">
@@ -119,7 +124,8 @@ const AdminPage = () => {
         </Heading>
         <Flex gap={{ md: '24px', base: '12px' }} direction={{ md: 'row', base: 'column' }}>
           <GenerateReportModal />
-          <ExportLogsModal logs={getCheckedIds()} />
+          <ExportLogsModal logs={getCheckedIds()} all={false} />
+          <ExportLogsModal logs={allLogs} all />
           {/* <SetReminderModal /> */}
         </Flex>
 
