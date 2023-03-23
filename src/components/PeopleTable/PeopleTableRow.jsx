@@ -80,7 +80,7 @@ const NameColumn = ({ data, isMobile }) => {
   return (
     <HStack justifyContent="space-between">
       <Flex h="72px" gap="12px" alignItems="center">
-        <Avatar size="md" name={data.registered ? data.name : data.email} />
+        <Avatar size="md" name={data.registered ? data.name : data.email} userSelect="none" />
         <VStack alignItems="flex-start">
           <Text>{data.registered ? data.name : null}</Text>
           <Text color="gray.500">{data.email}</Text>

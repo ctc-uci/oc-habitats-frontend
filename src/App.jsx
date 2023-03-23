@@ -1,45 +1,42 @@
 import { useState, React } from 'react';
-/* eslint-disable import/extensions */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-useless-path-segments */
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import { Box, ChakraProvider } from '@chakra-ui/react';
 import { CookiesProvider } from 'react-cookie';
-import './App.css';
+import { UserContextProvider } from './common/UserContext/UserContext';
 
 // NEW AUTH IMPORTS
 import InviteLandingPage from './components/Authentication/InviteLandingPage';
 import ForgotPassword from './components/Authentication/ForgotPassword';
 import Login from './components/Authentication/Login';
 import Logout from './components/Authentication/Logout';
-import ProtectedRoute from './common/ProtectedRoute';
+import AdminInviteModal from './components/Authentication/AdminInviteModal';
 import EmailAction from './components/Authentication/EmailAction';
+import ProtectedRoute from './common/ProtectedRoute';
 
-import CommonTableExample from './pages/CommonTableExample';
-import AdminPage from '../src/pages/AdminPage';
+import HomePage from './pages/HomePage';
+import AdminPage from './pages/AdminPage';
 import AccountPage from './pages/AccountPage';
 import SectionPage from './pages/SectionPage';
 import MonitorLogPage from './pages/MonitorLogPage';
 import MonitorLogEditPage from './pages/MonitorLogEditPage';
-import Footer from './components/Footer/Footer';
-import Navbar from './components/Navbar/Navbar';
 import PeoplePage from './pages/PeoplePage';
-import SegmentAssignments from './pages/SegmentAssignments';
-import { UserInformation } from './components/PeopleTable';
 import Species from './pages/Species';
 import Numbers from './pages/EmergencyNumbers';
 import VolunteerLogs from './pages/VolunteerLogsPage';
 import NotFoundPage from './pages/NotFoundPage';
-import AdminInviteModal from './components/Authentication/AdminInviteModal';
+import SegmentAssignments from './pages/SegmentAssignments';
+
+import Footer from './components/Footer/Footer';
+import Navbar from './components/Navbar/Navbar';
+import UserInformation from './components/PeopleTable/UserInformation';
+
 import theme from './theme/theme';
-import { UserContextProvider } from './common/UserContext/UserContext';
-import UserContextExample from './common/UserContext/UserContextExample';
 import AUTH_ROLES from './common/auth_config';
-import HomePage from './pages/HomePage';
+import './App.css';
 
 const { ADMIN_ROLE, VOLUNTEER_ROLE } = AUTH_ROLES.AUTH_ROLES;
 
-function App() {
+const App = () => {
   const [accMadeChanges, setAccMadeChanges] = useState(false);
   const [onAdminPortal, setOnAdminPortal] = useState(true);
 
@@ -201,6 +198,6 @@ function App() {
       </CookiesProvider>
     </ChakraProvider>
   );
-}
+};
 
 export default App;
