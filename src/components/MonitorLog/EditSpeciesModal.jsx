@@ -119,12 +119,11 @@ const EditSpeciesModal = ({ speciesId, speciesRow, editRow, deleteRow, speciesOp
                       </FormLabel>
                       <NumberInput
                         defaultValue={0}
+                        min={1}
                         value={totalSighted}
                         onChange={e => {
                           setTotalSighted(e);
                         }}
-                        min={1}
-                        max={20}
                       >
                         <NumberInputField />
                         <NumberInputStepper>

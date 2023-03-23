@@ -120,7 +120,6 @@ const AddSpeciesModal = ({ addNewRow, speciesOptions }) => {
                     <NumberInput
                       defaultValue={1}
                       min={1}
-                      max={20}
                       onChange={e => {
                         setTotalSighted(e);
                       }}
