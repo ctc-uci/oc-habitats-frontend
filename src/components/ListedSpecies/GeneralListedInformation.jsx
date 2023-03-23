@@ -135,7 +135,7 @@ const GeneralListedInformation = ({ refreshTrigger, additionalQuestions, isTempl
           </FormControl>
         </Stack>
         <SimpleGrid mt="30px" columns={3} spacing="2em">
-          {additionalQuestions.map(question => {
+          {additionalQuestions?.map(question => {
             return (
               <NonStaticQuestion
                 formType="listed-species"

@@ -257,7 +257,7 @@ function GeneralInfoTab({ assignedSegments, monitorPartners, isDisabled, showHea
           spacingX="64px"
           spacingY={{ md: '68px', base: '30px' }}
         >
-          {additionalQuestions.map(question => {
+          {additionalQuestions?.map(question => {
             return (
               <NonStaticQuestion
                 refreshTrigger={toggleTabEdited}
