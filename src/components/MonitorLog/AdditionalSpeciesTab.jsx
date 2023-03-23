@@ -169,7 +169,7 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
                   </Text>
                 </Td>
                 <Td border="none" color="#2D3748" fontWeight={450}>
-                  {row.count}
+                  {row.count.toLocaleString()}
                 </Td>
                 <Td border="none">
                   <Flex justifyContent="flex-end">
