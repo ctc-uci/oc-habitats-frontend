@@ -5,7 +5,7 @@ import { useTable, usePagination, useSortBy } from 'react-table';
 import { Button, Flex, Table, Text, Tr, Td, Tbody, Spinner, useMediaQuery } from '@chakra-ui/react';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import VolunteerLogsTableHeader from './VolunteerLogsTableHeader';
-import Pagination from '../../common/TablePagination';
+// import Pagination from '../../common/TablePagination';
 import CellStructure from './VolunteerLogsStructure';
 
 /* eslint-enable react/destructuring-assignment, react/prop-types */

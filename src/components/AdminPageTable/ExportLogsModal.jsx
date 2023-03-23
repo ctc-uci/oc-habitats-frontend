@@ -26,7 +26,7 @@ const ExportLogsModal = ({ logs }) => {
   const exportLogs = async () => {
     onExportClose();
     try {
-      console.log(`Exporting ${count} logs`);
+      // console.log(`Exporting ${count} logs`);
 
       const res = await OCHBackend.post('/report', { logIds: logs }, { responseType: 'blob' });
       saveAs(res.data, 'report.xlsx');

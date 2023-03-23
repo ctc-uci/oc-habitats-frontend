@@ -7,7 +7,7 @@ import {
   Td,
   Tbody,
   Spinner,
-  Box,
+  // Box,
   Flex,
   Text,
   useMediaQuery,
@@ -16,7 +16,7 @@ import PropTypes from 'prop-types';
 import { useTable, usePagination, useSortBy } from 'react-table';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import AdminPageHeader from './AdminPageHeader';
-import Pagination from '../../common/TablePagination';
+// import Pagination from '../../common/TablePagination';
 import CellStructure from './AdminPageStructure';
 
 /* eslint-enable react/destructuring-assignment, react/prop-types */

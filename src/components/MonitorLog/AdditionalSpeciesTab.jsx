@@ -38,7 +38,7 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
   const [speciesEntries, setSpeciesEntries] = useState(getValues(`${FORM_PREFIX}entries`) || {});
 
   useEffect(() => {
-    console.log(speciesEntries);
+    // console.log(speciesEntries);
     setValue(`${FORM_PREFIX}entries`, speciesEntries);
   }, [speciesEntries]);
 
