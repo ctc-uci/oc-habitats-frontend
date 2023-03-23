@@ -432,7 +432,7 @@ const MonitorLogPage = ({ mode }) => {
             w="100%"
             left="0"
             bottom="0"
-            h="16"
+            h="20"
             zIndex="banner"
           >
             <Flex width="100%" p="32px">
