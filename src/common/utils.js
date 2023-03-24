@@ -14,5 +14,4 @@ const OCHBackend = axios.create({
   baseURL,
 });
 
-// eslint-disable-next-line import/prefer-default-export
 export { OCHBackend };

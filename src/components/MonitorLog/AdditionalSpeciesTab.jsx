@@ -204,7 +204,6 @@ const AdditionalSpeciesTab = ({ showHeader, isDisabled, isTemplate, species }) =
         </AccordionItem>
       ) : (
         row.map((item, index) => (
-          // eslint-disable-next-line react/no-array-index-key
           <AccordionItem key={`${speciesId} ${index}`} as={Tbody}>
             {({ isExpanded }) => (
               <>
