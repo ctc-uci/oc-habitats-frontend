@@ -5,6 +5,8 @@
     "@angular/common": "^11.0.5",
     "@angular/core": "^11.0.5",
     "@babel/core": "^7.0.0",
+    "@babel/plugin-syntax-flow": "^7.14.5",
+    "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/react": "^1.8.6",
     "@chakra-ui/system": "^1.0.0",
@@ -39,7 +41,7 @@
     "framer-motion": "^4",
     "immutability-helper": "^3.1.1",
     "lint-staged": "^11.2.6",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "nanoid": "^3.1.30",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
@@ -53,7 +55,7 @@
     "react-icons": "^4.3.1",
     "react-imask": "^6.4.2",
     "react-router-dom": "^6.0.2",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.1",
     "react-select": "^5.2.2",
     "react-select-search": "^3.0.8",
     "react-table": "latest",
@@ -62,7 +64,6 @@
     "typescript": "^4.3.0",
     "use-force-update": "^1.0.7",
     "uuid": "^8.3.2",
-    "web-vitals": "^1.0.1",
     "webpack": "4.44.2",
     "yup": "^0.32.11",
     "zone.js": "^0.11.3"
@@ -113,19 +114,12 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.3.12",
-    "@storybook/addon-essentials": "^6.3.12",
-    "@storybook/addon-links": "^6.3.12",
-    "@storybook/node-logger": "^6.3.12",
-    "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.3.12",
     "babel-eslint": "^10.1.0",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.0",
     "prettier": "^2.4.1"
   },
   "resolutions": {
-    "react-error-overlay": "6.0.9",
     "@chakra-ui/color-mode": "<1.2.0"
   }
 }
