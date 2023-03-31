@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import PropTypes from 'prop-types';
 
 import {
   Button,
@@ -37,7 +38,7 @@ const roles = {
   admin: 'Admin',
 };
 
-const AddAccountPopup = () => {
+const AddAccountPopup = ({ refresh, setRefresh }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   // Workaround for responsive modal sizes
@@ -71,6 +72,7 @@ const AddAccountPopup = () => {
         duration: 5000,
         isClosable: true,
       });
+      setRefresh(refresh + 1);
     } catch (err) {
       toast({
         title: 'Sign Up Invite Failed!',
@@ -152,6 +154,11 @@ const AddAccountPopup = () => {
       </Modal>
     </>
   );
+};
+
+AddAccountPopup.propTypes = {
+  refresh: PropTypes.number.isRequired,
+  setRefresh: PropTypes.func.isRequired,
 };
 
 export default AddAccountPopup;

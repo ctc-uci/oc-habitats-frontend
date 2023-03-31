@@ -25,6 +25,7 @@ const PeoplePage = () => {
   const [volunteerData, setVolunteerData] = useState([]);
   const [adminData, setAdminData] = useState([]);
   const [segments, setSegments] = useState([]);
+  const [refresh, setRefresh] = useState(0);
 
   const navigate = useNavigate();
 
@@ -54,7 +55,7 @@ const PeoplePage = () => {
 
   useEffect(async () => {
     await fetchTableData();
-  }, []);
+  }, [refresh]);
 
   return (
     <Container maxW={{ md: 'container.xl', base: 'container.sm' }} mb={{ md: '0', base: '5em' }}>
@@ -62,7 +63,7 @@ const PeoplePage = () => {
         People
       </Heading>
       <Flex justifyContent="flex-start" gap={{ md: '40px', base: '20px' }} wrap="wrap">
-        <AddAccountPopup />
+        <AddAccountPopup {...{ refresh, setRefresh }} />
         <Button
           rightIcon={<AiOutlineUnorderedList />}
           bg="ochOrange"
