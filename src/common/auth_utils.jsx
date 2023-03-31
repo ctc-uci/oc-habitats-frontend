@@ -380,7 +380,7 @@ const initiateInviteProcess = async (email, role) => {
 
     sendInviteEmail(email, <AdminInviteEmail role={role} url={url} />);
   } catch (err) {
-    throw new Error(err?.response?.data);
+    throw new Error(err?.response?.data ?? `Could not send an invite to ${email}.`);
   }
 };
 
