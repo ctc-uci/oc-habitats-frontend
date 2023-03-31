@@ -78,16 +78,18 @@ const PeoplePage = () => {
       {/* <pre>{JSON.stringify(volunteerData, null, 2)}</pre> */}
       <PeopleTable
         variant="volunteer"
-        userData={volunteerData}
+        userData={[...volunteerData]}
         segments={segments}
         loading={isLoading}
+        refresh={refresh}
         refreshData={fetchTableData}
       />
       <PeopleTable
         variant="admin"
-        userData={adminData}
+        userData={[...adminData]}
         segments={segments}
         loading={isLoading}
+        refresh={refresh}
         refreshData={fetchTableData}
       />
     </Container>

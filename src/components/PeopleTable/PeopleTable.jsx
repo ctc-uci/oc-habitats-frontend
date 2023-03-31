@@ -56,7 +56,6 @@ const nameSortFn = (rowA, rowB, id, desc) => {
   return activeSort || rowB.values[id].name.localeCompare(rowA.values[id].name);
 };
 
-/* eslint-disable react/prop-types */
 const cellStructure = [
   {
     id: 'name',
@@ -90,7 +89,6 @@ const cellStructure = [
     Cell: ({ value }) => <SegmentAndButtonColumn data={value} />,
   },
 ];
-/* eslint-enable react/prop-types */
 
 const LoadingRow = () => (
   <Tr>
@@ -144,10 +142,10 @@ JSON.safeStringify = (obj, indent = 2) => {
   return retVal;
 };
 
-const PeopleTable = ({ variant, userData, segments, loading, refreshData }) => {
+const PeopleTable = ({ variant, userData, segments, loading, refresh, refreshData }) => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const columns = useMemo(() => cellStructure, []);
-  const data = useMemo(() => userData, [userData]);
+  const data = useMemo(() => userData, [userData, refresh]);
   const filterTypes = useMemo(
     () => ({
       nameFilter: nameFilterFn,
@@ -231,10 +229,9 @@ const PeopleTable = ({ variant, userData, segments, loading, refreshData }) => {
 PeopleTable.propTypes = {
   variant: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   userData: PropTypes.array.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   segments: PropTypes.array.isRequired,
+  refresh: PropTypes.number.isRequired,
   refreshData: PropTypes.func.isRequired,
 };
 
