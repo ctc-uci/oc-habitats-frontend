@@ -46,7 +46,6 @@ import ReviewSubmitTab from '../components/MonitorLog/ReviewSubmitTab';
 import ReviewSubmitTabPopup from '../components/MonitorLog/ReviewSubmitTabPopup';
 
 const MonitorTabButton = props => {
-  // eslint-disable-next-line react/prop-types
   const { children } = props;
   return (
     <Tab
@@ -133,6 +132,7 @@ const MonitorLogPage = ({ mode }) => {
       setPredators(
         speciesData.data
           .filter(s => s.category === 'JUST_PREDATOR' || s.category === 'NON_LISTED_PREDATOR')
+          .sort((a, b) => a.name.localeCompare(b.name))
           .map(s => ({
             name: s.name,
             _id: s._id,
@@ -141,6 +141,7 @@ const MonitorLogPage = ({ mode }) => {
       setListedSpecies(
         speciesData.data
           .filter(s => s.category === 'LISTED')
+          .sort((a, b) => a.name.localeCompare(b.name))
           .map(s => ({
             name: s.name,
             code: s.code,
@@ -150,6 +151,7 @@ const MonitorLogPage = ({ mode }) => {
       setAdditionalSpecies(
         speciesData.data
           .filter(s => s.category === 'NON_LISTED')
+          .sort((a, b) => a.name.localeCompare(b.name))
           .map(s => ({
             name: s.name,
             code: s.code,

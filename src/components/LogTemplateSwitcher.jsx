@@ -13,6 +13,7 @@ const LogTemplateSwitcher = ({ type }) => {
     setPredators(
       res.data
         .filter(s => s.category === 'JUST_PREDATOR' || s.category === 'NON_LISTED_PREDATOR')
+        .sort((a, b) => a.name.localeCompare(b.name))
         .map(s => ({
           name: s.name,
           _id: s._id,
