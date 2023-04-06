@@ -356,14 +356,18 @@ const sendInviteEmail = async (email, emailTemplate) => {
 const initiateInviteProcess = async (email, role) => {
   try {
     const id = uuidv4();
-    let url = '';
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      // dev code
-      url = `${process.env.REACT_APP_API_URL}/register/${id}`;
-    } else {
-      // production code
-      url = `${process.env.REACT_APP_PROD_API_URL}/register/${id}`;
-    }
+    let baseURL =
+      !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+        ? process.env.REACT_APP_API_URL
+        : process.env.REACT_APP_PROD_API_URL;
+    const url = `${baseURL}/register/${id}`;
+    // if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    //   // dev code
+    //   url = `${process.env.REACT_APP_API_URL}/register/${id}`;
+    // } else {
+    //   // production code
+    //   url = `${process.env.REACT_APP_PROD_API_URL}/register/${id}`;
+    // }
     // console.log('URL passed into register is');
     // console.log(url);
     const expireDate = moment().add(1, 'days');
