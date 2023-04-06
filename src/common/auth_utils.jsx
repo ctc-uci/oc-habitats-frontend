@@ -358,8 +358,8 @@ const initiateInviteProcess = async (email, role) => {
     const id = uuidv4();
     let baseURL =
       !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
-        ? process.env.REACT_APP_API_URL
-        : process.env.REACT_APP_PROD_API_URL;
+        ? process.env.REACT_APP_URL
+        : process.env.REACT_APP_PROD_URL;
     const url = `${baseURL}/register/${id}`;
     // if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     //   // dev code
