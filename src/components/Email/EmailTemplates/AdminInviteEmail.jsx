@@ -1,5 +1,4 @@
 /* eslint-disable global-require */
-/* eslint-disable react/jsx-no-target-blank */
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Email, Item } from 'react-html-email';
@@ -31,7 +30,7 @@ const AdminInviteEmail = ({ role, url }) => {
           </strong>
         </Item>
         <Item>
-          <a href={`http://${url}`}>OC Habitats Digital Monitor Log site</a>
+          <a href={`${url}`}>OC Habitats Digital Monitor Log site</a>
           {/* <Button bgColor="ochBlue" w="410px" h="45px">
               Finish Account Creation
             </Button> */}
