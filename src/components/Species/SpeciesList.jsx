@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Flex, Grid, GridItem, Spinner, VStack } from '@chakra-ui/react';
@@ -30,9 +29,8 @@ const SpeciesList = ({ species, colID, searchItem, editSpecies, deleteSpecies, l
           >
             {species.map((specie, index) => {
               return (
-                <GridItem key={specie}>
+                <GridItem key={specie._id}>
                   <SpeciesItem
-                    key={specie}
                     specie={specie}
                     index={index}
                     searchItem={searchItem}
@@ -51,7 +49,7 @@ const SpeciesList = ({ species, colID, searchItem, editSpecies, deleteSpecies, l
 };
 
 SpeciesList.propTypes = {
-  species: PropTypes.arrayOf(PropTypes.string).isRequired,
+  species: PropTypes.arrayOf(PropTypes.object).isRequired,
   colID: PropTypes.string.isRequired,
   searchItem: PropTypes.string.isRequired,
   editSpecies: PropTypes.func.isRequired,

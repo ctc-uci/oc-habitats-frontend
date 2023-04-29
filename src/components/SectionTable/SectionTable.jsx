@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-key */
-
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -23,7 +21,6 @@ import {
   MapLinkColumn,
 } from './SectionTableRow';
 
-/* eslint-disable react/destructuring-assignment, react/prop-types */
 const LoadingRow = () => (
   <Tr>
     <td colSpan={4}>

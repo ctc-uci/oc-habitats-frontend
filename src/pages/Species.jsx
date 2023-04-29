@@ -1,5 +1,5 @@
 import { Box, Center, Flex, Stack, Text, VStack, HStack } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import DropdownSearch from '../components/DropdownSearch';
 import SpeciesList from '../components/Species/SpeciesList';
 import NewSpeciesModal from '../components/Species/NewSpeciesModal';
@@ -25,7 +25,7 @@ const createLists = (columns, searchItem, editSpecies, deleteSpecies, isLoading)
   // Will pass in the species that belong to each list as well as their titles and ids
   return Object.entries(columns).map(([id, col]) => {
     return (
-      <>
+      <Fragment key={id}>
         <VStack align="left">
           {col.title !== '' && (
             <Text fontWeight={550} align="left">
@@ -37,7 +37,6 @@ const createLists = (columns, searchItem, editSpecies, deleteSpecies, isLoading)
           </Text>
         </VStack>
         <SpeciesList
-          key={id}
           name={col.name}
           species={col.speciesIds}
           colID={id}
@@ -46,7 +45,7 @@ const createLists = (columns, searchItem, editSpecies, deleteSpecies, isLoading)
           deleteSpecies={deleteSpecies}
           loading={isLoading}
         />
-      </>
+      </Fragment>
     );
   });
 };

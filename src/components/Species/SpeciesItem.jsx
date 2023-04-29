@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { Text, Menu, MenuButton, MenuList, Button } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
@@ -10,7 +9,7 @@ const SpeciesItem = ({ specie, index, searchItem, col, editSpecies, deleteSpecie
   const user = useUserContext();
   const isAdmin = user.userData.role === 'admin';
   return (
-    <div draggableId={specie} index={index}>
+    <div draggableid={specie} index={index}>
       <Menu>
         <MenuButton
           as={Button}
@@ -59,7 +58,7 @@ const SpeciesItem = ({ specie, index, searchItem, col, editSpecies, deleteSpecie
 };
 
 SpeciesItem.propTypes = {
-  specie: PropTypes.string.isRequired,
+  specie: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   searchItem: PropTypes.string.isRequired,
   col: PropTypes.string.isRequired,

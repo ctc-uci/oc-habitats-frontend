@@ -234,7 +234,7 @@ SegmentNameColumn.propTypes = {
 };
 
 SectionTableRow.propTypes = {
-  row: PropTypes.string.isRequired,
+  row: PropTypes.object.isRequired,
 };
 MapLinkColumn.propTypes = {
   data: PropTypes.string.isRequired,
@@ -244,7 +244,7 @@ ParkingColumn.propTypes = {
 };
 
 UpdateSegmentPopupColumn.propTypes = {
-  data: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
   allSections: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string.isRequired,
@@ -252,10 +252,7 @@ UpdateSegmentPopupColumn.propTypes = {
     }),
   ).isRequired,
   updateSections: PropTypes.func.isRequired,
-  currentSection: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  }).isRequired,
+  currentSection: PropTypes.string.isRequired,
 };
 
 export {

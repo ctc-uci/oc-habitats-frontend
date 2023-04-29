@@ -11,7 +11,6 @@ import {
   Text,
   IconButton,
   Menu,
-  MenuButton,
   MenuList,
   MenuItem,
 } from '@chakra-ui/react';
@@ -116,7 +115,6 @@ const SegmentAndButtonColumn = ({ data }) => {
     <HStack justifyContent="space-between">
       <VStack align="normal">
         {data?.segments?.map((segment, i) => (
-          // eslint-disable-next-line react/no-array-index-key
           <HStack key={i} alignItems="baseline">
             <Text>{segment.segmentId}</Text>
             <Text color="gray.500">{segment.streets}</Text>
@@ -133,9 +131,7 @@ const SegmentAndButtonColumn = ({ data }) => {
 const RowButton = ({ data }) => {
   return (
     <Menu isLazy autoSelect={false}>
-      <MenuButton>
-        <IconButton icon={<BsThreeDotsVertical />} bg="transparent" />
-      </MenuButton>
+      <IconButton icon={<BsThreeDotsVertical />} bg="transparent" />
       <MenuList placement="bottom-start">{menuContent(data)}</MenuList>
     </Menu>
   );
@@ -155,7 +151,6 @@ const PeopleTableRow = ({ row, isMobile }) => {
   );
 };
 
-/* eslint-disable react/forbid-prop-types */
 StyledBadge.defaultProps = {
   bgColor: 'white',
   textColor: 'black',
@@ -184,7 +179,5 @@ PeopleTableRow.propTypes = {
   row: PropTypes.object.isRequired,
   isMobile: PropTypes.bool.isRequired,
 };
-
-/* eslint-enable react/forbid-prop-types */
 
 export { PeopleTableRow, NameColumn, SegmentAndButtonColumn };

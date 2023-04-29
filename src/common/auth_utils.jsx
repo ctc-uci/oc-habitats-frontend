@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 
 import { initializeApp } from 'firebase/app';
+import { useNavigate } from 'react-router-dom';
+import { renderEmail } from 'react-html-email';
 
 import {
   getAuth,
@@ -18,13 +20,10 @@ import {
   verifyPasswordResetCode,
 } from 'firebase/auth';
 
-import { useNavigate } from 'react-router-dom';
-import { renderEmail } from 'react-html-email';
+import AdminInviteEmail from '../components/Email/EmailTemplates/AdminInviteEmail';
 
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
-
 import { OCHBackend } from './utils';
-import AdminInviteEmail from '../components/Email/EmailTemplates/AdminInviteEmail';
 
 // Using Firebase Web version 9
 const firebaseConfig = {
@@ -105,7 +104,6 @@ const refreshToken = async () => {
  */
 const createUserInDB = async (email, firebaseId, role, firstName, lastName) => {
   try {
-    console.log(`firebaseId param received as ${firebaseId} and passing it into POST`);
     await OCHBackend.post(
       '/users/',
       {
@@ -141,7 +139,7 @@ const logInWithEmailAndPassword = async (email, password, navigate, cookies) => 
     throw new Error('Please verify your email before logging in.');
   }
   cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
-  const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`);
+  const user = await OCHBackend.get(`/users/${auth.currentUser.uid}`, { withCredentials: true });
   // console.log('Current user: ');
   // console.table(user.data);
   return user.data;

@@ -18,7 +18,6 @@ import {
   FormErrorMessage,
   Menu,
   MenuList,
-  MenuButton,
   MenuItem,
   useToast,
 } from '@chakra-ui/react';
@@ -150,17 +149,15 @@ const EditDeleteSectionPopup = ({ section, getSections }) => {
   return (
     <>
       <Menu>
-        <MenuButton>
-          <Button
-            size="sm"
-            bg="#2BC0E3"
-            variant="solid"
-            aria-label="Edit Section"
-            rightIcon={<FiEdit3 />}
-          >
-            Edit Section
-          </Button>
-        </MenuButton>
+        <Button
+          size="sm"
+          bg="#2BC0E3"
+          variant="solid"
+          aria-label="Edit Section"
+          rightIcon={<FiEdit3 />}
+        >
+          Edit Section
+        </Button>
         <MenuList>
           <MenuItem onClick={onOpen}>Edit Section</MenuItem>
           <MenuItem>

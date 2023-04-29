@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/forbid-prop-types */
 import React, { useState, useEffect } from 'react';
 import { Container, Spinner } from '@chakra-ui/react';
 import { Navigate } from 'react-router-dom';
@@ -16,7 +14,7 @@ const userIsAuthenticated = async (roles, cookies) => {
 
     const [loggedIn, currentUser] = await Promise.all([
       OCHBackend.get(`/auth/verifyToken/${accessToken}`),
-      OCHBackend.get(`/users/${currentUserId}`),
+      OCHBackend.get(`/users/${currentUserId}`, { withCredentials: true }),
     ]);
     // User role matches, and token is verified
     return {
