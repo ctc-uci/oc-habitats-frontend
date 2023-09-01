@@ -2,7 +2,6 @@ import React from 'react';
 import { Flex, Link, Image, Box, Stack } from '@chakra-ui/react';
 import facebook from '../../assets/facebook.png';
 import instagram from '../../assets/instagram.svg';
-import twitter from '../../assets/twitter.png';
 import './Footer.css';
 
 const Footer = () => {
@@ -35,11 +34,6 @@ const Footer = () => {
           <Box className="icon" p="2">
             <Link href="https://www.facebook.com/ochabitats" isExternal>
               <Image maxH="50px" src={facebook} _hover={{ opacity: '0.8' }} />
-            </Link>
-          </Box>
-          <Box className="icon" p="2">
-            <Link href="https://twitter.com/ochabitats" isExternal>
-              <Image maxH="50px" src={twitter} _hover={{ opacity: '0.8' }} />
             </Link>
           </Box>
           <Box className="icon" p="2">
